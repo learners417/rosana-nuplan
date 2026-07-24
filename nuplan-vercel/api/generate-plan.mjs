@@ -91,7 +91,7 @@ async function generar(datos) {
   return plan;
 }
 
-export default async (req) => {
+export async function POST(req) {
   let datos;
   try {
     datos = await leerJSON(req);
@@ -102,4 +102,4 @@ export default async (req) => {
     });
   }
   return responderConLatido(() => generar(datos));
-};
+}

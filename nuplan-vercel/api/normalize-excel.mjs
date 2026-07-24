@@ -122,7 +122,7 @@ async function normalizar({ headers, rows }) {
   return { rows: filas, column_mapping: mapeoLegible };
 }
 
-export default async (req) => {
+export async function POST(req) {
   let datos;
   try {
     datos = await leerJSON(req);
@@ -133,4 +133,4 @@ export default async (req) => {
     });
   }
   return responderConLatido(() => normalizar(datos));
-};
+}

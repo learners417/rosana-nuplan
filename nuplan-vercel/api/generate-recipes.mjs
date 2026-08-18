@@ -2,10 +2,20 @@
 // Devuelve exactamente la estructura que espera el frontend publicado.
 
 import { llamarIA, responderConLatido, leerJSON } from "./_lib.mjs";
+import { reglasDeLasCaracteristicas } from "./_patologias.mjs";
 
 function construirPrompt(d) {
   const cant = Math.max(1, Math.min(Number(d.count) || 3, 8));
-  return `Sos nutricionista clínico y creás recetas para pacientes.
+  const reglasClinicas = reglasDeLasCaracteristicas(d.intolerances || []);
+  const bloqueClinico = reglasClinicas
+    ? `GUÍAS CLÍNICAS DE LA PROFESIONAL — SON DE CUMPLIMIENTO OBLIGATORIO.
+Ninguna receta puede contradecirlas. Lo que figura como prohibido no puede
+aparecer como ingrediente, ni en la preparación, ni como reemplazo sugerido.
+
+${reglasClinicas}`
+    : "";
+
+  return `Sos nutricionista clínico del equipo de la Lic. Rosana Roldán (NuPlan) y creás recetas para pacientes.
 
 DATOS DEL PACIENTE (puede venir vacío si es una generación general):
 ${JSON.stringify(d.patientInfo || null, null, 2)}
@@ -19,6 +29,8 @@ PARÁMETROS DEL PEDIDO:
 - Alimentos que NO puede consumir: ${JSON.stringify(d.foodRestrictions || "")}
 - Ocultar cifras calóricas: ${d.hideCalories ? "SÍ" : "no"}
 - Cantidad de recetas: ${cant}
+
+${bloqueClinico}
 
 REGLAS INNEGOCIABLES:
 1. Respetá de forma absoluta las intolerancias, patologías y alimentos excluidos. Un alimento no permitido no puede aparecer en ningún ingrediente ni preparación, tampoco como opción.

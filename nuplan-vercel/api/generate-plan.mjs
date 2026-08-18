@@ -222,7 +222,7 @@ function limpiarSuplementos(lista, preferences) {
 }
 
 async function generar(datos) {
-  const plan = await llamarIA(construirPrompt(datos), 8000);
+  const plan = await llamarIA(construirPrompt(datos), 16000);
   if (!plan.hydrationPlan || typeof plan.hydrationPlan !== "object") plan.hydrationPlan = {};
   if (!plan.healthyPlate || typeof plan.healthyPlate !== "object") plan.healthyPlate = {};
   if (!Array.isArray(plan.dailyPlan)) plan.dailyPlan = [];

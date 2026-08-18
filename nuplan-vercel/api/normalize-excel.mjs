@@ -99,7 +99,7 @@ async function normalizar({ headers, rows }) {
   }
 
   const ejemplo = rows.slice(0, 5);
-  const r = await llamarIA(construirPrompt(headers, ejemplo), 1500);
+  const r = await llamarIA(construirPrompt(headers, ejemplo), 6000);
   const mapping = r.column_mapping || {};
 
   const filas = rows.map((fila) => {

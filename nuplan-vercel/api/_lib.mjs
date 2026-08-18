@@ -1,5 +1,8 @@
 // NuPlan · utilidades compartidas por las funciones de IA.
 
+// El modelo se cambia con la variable de entorno MODELO_IA en Vercel.
+// Sonnet razona antes de responder y ese razonamiento descuenta del mismo
+// max_tokens, por eso los límites de las funciones tienen margen de sobra.
 export const MODELO = process.env.MODELO_IA || "claude-sonnet-5";
 
 export async function llamarIA(prompt, maxTokens = 8000) {

@@ -394,3 +394,75 @@ export function patologiasConGuia(etiquetas = []) {
     .filter(Boolean)
     .map((p) => p.clave);
 }
+
+// ---------------------------------------------------------------------------
+// Red de seguridad: términos que NO pueden aparecer en un plan según la
+// patología. Se revisa el plan ya generado; si algo se coló, se pide una
+// corrección. Cada término lleva sus excepciones para no dar falsos positivos.
+// ---------------------------------------------------------------------------
+
+const VETADOS = {
+  SIBO: [
+    ["cebolla", []],
+    ["ajo", ["ajo negro"]],
+    ["trigo", []],
+    ["pan", ["pan de arroz", "pan sin gluten", "pan sin tacc", "pan de maíz", "pan de mandioca"]],
+    ["lentejas", []],
+    ["garbanzos", []],
+    ["porotos", []],
+    ["miel", []],
+    ["coliflor", []],
+    ["champiñones", []],
+  ],
+  IMO: [
+    ["cebolla", []],
+    ["ajo", ["ajo negro"]],
+    ["lentejas", []],
+    ["garbanzos", []],
+    ["porotos", []],
+  ],
+  "Colon Irritable": [
+    ["cebolla", []],
+    ["ajo", ["ajo negro"]],
+    ["miel", []],
+  ],
+  "Gluten (Celíaco / Sin TACC)": [
+    ["trigo", []],
+    ["cebada", []],
+    ["centeno", []],
+    ["pan", ["pan de arroz", "pan sin gluten", "pan sin tacc", "pan de maíz", "pan de mandioca"]],
+    ["harina", ["harina de arroz", "harina de maíz", "harina de mandioca", "harina de garbanzo"]],
+  ],
+  "Embarazo y Lactancia": [
+    ["atún rojo", []],
+    ["pez espada", []],
+    ["tiburón", []],
+    ["sushi", []],
+    ["vino", []],
+    ["cerveza", []],
+    ["huevo crudo", []],
+    ["carne cruda", []],
+  ],
+};
+
+// Devuelve los términos vetados que aparecen en el texto del plan.
+export function coladosEnElPlan(etiquetas = [], texto = "") {
+  const t = String(texto).toLowerCase();
+  const hallados = new Set();
+
+  for (const etiqueta of etiquetas) {
+    const p = buscar(PATOLOGIAS, etiqueta);
+    const clave = p ? p.clave : etiqueta;
+    const lista = VETADOS[clave];
+    if (!lista) continue;
+
+    for (const [termino, excepciones] of lista) {
+      const re = new RegExp(`(^|[^a-záéíóúñ])${termino}([^a-záéíóúñ]|$)`, "i");
+      if (!re.test(t)) continue;
+      // si toda aparición está dentro de una excepción, no cuenta
+      const limpio = excepciones.reduce((acc, ex) => acc.split(ex).join(" "), t);
+      if (re.test(limpio)) hallados.add(`${termino} (${clave})`);
+    }
+  }
+  return [...hallados];
+}

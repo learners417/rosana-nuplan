@@ -3,14 +3,18 @@
 // Incorpora las guías clínicas de la Lic. Roldán (ver _patologias.mjs).
 
 import { llamarIA, responderConLatido, leerJSON } from "./_lib.mjs";
-import { reglasDeLasCaracteristicas, patologiasConGuia } from "./_patologias.mjs";
+import {
+  reglasDeLasCaracteristicas,
+  patologiasConGuia,
+  coladosEnElPlan,
+} from "./_patologias.mjs";
 
 const ESQUEMA = `{
   "planObjective": "string — 2 o 3 frases, objetivo del plan para este paciente",
   "dailyPlan": [
     {
       "type": "string — etiqueta corta en mayúsculas: DESAYUNO, MEDIA MAÑANA, ALMUERZO, MERIENDA, CENA, COLACIÓN",
-      "title": "string — nombre y horario sugerido, ej: 'Desayuno · 8:00'",
+      "title": "string — SOLO el horario, ej: '8:00 hs'. NO repitas el nombre de la comida: ya se muestra en type",
       "items": ["string — cada opción con medida casera"],
       "tip": "string — un consejo breve para esa comida"
     }
@@ -161,6 +165,25 @@ REGLAS INNEGOCIABLES:
 6. Porciones en medidas caseras (taza, cucharada, plato, unidad).
 7. No incluyas diagnósticos médicos ni indicaciones farmacológicas.
 
+CÓMO SE ESCRIBE CADA COMIDA:
+- Cada ítem es un alimento con su medida casera concreta: "1 taza de arroz cocido", "1 pechuga de pollo (150 g)".
+- NUNCA escribas "mitad del plato", "un cuarto del plato" ni porcentajes dentro de un ítem. Esas proporciones son para que vos calcules, no para que las copies: el paciente tiene que leer comida, no una fórmula.
+- Ningún ítem puede ser un condimento presentado como alimento. Un poco de queso rallado, una cucharadita de aceite o unas semillas para espolvorear van dentro de la descripción de un plato, nunca como ítem propio.
+- La merienda tiene el mismo volumen que el desayuno, no una versión reducida.
+
+PORCIONES MÍNIMAS — NO SE BAJA DE ACÁ:
+- Quesos: 30 g (una feta o 2 cucharadas colmadas de rallado). Nunca "1 cucharada".
+- Frutas chicas (arándanos, frutillas, uvas, cerezas): 1 taza o 1 puñado grande. Nunca "5 o 6 unidades".
+- Frutas medianas: 1 unidad entera.
+- Frutos secos: 1 puñado (30 g).
+- Pan: 2 rebanadas. Galletas de arroz o maíz: 3 unidades.
+- Cereales y legumbres cocidos: 1 taza.
+- Proteína animal: 120 a 150 g.
+- Vegetales cocidos o crudos: 2 tazas.
+- Leche o bebida vegetal: 1 taza (200 a 250 ml). Yogur: 1 pote.
+- Aceite: 1 cucharada.
+Si el objetivo calórico no cierra, sacá ítems o bajá la cantidad de comidas: NUNCA achiques una porción por debajo de estos mínimos. Un plan con porciones irrisorias no se puede sostener y desprestigia a la profesional.
+
 REGLAS DE SUPLEMENTACIÓN (campo "supplements"):
 - Solo suplementos nutricionales de venta libre y uso habitual: vitamina D, hierro, calcio, B12, Omega 3, magnesio, proteína en polvo, ácido fólico.
 - Como máximo 3, y únicamente si hay un motivo concreto en los datos del paciente o en las guías clínicas.
@@ -221,12 +244,46 @@ function limpiarSuplementos(lista, preferences) {
     .slice(0, 3);
 }
 
+// Junta todo el texto del plan para poder revisarlo.
+function textoDelPlan(plan) {
+  try {
+    return JSON.stringify(plan);
+  } catch {
+    return "";
+  }
+}
+
 async function generar(datos) {
-  const plan = await llamarIA(construirPrompt(datos), 16000);
+  const etiquetas = Array.isArray(datos?.preferences?.intolerances)
+    ? datos.preferences.intolerances
+    : [];
+
+  let plan = await llamarIA(construirPrompt(datos), 16000);
+
+  // Red de seguridad: si se coló un alimento prohibido por la patología,
+  // se pide una corrección una sola vez.
+  const colados = coladosEnElPlan(etiquetas, textoDelPlan(plan));
+  if (colados.length) {
+    const correccion = `${construirPrompt(datos)}
+
+CORRECCIÓN OBLIGATORIA:
+Un intento anterior incluyó alimentos que están prohibidos para este paciente: ${colados.join(", ")}.
+Rehacé el plan completo sin ninguno de esos alimentos, en ninguna comida, ni como opción, ni como reemplazo, ni en los grupos de alimentos, ni en las ideas de menú, ni en la lista de compras, ni en las recetas. Reemplazalos por alternativas permitidas según las guías clínicas.`;
+    try {
+      plan = await llamarIA(correccion, 16000);
+    } catch (e) {
+      console.error("Fallo el reintento de corrección:", e);
+    }
+  }
   if (!plan.hydrationPlan || typeof plan.hydrationPlan !== "object") plan.hydrationPlan = {};
   if (!plan.healthyPlate || typeof plan.healthyPlate !== "object") plan.healthyPlate = {};
   if (!Array.isArray(plan.dailyPlan)) plan.dailyPlan = [];
   plan.supplements = limpiarSuplementos(plan.supplements, datos?.preferences);
+
+  const restantes = coladosEnElPlan(etiquetas, textoDelPlan(plan));
+  if (restantes.length) {
+    console.warn("Plan entregado con alimentos a revisar:", restantes.join(", "));
+  }
   return plan;
 }
 

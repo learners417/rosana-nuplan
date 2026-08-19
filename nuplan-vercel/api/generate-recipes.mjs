@@ -64,7 +64,7 @@ La lista "recipes" debe tener exactamente ${cant} recetas.`;
 }
 
 async function generar(datos) {
-  const r = await llamarIA(construirPrompt(datos), 8000);
+  const r = await llamarIA(construirPrompt(datos), 12000);
   if (!Array.isArray(r.recipes)) r.recipes = [];
   for (const rec of r.recipes) {
     if (!Array.isArray(rec.ingredients)) rec.ingredients = [];

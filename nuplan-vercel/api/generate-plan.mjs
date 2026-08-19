@@ -123,7 +123,13 @@ function construirPrompt({ patientInfo, metrics, preferences }) {
 Estas reglas están por encima de cualquier criterio general tuyo. Si algo del plan
 las contradice, el plan está mal.
 
-${reglasClinicas}`
+${reglasClinicas}
+
+SI DOS GUÍAS SE CONTRADICEN, GANA SIEMPRE LA PROHIBICIÓN.
+Ejemplo: si una guía pide priorizar legumbres y otra las prohíbe, las legumbres
+NO van. En ese caso cubrí lo que pedía la primera guía con un alimento permitido
+por todas (para el hierro, por ejemplo, carne vacuna, pollo, pescado o huevo en
+lugar de legumbres). Nunca resuelvas un choque incluyendo el alimento prohibido.`
     : "El paciente no tiene patologías ni características particulares marcadas.";
 
   const bloqueMenu = conGuia.length

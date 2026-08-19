@@ -13,10 +13,10 @@ const ESQUEMA = `{
   "planObjective": "string — 2 o 3 frases, objetivo del plan para este paciente",
   "dailyPlan": [
     {
-      "type": "string — etiqueta corta en mayúsculas: DESAYUNO, MEDIA MAÑANA, ALMUERZO, MERIENDA, CENA, COLACIÓN",
+      "type": "string — etiqueta corta en mayúsculas: DESAYUNO, MEDIA MAÑANA, ALMUERZO, COLACIÓN POST ENTRENAMIENTO, MERIENDA, CENA",
       "title": "string — SOLO el horario, ej: '8:00 hs'. NO repitas el nombre de la comida: ya se muestra en type",
-      "items": ["string — cada opción con medida casera"],
-      "tip": "string — un consejo breve para esa comida"
+      "items": ["string — un grupo de alimentos con su porción y 3 o 4 opciones equivalentes separadas por \" / \""],
+      "tip": "string — cómo combinar los renglones de esa comida, con ejemplos concretos"
     }
   ],
   "hydrationPlan": {
@@ -165,24 +165,45 @@ REGLAS INNEGOCIABLES:
 6. Porciones en medidas caseras (taza, cucharada, plato, unidad).
 7. No incluyas diagnósticos médicos ni indicaciones farmacológicas.
 
-CÓMO SE ESCRIBE CADA COMIDA:
-- Cada ítem es un alimento con su medida casera concreta: "1 taza de arroz cocido", "1 pechuga de pollo (150 g)".
-- NUNCA escribas "mitad del plato", "un cuarto del plato" ni porcentajes dentro de un ítem. Esas proporciones son para que vos calcules, no para que las copies: el paciente tiene que leer comida, no una fórmula.
-- Ningún ítem puede ser un condimento presentado como alimento. Un poco de queso rallado, una cucharadita de aceite o unas semillas para espolvorear van dentro de la descripción de un plato, nunca como ítem propio.
-- La merienda tiene el mismo volumen que el desayuno, no una versión reducida.
+ASÍ ARMA EL PLAN LA LIC. ROLDÁN — ESTO ES LO MÁS IMPORTANTE DE TODO:
 
-PORCIONES MÍNIMAS — NO SE BAJA DE ACÁ:
-- Quesos: 30 g (una feta o 2 cucharadas colmadas de rallado). Nunca "1 cucharada".
-- Frutas chicas (arándanos, frutillas, uvas, cerezas): 1 taza o 1 puñado grande. Nunca "5 o 6 unidades".
-- Frutas medianas: 1 unidad entera.
-- Frutos secos: 1 puñado (30 g).
-- Pan: 2 rebanadas. Galletas de arroz o maíz: 3 unidades.
-- Cereales y legumbres cocidos: 1 taza.
-- Proteína animal: 120 a 150 g.
-- Vegetales cocidos o crudos: 2 tazas.
-- Leche o bebida vegetal: 1 taza (200 a 250 ml). Yogur: 1 pote.
-- Aceite: 1 cucharada.
-Si el objetivo calórico no cierra, sacá ítems o bajá la cantidad de comidas: NUNCA achiques una porción por debajo de estos mínimos. Un plan con porciones irrisorias no se puede sostener y desprestigia a la profesional.
+El plan NO es un menú cerrado con una sola comida por momento. Es un ESQUEMA POR
+INTERCAMBIOS, como lo arma una nutricionista en el consultorio: cada ítem es UN
+GRUPO de alimentos, con su porción, y ofrece de 3 a 4 opciones equivalentes
+separadas por " / ". La paciente elige una de cada renglón.
+
+Así se ve un desayuno bien armado:
+- "1/2 taza de avena o granola / 2 rebanadas de pan integral / 4 galletitas integrales / 3 galletas de arroz"
+- "1 huevo revuelto / 1 taza de leche o yogur / 2 cucharadas soperas de queso untable / 1 rebanada de queso"
+- "1 fruta / palta / frutos secos"
+- "Infusión a gusto: té, mate o café"
+
+Así se ve un almuerzo bien armado:
+- "1/4 plato de arroz, pasta, legumbres o feculentos (papa, batata, choclo) / 2 rebanadas de pan integral / 2 rapiditas"
+- "150 g de pollo / pescado / 1 lata chica de atún / 2 huevos / carne vacuna magra"
+- "1/2 plato de vegetales crudos o cocidos"
+- "1 cucharada de aceite de oliva"
+- "1 fruta"
+
+Reglas del esquema:
+- Alimentos CLÁSICOS de consultorio argentino. Nada exótico, nada de combinaciones raras, nada que una paciente no encuentre en el super del barrio.
+- Todas las opciones de un mismo renglón son equivalentes entre sí en porción y en aporte.
+- El tip de cada comida muestra cómo COMBINAR los renglones, con ejemplos concretos. Ej: "avena con leche y frutas, tostada con huevo y palta, café con leche con pan integral y queso".
+- MERIENDA: un único ítem que diga "Repetir las opciones del desayuno". El tip aclara que mantiene la misma estructura y que tiene que ser generosa y completa.
+- CENA: primer ítem "Repetir el mismo esquema del almuerzo"; segundo ítem con la alternativa de distribuir (carbohidratos y vegetales en el almuerzo, proteína y vegetales en la cena); y el aceite.
+- Si el paciente es deportista, sumá COLACIÓN POST ENTRENAMIENTO, aunque sea solo con el tip de cuándo tomarla.
+- Las fracciones de plato ("1/4 plato", "1/2 plato") SÍ se usan, siempre acompañadas de los alimentos concretos, como en los ejemplos de arriba.
+
+PORCIONES DE REFERENCIA:
+- Quesos: 30 g, 1 rebanada, o 2 cucharadas soperas de untable.
+- Proteína animal en comida principal: 150 g.
+- Pan: 2 rebanadas. Galletas de arroz o maíz: 3 unidades. Galletitas integrales: 4.
+- Cereales y legumbres cocidos: 1/2 a 1 taza.
+- Frutos secos como colación: 6 almendras o 2 nueces.
+- Frutas: 1 unidad. Nunca cuentes unidades de frutas chicas: va "1 taza de arándanos", no "5 o 6 arándanos".
+- Leche, yogur o bebida vegetal: 1 taza. Aceite: 1 cucharada.
+Ningún ítem puede ser un condimento suelto disfrazado de alimento: el queso rallado,
+las semillas o el aceite para espolvorear van dentro de la descripción de un plato.
 
 REGLAS DE SUPLEMENTACIÓN (campo "supplements"):
 - Solo suplementos nutricionales de venta libre y uso habitual: vitamina D, hierro, calcio, B12, Omega 3, magnesio, proteína en polvo, ácido fólico.

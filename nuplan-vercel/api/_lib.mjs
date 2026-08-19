@@ -5,7 +5,37 @@
 // max_tokens, por eso los límites de las funciones tienen margen de sobra.
 export const MODELO = process.env.MODELO_IA || "claude-sonnet-5";
 
+// Respaldo: si el modelo principal falla o está saturado, se reintenta con
+// este otro antes de mostrarle un error a la profesional. Un plan hecho con
+// el modelo de respaldo es peor que el bueno, pero muchísimo mejor que
+// ningún plan con una paciente sentada enfrente.
+export const MODELO_RESPALDO = process.env.MODELO_IA_RESPALDO || "claude-haiku-4-5";
+
+// Errores que justifican reintentar: caídas del servicio, saturación,
+// tiempos de espera y cortes de red. Un error de clave o de pedido mal
+// armado NO se reintenta, porque va a fallar igual.
+function convieneReintentar(e) {
+  const m = String((e && e.message) || e);
+  return (
+    /La API respondió (429|500|502|503|504|529)/.test(m) ||
+    /formato válido/.test(m) ||
+    /fetch failed|network|timeout|ETIMEDOUT|ECONNRESET|socket/i.test(m)
+  );
+}
+
 export async function llamarIA(prompt, maxTokens = 8000) {
+  try {
+    return await pedirALaIA(prompt, maxTokens, MODELO);
+  } catch (e) {
+    if (MODELO_RESPALDO === MODELO || !convieneReintentar(e)) throw e;
+    console.warn(
+      `Falló ${MODELO} (${e.message}). Reintentando con ${MODELO_RESPALDO}.`
+    );
+    return await pedirALaIA(prompt, maxTokens, MODELO_RESPALDO);
+  }
+}
+
+async function pedirALaIA(prompt, maxTokens, modelo) {
   const clave = process.env.ANTHROPIC_API_KEY;
   if (!clave) {
     throw new Error(
@@ -21,7 +51,7 @@ export async function llamarIA(prompt, maxTokens = 8000) {
       "anthropic-version": "2023-06-01",
     },
     body: JSON.stringify({
-      model: MODELO,
+      model: modelo,
       max_tokens: maxTokens,
       messages: [{ role: "user", content: prompt }],
     }),

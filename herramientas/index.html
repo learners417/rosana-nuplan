@@ -1,0 +1,1006 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="robots" content="noindex, nofollow" />
+<title>Herramientas NuPlan</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#fff6f3; --surface:#ffffff; --ink:#1a1a1a; --muted:#6b7280; --line:#e5e7eb;
+    --coral:#e8472a; --coral-light:#f47a62; --accent:#f6a29a; --coral-dark:#c53a1e;
+    --verde:#3f7d54; --verde-suave:#eef5ef;
+    --body:'DM Sans', system-ui, -apple-system, sans-serif;
+    --mono:'Space Mono', ui-monospace, monospace;
+    --r-md:.5rem; --r-lg:.75rem; --r-xl:1rem; --r-2xl:1.5rem;
+    --wrap:1040px; --pad:28px;
+  }
+  @media(max-width:640px){:root{--pad:18px;}}
+  *{box-sizing:border-box;}
+  html{font-size:18px;scroll-behavior:smooth;}
+  @media(max-width:640px){html{font-size:17px;}}
+  html,body{overflow-x:hidden;max-width:100%;}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);
+    font-size:1.05rem;line-height:1.6;-webkit-font-smoothing:antialiased;}
+  button,input,select,textarea{font-family:var(--body);font-size:1rem;}
+  .wrap{max-width:var(--wrap);margin:0 auto;padding:0 var(--pad);}
+  .oculto{display:none !important;}
+
+  /* ---------- barra ---------- */
+  .topbar{position:sticky;top:0;z-index:20;background:rgba(255,246,243,.94);backdrop-filter:blur(12px);
+    border-bottom:1px solid var(--line);}
+  .topbar .row{display:flex;align-items:center;justify-content:space-between;height:66px;gap:16px;}
+  .brand{font-size:1.25rem;font-weight:700;letter-spacing:-.02em;cursor:pointer;white-space:nowrap;}
+  .brand sup{font-family:var(--mono);font-size:.5rem;color:var(--coral);vertical-align:super;}
+  .brand span{color:var(--coral);}
+  .topbar .der{display:flex;align-items:center;gap:12px;}
+  .empresa-sel{border:1px solid var(--line);background:var(--surface);border-radius:999px;
+    padding:10px 16px;font-weight:500;color:var(--ink);cursor:pointer;max-width:220px;}
+  .salir{background:none;border:none;color:var(--muted);cursor:pointer;font-size:.95rem;padding:8px;}
+  .salir:hover{color:var(--coral);}
+
+  /* ---------- pantallas ---------- */
+  .pantalla{padding:48px 0 96px;animation:aparecer .25s ease;}
+  @keyframes aparecer{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:none;}}
+  .kicker{font-family:var(--mono);font-size:.8rem;color:var(--coral);display:block;margin-bottom:12px;}
+  h1{font-size:clamp(30px,4.6vw,44px);font-weight:700;letter-spacing:-.03em;line-height:1.08;margin:0 0 12px;}
+  h2{font-size:clamp(24px,3.4vw,32px);font-weight:700;letter-spacing:-.025em;line-height:1.12;margin:0 0 10px;}
+  h3{font-size:1.3rem;font-weight:700;letter-spacing:-.02em;margin:0 0 8px;}
+  .bajada{font-size:1.1rem;color:var(--muted);max-width:620px;margin:0 0 32px;line-height:1.65;}
+
+  /* ---------- login ---------- */
+  .login-caja{max-width:440px;margin:60px auto 0;background:var(--surface);border:1px solid var(--line);
+    border-radius:var(--r-2xl);padding:44px 40px;}
+  @media(max-width:640px){.login-caja{padding:32px 24px;margin-top:24px;}}
+  .campo{display:block;margin-bottom:22px;}
+  .campo label{display:block;font-family:var(--mono);font-size:.8rem;color:var(--coral-dark);margin-bottom:8px;}
+  .campo input,.campo select,.campo textarea{width:100%;border:2px solid var(--line);border-radius:var(--r-lg);
+    background:#fff;padding:14px 16px;font-size:1.05rem;color:var(--ink);}
+  .campo input:focus,.campo select:focus,.campo textarea:focus{outline:none;border-color:var(--coral);}
+  .campo textarea{min-height:90px;resize:vertical;line-height:1.55;}
+  .aviso{font-family:var(--mono);font-size:.88rem;margin-top:14px;min-height:1.4em;color:var(--muted);}
+  .aviso.error{color:var(--coral);}
+  .aviso.ok{color:var(--verde);}
+
+  /* ---------- botones ---------- */
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;background:var(--coral);color:#fff;
+    font-weight:600;font-size:1.05rem;border:none;border-radius:999px;padding:16px 30px;cursor:pointer;
+    transition:transform .15s ease, background .15s ease;}
+  .btn:hover{transform:translateY(-1px);background:var(--coral-dark);}
+  .btn[disabled]{opacity:.5;cursor:default;transform:none;}
+  .btn.ancho{width:100%;}
+  .btn.ghost{background:var(--surface);color:var(--coral-dark);border:2px solid var(--coral);}
+  .btn.ghost:hover{background:var(--bg);}
+  .btn.suave{background:var(--surface);color:var(--ink);border:1px solid var(--line);}
+  .btn.suave:hover{background:var(--bg);transform:none;}
+  .btn.chico{padding:10px 18px;font-size:.95rem;}
+
+  /* ---------- inicio ---------- */
+  .tarjetas{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:36px;}
+  @media(max-width:860px){.tarjetas{grid-template-columns:1fr;}}
+  .tarjeta{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-2xl);padding:36px 30px;
+    cursor:pointer;transition:transform .15s ease, border-color .15s ease;border-top:4px solid var(--coral);text-align:left;}
+  .tarjeta:hover{transform:translateY(-3px);border-color:var(--accent);}
+  .tarjeta .n{font-family:var(--mono);font-size:.8rem;color:var(--coral);margin-bottom:14px;display:block;}
+  .tarjeta h3{font-size:1.5rem;margin-bottom:10px;}
+  .tarjeta p{margin:0;color:var(--muted);line-height:1.6;}
+
+  /* ---------- pasos ---------- */
+  .pasos{display:flex;gap:8px;align-items:center;margin:0 0 36px;flex-wrap:wrap;}
+  .paso{font-family:var(--mono);font-size:.78rem;color:var(--muted);display:flex;align-items:center;gap:8px;}
+  .paso .b{width:28px;height:28px;border-radius:999px;border:1px solid var(--line);display:grid;place-items:center;
+    background:var(--surface);font-weight:700;}
+  .paso.on .b{background:var(--coral);color:#fff;border-color:var(--coral);}
+  .paso.hecho .b{color:var(--coral);border-color:var(--accent);}
+  .paso .seg{width:18px;height:2px;background:var(--line);}
+  @media(max-width:640px){.paso .no-movil{display:none;}.paso .seg{width:10px;}}
+  .nav-pasos{display:flex;justify-content:space-between;gap:14px;margin-top:36px;flex-wrap:wrap;}
+
+  .caja{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-2xl);padding:34px 32px;margin-bottom:22px;}
+  @media(max-width:640px){.caja{padding:26px 20px;}}
+
+  /* ---------- buscador de pacientes ---------- */
+  .buscador{position:relative;}
+  .buscador input{width:100%;border:2px solid var(--line);border-radius:var(--r-xl);padding:18px 20px;font-size:1.15rem;}
+  .buscador input:focus{outline:none;border-color:var(--coral);}
+  .resultados{list-style:none;margin:10px 0 0;padding:0;max-height:340px;overflow:auto;border:1px solid var(--line);
+    border-radius:var(--r-xl);background:var(--surface);}
+  .resultados:empty{display:none;}
+  .resultados li{padding:14px 18px;cursor:pointer;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;gap:12px;}
+  .resultados li:last-child{border-bottom:none;}
+  .resultados li:hover{background:var(--bg);}
+  .resultados li small{font-family:var(--mono);font-size:.78rem;color:var(--muted);}
+  .elegido{display:flex;align-items:center;justify-content:space-between;gap:16px;background:var(--verde-suave);
+    border:2px solid var(--verde);border-radius:var(--r-xl);padding:18px 20px;margin-top:16px;}
+  .elegido b{font-size:1.15rem;}
+  .elegido small{font-family:var(--mono);font-size:.8rem;color:var(--muted);display:block;margin-top:4px;}
+
+  /* ---------- métricas ---------- */
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+  .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;}
+  @media(max-width:640px){.grid2,.grid3{grid-template-columns:1fr;}}
+  .dato{background:var(--bg);border:1px solid var(--line);border-radius:var(--r-xl);padding:18px 20px;}
+  .dato .l{font-family:var(--mono);font-size:.76rem;color:var(--coral-dark);display:block;margin-bottom:6px;}
+  .dato .v{font-family:var(--mono);font-weight:700;font-size:1.5rem;}
+  .dato .v small{font-size:.85rem;font-weight:400;color:var(--muted);}
+  .nota{font-family:var(--mono);font-size:.82rem;color:var(--muted);margin-top:14px;line-height:1.6;}
+
+  /* ---------- chips ---------- */
+  .chips{display:flex;flex-wrap:wrap;gap:10px;margin-top:10px;}
+  .chip{border:2px solid var(--line);background:var(--bg);border-radius:999px;padding:11px 18px;cursor:pointer;
+    font-size:1rem;color:var(--ink);transition:border-color .12s ease, background .12s ease;}
+  .chip:hover{border-color:var(--accent);}
+  .chip.on{background:var(--coral);border-color:var(--coral);color:#fff;font-weight:500;}
+  .sub{font-family:var(--mono);font-size:.8rem;color:var(--coral-dark);margin:26px 0 8px;display:block;}
+  .sub:first-child{margin-top:0;}
+  .interruptor{display:flex;align-items:center;gap:12px;margin-top:22px;font-size:1rem;cursor:pointer;}
+  .interruptor input{width:22px;height:22px;accent-color:var(--coral);}
+
+  /* ---------- plato ---------- */
+  .plato-layout{display:grid;grid-template-columns:260px 1fr;gap:36px;align-items:center;margin-top:10px;}
+  @media(max-width:720px){.plato-layout{grid-template-columns:1fr;}}
+  .plato-svg{width:240px;height:240px;margin:0 auto;display:block;}
+  .desliz{margin-bottom:22px;}
+  .desliz .fila{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;}
+  .desliz .fila b{font-size:1.05rem;}
+  .desliz .fila .pct{font-family:var(--mono);font-weight:700;font-size:1.2rem;}
+  .desliz input[type=range]{width:100%;-webkit-appearance:none;appearance:none;height:8px;border-radius:999px;background:var(--line);}
+  .desliz input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:24px;height:24px;border-radius:999px;
+    background:var(--coral);cursor:pointer;border:3px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,.15);}
+  .desliz input[type=range]::-moz-range-thumb{width:24px;height:24px;border-radius:999px;background:var(--coral);cursor:pointer;border:3px solid #fff;}
+  .desliz.veg .pct{color:var(--verde);} .desliz.prot .pct{color:var(--coral-dark);} .desliz.carb .pct{color:#b7791f;}
+  .plato-total{font-family:var(--mono);font-size:.85rem;margin-top:4px;}
+  .plato-total.mal{color:var(--coral);}
+
+  /* ---------- resultado del plan ---------- */
+  .res-cabecera{display:flex;justify-content:space-between;align-items:flex-start;gap:20px;flex-wrap:wrap;margin-bottom:28px;}
+  .comida{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-xl);padding:26px 26px;margin-bottom:16px;}
+  .comida .tipo{font-family:var(--mono);font-size:.8rem;color:var(--coral);display:block;margin-bottom:4px;}
+  .comida .hora{font-family:var(--mono);font-weight:700;font-size:1.05rem;margin-bottom:12px;}
+  .comida ul{margin:0;padding-left:20px;}
+  .comida li{margin-bottom:8px;line-height:1.55;}
+  .comida .tip{margin:14px 0 0;padding:12px 14px;background:var(--bg);border-radius:var(--r-lg);color:var(--muted);font-size:.98rem;}
+  .bloque-res{margin-top:34px;}
+  .bloque-res h3{margin-bottom:14px;}
+  .lista-simple{margin:0;padding-left:20px;} .lista-simple li{margin-bottom:6px;}
+  .grupos{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  @media(max-width:760px){.grupos{grid-template-columns:1fr;}}
+  .grupo{background:var(--bg);border:1px solid var(--line);border-radius:var(--r-xl);padding:18px;}
+  .grupo b{display:block;margin-bottom:8px;font-family:var(--mono);font-size:.8rem;color:var(--coral-dark);}
+  .grupo ul{margin:0;padding-left:18px;font-size:.98rem;}
+  .habito{display:flex;gap:14px;background:var(--verde-suave);border:1px solid #cfe3d4;border-radius:var(--r-xl);padding:16px 18px;margin-bottom:10px;}
+  .habito .num{font-family:var(--mono);font-weight:700;color:var(--verde);}
+  .habito b{display:block;margin-bottom:4px;}
+  .habito span{color:var(--muted);font-size:.98rem;}
+  .acciones-res{display:flex;gap:12px;flex-wrap:wrap;margin-top:30px;}
+  .cargando{display:flex;align-items:center;gap:14px;font-family:var(--mono);font-size:.95rem;color:var(--muted);padding:28px 0;}
+  .cargando .punto{width:12px;height:12px;border-radius:999px;background:var(--coral);animation:pulso 1s infinite;}
+  @keyframes pulso{0%,100%{opacity:.25;}50%{opacity:1;}}
+
+  /* ---------- recetario ---------- */
+  .tipos{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:10px;}
+  @media(max-width:640px){.tipos{grid-template-columns:1fr;}}
+  .tipo-fila{display:flex;align-items:center;justify-content:space-between;gap:14px;background:var(--bg);
+    border:2px solid var(--line);border-radius:var(--r-xl);padding:16px 18px;}
+  .tipo-fila.on{border-color:var(--coral);background:#fff;}
+  .tipo-fila .t b{display:block;font-size:1.02rem;}
+  .tipo-fila .t small{color:var(--muted);font-size:.9rem;}
+  .contador{display:flex;align-items:center;gap:6px;}
+  .contador button{width:38px;height:38px;border-radius:999px;border:2px solid var(--line);background:#fff;font-size:1.3rem;
+    cursor:pointer;line-height:1;color:var(--coral-dark);}
+  .contador button:hover{border-color:var(--coral);}
+  .contador .c{font-family:var(--mono);font-weight:700;font-size:1.2rem;min-width:28px;text-align:center;}
+  .receta{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-xl);padding:26px;margin-bottom:16px;}
+  .receta .meta{font-family:var(--mono);font-size:.8rem;color:var(--muted);margin:6px 0 14px;display:flex;gap:14px;flex-wrap:wrap;}
+  .receta h4{font-size:1.25rem;margin:0;}
+  .receta .obj{color:var(--coral-dark);margin:0 0 12px;}
+  .receta .dos{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+  @media(max-width:640px){.receta .dos{grid-template-columns:1fr;}}
+  .receta b.t{font-family:var(--mono);font-size:.78rem;color:var(--coral);display:block;margin-bottom:6px;}
+  .receta ul,.receta ol{margin:0;padding-left:20px;} .receta li{margin-bottom:5px;}
+  .receta .tip{margin-top:14px;padding:12px 14px;background:var(--bg);border-radius:var(--r-lg);font-size:.98rem;color:var(--muted);}
+  .quitar{background:none;border:none;color:var(--muted);cursor:pointer;font-size:.9rem;padding:4px 8px;float:right;}
+  .quitar:hover{color:var(--coral);}
+
+  /* ---------- listado ---------- */
+  .tabla-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;}
+  .tabla{width:100%;border-collapse:collapse;margin-top:20px;min-width:520px;}
+  .tabla th{font-family:var(--mono);font-size:.78rem;color:var(--coral-dark);text-align:left;padding:0 12px 12px;border-bottom:2px solid var(--line);}
+  .tabla td{padding:14px 12px;border-bottom:1px solid var(--line);}
+  .tabla td.n{font-family:var(--mono);color:var(--muted);}
+  .resumen-listado{font-family:var(--mono);font-size:.95rem;margin-top:18px;}
+
+  footer{border-top:1px solid var(--line);padding:30px 0;text-align:center;}
+  footer p{font-family:var(--mono);font-size:.8rem;color:var(--muted);margin:0;}
+
+  @media print{
+    .topbar,.nav-pasos,.acciones-res,.btn,.pasos,footer,.no-imprimir{display:none !important;}
+    body{background:#fff;font-size:12pt;}
+    .pantalla{padding:0;}
+    .comida,.receta,.caja{break-inside:avoid;border-color:#ccc;}
+    .habito{background:#fff;border-color:#ccc;}
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="wrap row">
+    <div class="brand" onclick="irA('inicio')">NuPlan<sup>&trade;</sup> <span>Herramientas</span></div>
+    <div class="der oculto" id="barra-sesion">
+      <select class="empresa-sel" id="empresa" onchange="cambiarEmpresa(this.value)"></select>
+      <button class="salir" onclick="salir()">Salir</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ LOGIN ============ -->
+<section class="pantalla wrap oculto" id="p-login">
+  <div class="login-caja">
+    <span class="kicker">Herramientas NuPlan</span>
+    <h2>Entrá con tu usuario de siempre</h2>
+    <p class="bajada" style="margin-bottom:26px;">El mismo mail y contraseña de la app.</p>
+    <label class="campo">Mail<input type="email" id="login-mail" autocomplete="username" placeholder="tu@mail.com"></label>
+    <label class="campo">Contraseña<input type="password" id="login-pass" autocomplete="current-password" placeholder="••••••••"
+      onkeydown="if(event.key==='Enter') entrar()"></label>
+    <button class="btn ancho" id="btn-entrar" onclick="entrar()">Entrar</button>
+    <p class="aviso" id="login-aviso"></p>
+  </div>
+</section>
+
+<!-- ============ INICIO ============ -->
+<section class="pantalla wrap oculto" id="p-inicio">
+  <span class="kicker">Hola, <span id="saludo-nombre"></span></span>
+  <h1>¿Qué vas a hacer hoy?</h1>
+  <p class="bajada">Todo lo que generes acá se guarda en la misma app y en la ficha del mismo paciente.</p>
+  <div class="tarjetas">
+    <button class="tarjeta" onclick="abrirPlanes()">
+      <span class="n">01</span>
+      <h3>Plan alimentario</h3>
+      <p>Con el plato a tu medida y los micro hábitos que la paciente tiene que empezar a mover.</p>
+    </button>
+    <button class="tarjeta" onclick="abrirRecetario()">
+      <span class="n">02</span>
+      <h3>Recetario</h3>
+      <p>Elegís cuántas recetas de cada tipo. Dos de almuerzo, dos de cena, una de desayuno. Lo que haga falta.</p>
+    </button>
+    <button class="tarjeta" onclick="abrirListado()">
+      <span class="n">03</span>
+      <h3>Listado mensual</h3>
+      <p>Quiénes asistieron a sesión en el mes, por empresa. Para los informes que te piden.</p>
+    </button>
+  </div>
+</section>
+
+<!-- ============ PLANES ============ -->
+<section class="pantalla wrap oculto" id="p-planes">
+  <div class="pasos" id="pasos-plan"></div>
+
+  <!-- paso 1: paciente -->
+  <div id="plan-1">
+    <span class="kicker">Plan alimentario · 1 de 5</span>
+    <h2>¿Para quién es el plan?</h2>
+    <p class="bajada">Escribí las primeras letras del nombre o apellido.</p>
+    <div class="caja">
+      <div class="buscador">
+        <input type="text" id="busca-paciente" placeholder="Buscar paciente…" autocomplete="off" oninput="filtrarPacientes(this.value)">
+        <ul class="resultados" id="lista-pacientes"></ul>
+      </div>
+      <div class="elegido oculto" id="paciente-elegido">
+        <div><b id="pe-nombre"></b><small id="pe-datos"></small></div>
+        <button class="btn chico suave" onclick="deselegirPaciente()">Cambiar</button>
+      </div>
+      <p class="aviso" id="pac-aviso"></p>
+    </div>
+    <div class="nav-pasos">
+      <button class="btn suave" onclick="irA('inicio')">Volver</button>
+      <button class="btn" id="btn-p1" disabled onclick="irPaso(2)">Siguiente</button>
+    </div>
+  </div>
+
+  <!-- paso 2: datos y calculo -->
+  <div id="plan-2" class="oculto">
+    <span class="kicker">Plan alimentario · 2 de 5</span>
+    <h2>Datos y cálculo</h2>
+    <p class="bajada">Se cargan de la última sesión. Podés corregirlos acá.</p>
+    <div class="caja">
+      <div class="grid3">
+        <label class="campo">Peso (kg)<input type="number" step="0.1" id="d-peso" oninput="recalcular()"></label>
+        <label class="campo">Talla (cm)<input type="number" step="0.1" id="d-talla" oninput="recalcular()"></label>
+        <label class="campo">Cintura (cm)<input type="number" step="0.1" id="d-cintura" oninput="recalcular()"></label>
+      </div>
+      <div class="grid3">
+        <label class="campo">Edad<input type="number" id="d-edad" oninput="recalcular()"></label>
+        <label class="campo">Sexo<select id="d-sexo" onchange="recalcular()"><option>Femenino</option><option>Masculino</option></select></label>
+        <label class="campo">Actividad<select id="d-actividad" onchange="recalcular()"></select></label>
+      </div>
+      <label class="campo">Valor calórico definido a mano (opcional)
+        <input type="number" id="d-manual" placeholder="Dejalo vacío para usar el cálculo" oninput="recalcular()"></label>
+    </div>
+    <div class="caja">
+      <span class="sub">Resultado del cálculo</span>
+      <div class="grid3">
+        <div class="dato"><span class="l">Calorías objetivo</span><span class="v" id="m-cal">—</span></div>
+        <div class="dato"><span class="l">Proteína</span><span class="v" id="m-prot">—</span></div>
+        <div class="dato"><span class="l">IMC</span><span class="v" id="m-imc">—</span></div>
+      </div>
+      <p class="nota" id="m-metodo"></p>
+    </div>
+    <div class="nav-pasos">
+      <button class="btn suave" onclick="irPaso(1)">Atrás</button>
+      <button class="btn" onclick="irPaso(3)">Siguiente</button>
+    </div>
+  </div>
+
+  <!-- paso 3: condiciones -->
+  <div id="plan-3" class="oculto">
+    <span class="kicker">Plan alimentario · 3 de 5</span>
+    <h2>Condiciones y objetivo</h2>
+    <p class="bajada">Marcá todo lo que aplique. Las reglas clínicas de cada una viajan con el plan.</p>
+    <div class="caja">
+      <span class="sub">Objetivo principal</span>
+      <div class="chips" id="chips-objetivo"></div>
+      <span class="sub">Situación fisiológica</span>
+      <div class="chips" id="chips-fisio"></div>
+      <label class="campo oculto" id="campo-embarazo" style="margin-top:16px;">Etapa<select id="d-embarazo" onchange="recalcular()"></select></label>
+      <span class="sub">Características clínicas</span>
+      <div class="chips" id="chips-clinicas"></div>
+      <span class="sub">Tipo de alimentación</span>
+      <div class="chips" id="chips-dieta"></div>
+      <label class="campo" style="margin-top:22px;">Alimentos que no puede consumir
+        <textarea id="d-restricciones" placeholder="Alergias, rechazos, lo que no entra"></textarea></label>
+      <label class="campo">Notas para el plan
+        <textarea id="d-objetivos" placeholder="Lo que la paciente contó, lo que querés que el plan tenga en cuenta"></textarea></label>
+      <label class="interruptor"><input type="checkbox" id="d-ocultar"> Ocultar cifras calóricas (trastorno de la conducta alimentaria)</label>
+    </div>
+    <div class="nav-pasos">
+      <button class="btn suave" onclick="irPaso(2)">Atrás</button>
+      <button class="btn" onclick="irPaso(4)">Siguiente</button>
+    </div>
+  </div>
+
+  <!-- paso 4: plato y habitos -->
+  <div id="plan-4" class="oculto">
+    <span class="kicker">Plan alimentario · 4 de 5</span>
+    <h2>El plato y los micro hábitos</h2>
+    <p class="bajada">El plato arranca en lo que calcula el sistema. Si querés otra proporción, movela.</p>
+    <div class="caja">
+      <span class="sub">Plato saludable</span>
+      <div class="plato-layout">
+        <svg class="plato-svg" viewBox="0 0 220 220" aria-label="Plato">
+          <circle cx="110" cy="110" r="100" fill="#fff" stroke="#e5e7eb" stroke-width="2"/>
+          <path id="pl-veg" fill="#3f7d54" opacity=".85"/>
+          <path id="pl-prot" fill="#e8472a" opacity=".85"/>
+          <path id="pl-carb" fill="#e2a83a" opacity=".85"/>
+          <circle cx="110" cy="110" r="100" fill="none" stroke="#e5e7eb" stroke-width="2"/>
+        </svg>
+        <div>
+          <div class="desliz veg"><div class="fila"><b>Vegetales</b><span class="pct" id="pct-veg">50%</span></div>
+            <input type="range" min="10" max="80" step="5" id="r-veg" oninput="moverPlato('veg')"></div>
+          <div class="desliz prot"><div class="fila"><b>Proteína</b><span class="pct" id="pct-prot">25%</span></div>
+            <input type="range" min="10" max="60" step="5" id="r-prot" oninput="moverPlato('prot')"></div>
+          <div class="desliz carb"><div class="fila"><b>Carbohidrato</b><span class="pct" id="pct-carb">25%</span></div>
+            <input type="range" min="10" max="60" step="5" id="r-carb" oninput="moverPlato('carb')"></div>
+          <p class="plato-total" id="plato-total"></p>
+          <button class="btn chico suave" onclick="platoAutomatico()">Volver al cálculo automático</button>
+        </div>
+      </div>
+    </div>
+    <div class="caja">
+      <span class="sub">Micro hábitos para empezar</span>
+      <p class="bajada" style="margin-bottom:10px;font-size:1rem;">Lo primero que tiene que mejorar. Elegí de uno a tres.</p>
+      <div class="chips" id="chips-habitos"></div>
+      <label class="campo" style="margin-top:22px;">Otro micro hábito u objetivo específico
+        <input type="text" id="d-habito-libre" placeholder="Escribilo con tus palabras"></label>
+    </div>
+    <div class="nav-pasos">
+      <button class="btn suave" onclick="irPaso(3)">Atrás</button>
+      <button class="btn" id="btn-generar" onclick="generarPlan()">Generar el plan</button>
+    </div>
+  </div>
+
+  <!-- paso 5: resultado -->
+  <div id="plan-5" class="oculto">
+    <span class="kicker">Plan alimentario · 5 de 5</span>
+    <div id="plan-cargando" class="cargando oculto"><span class="punto"></span> Armando el plan. Tarda entre 30 y 60 segundos.</div>
+    <div id="plan-error" class="aviso error"></div>
+    <div id="plan-resultado"></div>
+  </div>
+</section>
+
+<!-- ============ RECETARIO ============ -->
+<section class="pantalla wrap oculto" id="p-recetario">
+  <span class="kicker">Recetario</span>
+  <h2>¿Cuántas recetas de cada tipo?</h2>
+  <p class="bajada">Poné la cantidad al lado de cada uno. Hasta 12 en total.</p>
+  <div class="caja">
+    <span class="sub">Paciente (opcional)</span>
+    <div class="buscador">
+      <input type="text" id="busca-paciente-rec" placeholder="Buscar paciente, o dejalo vacío para un recetario general" autocomplete="off" oninput="filtrarPacientesRec(this.value)">
+      <ul class="resultados" id="lista-pacientes-rec"></ul>
+    </div>
+    <div class="elegido oculto" id="rec-elegido">
+      <div><b id="re-nombre"></b><small id="re-datos"></small></div>
+      <button class="btn chico suave" onclick="recDeselegir()">Quitar</button>
+    </div>
+  </div>
+  <div class="caja">
+    <span class="sub">Tipos y cantidad</span>
+    <div class="tipos" id="tipos-receta"></div>
+    <p class="plato-total" id="rec-total" style="margin-top:14px;"></p>
+  </div>
+  <div class="caja">
+    <span class="sub">Ajustes</span>
+    <div class="chips" id="chips-dieta-rec"></div>
+    <label class="campo" style="margin-top:22px;">Objetivo del recetario
+      <input type="text" id="rec-objetivo" placeholder="Ej: más proteína en la merienda, cenas livianas"></label>
+    <label class="campo">Alimentos que no puede consumir
+      <input type="text" id="rec-restricciones" placeholder="Alergias, rechazos"></label>
+    <span class="sub">Características clínicas</span>
+    <div class="chips" id="chips-clinicas-rec"></div>
+    <label class="interruptor"><input type="checkbox" id="rec-ocultar"> Ocultar cifras calóricas</label>
+  </div>
+  <div class="nav-pasos">
+    <button class="btn suave" onclick="irA('inicio')">Volver</button>
+    <button class="btn" id="btn-recetas" onclick="generarRecetas()">Generar las recetas</button>
+  </div>
+  <div id="rec-cargando" class="cargando oculto"><span class="punto"></span> Cocinando. Tarda entre 30 y 90 segundos.</div>
+  <div id="rec-error" class="aviso error"></div>
+  <div id="rec-resultado"></div>
+</section>
+
+<!-- ============ LISTADO ============ -->
+<section class="pantalla wrap oculto" id="p-listado">
+  <span class="kicker">Listado mensual</span>
+  <h2>¿Quiénes asistieron?</h2>
+  <p class="bajada">Personas con al menos una sesión en el mes, en la empresa que tenés seleccionada arriba. Sin ningún dato clínico.</p>
+  <div class="caja">
+    <div class="grid2">
+      <label class="campo">Mes<input type="month" id="l-mes"></label>
+      <div class="campo" style="display:flex;align-items:flex-end;"><button class="btn ancho" onclick="cargarListado()">Ver listado</button></div>
+    </div>
+    <p class="aviso" id="l-aviso"></p>
+  </div>
+  <div id="l-resultado"></div>
+  <div class="nav-pasos"><button class="btn suave" onclick="irA('inicio')">Volver</button></div>
+</section>
+
+<footer><p>Lic. Rosana Roldán · NuPlan&trade; · Herramientas</p></footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.97.0/dist/umd/supabase.js"></script>
+<script>
+/* =====================================================================
+   CONFIGURACIÓN · misma base y misma clave pública que la app
+   ===================================================================== */
+var SUPABASE_URL = "https://askebcmhmhmwtfklyxuf.supabase.co";
+var SUPABASE_KEY = "sb_publishable_bx_WMZGN85wAslrgjrfJWw_CwsL-YeS";
+var CLAVE_EMPRESA = "nutriapp.selectedCompany"; // la misma que usa la app
+
+/* Listas: copiadas de la app, con el GLP-1 renombrado. */
+var OBJETIVOS = ["Descenso de peso","Aumento de peso","Descenso de grasa corporal","Ganar masa muscular","Laboratorio","Educación alimentaria","Otro"];
+var CLINICAS = ["Lactosa","Gluten (Celíaco / Sin TACC)","Colon Irritable","Constipación","Enfermedad Diverticular","SIBO","IMO","Histaminosis","Anemia","Hipertensión","Diabetes","Colesterol Alto","Triglicéridos Altos","Intolerancia a la Fructosa","Medicación análogos de GLP-1"];
+var FISIOLOGICAS = ["Embarazo y Lactancia","Menopausia","Deportista"];
+var DIETAS = ["Normal","Vegetariano","Vegano"];
+var ETAPAS = [
+  {value:"Primer trimestre",kcalExtra:0,label:"Primer trimestre (sin kcal extra)"},
+  {value:"Segundo trimestre",kcalExtra:340,label:"Segundo trimestre (+340 kcal)"},
+  {value:"Tercer trimestre",kcalExtra:450,label:"Tercer trimestre (+450 kcal)"},
+  {value:"Lactancia",kcalExtra:500,label:"Lactancia (+500 kcal)"}
+];
+var ACTIVIDAD = [
+  {value:"Sedentario",label:"Sedentario — poco o ningún ejercicio",faHB:1.2,labelHB:"TMB × 1.2",faGMT:{m:{factor:1.3},f:{factor:1.3}}},
+  {value:"Ligera",label:"Ligera — 1 a 3 días por semana",faHB:1.375,labelHB:"TMB × 1.375",faGMT:{m:{factor:1.6},f:{factor:1.5}}},
+  {value:"Moderada",label:"Moderada — 3 a 5 días por semana",faHB:1.55,labelHB:"TMB × 1.55",faGMT:{m:{factor:1.7},f:{factor:1.6}}},
+  {value:"Intensa",label:"Intensa — 6 a 7 días por semana",faHB:1.725,labelHB:"TMB × 1.725",faGMT:{m:{factor:2.1},f:{factor:1.9}}},
+  {value:"Muy Intensa",label:"Muy Intensa — entrenamiento doble o trabajo físico",faHB:1.9,labelHB:"TMB × 1.9",faGMT:{m:{factor:2.1},f:{factor:1.9}}}
+];
+var TIPOS_RECETA = [
+  {value:"Almuerzos rápidos",label:"Almuerzos rápidos",desc:"Listos en 20 minutos"},
+  {value:"Cenas livianas",label:"Cenas livianas",desc:"Fáciles de digerir"},
+  {value:"Desayunos y meriendas",label:"Desayunos y meriendas",desc:"Para empezar bien el día"},
+  {value:"Snacks saludables",label:"Snacks saludables",desc:"Entre comidas"},
+  {value:"Preparaciones deportivas",label:"Preparaciones deportivas",desc:"Rendimiento y recuperación"},
+  {value:"Comidas para llevar (vianda)",label:"Viandas para llevar",desc:"Prácticas para el trabajo"}
+];
+/* PENDIENTE: reemplazar por la lista que mande Rosana. */
+var MICRO_HABITOS = [
+  "Sumar una porción de vegetales al almuerzo",
+  "Un vaso de agua al despertar",
+  "Desayunar todos los días",
+  "Incorporar fibra: fruta con cáscara o cereal integral",
+  "Cenar al menos 2 horas antes de dormir",
+  "Comer sentada y sin pantalla",
+  "Sumar proteína en la merienda",
+  "Planificar las comidas del día a la mañana"
+];
+
+/* =====================================================================
+   ESTADO
+   ===================================================================== */
+var sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+var usuario = null, perfil = null, empresa = null, empresas = [];
+var pacientes = [];
+var plan = { paciente:null, info:null, metricas:null, pref:null, plato:null, platoManual:false, resultado:null };
+var rec = { paciente:null, info:null, cantidades:{}, dieta:"Normal", clinicas:[], resultado:null };
+
+function $(id){ return document.getElementById(id); }
+function esc(s){ return String(s==null?"":s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];}); }
+function irA(nombre){
+  ["login","inicio","planes","recetario","listado"].forEach(function(p){ $("p-"+p).classList.toggle("oculto", p!==nombre); });
+  window.scrollTo(0,0);
+}
+
+/* =====================================================================
+   SESIÓN
+   ===================================================================== */
+async function entrar(){
+  var mail=$("login-mail").value.trim(), pass=$("login-pass").value;
+  var av=$("login-aviso"); av.className="aviso"; av.textContent="";
+  if(!mail||!pass){ av.className="aviso error"; av.textContent="Completá mail y contraseña."; return; }
+  $("btn-entrar").disabled=true; av.textContent="Entrando…";
+  var r = await sb.auth.signInWithPassword({email:mail,password:pass});
+  $("btn-entrar").disabled=false;
+  if(r.error){ av.className="aviso error"; av.textContent="No pudimos entrar. Revisá mail y contraseña."; return; }
+  await iniciarSesion(r.data.user);
+}
+async function iniciarSesion(u){
+  usuario=u;
+  var p = await sb.from("profiles").select("*").eq("id",u.id).single();
+  perfil = p.data||null;
+  if(!perfil || perfil.role==="pending"){
+    $("login-aviso").className="aviso error";
+    $("login-aviso").textContent="Tu usuario todavía no está habilitado.";
+    await sb.auth.signOut({scope:"local"}); return;
+  }
+  $("saludo-nombre").textContent = perfil.first_name || perfil.full_name || u.email;
+  await cargarEmpresas();
+  if(!empresa){ $("login-aviso").className="aviso error"; $("login-aviso").textContent="Tu usuario no tiene ninguna empresa cargada. Revisalo en la app."; irA("login"); return; }
+  $("barra-sesion").classList.remove("oculto");
+  irA("inicio");
+}
+async function salir(){ await sb.auth.signOut({scope:"local"}); usuario=null; $("barra-sesion").classList.add("oculto"); irA("login"); }
+async function cargarEmpresas(){
+  var r = await sb.from("companies").select("id, name, type").order("type",{ascending:true}).order("name",{ascending:true});
+  empresas = r.data||[];
+  var guardada=null; try{ guardada=localStorage.getItem(CLAVE_EMPRESA); }catch(e){}
+  if(guardada && guardada.charAt(0)==='"'){ try{ guardada=JSON.parse(guardada); }catch(e){} }
+  empresa = (empresas.some(function(e){return e.name===guardada;}) ? guardada : (empresas[0]&&empresas[0].name)) || null;
+  var sel=$("empresa"); sel.innerHTML="";
+  empresas.forEach(function(e){ var o=document.createElement("option"); o.value=e.name; o.textContent=e.name; if(e.name===empresa) o.selected=true; sel.appendChild(o); });
+  pacientes=[];
+}
+function cambiarEmpresa(nombre){
+  empresa=nombre; try{ localStorage.setItem(CLAVE_EMPRESA, nombre); }catch(e){}
+  pacientes=[]; deselegirPaciente(); recDeselegir();
+}
+
+/* =====================================================================
+   PACIENTES
+   ===================================================================== */
+async function cargarPacientes(){
+  if(pacientes.length) return pacientes;
+  var r = await sb.from("patients").select("id, first_name, last_name, sex, birth_date, initial_weight, height, status").eq("company",empresa).order("last_name",{ascending:true});
+  pacientes = r.data||[];
+  return pacientes;
+}
+function edadDe(fecha){
+  if(!fecha) return 30;
+  var hoy=new Date(), n=new Date(fecha), e=hoy.getFullYear()-n.getFullYear();
+  if(hoy < new Date(hoy.getFullYear(), n.getMonth(), n.getDate())) e--;
+  return e;
+}
+function nombreCompleto(p){ return (p.first_name||"")+" "+(p.last_name||""); }
+function plano(s){ return String(s||"").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,""); }
+function coincide(p, q){
+  var t=plano(q).trim(); if(t.length<2) return false;
+  return plano(nombreCompleto(p)).indexOf(t)!==-1 || plano(p.last_name).indexOf(t)===0;
+}
+async function filtrarPacientes(q){
+  await cargarPacientes();
+  var ul=$("lista-pacientes"); ul.innerHTML="";
+  if(q.trim().length<2) return;
+  var hits=pacientes.filter(function(p){return coincide(p,q);}).slice(0,12);
+  if(!hits.length){ ul.innerHTML='<li><span>Nadie con ese nombre en '+esc(empresa)+'</span></li>'; return; }
+  hits.forEach(function(p){
+    var li=document.createElement("li");
+    li.innerHTML='<span>'+esc(nombreCompleto(p))+'</span><small>'+esc(p.status||"")+'</small>';
+    li.onclick=function(){ elegirPaciente(p); };
+    ul.appendChild(li);
+  });
+}
+async function ultimasMedidas(pacienteId){
+  var r = await sb.from("sessions").select("weight, height, girth_waist, session_date").eq("patient_id",pacienteId).order("session_date",{ascending:false}).order("created_at",{ascending:false}).limit(6);
+  var out={weight:null,height:null,girth_waist:null};
+  (r.data||[]).forEach(function(s){ ["weight","height","girth_waist"].forEach(function(k){ if(out[k]==null && s[k]!=null) out[k]=s[k]; }); });
+  return out;
+}
+async function elegirPaciente(p){
+  plan.paciente=p;
+  $("lista-pacientes").innerHTML=""; $("busca-paciente").value=nombreCompleto(p);
+  $("pac-aviso").textContent="Cargando la última sesión…";
+  var m = await ultimasMedidas(p.id);
+  var peso = m.weight ?? p.initial_weight ?? 70, talla = m.height ?? p.height ?? 165;
+  plan.info = { firstName:p.first_name, lastName:p.last_name, age:edadDe(p.birth_date), sex:p.sex||"Masculino", weight:Number(peso), height:Number(talla), waist:m.girth_waist!=null?Number(m.girth_waist):null };
+  $("pe-nombre").textContent=nombreCompleto(p);
+  $("pe-datos").textContent=plan.info.age+" años · "+plan.info.sex+" · "+plan.info.weight+" kg · "+plan.info.height+" cm";
+  $("paciente-elegido").classList.remove("oculto");
+  $("pac-aviso").textContent="";
+  $("btn-p1").disabled=false;
+  $("d-peso").value=plan.info.weight; $("d-talla").value=plan.info.height; $("d-cintura").value=plan.info.waist??"";
+  $("d-edad").value=plan.info.age; $("d-sexo").value=plan.info.sex;
+  limpiarFormularioPlan();
+  plan.platoManual=false; recalcular();
+}
+function limpiarFormularioPlan(){
+  ["chips-objetivo","chips-fisio","chips-clinicas","chips-habitos"].forEach(function(id){ $(id).querySelectorAll(".chip.on").forEach(function(b){ b.classList.remove("on"); }); });
+  marcarChip("chips-dieta","Normal");
+  $("campo-embarazo").classList.add("oculto"); $("d-embarazo").value="";
+  $("d-restricciones").value=""; $("d-objetivos").value=""; $("d-habito-libre").value="";
+  $("d-ocultar").checked=false; $("d-manual").value=""; $("d-actividad").value=ACTIVIDAD[0].value;
+}
+function deselegirPaciente(){
+  plan.paciente=null; plan.info=null; $("paciente-elegido").classList.add("oculto");
+  $("busca-paciente").value=""; $("lista-pacientes").innerHTML=""; $("btn-p1").disabled=true;
+}
+
+/* =====================================================================
+   CÁLCULO · copia exacta de la fórmula de la app
+   ===================================================================== */
+function calcularMetricas(peso, talla, edad, sexo, actividad, etiquetas, etapa){
+  etiquetas=etiquetas||[]; etapa=etapa||"";
+  var c = sexo==="Masculino" ? 47.7+(talla-150)*2.72/2.5 : 45.5+(talla-150)*2.27/2.5;
+  var d = peso/Math.pow(talla/100,2);
+  var h = sexo==="Masculino" ? 66+13.7*peso+5*talla-6.8*edad : 655+9.7*peso+1.8*talla-4.7*edad;
+  var p = ACTIVIDAD.find(function(x){return x.value===actividad;})||ACTIVIDAD[0];
+  var g = sexo==="Masculino" ? p.faGMT.m : p.faGMT.f;
+  var v = h*g.factor, w = c+.25*(peso-c);
+  var f="", y=0, b="";
+  if(d>=25){ f="Sobrepeso / Obesidad"; y=w*22; b="Knox: PIC ("+w.toFixed(1)+" kg) × 22 kcal"; }
+  else if(d<18.5){ f="Bajo Peso"; y=h*p.faHB*1.1; b="Harris-Benedict × "+p.labelHB+" + 10% (bajo peso)"; }
+  else { f="Normopeso"; y=h*p.faHB; b="Harris-Benedict × "+p.labelHB; }
+  var S=etiquetas.indexOf("Menopausia")!==-1, A=etiquetas.indexOf("Embarazo y Lactancia")!==-1, E=etiquetas.indexOf("Deportista")!==-1;
+  var T = S?1 : A?1.5 : E?1.7 : 1.3;
+  var O = d>=25 ? w : peso, N=Math.round(T*O);
+  if(A && etapa){ var D=ETAPAS.find(function(x){return x.value===etapa;}); if(D){ y+=D.kcalExtra; b+=" + "+D.kcalExtra+" kcal ("+D.value+")"; } }
+  var z = (A||S) ? {carbs:55,protein:15,fats:30} : E ? {carbs:60,protein:20,fats:20} : d>=25 ? {carbs:55,protein:15,fats:30} : {carbs:60,protein:15,fats:25};
+  return { idealWeight:+c.toFixed(3), pic:+w.toFixed(3), gmr:+h.toFixed(1), gmt:+v.toFixed(2), bmi:+d.toFixed(2), bmiCategory:f,
+           proteinGPerKg:T, proteinGrams:N, calories:Math.round(y), calculationMethod:b, macros:z };
+}
+function platoAutomaticoDe(metricas){
+  var cb = metricas&&metricas.macros&&metricas.macros.carbs ? metricas.macros.carbs : 55;
+  return cb>=60 ? {veg:40,prot:25,carb:35} : {veg:50,prot:25,carb:25};
+}
+function etiquetasActuales(){
+  return chipsElegidos("chips-fisio").concat(chipsElegidos("chips-clinicas"));
+}
+function recalcular(){
+  if(!plan.info) return;
+  var peso=parseFloat($("d-peso").value)||plan.info.weight, talla=parseFloat($("d-talla").value)||plan.info.height;
+  var edad=parseInt($("d-edad").value,10)||plan.info.age, sexo=$("d-sexo").value, act=$("d-actividad").value;
+  var cint=parseFloat($("d-cintura").value);
+  plan.info.weight=peso; plan.info.height=talla; plan.info.age=edad; plan.info.sex=sexo; plan.info.waist=isNaN(cint)?null:cint;
+  var etq=etiquetasActuales(), etapa=$("d-embarazo").value;
+  var m=calcularMetricas(peso,talla,edad,sexo,act,etq,etapa);
+  var manual=parseFloat($("d-manual").value);
+  if(manual>0){ m.calories=Math.round(Math.min(Math.max(manual,600),6000)); m.calculationMethod="Valor calórico definido manualmente por la profesional"; }
+  plan.metricas=m;
+  $("m-cal").innerHTML=m.calories+' <small>kcal</small>';
+  $("m-prot").innerHTML=m.proteinGrams+' <small>g · '+m.proteinGPerKg+' g/kg</small>';
+  $("m-imc").innerHTML=m.bmi+' <small>'+esc(m.bmiCategory)+'</small>';
+  $("m-metodo").textContent=m.calculationMethod+" · peso ideal "+m.idealWeight.toFixed(1)+" kg · macros "+m.macros.carbs+"/"+m.macros.protein+"/"+m.macros.fats;
+  if(!plan.platoManual){ plan.plato=platoAutomaticoDe(m); pintarPlato(); }
+}
+
+/* =====================================================================
+   PLATO EDITABLE
+   ===================================================================== */
+function arco(cx,cy,r,desde,hasta){
+  var a1=(desde-90)*Math.PI/180, a2=(hasta-90)*Math.PI/180;
+  var x1=cx+r*Math.cos(a1), y1=cy+r*Math.sin(a1), x2=cx+r*Math.cos(a2), y2=cy+r*Math.sin(a2);
+  var grande=(hasta-desde)>180?1:0;
+  return "M"+cx+","+cy+" L"+x1.toFixed(1)+","+y1.toFixed(1)+" A"+r+","+r+" 0 "+grande+",1 "+x2.toFixed(1)+","+y2.toFixed(1)+" Z";
+}
+function pintarPlato(){
+  var p=plan.plato; if(!p) return;
+  $("r-veg").value=p.veg; $("r-prot").value=p.prot; $("r-carb").value=p.carb;
+  $("pct-veg").textContent=p.veg+"%"; $("pct-prot").textContent=p.prot+"%"; $("pct-carb").textContent=p.carb+"%";
+  var g1=p.veg*3.6, g2=g1+p.prot*3.6, g3=g2+p.carb*3.6;
+  $("pl-veg").setAttribute("d", arco(110,110,100,0,g1));
+  $("pl-prot").setAttribute("d", arco(110,110,100,g1,g2));
+  $("pl-carb").setAttribute("d", arco(110,110,100,g2,Math.min(g3,359.9)));
+  var total=p.veg+p.prot+p.carb, t=$("plato-total");
+  t.textContent = total===100 ? (plan.platoManual?"Plato definido a mano · 100%":"Plato automático según el cálculo · 100%") : "Suma "+total+"%. Tiene que dar 100.";
+  t.className="plato-total"+(total===100?"":" mal");
+  $("btn-generar").disabled = total!==100;
+}
+function moverPlato(cual){
+  plan.platoManual=true;
+  var v=parseInt($("r-veg").value,10), pr=parseInt($("r-prot").value,10), c=parseInt($("r-carb").value,10);
+  var resto=100-(cual==="veg"?v:cual==="prot"?pr:c);
+  // el que se mueve manda; los otros dos se reparten proporcionalmente para que sume 100
+  var otros = cual==="veg" ? ["prot","carb"] : cual==="prot" ? ["veg","carb"] : ["veg","prot"];
+  var vals={veg:v,prot:pr,carb:c};
+  var suma=vals[otros[0]]+vals[otros[1]] || 1;
+  var a=Math.round(resto*vals[otros[0]]/suma/5)*5, b=resto-a;
+  vals[otros[0]]=Math.max(10,a); vals[otros[1]]=resto-vals[otros[0]];
+  if(vals[otros[1]]<10){ vals[otros[1]]=10; vals[otros[0]]=resto-10; }
+  plan.plato=vals; pintarPlato();
+}
+function platoAutomatico(){ plan.platoManual=false; plan.plato=platoAutomaticoDe(plan.metricas); pintarPlato(); }
+
+/* =====================================================================
+   CHIPS
+   ===================================================================== */
+function armarChips(id, lista, unico, alCambiar){
+  var cont=$(id); cont.innerHTML="";
+  lista.forEach(function(txt){
+    var b=document.createElement("button"); b.type="button"; b.className="chip"; b.textContent=txt; b.dataset.v=txt;
+    b.onclick=function(){
+      if(unico){ cont.querySelectorAll(".chip").forEach(function(x){ if(x!==b) x.classList.remove("on"); }); b.classList.toggle("on"); }
+      else b.classList.toggle("on");
+      if(alCambiar) alCambiar();
+    };
+    cont.appendChild(b);
+  });
+}
+function chipsElegidos(id){ return Array.prototype.map.call($(id).querySelectorAll(".chip.on"), function(b){return b.dataset.v;}); }
+function marcarChip(id, valor){ $(id).querySelectorAll(".chip").forEach(function(b){ b.classList.toggle("on", b.dataset.v===valor); }); }
+
+function alCambiarCondiciones(){
+  var emb = chipsElegidos("chips-fisio").indexOf("Embarazo y Lactancia")!==-1;
+  $("campo-embarazo").classList.toggle("oculto", !emb);
+  if(!emb) $("d-embarazo").value="";
+  recalcular();
+}
+
+/* =====================================================================
+   FLUJO DEL PLAN
+   ===================================================================== */
+var PASOS_PLAN=["Paciente","Cálculo","Condiciones","Plato y hábitos","Plan"];
+var pasoActual=1;
+function pintarPasos(){
+  var c=$("pasos-plan"); c.innerHTML="";
+  PASOS_PLAN.forEach(function(n,i){
+    var d=document.createElement("div"); d.className="paso"+(i+1===pasoActual?" on":i+1<pasoActual?" hecho":"");
+    d.innerHTML='<span class="b">'+(i+1)+'</span><span class="no-movil">'+esc(n)+'</span>'+(i<PASOS_PLAN.length-1?'<span class="seg"></span>':'');
+    c.appendChild(d);
+  });
+}
+function irPaso(n){
+  pasoActual=n; pintarPasos();
+  for(var i=1;i<=5;i++) $("plan-"+i).classList.toggle("oculto", i!==n);
+  if(n===2||n===4) recalcular();
+  window.scrollTo(0,0);
+}
+function abrirPlanes(){ irA("planes"); irPaso(1); cargarPacientes(); }
+
+function preferenciasActuales(){
+  var habitos=chipsElegidos("chips-habitos"); var libre=$("d-habito-libre").value.trim(); if(libre) habitos.push(libre);
+  return {
+    dietType: chipsElegidos("chips-dieta")[0]||"Normal",
+    intolerances: etiquetasActuales(),
+    activityLevel: $("d-actividad").value,
+    objectives: [chipsElegidos("chips-objetivo")[0]||"", $("d-objetivos").value.trim()].filter(Boolean).join(". "),
+    foodRestrictions: $("d-restricciones").value.trim(),
+    pregnancyStage: $("d-embarazo").value||"",
+    hideCalories: $("d-ocultar").checked,
+    manualCalories: $("d-manual").value||"",
+    plate: plan.platoManual ? plan.plato : null,
+    microHabits: habitos,
+    specificObjectives: []
+  };
+}
+async function generarPlan(){
+  if(!plan.info||!plan.metricas) return;
+  plan.pref=preferenciasActuales();
+  irPaso(5);
+  $("plan-cargando").classList.remove("oculto"); $("plan-error").textContent=""; $("plan-resultado").innerHTML="";
+  try{
+    var r = await fetch("/api/generate-plan",{method:"POST",headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({patientInfo:plan.info, metrics:plan.metricas, preferences:plan.pref})});
+    var data = await r.json();
+    if(!r.ok||data.error) throw new Error(data.error||("HTTP "+r.status));
+    var litros=parseFloat((plan.info.weight*35/1000).toFixed(1));
+    data.hydrationPlan=data.hydrationPlan||{}; data.hydrationPlan.targetLiters=litros; data.hydrationPlan.equivalentGlasses=Math.round(litros*4);
+    if(plan.platoManual) data.healthyPlate={proteinsPct:plan.plato.prot, carbsPct:plan.plato.carb, fatsPct:0, vegetablesPct:plan.plato.veg};
+    plan.resultado=data;
+    pintarPlan(data);
+    await guardarDocumento({type:"meal_plan", patientName:nombreCompleto(plan.paciente), patientId:plan.paciente.id,
+      input:{selectedPatientId:plan.paciente.id, patientInfo:plan.info, metrics:plan.metricas, preferences:plan.pref}, output:data});
+  }catch(e){
+    console.error(e);
+    $("plan-error").textContent="No se pudo generar el plan: "+e.message+". Probá de nuevo.";
+    $("plan-resultado").innerHTML='<div class="nav-pasos"><button class="btn suave" onclick="irPaso(4)">Atrás</button><button class="btn" onclick="generarPlan()">Volver a intentar</button></div>';
+  }finally{ $("plan-cargando").classList.add("oculto"); }
+}
+function pintarPlan(d){
+  var h='<div class="res-cabecera"><div><h2>'+esc(nombreCompleto(plan.paciente))+'</h2><p class="bajada" style="margin:0;">'+esc(d.planObjective||"")+'</p></div>'+
+    '<div class="dato"><span class="l">Objetivo</span><span class="v">'+((plan.pref.hideCalories||plan.pref.intolerances.indexOf('Embarazo y Lactancia')!==-1)?"—":plan.metricas.calories+' <small>kcal</small>')+'</span></div></div>';
+  (d.dailyPlan||[]).forEach(function(c){
+    h+='<div class="comida"><span class="tipo">'+esc(c.type)+'</span><div class="hora">'+esc(c.title||"")+'</div><ul>'+
+      (c.items||[]).map(function(i){return '<li>'+esc(i)+'</li>';}).join("")+'</ul>'+(c.tip?'<p class="tip">'+esc(c.tip)+'</p>':'')+'</div>';
+  });
+  if(d.microHabits&&d.microHabits.length){
+    h+='<div class="bloque-res"><h3>Micro hábitos para empezar</h3>'+d.microHabits.map(function(m,i){
+      return '<div class="habito"><span class="num">'+(i+1)+'</span><div><b>'+esc(m.habit)+'</b><span>'+esc(m.tip||"")+'</span></div></div>';}).join("")+'</div>';
+  }
+  if(d.healthyPlate){
+    var p=plan.plato||{veg:50,prot:25,carb:25};
+    h+='<div class="bloque-res"><h3>Plato saludable</h3><p>'+p.veg+'% vegetales · '+p.prot+'% proteína · '+p.carb+'% carbohidrato</p></div>';
+  }
+  if(d.foodGroupsDetail){
+    var g=d.foodGroupsDetail, nombres={carbs:"Carbohidratos",proteins:"Proteínas",fats:"Grasas",vegetablesA:"Vegetales A",vegetablesB:"Vegetales B",fruits:"Frutas"};
+    h+='<div class="bloque-res"><h3>Grupos de alimentos</h3><div class="grupos">'+Object.keys(nombres).map(function(k){
+      return '<div class="grupo"><b>'+nombres[k]+'</b><ul>'+(g[k]||[]).map(function(x){return '<li>'+esc(x)+'</li>';}).join("")+'</ul></div>';}).join("")+'</div></div>';
+  }
+  if(d.hydrationPlan){ var hp=d.hydrationPlan;
+    h+='<div class="bloque-res"><h3>Hidratación · '+hp.targetLiters+' litros · '+hp.equivalentGlasses+' vasos</h3><ul class="lista-simple">'+
+      [hp.wakeupTip,hp.workDayTip,hp.nightTip].filter(Boolean).map(function(x){return '<li>'+esc(x)+'</li>';}).join("")+'</ul></div>';
+  }
+  if(d.recommendationsAndRecipes&&d.recommendationsAndRecipes.length){
+    h+='<div class="bloque-res"><h3>Recomendaciones y recetas</h3>'+d.recommendationsAndRecipes.map(function(r){
+      return '<div class="comida"><b>'+esc(r.title)+'</b><p style="margin:8px 0 0;">'+esc(r.content)+'</p></div>';}).join("")+'</div>';
+  }
+  if(d.substitutes&&d.substitutes.length){
+    h+='<div class="bloque-res"><h3>Reemplazos</h3><div class="grupos">'+d.substitutes.map(function(s){
+      return '<div class="grupo"><b>'+esc(s.category)+'</b><ul>'+(s.options||[]).map(function(x){return '<li>'+esc(x)+'</li>';}).join("")+'</ul></div>';}).join("")+'</div></div>';
+  }
+  if(d.supplements&&d.supplements.length){
+    h+='<div class="bloque-res"><h3>Suplementos sugeridos</h3><ul class="lista-simple">'+d.supplements.map(function(s){
+      return '<li><b>'+esc(s.name)+'</b> · '+esc(s.dosage)+' · '+esc(s.reason)+'</li>';}).join("")+'</ul></div>';
+  }
+  if(d.shoppingList){ var sl=d.shoppingList, ns={carbsAndLegumes:"Carbohidratos y legumbres",proteins:"Proteínas",dairy:"Lácteos",vegetablesAndFruits:"Vegetales y frutas",fats:"Grasas",canned:"Enlatados",frozen:"Congelados"};
+    h+='<div class="bloque-res"><h3>Lista de compras</h3><div class="grupos">'+Object.keys(ns).map(function(k){
+      return (sl[k]&&sl[k].length)?'<div class="grupo"><b>'+ns[k]+'</b><ul>'+sl[k].map(function(x){return '<li>'+esc(x)+'</li>';}).join("")+'</ul></div>':'';}).join("")+'</div></div>';
+  }
+  h+='<div class="acciones-res"><button class="btn" onclick="window.print()">Imprimir o guardar PDF</button>'+
+     '<button class="btn ghost" onclick="irPaso(4)">Ajustar y volver a generar</button>'+
+     '<button class="btn suave" onclick="irA(\'inicio\')">Volver al inicio</button></div>'+
+     '<p class="aviso ok no-imprimir" id="plan-guardado"></p>';
+  $("plan-resultado").innerHTML=h;
+}
+
+/* =====================================================================
+   GUARDAR · misma tabla y misma regla de la app (actualiza si es de la última hora)
+   ===================================================================== */
+function tituloDocumento(tipo, nombre){
+  var t = tipo==="meal_plan"?"Plan nutricional":"Recetario";
+  var f = new Date().toLocaleDateString("es-AR",{day:"2-digit",month:"short",year:"numeric"});
+  return [t, nombre, f].filter(Boolean).join(" · ");
+}
+async function guardarDocumento(o){
+  var titulo=tituloDocumento(o.type, o.patientName);
+  var hace1h=new Date(Date.now()-3600*1000).toISOString();
+  var idExistente=null;
+  if(o.patientId){
+    var q = await sb.from("generated_documents").select("id").eq("type",o.type).eq("company",empresa).eq("patient_id",o.patientId).eq("title",titulo).gte("created_at",hace1h).maybeSingle();
+    if(q.data) idExistente=q.data.id;
+  }
+  var r;
+  if(idExistente) r = await sb.from("generated_documents").update({input:o.input, output:o.output, updated_at:new Date().toISOString()}).eq("id",idExistente);
+  else r = await sb.from("generated_documents").insert({type:o.type, title:titulo, company:empresa, patient_id:o.patientId||null, patient_name:o.patientName||null, nutritionist_id:usuario.id, input:o.input, output:o.output});
+  var av = $(o.type==="meal_plan"?"plan-guardado":"rec-guardado");
+  if(av) av.textContent = r.error ? "Se generó pero no se pudo guardar en la app: "+r.error.message : "Guardado en la app, en la ficha de "+(o.patientName||"la empresa")+".";
+  if(av && r.error) av.className="aviso error no-imprimir";
+}
+
+/* =====================================================================
+   RECETARIO
+   ===================================================================== */
+function abrirRecetario(){ irA("recetario"); cargarPacientes(); pintarTipos(); }
+function pintarTipos(){
+  var c=$("tipos-receta"); c.innerHTML="";
+  TIPOS_RECETA.forEach(function(t){
+    var n=rec.cantidades[t.value]||0;
+    var d=document.createElement("div"); d.className="tipo-fila"+(n>0?" on":"");
+    d.innerHTML='<div class="t"><b>'+esc(t.label)+'</b><small>'+esc(t.desc)+'</small></div>'+
+      '<div class="contador"><button type="button" onclick="cambiarCantidad(\''+t.value.replace(/'/g,"\\'")+'\',-1)">−</button><span class="c">'+n+'</span><button type="button" onclick="cambiarCantidad(\''+t.value.replace(/'/g,"\\'")+'\',1)">+</button></div>';
+    c.appendChild(d);
+  });
+  var total=totalRecetas(), t=$("rec-total");
+  t.textContent = total===0 ? "Elegí al menos una." : total>12 ? "Son "+total+". El máximo es 12." : total+" receta"+(total===1?"":"s")+" en total.";
+  t.className="plato-total"+(total===0||total>12?" mal":"");
+  $("btn-recetas").disabled = total===0||total>12;
+}
+function totalRecetas(){ return Object.keys(rec.cantidades).reduce(function(a,k){return a+rec.cantidades[k];},0); }
+function cambiarCantidad(tipo, d){ rec.cantidades[tipo]=Math.max(0,Math.min(6,(rec.cantidades[tipo]||0)+d)); pintarTipos(); }
+async function filtrarPacientesRec(q){
+  await cargarPacientes();
+  var ul=$("lista-pacientes-rec"); ul.innerHTML="";
+  if(q.trim().length<2) return;
+  pacientes.filter(function(p){return coincide(p,q);}).slice(0,12).forEach(function(p){
+    var li=document.createElement("li"); li.innerHTML='<span>'+esc(nombreCompleto(p))+'</span><small>'+esc(p.status||"")+'</small>';
+    li.onclick=async function(){
+      rec.paciente=p; ul.innerHTML=""; $("busca-paciente-rec").value=nombreCompleto(p);
+      var m=await ultimasMedidas(p.id);
+      rec.info={firstName:p.first_name,lastName:p.last_name,age:edadDe(p.birth_date),sex:p.sex||"Masculino",weight:Number(m.weight??p.initial_weight??70)};
+      $("re-nombre").textContent=nombreCompleto(p); $("re-datos").textContent=rec.info.age+" años · "+rec.info.weight+" kg";
+      $("rec-elegido").classList.remove("oculto");
+    };
+    ul.appendChild(li);
+  });
+}
+function recDeselegir(){ rec.paciente=null; rec.info=null; $("rec-elegido").classList.add("oculto"); $("busca-paciente-rec").value=""; $("lista-pacientes-rec").innerHTML=""; }
+async function generarRecetas(){
+  var conteos=TIPOS_RECETA.filter(function(t){return (rec.cantidades[t.value]||0)>0;}).map(function(t){return {type:t.value,count:rec.cantidades[t.value]};});
+  if(!conteos.length) return;
+  $("btn-recetas").disabled=true; $("rec-cargando").classList.remove("oculto"); $("rec-error").textContent=""; $("rec-resultado").innerHTML="";
+  try{
+    var cuerpo={ patientInfo:rec.info, mealTypes:conteos.map(function(c){return c.type;}), mealCounts:conteos, count:totalRecetas(),
+      objective:$("rec-objetivo").value.trim(), dietType:chipsElegidos("chips-dieta-rec")[0]||"Normal",
+      intolerances:chipsElegidos("chips-clinicas-rec"), pregnancyStage:"", hideCalories:$("rec-ocultar").checked, foodRestrictions:$("rec-restricciones").value.trim() };
+    var r=await fetch("/api/generate-recipes",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(cuerpo)});
+    var data=await r.json();
+    if(!r.ok||data.error) throw new Error(data.error||("HTTP "+r.status));
+    rec.resultado=data; pintarRecetas(data);
+    await guardarDocumento({type:"recipes", patientName:rec.paciente?nombreCompleto(rec.paciente):null, patientId:rec.paciente?rec.paciente.id:null, input:cuerpo, output:data});
+  }catch(e){ console.error(e); $("rec-error").textContent="No se pudieron generar: "+e.message+". Probá de nuevo."; }
+  finally{ $("rec-cargando").classList.add("oculto"); $("btn-recetas").disabled=false; }
+}
+function pintarRecetas(d){
+  var h='<div class="bloque-res"><h2>'+esc(d.headerTitle||"Recetario")+'</h2><p class="bajada">'+esc(d.headerNote||"")+'</p></div>';
+  (d.recipes||[]).forEach(function(r,i){
+    h+='<div class="receta" id="rec-'+i+'"><button class="quitar no-imprimir" onclick="quitarReceta('+i+')">Quitar</button><h4>'+esc(r.title)+'</h4>'+
+      '<div class="meta"><span>'+esc(r.prepTime||"")+'</span><span>'+esc(r.servings||"")+'</span><span>'+esc(r.difficulty||"")+'</span></div>'+
+      '<p class="obj">'+esc(r.objective||"")+'</p><div class="dos"><div><b class="t">Ingredientes</b><ul>'+(r.ingredients||[]).map(function(x){return '<li>'+esc(x)+'</li>';}).join("")+'</ul></div>'+
+      '<div><b class="t">Preparación</b><ol>'+(r.preparation||[]).map(function(x){return '<li>'+esc(x)+'</li>';}).join("")+'</ol></div></div>'+
+      (r.nutritionalHighlight?'<p class="tip"><b>Aporte:</b> '+esc(r.nutritionalHighlight)+'</p>':'')+(r.tip?'<p class="tip">'+esc(r.tip)+'</p>':'')+'</div>';
+  });
+  h+='<div class="acciones-res"><button class="btn" onclick="window.print()">Imprimir o guardar PDF</button><button class="btn suave" onclick="irA(\'inicio\')">Volver al inicio</button></div><p class="aviso ok no-imprimir" id="rec-guardado"></p>';
+  $("rec-resultado").innerHTML=h;
+}
+function quitarReceta(i){ var el=$("rec-"+i); if(el) el.remove(); if(rec.resultado&&rec.resultado.recipes) rec.resultado.recipes[i]=null; }
+
+/* =====================================================================
+   LISTADO MENSUAL
+   ===================================================================== */
+function abrirListado(){ irA("listado"); if(!$("l-mes").value){ var h=new Date(); $("l-mes").value=h.getFullYear()+"-"+String(h.getMonth()+1).padStart(2,"0"); } }
+async function cargarListado(){
+  var mes=$("l-mes").value; if(!mes){ $("l-aviso").textContent="Elegí un mes."; return; }
+  var partes=mes.split("-"), y=+partes[0], m=+partes[1];
+  var desde=y+"-"+String(m).padStart(2,"0")+"-01";
+  var sig=new Date(y,m,1); var hastaTxt=sig.getFullYear()+"-"+String(sig.getMonth()+1).padStart(2,"0")+"-01";
+  $("l-aviso").className="aviso"; $("l-aviso").textContent="Buscando…"; $("l-resultado").innerHTML="";
+  var r=await sb.from("sessions").select("patient_id, session_date, patients(first_name, last_name)").eq("company",empresa).gte("session_date",desde).lt("session_date",hastaTxt).order("session_date",{ascending:true});
+  if(r.error){ $("l-aviso").className="aviso error"; $("l-aviso").textContent="No se pudo leer: "+r.error.message; return; }
+  var porPersona={};
+  (r.data||[]).forEach(function(s){
+    var n=s.patients?((s.patients.first_name||"")+" "+(s.patients.last_name||"")).trim():("Paciente "+String(s.patient_id).slice(0,6));
+    porPersona[n]=porPersona[n]||{n:n,veces:0,fechas:[]}; porPersona[n].veces++; if(s.session_date) porPersona[n].fechas.push(String(s.session_date).slice(0,10));
+  });
+  var filas=Object.values(porPersona).sort(function(a,b){return a.n.localeCompare(b.n);});
+  var nombreMes=new Date(y,m-1,1).toLocaleDateString("es-AR",{month:"long",year:"numeric"});
+  $("l-aviso").textContent="";
+  if(!filas.length){ $("l-resultado").innerHTML='<div class="caja"><p style="margin:0;">Nadie tuvo sesión en '+esc(empresa)+' en '+esc(nombreMes)+'.</p></div>'; return; }
+  var h='<div class="caja"><h3>'+esc(empresa)+' · '+esc(nombreMes)+'</h3><p class="resumen-listado">'+filas.length+' persona'+(filas.length===1?"":"s")+' · '+(r.data||[]).length+' sesi'+((r.data||[]).length===1?'ón':'ones')+'</p>'+
+    '<div class="tabla-scroll"><table class="tabla"><thead><tr><th>#</th><th>Nombre</th><th>Sesiones</th><th>Fechas</th></tr></thead><tbody>'+
+    filas.map(function(f,i){ return '<tr><td class="n">'+(i+1)+'</td><td>'+esc(f.n)+'</td><td class="n">'+f.veces+'</td><td class="n">'+(f.fechas.length?f.fechas.map(function(x){return x.slice(8,10)+"/"+x.slice(5,7);}).join(", "):"—")+'</td></tr>'; }).join("")+
+    '</tbody></table></div><div class="acciones-res"><button class="btn" onclick="window.print()">Imprimir o guardar PDF</button></div></div>';
+  $("l-resultado").innerHTML=h;
+}
+
+/* =====================================================================
+   ARRANQUE
+   ===================================================================== */
+(function(){
+  var sel=$("d-actividad"); ACTIVIDAD.forEach(function(a){ var o=document.createElement("option"); o.value=a.value; o.textContent=a.label; sel.appendChild(o); });
+  var se=$("d-embarazo"); se.innerHTML='<option value="">Elegí la etapa</option>'; ETAPAS.forEach(function(e){ var o=document.createElement("option"); o.value=e.value; o.textContent=e.label; se.appendChild(o); });
+  armarChips("chips-objetivo", OBJETIVOS, true);
+  armarChips("chips-fisio", FISIOLOGICAS, false, alCambiarCondiciones);
+  armarChips("chips-clinicas", CLINICAS, false, recalcular);
+  armarChips("chips-dieta", DIETAS, true); marcarChip("chips-dieta","Normal");
+  armarChips("chips-habitos", MICRO_HABITOS, false);
+  armarChips("chips-dieta-rec", DIETAS, true); marcarChip("chips-dieta-rec","Normal");
+  armarChips("chips-clinicas-rec", CLINICAS, false);
+  pintarPasos();
+  sb.auth.getSession().then(function(r){
+    if(r.data&&r.data.session&&r.data.session.user) iniciarSesion(r.data.session.user);
+    else irA("login");
+  }).catch(function(){ irA("login"); });
+})();
+</script>
+</body>
+</html>

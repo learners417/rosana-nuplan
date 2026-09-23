@@ -1,0 +1,10 @@
+{
+  "functions": {
+    "api/*.mjs": {
+      "maxDuration": 300
+    }
+  },
+  "rewrites": [
+    { "source": "/((?!api/|assets/).*)", "destination": "/index.html" }
+  ]
+}

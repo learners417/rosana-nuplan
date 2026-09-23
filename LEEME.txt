@@ -1,0 +1,71 @@
+NUPLAN · HERRAMIENTAS v1 · 23 de septiembre de 2026
+=====================================================
+
+QUÉ HAY ADENTRO
+---------------
+SUBIR:
+  herramientas/index.html    la página nueva (archivo nuevo, no reemplaza nada)
+  vercel.json                cambia 1 línea: deja pasar /herramientas
+  api/generate-plan.mjs      plato editable + micro hábitos + alimentos concretos
+  api/generate-recipes.mjs   cantidad de recetas por tipo
+  api/_patologias.mjs        "Medicación análogos de GLP-1" con alias del nombre viejo
+
+NO SUBIR:
+  RESPALDO-no-subir/         los 4 archivos ORIGINALES, tal como están hoy en el
+                             repo. Sirven para volver atrás. Ver "Si algo sale mal".
+
+La app compilada (index.html y assets/) NO se toca. No está en este paquete.
+
+
+CÓMO SUBIRLO SIN RIESGO · 3 PASOS, CON UNA PRUEBA DESPUÉS DE CADA UNO
+----------------------------------------------------------------------
+Siempre parado en la carpeta  nuplan-vercel  del repo.
+Cada subida dispara un despliegue de Vercel que tarda 1 minuto.
+
+PASO 1 · La página nueva (riesgo cero: es un archivo que no existía)
+  Subir la carpeta  herramientas  entera.
+  Probar: abrir la app de siempre y generar un plan. Tiene que andar igual.
+
+PASO 2 · vercel.json (cambia 1 línea)
+  Subir  vercel.json  reemplazando el que está.
+  Probar: en la app, entrar a una paciente y RECARGAR la página (F5) estando
+  adentro. Tiene que volver a cargar la app, no dar 404.
+  Probar: abrir  https://rosana-nuplan.vercel.app/herramientas/
+  Tiene que aparecer el login de Herramientas.
+
+PASO 3 · Los tres archivos de api
+  Subir  api/generate-plan.mjs, api/generate-recipes.mjs y api/_patologias.mjs
+  reemplazando los que están.
+  Probar: en la app de siempre, generar un plan y un recetario. Tienen que
+  salir igual que antes.
+  Probar: en Herramientas, generar un plan para una paciente de prueba.
+  Después abrir la app vieja: el plan tiene que aparecer en sus documentos.
+
+Si los tres pasos pasan, está listo para Rosana.
+
+
+SI ALGO SALE MAL
+----------------
+Subir a la misma carpeta el archivo original desde RESPALDO-no-subir.
+Un solo archivo, un minuto, y queda exactamente como estaba.
+  - Se rompió la app al recargar → subir RESPALDO-no-subir/vercel.json
+  - Se rompió el generador de planes → subir RESPALDO-no-subir/api/generate-plan.mjs
+  - Se rompió el recetario → subir RESPALDO-no-subir/api/generate-recipes.mjs
+La página nueva nunca puede romper la app: si no gusta, se borra la carpeta.
+
+
+PENDIENTE DE ROSANA (se cargan cuando lleguen)
+----------------------------------------------
+- Modelo de plan con todos los alimentos por grupo → generate-plan.mjs
+- Modelos vegano y vegetariano → generate-plan.mjs
+- Lista de micro hábitos → herramientas/index.html, variable MICRO_HABITOS
+  (hoy tiene 8 genéricos para que la pantalla funcione)
+
+
+DOS COSAS QUE CONVIENE SABER
+----------------------------
+- Si Rosana ya está logueada en la app en ese navegador, Herramientas la deja
+  entrar directo sin pedirle contraseña: comparten la sesión. "Salir" en
+  Herramientas cierra solo esa pestaña, no la app.
+- La empresa que aparece arriba a la derecha es la misma que dejó elegida en
+  la app. Si la cambia acá, cambia también allá.

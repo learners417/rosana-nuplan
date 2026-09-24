@@ -42,6 +42,9 @@ const ESQUEMA = `{
   "recommendationsAndRecipes": [
     { "title": "string", "content": "string — receta o recomendación desarrollada" }
   ],
+  "microHabits": [
+    { "habit": "string — el micro hábito u objetivo tal como lo indicó la profesional", "tip": "string — cómo empezar esta semana, concreto" }
+  ],
   "supplements": [
     { "name": "string", "dosage": "string", "reason": "string" }
   ],
@@ -62,7 +65,19 @@ const ESQUEMA = `{
 // Estructura de las comidas según la situación del paciente.
 // Criterio de la Lic. Roldán: en descenso de peso queda el reparto actual;
 // en normopeso, aumento de peso o ganancia muscular sube el carbohidrato.
-function reglasDeEstructura(metrics = {}, etiquetas = [], objetivos = "") {
+function reglasDeEstructura(metrics = {}, etiquetas = [], objetivos = "", plato = null) {
+  // Si la profesional definió el plato a mano, esa proporción manda.
+  if (plato && Number.isFinite(plato.veg) && Number.isFinite(plato.prot) && Number.isFinite(plato.carb)) {
+    return [
+      "PERFIL: plato definido a mano por la Lic. Roldán para este paciente.",
+      `Almuerzo y cena: ${plato.veg}% del plato de vegetales, ${plato.prot}% de proteína, ${plato.carb}% de carbohidrato.`,
+      "Desayuno y merienda: 1 lácteo o proteína + carbohidrato + fruta, con porciones acordes a esa proporción.",
+      plato.carb >= 35
+        ? "El carbohidrato tiene peso en cada comida: porciones generosas."
+        : "El carbohidrato acompaña: porciones moderadas.",
+      etiquetas.includes("Deportista") ? "Sumar una colación post entrenamiento con carbohidrato y proteína." : "",
+    ].filter(Boolean).join("\n");
+  }
   if (etiquetas.includes("Embarazo y Lactancia")) {
     return [
       "PERFIL: embarazo o lactancia.",
@@ -132,6 +147,15 @@ por todas (para el hierro, por ejemplo, carne vacuna, pollo, pescado o huevo en
 lugar de legumbres). Nunca resuelvas un choque incluyendo el alimento prohibido.`
     : "El paciente no tiene patologías ni características particulares marcadas.";
 
+  const habitos = Array.isArray(preferences?.microHabits) ? preferences.microHabits.filter(Boolean) : [];
+  const objetivosEsp = Array.isArray(preferences?.specificObjectives) ? preferences.specificObjectives.filter(Boolean) : [];
+  const bloqueHabitos = (habitos.length || objetivosEsp.length)
+    ? `MICRO HÁBITOS Y OBJETIVOS ESPECÍFICOS INDICADOS POR LA PROFESIONAL:
+${habitos.length ? "Micro hábitos a incorporar: " + habitos.join(" · ") : ""}
+${objetivosEsp.length ? "Objetivos específicos: " + objetivosEsp.join(" · ") : ""}
+En el campo "microHabits" devolvé cada uno con un tip concreto de cómo empezar esta semana. Es lo primero que la paciente tiene que mejorar: escribilo como un resumen de lo que la profesional escuchó que le hace falta, no como una lista genérica.`
+    : "";
+
   const bloqueMenu = conGuia.length
     ? `MENÚ MODELO OBLIGATORIO:
 Dentro de "recommendationsAndRecipes", la PRIMERA entrada debe titularse
@@ -154,7 +178,7 @@ ${JSON.stringify(preferences, null, 2)}
 ${bloqueClinico}
 
 ESTRUCTURA DE LAS COMIDAS:
-${reglasDeEstructura(metrics, etiquetas, preferences?.objectives)}
+${reglasDeEstructura(metrics, etiquetas, preferences?.objectives, preferences?.plate)}
 
 REGLAS INNEGOCIABLES:
 1. Respetá de forma absoluta los alimentos excluidos, alergias e intolerancias, y todo lo que figure como prohibido en las guías clínicas. Un alimento no permitido no puede aparecer en ninguna parte del plan: ni en las comidas, ni en los grupos de alimentos, ni en las ideas de menú, ni en los reemplazos, ni en la lista de compras, ni en las recetas.
@@ -199,6 +223,8 @@ Reglas del esquema:
 - CENA: primer ítem "Repetir el mismo esquema del almuerzo"; segundo ítem con la alternativa de distribuir (carbohidratos y vegetales en el almuerzo, proteína y vegetales en la cena); y el aceite.
 - Si el paciente es deportista, sumá COLACIÓN POST ENTRENAMIENTO, aunque sea solo con el tip de cuándo tomarla.
 - Las fracciones de plato ("1/4 plato", "1/2 plato") SÍ se usan, siempre acompañadas de los alimentos concretos, como en los ejemplos de arriba.
+- NUNCA escribas el nombre de un grupo solo. Ni "vegetales grupo A", ni "vegetales grupo B", ni "carnes magras", ni "frutas", ni "lácteos", ni "cereales". Cada vez que aparezca un grupo, van los alimentos concretos separados por " / ". Está mal: "1/2 plato de vegetales grupo A". Está bien: "1/2 plato de lechuga / acelga / zapallito / berenjena / brócoli / tomate". Está mal: "150 g de carnes magras". Está bien: "150 g de lomo / nalga / peceto / cuadrada / pechuga de pollo".
+- La misma regla vale para la LISTA DE COMPRAS: solo alimentos concretos que la paciente pueda buscar en la góndola. Si en la lista aparece el nombre de un grupo en vez de alimentos, la lista está mal.
 
 PORCIONES DE REFERENCIA:
 - Quesos: 30 g, 1 rebanada, o 2 cucharadas soperas de untable.
@@ -218,6 +244,8 @@ REGLAS DE SUPLEMENTACIÓN (campo "supplements"):
 - "name" es el nutriente, no una marca. "dosage" es una dosis estándar de uso habitual (ej: "1000 UI por día"). "reason" explica en una línea por qué se sugiere para ESTE paciente.
 - Si no hay un motivo claro, devolvé una lista vacía. Una lista vacía es una respuesta correcta y preferible a un suplemento forzado.
 - Si hay embarazo o lactancia, la lista va vacía: los suplementos los indica el médico obstetra.
+
+${bloqueHabitos}
 
 ${bloqueMenu}
 

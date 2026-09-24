@@ -5,7 +5,16 @@ import { llamarIA, responderConLatido, leerJSON } from "./_lib.mjs";
 import { reglasDeLasCaracteristicas } from "./_patologias.mjs";
 
 function construirPrompt(d) {
-  const cant = Math.max(1, Math.min(Number(d.count) || 3, 8));
+  // Cantidad por tipo de comida: [{ type, count }]. Si no viene, se usa el formato viejo.
+  const porTipo = Array.isArray(d.mealCounts)
+    ? d.mealCounts.filter((x) => x && x.type && Number(x.count) > 0)
+    : [];
+  const cant = porTipo.length
+    ? Math.min(porTipo.reduce((a, x) => a + Number(x.count), 0), 12)
+    : Math.max(1, Math.min(Number(d.count) || 3, 8));
+  const detallePorTipo = porTipo.length
+    ? porTipo.map((x) => `${Number(x.count)} de "${x.type}"`).join(", ")
+    : "";
   const reglasClinicas = reglasDeLasCaracteristicas(d.intolerances || []);
   const bloqueClinico = reglasClinicas
     ? `GUÍAS CLÍNICAS DE LA PROFESIONAL — SON DE CUMPLIMIENTO OBLIGATORIO.
@@ -21,7 +30,7 @@ DATOS DEL PACIENTE (puede venir vacío si es una generación general):
 ${JSON.stringify(d.patientInfo || null, null, 2)}
 
 PARÁMETROS DEL PEDIDO:
-- Tipos de comida pedidos: ${JSON.stringify(d.mealTypes || [])}
+- Tipos de comida pedidos: ${JSON.stringify(porTipo.length ? porTipo.map((x) => x.type) : (d.mealTypes || []))}${detallePorTipo ? `\n- Cantidad exacta por tipo: ${detallePorTipo}` : ""}
 - Objetivo indicado por la profesional: ${JSON.stringify(d.objective || "")}
 - Tipo de alimentación: ${JSON.stringify(d.dietType || "Normal")}
 - Intolerancias / patologías activas: ${JSON.stringify(d.intolerances || [])}
@@ -60,7 +69,7 @@ Respondé ÚNICAMENTE con un objeto JSON válido, sin texto antes ni después y 
   ]
 }
 
-La lista "recipes" debe tener exactamente ${cant} recetas.`;
+La lista "recipes" debe tener exactamente ${cant} recetas${detallePorTipo ? ", respetando la cantidad por tipo indicada arriba y en ese orden" : ""}.`;
 }
 
 async function generar(datos) {

@@ -321,7 +321,13 @@ export const CARACTERISTICAS = {
       "Frutas permitidas en porciones chicas: banana firme, cítricos, arándanos, frutilla.",
     ],
   },
-  "Medicación GLP-1 (Saxenda / liraglutide)": {
+  "Medicación análogos de GLP-1": {
+    alias: [
+      "Medicación GLP-1 (Saxenda / liraglutide)",
+      "Medicación GLP-1",
+      "Análogos de GLP-1",
+      "GLP-1",
+    ],
     reglas: [
       "Porciones chicas y comidas frecuentes: el apetito está reducido.",
       "Priorizar proteína en cada comida para cuidar la masa muscular.",

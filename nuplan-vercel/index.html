@@ -9,5 +9,29 @@
   </head>
   <body>
     <div id="root"></div>
+    <!-- Acceso a Herramientas NuPlan. No toca la app: es un botón flotante aparte. -->
+    <script>
+      (function () {
+        function mostrar() {
+          var conSesion = false;
+          try { conSesion = Object.keys(localStorage).some(function (k) { return k.indexOf("sb-") === 0 && k.indexOf("-auth-token") > 0; }); } catch (e) {}
+          var esPublica = location.pathname.indexOf("/public/") === 0;
+          var ya = document.getElementById("np-herramientas");
+          if (!conSesion || esPublica) { if (ya) ya.remove(); return; }
+          if (ya) return;
+          var a = document.createElement("a");
+          a.id = "np-herramientas";
+          a.href = "/herramientas/";
+          a.textContent = "Herramientas";
+          a.setAttribute("aria-label", "Abrir Herramientas NuPlan");
+          a.style.cssText = "position:fixed;right:20px;bottom:20px;z-index:2147483000;background:#e8472a;color:#fff;font-family:'DM Sans',system-ui,sans-serif;font-weight:600;font-size:15px;padding:12px 18px;border-radius:999px;text-decoration:none;box-shadow:0 8px 20px -8px rgba(232,71,42,.7);";
+          document.body.appendChild(a);
+        }
+        mostrar();
+        setInterval(mostrar, 3000);
+        window.addEventListener("beforeprint", function () { var b = document.getElementById("np-herramientas"); if (b) b.style.display = "none"; });
+        window.addEventListener("afterprint", function () { var b = document.getElementById("np-herramientas"); if (b) b.style.display = ""; });
+      })();
+    </script>
   </body>
 </html>

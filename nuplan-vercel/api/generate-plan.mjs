@@ -195,6 +195,31 @@ REGLAS INNEGOCIABLES:
 6. Porciones en medidas caseras (taza, cucharada, plato, unidad).
 7. No incluyas diagnósticos médicos ni indicaciones farmacológicas.
 
+LISTAS DE REFERENCIA PARA NOMBRAR ALIMENTOS (referencia estándar de consultorio argentino; la Lic. Roldán puede reemplazarlas por las suyas):
+- Vegetales A: acelga, espinaca, lechuga, rúcula, escarola, apio, berenjena, brócoli, coliflor, repollo, pepino, rabanito, tomate, zapallito, zucchini, morrón, hinojo, champiñones, espárragos.
+- Vegetales B: zanahoria, remolacha, zapallo, calabaza, cebolla, puerro, chauchas, arvejas frescas, nabo, alcaucil, palmitos, brotes de soja.
+- Feculentos (van como carbohidrato, no como vegetal): papa, batata, choclo, mandioca.
+- Frutas: manzana, pera, naranja, mandarina, pomelo, kiwi, frutilla, arándanos, durazno, ciruela, damasco, ananá, melón, sandía; banana y uvas en porción moderada.
+- Carnes magras: lomo, nalga, peceto, cuadrada, bola de lomo, paleta, cuadril desgrasado, pechuga de pollo sin piel, pavo, solomillo de cerdo, merluza, brótola, lenguado, atún, salmón, caballa, sardinas.
+- Huevo y lácteos: huevo, yogur, leche, queso port salut, queso cottage, ricota magra.
+- Legumbres y cereales: lentejas, garbanzos, porotos, arvejas secas, avena, arroz integral, quinoa, pan integral, fideos integrales, polenta.
+- Grasas: aceite de oliva, palta, nueces, almendras, semillas de chía, lino, girasol y sésamo.
+Cuando un renglón del plan sea de un grupo, elegí de estas listas los alimentos concretos y nombralos.
+
+${(preferences?.dietType === "Vegetariano") ? `TIPO DE ALIMENTACIÓN: VEGETARIANO (referencia estándar; la Lic. Roldán puede ajustarlo).
+- Sin carnes ni pescados de ningún tipo. Sí huevo y lácteos.
+- La proteína de cada comida principal sale de: huevo, quesos, yogur, legumbres combinadas con cereal (lentejas con arroz, garbanzos con pan, porotos con polenta), tofu, seitán.
+- Cuidar el hierro: legumbres y vegetales de hoja acompañados de vitamina C (cítricos, tomate, morrón) en la misma comida.
+- Ningún ítem del plan, de los reemplazos ni de la lista de compras puede contener carne, pollo, pescado ni mariscos.` : ""}
+${(preferences?.dietType === "Vegano") ? `TIPO DE ALIMENTACIÓN: VEGANO (referencia estándar; la Lic. Roldán puede ajustarlo).
+- Sin ningún alimento de origen animal: ni carnes, ni pescados, ni huevo, ni lácteos, ni miel.
+- La proteína de cada comida principal sale de: legumbres combinadas con cereal, tofu, tempeh, seitán, frutos secos y semillas, bebidas y yogures vegetales con proteína.
+- Calcio: bebidas vegetales fortificadas, sésamo, tahini, almendras, brócoli, hojas verdes.
+- Hierro: legumbres y hojas verdes con vitamina C en la misma comida.
+- Omega 3: lino, chía, nueces.
+- En "supplements" incluí vitamina B12 con su motivo: en alimentación vegana es obligatoria.
+- Ningún ítem del plan, de los reemplazos ni de la lista de compras puede contener un producto de origen animal.` : ""}
+
 ASÍ ARMA EL PLAN LA LIC. ROLDÁN — ESTO ES LO MÁS IMPORTANTE DE TODO:
 
 El plan NO es un menú cerrado con una sola comida por momento. Es un ESQUEMA POR

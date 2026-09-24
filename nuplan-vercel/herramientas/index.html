@@ -79,7 +79,7 @@
   .btn.chico{padding:10px 18px;font-size:.95rem;}
 
   /* ---------- inicio ---------- */
-  .tarjetas{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:36px;}
+  .tarjetas{display:grid;grid-template-columns:repeat(2,1fr);gap:22px;margin-top:36px;}
   @media(max-width:860px){.tarjetas{grid-template-columns:1fr;}}
   .tarjeta{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-2xl);padding:36px 30px;
     cursor:pointer;transition:transform .15s ease, border-color .15s ease;border-top:4px solid var(--coral);text-align:left;}
@@ -231,6 +231,7 @@
   <div class="wrap row">
     <div class="brand" onclick="irA('inicio')">NuPlan<sup>&trade;</sup> <span>Herramientas</span></div>
     <div class="der oculto" id="barra-sesion">
+      <a class="salir" href="/" style="text-decoration:none;">Volver a la app</a>
       <select class="empresa-sel" id="empresa" onchange="cambiarEmpresa(this.value)"></select>
       <button class="salir" onclick="salir()">Salir</button>
     </div>
@@ -257,21 +258,87 @@
   <h1>¿Qué vas a hacer hoy?</h1>
   <p class="bajada">Todo lo que generes acá se guarda en la misma app y en la ficha del mismo paciente.</p>
   <div class="tarjetas">
-    <button class="tarjeta" onclick="abrirPlanes()">
+    <button class="tarjeta" onclick="abrirConsulta()">
       <span class="n">01</span>
+      <h3>Nueva consulta</h3>
+      <p>Buscás a la paciente con tres letras, cargás peso, cintura, adherencia, sueño y energía. Se guarda en su ficha.</p>
+    </button>
+    <button class="tarjeta" onclick="abrirPlanes()">
+      <span class="n">02</span>
       <h3>Plan alimentario</h3>
       <p>Con el plato a tu medida y los micro hábitos que la paciente tiene que empezar a mover.</p>
     </button>
     <button class="tarjeta" onclick="abrirRecetario()">
-      <span class="n">02</span>
+      <span class="n">03</span>
       <h3>Recetario</h3>
       <p>Elegís cuántas recetas de cada tipo. Dos de almuerzo, dos de cena, una de desayuno. Lo que haga falta.</p>
     </button>
     <button class="tarjeta" onclick="abrirListado()">
-      <span class="n">03</span>
+      <span class="n">04</span>
       <h3>Listado mensual</h3>
       <p>Quiénes asistieron a sesión en el mes, por empresa. Para los informes que te piden.</p>
     </button>
+  </div>
+</section>
+
+<!-- ============ CONSULTA ============ -->
+<section class="pantalla wrap oculto" id="p-consulta">
+  <span class="kicker">Nueva consulta</span>
+  <h2>¿A quién atendiste?</h2>
+  <p class="bajada">Escribí las primeras letras. Los datos de la última consulta quedan a la vista para comparar.</p>
+  <div class="caja">
+    <div class="buscador">
+      <input type="text" id="busca-paciente-con" placeholder="Buscar paciente…" autocomplete="off" oninput="filtrarPacientesCon(this.value)">
+      <ul class="resultados" id="lista-pacientes-con"></ul>
+    </div>
+    <div class="elegido oculto" id="con-elegido">
+      <div><b id="ce-nombre"></b><small id="ce-datos"></small></div>
+      <button class="btn chico suave" onclick="conDeselegir()">Cambiar</button>
+    </div>
+  </div>
+
+  <div id="con-form" class="oculto">
+    <div class="caja">
+      <span class="sub">Medidas</span>
+      <div class="grid3">
+        <label class="campo">Peso (kg) *<input type="number" step="0.1" id="c-peso" data-req placeholder="0 si no lo tenés"></label>
+        <label class="campo">Talla (cm) *<input type="number" step="0.1" id="c-talla" data-req placeholder="0 si no la tenés"></label>
+        <label class="campo">Cintura (cm)<input type="number" step="0.1" id="c-cintura" placeholder="opcional"></label>
+      </div>
+      <p class="nota" id="c-imc"></p>
+    </div>
+    <div class="caja">
+      <span class="sub">Cómo viene</span>
+      <div class="grid2">
+        <label class="campo">Adherencia al plan *<select id="c-adherencia" data-req></select></label>
+        <label class="campo">Hidratación adecuada *<select id="c-hidratacion" data-req><option value="">Elegí</option><option value="true">Sí</option><option value="false">No</option></select></label>
+        <label class="campo">Actividad física semanal *<select id="c-actividad" data-req><option value="">Elegí</option><option value="≤150 min">≤150 min/semana</option><option value="+150 min">+150 min/semana</option></select></label>
+        <label class="campo">Consumo de frutas y verduras *<select id="c-frutas" data-req></select></label>
+        <label class="campo">Nivel de energía *<select id="c-energia" data-req></select></label>
+        <label class="campo">Calidad de sueño *<select id="c-sueno" data-req></select></label>
+      </div>
+    </div>
+    <div class="caja">
+      <span class="sub">Motivo y notas</span>
+      <label class="campo">Motivo de consulta<input type="text" id="c-motivo" placeholder="Control, seguimiento, laboratorio…"></label>
+      <label class="campo">Notas<textarea id="c-notas" placeholder="Lo que quieras dejar registrado"></textarea></label>
+      <label class="campo">Fecha<input type="date" id="c-fecha"></label>
+    </div>
+    <p class="aviso" id="c-aviso"></p>
+    <div class="nav-pasos">
+      <button class="btn suave" onclick="irA('inicio')">Cancelar</button>
+      <button class="btn" id="btn-guardar-consulta" onclick="guardarConsulta()">Guardar consulta</button>
+    </div>
+  </div>
+  <div id="con-listo" class="oculto">
+    <div class="caja" style="border-color:var(--verde);background:var(--verde-suave);">
+      <h3 id="con-listo-titulo">Consulta guardada</h3>
+      <p style="margin:0;" id="con-listo-texto"></p>
+    </div>
+    <div class="nav-pasos">
+      <button class="btn" onclick="conOtra()">Cargar otra consulta</button>
+      <button class="btn suave" onclick="irA('inicio')">Volver al inicio</button>
+    </div>
   </div>
 </section>
 
@@ -505,16 +572,20 @@ var TIPOS_RECETA = [
   {value:"Preparaciones deportivas",label:"Preparaciones deportivas",desc:"Rendimiento y recuperación"},
   {value:"Comidas para llevar (vianda)",label:"Viandas para llevar",desc:"Prácticas para el trabajo"}
 ];
-/* PENDIENTE: reemplazar por la lista que mande Rosana. */
+/* Lista de referencia. Cuando Rosana mande la suya, se reemplaza acá y en ningún otro lado. */
 var MICRO_HABITOS = [
-  "Sumar una porción de vegetales al almuerzo",
   "Un vaso de agua al despertar",
-  "Desayunar todos los días",
-  "Incorporar fibra: fruta con cáscara o cereal integral",
-  "Cenar al menos 2 horas antes de dormir",
-  "Comer sentada y sin pantalla",
-  "Sumar proteína en la merienda",
-  "Planificar las comidas del día a la mañana"
+  "Desayunar dentro de la primera hora",
+  "Una porción de vegetales en almuerzo y cena",
+  "Proteína en cada comida principal",
+  "Proteína en la merienda",
+  "Fibra todos los días: fruta con cáscara, legumbres o cereal integral",
+  "Cenar al menos dos horas antes de dormir",
+  "Comer sentada, sin pantalla, masticando despacio",
+  "Planificar las comidas del día a la mañana",
+  "Llevar vianda o snack al trabajo",
+  "Caminar 20 minutos por día",
+  "Dormir 7 horas"
 ];
 
 /* =====================================================================
@@ -529,7 +600,7 @@ var rec = { paciente:null, info:null, cantidades:{}, dieta:"Normal", clinicas:[]
 function $(id){ return document.getElementById(id); }
 function esc(s){ return String(s==null?"":s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];}); }
 function irA(nombre){
-  ["login","inicio","planes","recetario","listado"].forEach(function(p){ $("p-"+p).classList.toggle("oculto", p!==nombre); });
+  ["login","inicio","consulta","planes","recetario","listado"].forEach(function(p){ $("p-"+p).classList.toggle("oculto", p!==nombre); });
   window.scrollTo(0,0);
 }
 
@@ -574,7 +645,7 @@ async function cargarEmpresas(){
 }
 function cambiarEmpresa(nombre){
   empresa=nombre; try{ localStorage.setItem(CLAVE_EMPRESA, nombre); }catch(e){}
-  pacientes=[]; deselegirPaciente(); recDeselegir();
+  pacientes=[]; deselegirPaciente(); recDeselegir(); conDeselegir();
 }
 
 /* =====================================================================
@@ -955,6 +1026,87 @@ function pintarRecetas(d){
 function quitarReceta(i){ var el=$("rec-"+i); if(el) el.remove(); if(rec.resultado&&rec.resultado.recipes) rec.resultado.recipes[i]=null; }
 
 /* =====================================================================
+   NUEVA CONSULTA · guarda en sessions las mismas columnas que la app
+   ===================================================================== */
+var ESCALAS = {
+  adherencia: ["1 - Muy baja","2 - Baja","3 - Media","4 - Alta","5 - Muy alta"],
+  frutas:     ["1 - Muy bajo","2 - Bajo","3 - Normal","4 - Alto","5 - Muy alto"],
+  energia:    ["1 - Muy bajo","2 - Bajo","3 - Regular","4 - Bueno","5 - Excelente"],
+  sueno:      ["1 - Muy mala","2 - Mala","3 - Regular","4 - Buena","5 - Excelente"]
+};
+var con = { paciente:null, ultima:null };
+function armarEscala(id, etiquetas){
+  var sel=$(id); sel.innerHTML='<option value="">Elegí</option>';
+  etiquetas.forEach(function(t,i){ var o=document.createElement("option"); o.value=String(i+1); o.textContent=t; sel.appendChild(o); });
+}
+function abrirConsulta(){
+  irA("consulta"); cargarPacientes();
+  if(!$("c-fecha").value){ var h=new Date(); $("c-fecha").value=h.getFullYear()+"-"+String(h.getMonth()+1).padStart(2,"0")+"-"+String(h.getDate()).padStart(2,"0"); }
+}
+async function filtrarPacientesCon(q){
+  await cargarPacientes();
+  var ul=$("lista-pacientes-con"); ul.innerHTML="";
+  if(q.trim().length<2) return;
+  var hits=pacientes.filter(function(p){return coincide(p,q);}).slice(0,12);
+  if(!hits.length){ ul.innerHTML='<li><span>Nadie con ese nombre en '+esc(empresa)+'</span></li>'; return; }
+  hits.forEach(function(p){
+    var li=document.createElement("li"); li.innerHTML='<span>'+esc(nombreCompleto(p))+'</span><small>'+esc(p.status||"")+'</small>';
+    li.onclick=function(){ conElegir(p); }; ul.appendChild(li);
+  });
+}
+async function conElegir(p){
+  con.paciente=p; $("lista-pacientes-con").innerHTML=""; $("busca-paciente-con").value=nombreCompleto(p);
+  var r=await sb.from("sessions").select("weight, height, girth_waist, adherence, session_date").eq("patient_id",p.id).order("session_date",{ascending:false}).order("created_at",{ascending:false}).limit(1);
+  con.ultima=(r.data&&r.data[0])||null;
+  $("ce-nombre").textContent=nombreCompleto(p);
+  $("ce-datos").textContent = con.ultima
+    ? "Última consulta "+String(con.ultima.session_date||"").slice(0,10).split("-").reverse().join("/")+" · "+(con.ultima.weight!=null?con.ultima.weight+" kg":"")+(con.ultima.girth_waist!=null?" · cintura "+con.ultima.girth_waist+" cm":"")
+    : "Primera consulta registrada";
+  $("con-elegido").classList.remove("oculto"); $("con-form").classList.remove("oculto"); $("con-listo").classList.add("oculto");
+  $("c-peso").value=""; $("c-cintura").value=""; $("c-motivo").value=""; $("c-notas").value="";
+  $("c-talla").value = (con.ultima&&con.ultima.height) ? con.ultima.height : (p.height||"");
+  ["c-adherencia","c-hidratacion","c-actividad","c-frutas","c-energia","c-sueno"].forEach(function(id){ $(id).value=""; });
+  $("c-aviso").textContent=""; $("c-imc").textContent="";
+  $("c-peso").focus();
+}
+function conDeselegir(){ con.paciente=null; con.ultima=null; $("con-elegido").classList.add("oculto"); $("con-form").classList.add("oculto"); $("busca-paciente-con").value=""; $("lista-pacientes-con").innerHTML=""; }
+function conOtra(){ conDeselegir(); $("con-listo").classList.add("oculto"); $("busca-paciente-con").focus(); }
+function conCalcIMC(){
+  var p=parseFloat($("c-peso").value), t=parseFloat($("c-talla").value);
+  $("c-imc").textContent = (p>0&&t>0) ? "IMC "+(p/Math.pow(t/100,2)).toFixed(1)+(con.ultima&&con.ultima.weight?" · "+(p-con.ultima.weight>=0?"+":"")+(p-con.ultima.weight).toFixed(1)+" kg desde la última":"") : "";
+}
+async function guardarConsulta(){
+  var av=$("c-aviso"); av.className="aviso";
+  var faltan=Array.prototype.filter.call(document.querySelectorAll("#con-form [data-req]"), function(el){ return String(el.value).trim()===""; });
+  if(faltan.length){ av.className="aviso error"; av.textContent="Completá los campos con asterisco. Si no tenés el dato, poné 0."; faltan[0].focus(); return; }
+  if(!con.paciente){ av.className="aviso error"; av.textContent="Elegí a la paciente."; return; }
+  var btn=$("btn-guardar-consulta"); btn.disabled=true; av.textContent="Guardando…";
+  var cint=parseFloat($("c-cintura").value);
+  var fila={
+    patient_id: con.paciente.id, nutritionist_id: usuario.id, company: empresa,
+    session_date: $("c-fecha").value || new Date().toISOString().slice(0,10),
+    session_type: "Consulta",
+    weight: parseFloat($("c-peso").value), height: parseFloat($("c-talla").value),
+    girth_waist: isNaN(cint)?null:cint,
+    adherence: parseInt($("c-adherencia").value,10),
+    hydration: $("c-hidratacion").value==="true",
+    physical_activity: $("c-actividad").value,
+    consumo_frutas_verduras: parseInt($("c-frutas").value,10),
+    energy_level: parseInt($("c-energia").value,10),
+    sleep_quality: parseInt($("c-sueno").value,10),
+    consultation_reason: $("c-motivo").value.trim()||null,
+    consultation_notes: $("c-notas").value.trim()||null
+  };
+  var r=await sb.from("sessions").insert(fila);
+  btn.disabled=false;
+  if(r.error){ av.className="aviso error"; av.textContent="No se pudo guardar: "+r.error.message; return; }
+  av.textContent="";
+  $("con-form").classList.add("oculto");
+  $("con-listo-texto").textContent=nombreCompleto(con.paciente)+" · "+fila.weight+" kg · adherencia "+fila.adherence+"/5 · guardada en su ficha.";
+  $("con-listo").classList.remove("oculto"); window.scrollTo(0,0);
+}
+
+/* =====================================================================
    LISTADO MENSUAL
    ===================================================================== */
 function abrirListado(){ irA("listado"); if(!$("l-mes").value){ var h=new Date(); $("l-mes").value=h.getFullYear()+"-"+String(h.getMonth()+1).padStart(2,"0"); } }
@@ -995,6 +1147,9 @@ async function cargarListado(){
   armarChips("chips-habitos", MICRO_HABITOS, false);
   armarChips("chips-dieta-rec", DIETAS, true); marcarChip("chips-dieta-rec","Normal");
   armarChips("chips-clinicas-rec", CLINICAS, false);
+  armarEscala("c-adherencia", ESCALAS.adherencia); armarEscala("c-frutas", ESCALAS.frutas);
+  armarEscala("c-energia", ESCALAS.energia); armarEscala("c-sueno", ESCALAS.sueno);
+  ["c-peso","c-talla"].forEach(function(id){ $(id).addEventListener("input", conCalcIMC); });
   pintarPasos();
   sb.auth.getSession().then(function(r){
     if(r.data&&r.data.session&&r.data.session.user) iniciarSesion(r.data.session.user);

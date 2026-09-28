@@ -35,6 +35,9 @@ const ESQUEMA = `{
     "vegetablesB": ["string"],
     "fruits": ["string"]
   },
+  "sampleDayMenu": [
+    { "meal": "string — Desayuno / Media mañana / Almuerzo / Merienda / Cena", "dish": "string — el plato concreto con su porción" }
+  ],
   "menuIdeas": {
     "carbsIdeas": ["string — ideas de platos con carbohidratos"],
     "proteinIdeas": ["string — ideas de platos con proteínas"]
@@ -61,6 +64,122 @@ const ESQUEMA = `{
     "frozen": ["string"]
   }
 }`;
+
+
+// ============================================================================
+// MODELO DE PLAN DE LA LIC. ROLDÁN — transcripto de sus documentos (sep 2026):
+// "Plan alimentario hipocalórico 1500 HIPER PRO" (modelo normal),
+// "Plan alimentario vegetariano", "Plan vegano" y "Plan normocalórico celíaco".
+// Cuando ella mande un documento nuevo, se cambia ACÁ y en ningún otro lado.
+// ============================================================================
+function modeloRoldan(preferences = {}) {
+  const dieta = String(preferences?.dietType || "Normal");
+  const etiquetas = Array.isArray(preferences?.intolerances) ? preferences.intolerances : [];
+  const celiaco = etiquetas.some((e) => /gluten|cel[ií]ac|tacc/i.test(String(e)));
+  const vegetariano = dieta === "Vegetariano";
+  const vegano = dieta === "Vegano";
+
+  const listaCompras = vegano
+    ? `LISTA DE COMPRAS DE LA LIC. ROLDÁN — MODELO VEGANO (usar estos alimentos y estos nombres):
+- Grupo carbohidratos: legumbres (garbanzos, porotos, habas); tubérculos (papa, batata, boniato, choclo, mandioca); cereales integrales (arroz, pan, galletitas integrales o de salvado).
+- Grupo proteínas: leches vegetales (soja, coco, almendras), tofu, seitán, soja texturizada.
+- Grupo fibras: vegetales Grupo A (acelga, achicoria, apio, berro, rúcula, berenjena, brócoli, coliflor, escarola, espárrago, espinaca, lechuga, pepino, pimiento, rábano, rabanito, radicheta, repollo, repollito de Bruselas, tomate, zapallito); vegetales Grupo B (alcaucil, arvejas frescas, cebolla, chaucha, nabo, puerro, remolacha, zapallo, zanahoria); frutas (ananá, cereza, ciruela, damasco, durazno, frutilla, kiwi, lima, limón, mandarina, manzana, melón, naranja, pera, pomelo, sandía; banana, uvas e higos con moderación).
+- Grupo grasas: aceite de oliva, soja, maíz; palta; frutos secos; semillas de lino, chía y sésamo.
+- Enlatados: arvejas, tomates en lata, puré de tomates, legumbres.
+- Congelados: vegetales, medallones de legumbres.`
+    : vegetariano
+    ? `LISTA DE COMPRAS DE LA LIC. ROLDÁN — MODELO VEGETARIANO (usar estos alimentos y estos nombres):
+- Grupo carbohidratos: legumbres (garbanzos, porotos, habas); tubérculos (papa, batata, boniato, choclo, mandioca); cereales integrales (arroz, pan, galletitas integrales o de salvado).
+- Grupo proteínas: huevos; lácteos descremados (leche, yogurt, queso untable o port salut descremado); leches vegetales (soja, almendras); tofu, seitán, soja texturizada.
+- Grupo fibras: vegetales Grupo A (acelga, achicoria, apio, berro, rúcula, berenjena, brócoli, coliflor, escarola, espárrago, espinaca, lechuga, pepino, pimiento, rábano, rabanito, radicheta, repollo, repollito de Bruselas, tomate, zapallito); vegetales Grupo B (alcaucil, arvejas frescas, cebolla, chaucha, nabo, puerro, remolacha, zapallo, zanahoria); frutas (ananá, cereza, ciruela, damasco, durazno, frutilla, kiwi, lima, limón, mandarina, manzana, melón, naranja, pera, pomelo, sandía; banana, uvas e higos con moderación).
+- Grupo grasas: aceite de oliva, soja, maíz; palta; frutos secos; semillas de lino, chía y sésamo.
+- Enlatados: arvejas, tomates en lata, puré de tomates, legumbres.
+- Congelados: vegetales, medallones de legumbres.`
+    : `LISTA DE COMPRAS DE LA LIC. ROLDÁN — MODELO NORMAL (usar estos alimentos y estos nombres):
+- Grupo carbohidratos: legumbres (garbanzos, porotos, habas); tubérculos (papa, batata, boniato, choclo, mandioca); cereales integrales (arroz, pan, galletitas integrales o de salvado).
+- Grupo proteínas: carnes magras (lomo, nalga, peceto, cuadrada, cuadril, bife angosto, palomita); pollo sin piel; huevos; atún, caballa, jurel al natural; lácteos descremados (leche, yogurt, queso untable o port salut descremado).
+- Grupo fibras: vegetales Grupo A (acelga, achicoria, apio, berro, rúcula, berenjena, brócoli, coliflor, escarola, espárrago, espinaca, lechuga, pepino, pimiento, rábano, rabanito, radicheta, repollo, repollito de Bruselas, tomate, zapallito); vegetales Grupo B (alcaucil, arvejas frescas, cebolla, chaucha, nabo, puerro, remolacha, zapallo, zanahoria); frutas (ananá, cereza, ciruela, damasco, durazno, frutilla, kiwi, lima, limón, mandarina, manzana, melón, naranja, pera, pomelo, sandía; banana, uvas e higos con moderación).
+- Grupo grasas: aceite de oliva, soja, maíz; palta; frutos secos; semillas de lino, chía y sésamo.
+- Enlatados: atún, jurel o caballa al natural; arvejas; tomates en lata; puré de tomates.
+- Congelados: vegetales; kani kama.`;
+
+  const porcionesCarbos = celiaco
+    ? `GRUPO CARBOHIDRATOS (día por medio) — VERSIÓN SIN TACC. Todo producto elaborado tiene que tener el logo oficial sin TACC:
+- Pastas sin TACC (de arroz, de maíz o premezcla sin TACC): 2 tazas de pasta corta en cocido. Pastas rellenas sin TACC: 1/2 plancha de ravioles o ñoquis sin TACC (base del plato hondo).
+- Arroz integral, yamaní o parboil: 1 pocillo crudo.
+- Legumbres (lentejas, soja, porotos, arvejas, garbanzos): 2 tazas en cocido.
+- Papa, batata, choclo, boniato, mandioca: 1 unidad grande.
+- Polenta (harina de maíz, sin TACC): base de plato hondo en cocido.
+- Quinoa, trigo sarraceno, mijo, amaranto: 2 tazas en cocido (reemplazan al cous-cous y al trigo burgol, que llevan trigo).
+- Arepa de harina de maíz: 2 unidades, rellenas de pechuga, vegetales o carne magra.
+- Tarta con masa sin TACC: 2 porciones sin tapa, o 3 empanadas con tapa sin TACC. Rellenos de verduras, pollo o carnes magras.
+- Pan, galletitas, copos y barritas: solo sin TACC. Copos de arroz: 1/2 taza. Galletas de arroz: 3 unidades. Galletitas sin TACC: 4 unidades.
+- Avena: solo certificada sin TACC.
+PROHIBIDO en celiaquía, aunque figure en otros modelos: pan común, tostadas de gluten, galletitas integrales o de salvado comunes, cous-cous, trigo burgol, seitán, cerveza y cualquier producto sin el logo sin TACC.`
+    : `GRUPO CARBOHIDRATOS (día por medio), con las porciones exactas de la Lic. Roldán:
+- Pastas simples de trigo candeal, de arroz o integrales: 2 tazas de pasta corta medida en cocido, o spaguettis crudos (80 g). Pastas rellenas: 1/2 plancha de ravioles o ñoquis (base del plato hondo).
+- Arroz preferentemente integral, yamaní o parboil: 1 pocillo crudo.
+- Legumbres (lentejas, soja, porotos, arvejas, garbanzos): 2 tazas en cocido.
+- Papa, batata, choclo, boniato, mandioca: 1 unidad grande.
+- Polenta: base de plato hondo en cocido.
+- Cous-cous / trigo burgol: 2 tazas en cocido.
+- Arepa: 2 unidades, rellenas de pechuga, vegetales o carne magra.
+- Tarta: 2 porciones sin tapa, o 3 empanadas. Rellenos de verduras, pollo o carnes magras.`;
+
+  const porcionesProte = vegano
+    ? `GRUPO PROTEÍNAS (1 porción mediana en almuerzo y en cena), modelo vegano:
+- Tofu: 2 rebanadas. Soja texturizada: 1 taza ya hidratada. Seitán${celiaco ? " NO (lleva gluten)" : ": 2 rebanadas"}.
+- Legumbres como proteína principal: 2 tazas en cocido.
+- Leches y yogures vegetales (soja, coco, almendras) en desayuno y merienda.
+- Sin huevo, sin lácteos, sin miel, sin ningún alimento de origen animal, en ningún ítem del plan ni de la lista de compras.`
+    : vegetariano
+    ? `GRUPO PROTEÍNAS (1 porción mediana en almuerzo y en cena), modelo vegetariano:
+- Seitán${celiaco ? " NO (lleva gluten)" : ": 2 rebanadas"}.
+- Queso: 2 rebanadas, o huevo: 2 unidades. En omelette, budines, souflée o tortillas, agregándoles aire con el batido para lograr mayor saciedad.
+- Tofu: 2 rebanadas. Soja texturizada: 1 taza ya hidratada.
+- Sin carnes, sin pollo, sin pescados ni mariscos, en ningún ítem del plan ni de la lista de compras.`
+    : `GRUPO PROTEÍNAS, con los cortes y frecuencias de la Lic. Roldán:
+- Carne de vaca, cortes magros: lomo, nalga, peceto, cuadril, bola de lomo, bife angosto, cuadrada. 2 veces por semana: 1 unidad mediana, 200 g.
+- Cerdo: solomillo, carré deshuesado, lomo, paleta. 1 vez por semana: 200 g.
+- Pollo, preferentemente pechuga sin piel: 1 pata y muslo o 1 pechuga. 2 veces por semana.
+- Pescado: atún, caballa, jurel al natural, merluza.
+- Queso: 2 rebanadas. Huevo: 3 unidades, en omelette, budines, souflée o tortillas, agregándoles aire con el batido para lograr mayor saciedad.
+- Tofu: 2 rebanadas. Soja texturizada: 2 tazas ya hidratada.`;
+
+  const desayunos = `DESAYUNOS Y MERIENDAS, esquema de la Lic. Roldán:
+- Infusiones: té, mate, café a gusto. ${vegano ? "Leches vegetales: soja, coco, almendras." : "Leche o yogurt descremados o semidescremados." + (vegetariano ? " Leches vegetales: soja, almendras." : "")} Endulzante, 0 azúcares.
+- Más 1 fruta (o consumirla a media mañana como colación).
+- Más UNA de estas opciones: ${celiaco ? "pan sin TACC 2 rebanadas / copos de arroz 1/2 taza / galletitas sin TACC 4 unidades / galletas de arroz 3 unidades / avena certificada sin TACC 1 taza tipo té" : "pan integral 2 rebanadas / avena arrollada 1 taza tipo té / granola 1/2 taza / galletitas integrales o de salvado 4 unidades / galletas de arroz 3 unidades / tostadas de gluten 4 unidades"}.
+- Más ${vegano ? "palta, pasta de maní o mermelada light en poca cantidad" : "queso untable descremado: 2 cucharadas tipo postre. Opcional: mermelada light o manteca de maní en poca cantidad"}.
+- Ejemplos: ${vegano
+    ? "licuado de leche vegetal y fruta con cereales; panqueque de avena con banana y yogurt de soja; café con leche de almendras y tostadas con pasta de maní; ensalada de frutas con yogurt de soja y granola; pan integral con 1/2 palta y tomate; granola con frutas y leche de almendras"
+    : "licuado de leche y fruta con cereales; panqueque de avena con banana y yogurt; café con leche con tostadas y queso untable descremado; sándwich de pan árabe y queso con infusión; ensalada de frutas con yogurt y granola; 1 rebanada de pan con 1/2 palta, queso untable descremado y tomate; 2 huevos revueltos con café con leche y 1 rebanada de pan; 1 arepa rellena de queso con yogurt; tostada con queso descremado y palta"}${celiaco ? " (siempre con pan, galletitas y cereales sin TACC)" : ""}.
+- Snacks de media mañana o media tarde: fruta; barrita${celiaco ? " sin TACC" : ""}; almendras 6 o 2 nueces; ${vegano ? "" : "yogurt descremado; queso; "}1 puñado de maní. Adecuar las colaciones a los horarios y a la actividad física.
+- Elegir cereales integrales como panes, galletitas o copos, evitando cereales azucarados. ${vegano ? "Cubrir el calcio con almendras, tofu y vegetales de hoja verde." : "La proteína láctea da saciedad y vehiculiza el calcio: incorporarla en desayunos y meriendas."} Un desayuno completo evita el picoteo el resto del día.`;
+
+  const vegetales = `GRUPO VEGETALES Y FRUTAS: incorporar variedad, crudos o al vapor. Vegetales A: acelga, achicoria, apio, berro, rúcula, berenjena, brócoli, coliflor, escarola, espárrago, espinaca, lechuga, pepino, pimiento, rábano, rabanito, radicheta, repollo, repollito de Bruselas, tomate, zapallito. Vegetales B: alcaucil, arvejas frescas, cebolla, chaucha, nabo, puerro, remolacha, zapallo, zanahoria. Preferentemente crudos, o en budines, tortillas o souflées, al horno o a la parrilla. Frutas: todas, frescas o deshidratadas, 3 al día, y una cítrica por día (naranja, mandarina, pomelo, limón, frutilla, arándanos o kiwi) por su vitamina C. Grasas saludables: aceite de oliva, frutos secos, semillas, maní, palta, aceitunas, cuidando las cantidades. Sumar 6 vasos de agua o líquidos sin azúcar.`;
+
+  const ideas = vegano
+    ? `IDEAS DE MENÚ DE LA LIC. ROLDÁN (modelo vegano), para armar el menú modelo del día y las recomendaciones:
+Carbohidratos: wok de arroz parbolizado, integral o de pasta con vegetales; fideos con salsa de ajo, tomates cherry y aceitunas negras con aceite de oliva; wrap relleno de tofu o vegetales con ensalada mixta; tarta de verduras (zapallito, berenjena, acelga o espinaca) con ensalada de tomate, cebolla y orégano; 2 canelones de verdura con salsa de tomate; ensalada de garbanzos, arroz yamaní y vegetales; ravioles (15 unidades) con salsa de tomate natural; milanesa de soja con ensalada de zanahoria y tomate.
+Proteínas: tofu grillado con semillas de sésamo y ensalada; curry de tofu con leche de almendras y vegetales; pastel de papas o calabaza relleno de soja texturizada; hamburguesas de soja texturizada con ensalada; pasta con bolognesa de soja texturizada; tacos rellenos de vegetales y seitán con ensalada; cazuela de vegetales con arroz yamaní y legumbres.`
+    : vegetariano
+    ? `IDEAS DE MENÚ DE LA LIC. ROLDÁN (modelo vegetariano), para armar el menú modelo del día y las recomendaciones:
+Carbohidratos: wok de arroz parbolizado, integral o de pasta con vegetales; fideos con salsa de ajo, tomates cherry y aceitunas negras con aceite de oliva; wrap relleno de tofu o vegetales con ensalada mixta; tarta de verduras (zapallito, berenjena, acelga o espinaca) con ensalada de tomate, cebolla y orégano; 2 canelones de verdura con salsa de tomate; ensalada de garbanzos, arroz yamaní, huevo y vegetales; arepa o sándwich de pan árabe de queso y vegetales.
+Proteínas: omelette con queso crema descremado 0% y champiñón o arvejas; tortilla de espinaca al horno (claras de huevo, ricota magra) con ensalada; tofu grillado con semillas de sésamo y ensalada; berenjena a la napolitana con ensalada de remolacha; budín de espinaca con ensalada; pastel de papas o calabaza relleno de soja texturizada; hamburguesas de soja texturizada con ensalada.`
+    : `IDEAS DE MENÚ DE LA LIC. ROLDÁN (modelo normal), para armar el menú modelo del día y las recomendaciones:
+Carbohidratos: wok de arroz parbolizado, integral o de pasta con vegetales; fideos con salsa de ajo, tomates cherry y aceitunas negras con aceite de oliva; wrap relleno de pechuga, carne o vegetales con ensalada mixta; tarta de verduras (zapallito, berenjena, acelga o espinaca) con ensalada de tomate, cebolla y orégano; 3 canelones de verdura con salsa de tomate; ñoquis de ricota con salsa de espinaca; arepa o sándwich de pan árabe de pollo o cuadril con vegetales; ravioles (20 unidades) con salsa de tomate natural; milanesa de soja con ensalada de zanahoria y tomate.
+Proteínas: omelette de 3 claras con queso crema descremado 0% y champiñón o arvejas, con ensalada; tortilla de espinaca al horno (claras de huevo, ricota magra) con ensalada; pechuga de pollo al verdeo con ensalada; bifes a la criolla con puré de calabaza; colita de cuadril al horno, parrilla o cacerola con ensalada; bifecitos de lomo (3 unidades) con cebolla morada y calabaza dorada al horno; costillas de cerdo (2 unidades medianas) con puré de manzana.`;
+
+  const suplementos = (vegano || vegetariano)
+    ? `SUPLEMENTOS SEGÚN EL MODELO DE LA LIC. ROLDÁN: en "supplements" incluí vitamina B12 (obligatoria en este modelo) y "evaluar niveles de vitamina D y suplementar si corresponde". Vitamina D: exposición solar entre las 10 y las 16 hs, sin protector en cara, cuello o brazos, sumando 40 a 50 minutos por semana. Evitar infusiones (té, mate, café) cerca de las comidas principales, para no frenar la absorción del hierro.`
+    : `TIPS DE LA LIC. ROLDÁN para "recommendationsAndRecipes": calcular la cantidad semanal de frutas y verduras para la compra, evitando desperdicios; disponer de un momento en la semana para preparar las comidas (lavar y hervir vegetales, legumbres, pastas o arroz y tenerlos listos en la heladera); disponer de carnes en porciones chicas freezadas, listas para descongelar en el momento.`;
+
+  return [listaCompras, porcionesCarbos, porcionesProte, desayunos, vegetales, ideas, suplementos,
+    `LISTA DE COMPRAS DE SALIDA ("shoppingList"): completala con los mismos grupos y los mismos alimentos de la lista de compras de arriba, alimento por alimento, nunca el nombre del grupo solo. "carbsAndLegumes" = grupo carbohidratos; "proteins" = grupo proteínas sin los lácteos; "dairy" = lácteos${vegano ? " (vacío en el modelo vegano: van las leches y yogures vegetales en proteins)" : ""}; "vegetablesAndFruits" = grupo fibras completo, vegetales A, vegetales B y frutas; "fats" = grupo grasas; "canned" = enlatados; "frozen" = congelados.`,
+    `MENÚ MODELO DEL DÍA ("sampleDayMenu"): un día completo y concreto, con platos reales tomados de las ideas de menú de arriba y con las porciones de este plan: desayuno, media mañana, almuerzo, merienda y cena. Es lo que la paciente se lleva impreso para saber qué comer mañana.`
+  ].join("\n\n");
+}
 
 // Estructura de las comidas según la situación del paciente.
 // Criterio de la Lic. Roldán: en descenso de peso queda el reparto actual;
@@ -195,30 +314,7 @@ REGLAS INNEGOCIABLES:
 6. Porciones en medidas caseras (taza, cucharada, plato, unidad).
 7. No incluyas diagnósticos médicos ni indicaciones farmacológicas.
 
-LISTAS DE REFERENCIA PARA NOMBRAR ALIMENTOS (referencia estándar de consultorio argentino; la Lic. Roldán puede reemplazarlas por las suyas):
-- Vegetales A: acelga, espinaca, lechuga, rúcula, escarola, apio, berenjena, brócoli, coliflor, repollo, pepino, rabanito, tomate, zapallito, zucchini, morrón, hinojo, champiñones, espárragos.
-- Vegetales B: zanahoria, remolacha, zapallo, calabaza, cebolla, puerro, chauchas, arvejas frescas, nabo, alcaucil, palmitos, brotes de soja.
-- Feculentos (van como carbohidrato, no como vegetal): papa, batata, choclo, mandioca.
-- Frutas: manzana, pera, naranja, mandarina, pomelo, kiwi, frutilla, arándanos, durazno, ciruela, damasco, ananá, melón, sandía; banana y uvas en porción moderada.
-- Carnes magras: lomo, nalga, peceto, cuadrada, bola de lomo, paleta, cuadril desgrasado, pechuga de pollo sin piel, pavo, solomillo de cerdo, merluza, brótola, lenguado, atún, salmón, caballa, sardinas.
-- Huevo y lácteos: huevo, yogur, leche, queso port salut, queso cottage, ricota magra.
-- Legumbres y cereales: lentejas, garbanzos, porotos, arvejas secas, avena, arroz integral, quinoa, pan integral, fideos integrales, polenta.
-- Grasas: aceite de oliva, palta, nueces, almendras, semillas de chía, lino, girasol y sésamo.
-Cuando un renglón del plan sea de un grupo, elegí de estas listas los alimentos concretos y nombralos.
-
-${(preferences?.dietType === "Vegetariano") ? `TIPO DE ALIMENTACIÓN: VEGETARIANO (referencia estándar; la Lic. Roldán puede ajustarlo).
-- Sin carnes ni pescados de ningún tipo. Sí huevo y lácteos.
-- La proteína de cada comida principal sale de: huevo, quesos, yogur, legumbres combinadas con cereal (lentejas con arroz, garbanzos con pan, porotos con polenta), tofu, seitán.
-- Cuidar el hierro: legumbres y vegetales de hoja acompañados de vitamina C (cítricos, tomate, morrón) en la misma comida.
-- Ningún ítem del plan, de los reemplazos ni de la lista de compras puede contener carne, pollo, pescado ni mariscos.` : ""}
-${(preferences?.dietType === "Vegano") ? `TIPO DE ALIMENTACIÓN: VEGANO (referencia estándar; la Lic. Roldán puede ajustarlo).
-- Sin ningún alimento de origen animal: ni carnes, ni pescados, ni huevo, ni lácteos, ni miel.
-- La proteína de cada comida principal sale de: legumbres combinadas con cereal, tofu, tempeh, seitán, frutos secos y semillas, bebidas y yogures vegetales con proteína.
-- Calcio: bebidas vegetales fortificadas, sésamo, tahini, almendras, brócoli, hojas verdes.
-- Hierro: legumbres y hojas verdes con vitamina C en la misma comida.
-- Omega 3: lino, chía, nueces.
-- En "supplements" incluí vitamina B12 con su motivo: en alimentación vegana es obligatoria.
-- Ningún ítem del plan, de los reemplazos ni de la lista de compras puede contener un producto de origen animal.` : ""}
+${modeloRoldan(preferences)}
 
 ASÍ ARMA EL PLAN LA LIC. ROLDÁN — ESTO ES LO MÁS IMPORTANTE DE TODO:
 

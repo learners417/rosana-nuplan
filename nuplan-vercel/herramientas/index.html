@@ -39,8 +39,12 @@
   .topbar .der{display:flex;align-items:center;gap:12px;}
   .empresa-sel{border:1px solid var(--line);background:var(--surface);border-radius:999px;
     padding:10px 16px;font-weight:500;color:var(--ink);cursor:pointer;max-width:220px;}
-  .salir{background:none;border:none;color:var(--muted);cursor:pointer;font-size:.95rem;padding:8px;}
+  .salir{background:none;border:none;color:var(--muted);cursor:pointer;font-size:.95rem;padding:8px;white-space:nowrap;}
   .salir:hover{color:var(--coral);}
+  @media(max-width:640px){
+    .topbar .row{height:auto;min-height:60px;padding:8px 0;flex-wrap:wrap;}
+    .topbar .der{gap:6px;} .empresa-sel{max-width:150px;padding:8px 12px;} .salir{padding:6px;font-size:.9rem;}
+  }
 
   /* ---------- pantallas ---------- */
   .pantalla{padding:48px 0 96px;animation:aparecer .25s ease;}
@@ -216,12 +220,50 @@
   footer{border-top:1px solid var(--line);padding:30px 0;text-align:center;}
   footer p{font-family:var(--mono);font-size:.8rem;color:var(--muted);margin:0;}
 
+  /* ---------- recomendaciones generales ---------- */
+  .reco{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-xl);padding:26px 26px;margin-bottom:16px;}
+  .reco h4{font-size:1.3rem;margin:0 0 6px;letter-spacing:-.02em;}
+  .reco .bajada{margin:0 0 14px;font-size:1.02rem;}
+  .reco h5{font-family:var(--mono);font-size:.8rem;color:var(--coral-dark);margin:18px 0 8px;font-weight:700;}
+  .reco ul{margin:0;padding-left:20px;} .reco li{margin-bottom:6px;line-height:1.5;}
+  .reco table{width:100%;border-collapse:collapse;font-size:.98rem;}
+  .reco td{padding:7px 10px 7px 0;border-bottom:1px solid var(--line);vertical-align:top;}
+  .reco td:last-child{font-family:var(--mono);font-weight:700;white-space:nowrap;text-align:right;color:var(--coral-dark);}
+  .reco tr:last-child td{border-bottom:none;}
+  .reco tr.total td{border-top:2px solid var(--line);font-weight:700;}
+  .reco .nota{margin-top:12px;}
+
+  /* ---------- hoja de impresión: encabezado y pie en cada página ---------- */
+  .hoja{width:100%;table-layout:fixed;border-collapse:collapse;border-spacing:0;}
+  .hoja>thead,.hoja>tfoot{display:none;}
+  .hoja>tbody>tr>td,.hoja>thead>tr>td,.hoja>tfoot>tr>td{padding:0;}
+
+  @page{margin:0;}
   @media print{
-    .topbar,.nav-pasos,.acciones-res,.btn,.pasos,footer,.no-imprimir{display:none !important;}
-    body{background:#fff;font-size:12pt;}
-    .pantalla{padding:0;}
-    .comida,.receta,.caja{break-inside:avoid;border-color:#ccc;}
-    .habito{background:#fff;border-color:#ccc;}
+    html{font-size:11.5pt;}
+    body{background:#fff;padding:0;}
+    .topbar,.nav-pasos,.acciones-res,.btn,.pasos,footer,.no-imprimir,.kicker,.cargando,.aviso,.quitar{display:none !important;}
+    #p-login>*,#p-inicio>*,#p-consulta>*{display:none !important;}
+    #p-planes>:not(#plan-5),#p-recetario>:not(#rec-resultado),#p-listado>:not(#l-resultado),#p-recomendaciones>:not(#reco-resultado){display:none !important;}
+    .pantalla{padding:0;animation:none;}
+    .wrap{max-width:none;padding:0;}
+    .hoja>thead{display:table-header-group;}
+    .hoja>tfoot{display:table-footer-group;}
+    .hoja>thead>tr>td{height:18mm;padding:0 14mm;vertical-align:bottom;}
+    .hoja>tfoot>tr>td{height:16mm;padding:0 14mm;vertical-align:top;}
+    .hoja>tbody>tr>td{padding:5mm 14mm;}
+    .hoja-cab,.hoja-pie{display:flex;justify-content:space-between;gap:12px;font-family:var(--mono);font-size:8pt;color:#6b7280;}
+    .hoja-cab{border-bottom:1px solid #d9d9d9;padding-bottom:5px;}
+    .hoja-pie{border-top:1px solid #d9d9d9;padding-top:5px;}
+    .cabecera-doc,.res-cabecera,.comida,.receta,.caja,.grupo,.habito,.dato,.tabla tr,.reco tr,.reco li{break-inside:avoid;}
+    .reco>.bajada{break-before:avoid;}
+    .cabecera-doc{break-after:avoid;}
+    h2,h3,h4,h5,.sub{break-after:avoid;}
+    .comida,.receta,.caja,.grupo,.habito,.dato,.reco{border-color:#ccc;}
+    .habito,.grupo,.dato,.comida .tip,.receta .tip{background:#fff;}
+    .grupos{grid-template-columns:1fr 1fr;}
+    .tabla-scroll{overflow:visible;} .tabla{min-width:0;}
+    .bajada{max-width:none;}
   }
 </style>
 </head>
@@ -275,8 +317,13 @@
     </button>
     <button class="tarjeta" onclick="abrirListado()">
       <span class="n">04</span>
-      <h3>Listado mensual</h3>
-      <p>Quiénes asistieron a sesión en el mes, por empresa. Para los informes que te piden.</p>
+      <h3>Informe mensual</h3>
+      <p>Cuántas consultas hubo en el mes y quiénes asistieron, por empresa. Lo que te piden las empresas.</p>
+    </button>
+    <button class="tarjeta" onclick="abrirRecomendaciones()">
+      <span class="n">05</span>
+      <h3>Recomendaciones</h3>
+      <p>Fibra, hidratación y ultraprocesados. Las mismas que van al final de cada plan, listas para imprimir o mandar.</p>
     </button>
   </div>
 </section>
@@ -463,6 +510,11 @@
       <label class="campo" style="margin-top:22px;">Otro micro hábito u objetivo específico
         <input type="text" id="d-habito-libre" placeholder="Escribilo con tus palabras"></label>
     </div>
+    <div class="caja">
+      <span class="sub">Recomendaciones generales al final del plan</span>
+      <p class="bajada" style="margin-bottom:10px;font-size:1rem;">Van las tres. Destildá la que no corresponda para esta paciente.</p>
+      <div class="chips" id="chips-reco"></div>
+    </div>
     <div class="nav-pasos">
       <button class="btn suave" onclick="irPaso(3)">Atrás</button>
       <button class="btn" id="btn-generar" onclick="generarPlan()">Generar el plan</button>
@@ -521,9 +573,9 @@
 
 <!-- ============ LISTADO ============ -->
 <section class="pantalla wrap oculto" id="p-listado">
-  <span class="kicker">Listado mensual</span>
-  <h2>¿Quiénes asistieron?</h2>
-  <p class="bajada">Personas con al menos una sesión en el mes, en la empresa que tenés seleccionada arriba. Sin ningún dato clínico.</p>
+  <span class="kicker">Informe mensual</span>
+  <h2>Consultas del mes</h2>
+  <p class="bajada">Cantidad de consultas y personas atendidas en el mes, en la empresa que tenés seleccionada arriba. Sin ningún dato clínico.</p>
   <div class="caja">
     <div class="grid2">
       <label class="campo">Mes<input type="month" id="l-mes"></label>
@@ -533,6 +585,15 @@
   </div>
   <div id="l-resultado"></div>
   <div class="nav-pasos"><button class="btn suave" onclick="irA('inicio')">Volver</button></div>
+</section>
+
+<!-- ============ RECOMENDACIONES ============ -->
+<section class="pantalla wrap oculto" id="p-recomendaciones">
+  <span class="kicker">Recomendaciones</span>
+  <h2>Fibra, hidratación y ultraprocesados</h2>
+  <p class="bajada">Las tres recomendaciones generales, tal cual salen al final de cada plan. Imprimilas o guardalas en PDF para entregar.</p>
+  <div id="reco-resultado"></div>
+  <div class="nav-pasos"><button class="btn suave" onclick="irA('inicio')">Volver</button><button class="btn" onclick="window.print()">Imprimir o guardar PDF</button></div>
 </section>
 
 <footer><p>Lic. Rosana Roldán · NuPlan&trade; · Herramientas</p></footer>
@@ -588,6 +649,127 @@ var MICRO_HABITOS = [
   "Dormir 7 horas"
 ];
 
+/* Recomendaciones generales. Texto fijo, no lo escribe la IA. Se editan acá y en ningún otro lado. */
+var RECOMENDACIONES = [
+  { clave:"fibra", chip:"Fibra", titulo:"Sumar fibra: 25 gramos por día",
+    bajada:"La fibra te da saciedad, ordena el intestino y mantiene la energía pareja durante el día. La recomendación para una persona adulta es de 25 gramos por día. La mayoría no llega ni a la mitad.",
+    bloques:[
+      { t:"Cuánta fibra tiene cada porción", tabla:[
+        ["Lentejas cocidas · 1 taza","15 g"],
+        ["Garbanzos cocidos · 1 taza","12 g"],
+        ["Pera mediana, con cáscara","5,5 g"],
+        ["Brócoli cocido · 1 taza","5 g"],
+        ["Manzana mediana, con cáscara","4,5 g"],
+        ["Chía · 1 cucharada","4 g"],
+        ["Avena · ½ taza","4 g"],
+        ["Almendras · un puñado (30 g)","3,5 g"],
+        ["Banana mediana","3 g"],
+        ["Pan integral · 1 rebanada","2 g"]
+      ]},
+      { t:"Un día que llega a los 25", tabla:[
+        ["Desayuno · avena ½ taza con 1 banana","7 g"],
+        ["Almuerzo · ½ taza de garbanzos en la ensalada y 1 taza de brócoli","11 g"],
+        ["Merienda · 1 pera con cáscara y un puñado de almendras","9 g"],
+        ["Cena · 2 rebanadas de pan integral","4 g"],
+        ["Total del día","31 g"]
+      ], total:true },
+      { t:"Cómo sumarla sin que te hinche", lista:[
+        "De a poco: una porción nueva por semana. Si la subís de golpe, te hincha.",
+        "Con más agua. La fibra sin agua hace el efecto contrario.",
+        "La fruta, con cáscara. Ahí está la mitad de la fibra.",
+        "Legumbres tres veces por semana: en ensalada, en guiso, en hamburguesas caseras.",
+        "Integral en lugar de refinado: pan, arroz, fideos, galletas."
+      ]}
+    ],
+    nota:"Valores aproximados de tablas de composición de alimentos."
+  },
+  { clave:"hidratacion", chip:"Hidratación", titulo:"Tomar agua antes de tener sed",
+    bajada:"La sed llega tarde: cuando aparece, ya te falta agua. La base para una persona adulta son 8 vasos por día, unos 2 litros. Si hacés actividad física, hace calor o trabajás muchas horas seguidas, necesitás más.",
+    bloques:[
+      { t:"Hábitos que funcionan en un día de trabajo", lista:[
+        "Un vaso grande al despertar, antes del café.",
+        "Una botella de 1 litro a la vista, en el escritorio. La meta es llenarla dos veces en el día.",
+        "Un vaso antes de cada comida.",
+        "Una alarma cada dos horas hasta que salga solo.",
+        "Si vas a tomar café o mate, un vaso de agua al lado."
+      ]},
+      { t:"Si el agua sola te aburre", lista:[
+        "Rodajas de limón, naranja o pepino. Hojas de menta. Jengibre rallado.",
+        "Té o mate cocido frío, sin azúcar.",
+        "Agua con gas.",
+        "Lo que no suma: gaseosas, jugos y aguas saborizadas de paquete. Traen azúcar o edulcorante y no reemplazan al agua."
+      ]},
+      { t:"Cómo saber si vas bien", lista:[
+        "Orina clara, casi transparente: vas bien. Oscura: te falta agua.",
+        "Dolor de cabeza a la tarde, cansancio y ganas de picar algo dulce muchas veces son sed, no hambre.",
+        "Embarazo, lactancia, calor, trabajo físico o turnos largos: sumá dos vasos más."
+      ]}
+    ],
+    nota:"Referencia: Guías Alimentarias para la Población Argentina, 8 vasos de agua por día."
+  },
+  { clave:"ultraprocesados", chip:"Ultraprocesados", titulo:"Medio plato de verduras y menos ultraprocesados",
+    bajada:"Comida de verdad la mayor parte del tiempo. No hace falta prohibir nada: hace falta que lo que entra a tu casa sea, en su mayoría, comida y no productos.",
+    bloques:[
+      { t:"El plato, en almuerzo y cena", lista:[
+        "La mitad del plato, verduras: crudas o cocidas, de todos los colores, o la proporción que marque tu plan.",
+        "Un cuarto, proteína: carne, pollo, pescado, huevo o legumbres.",
+        "Un cuarto, carbohidrato: papa, batata, arroz, fideos, pan.",
+        "Una cucharada de aceite crudo, o palta, o un puñado de frutos secos."
+      ]},
+      { t:"Cómo reconocer un ultraprocesado", lista:[
+        "Tiene octógonos negros en el paquete: exceso en azúcares, en sodio, en grasas. Cuantos menos sellos, mejor. Sin sellos, mejor todavía.",
+        "La lista de ingredientes es larga y tiene nombres que no reconocés.",
+        "Viene listo para comer, dura meses y no se parece a nada que crezca en una planta o salga de un animal."
+      ]},
+      { t:"Colaciones que sí", lista:[
+        "Una fruta con un puñado de frutos secos.",
+        "Yogur natural, sin azúcar.",
+        "Un huevo duro.",
+        "Zanahoria o apio en bastones con hummus.",
+        "Una tostada integral con queso.",
+        "Garbanzos tostados al horno."
+      ]},
+      { t:"La regla que más ayuda", lista:[
+        "La decisión se toma en el súper, no a las once de la noche. Lo que no entra a tu casa, no se come.",
+        "Comprá con lista y sin hambre.",
+        "Tené a la vista lo que querés comer: fruta lavada, verduras cortadas, huevos duros en la heladera."
+      ]}
+    ],
+    nota:"Los sellos de advertencia son los de la Ley 27.642 de Promoción de la Alimentación Saludable."
+  }
+];
+function recoPorClave(k){ return RECOMENDACIONES.filter(function(r){ return r.clave===k; })[0]||null; }
+function htmlRecomendacion(r){
+  var h='<div class="reco"><h4>'+esc(r.titulo)+'</h4><p class="bajada">'+esc(r.bajada)+'</p>';
+  r.bloques.forEach(function(b){
+    h+='<h5>'+esc(b.t)+'</h5>';
+    if(b.tabla){
+      h+='<table>'+b.tabla.map(function(f,i){
+        var ultima = b.total && i===b.tabla.length-1;
+        return '<tr'+(ultima?' class="total"':'')+'><td>'+esc(f[0])+'</td><td>'+esc(f[1])+'</td></tr>';
+      }).join("")+'</table>';
+    }
+    if(b.lista) h+='<ul>'+b.lista.map(function(x){ return '<li>'+esc(x)+'</li>'; }).join("")+'</ul>';
+  });
+  if(r.nota) h+='<p class="nota">'+esc(r.nota)+'</p>';
+  return h+'</div>';
+}
+function textoRecomendacion(r){
+  var partes=[r.bajada];
+  r.bloques.forEach(function(b){
+    var items = b.tabla ? b.tabla.map(function(f){ return f[0]+": "+f[1]; }) : b.lista;
+    partes.push(b.t+": "+items.join(" · ")+".");
+  });
+  if(r.nota) partes.push(r.nota);
+  return partes.join(" ");
+}
+function hoja(titulo, contenido){
+  var hoy=new Date().toLocaleDateString("es-AR",{day:"2-digit",month:"2-digit",year:"numeric"});
+  return '<table class="hoja"><thead><tr><td><div class="hoja-cab"><span>NuPlan&trade; &middot; Lic. Rosana Rold&aacute;n</span><span>'+esc(titulo)+' &middot; '+hoy+'</span></div></td></tr></thead>'+
+    '<tfoot><tr><td><div class="hoja-pie"><span>Lic. Rosana Rold&aacute;n &middot; Nutricionista</span><span>@lic.rosanaroldan</span></div></td></tr></tfoot>'+
+    '<tbody><tr><td>'+contenido+'</td></tr></tbody></table>';
+}
+
 /* =====================================================================
    ESTADO
    ===================================================================== */
@@ -600,7 +782,7 @@ var rec = { paciente:null, info:null, cantidades:{}, dieta:"Normal", clinicas:[]
 function $(id){ return document.getElementById(id); }
 function esc(s){ return String(s==null?"":s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];}); }
 function irA(nombre){
-  ["login","inicio","consulta","planes","recetario","listado"].forEach(function(p){ $("p-"+p).classList.toggle("oculto", p!==nombre); });
+  ["login","inicio","consulta","planes","recetario","listado","recomendaciones"].forEach(function(p){ $("p-"+p).classList.toggle("oculto", p!==nombre); });
   window.scrollTo(0,0);
 }
 
@@ -711,6 +893,7 @@ function limpiarFormularioPlan(){
   $("campo-embarazo").classList.add("oculto"); $("d-embarazo").value="";
   $("d-restricciones").value=""; $("d-objetivos").value=""; $("d-habito-libre").value="";
   $("d-ocultar").checked=false; $("d-manual").value=""; $("d-actividad").value=ACTIVIDAD[0].value;
+  $("chips-reco").querySelectorAll(".chip").forEach(function(b){ b.classList.add("on"); });
 }
 function deselegirPaciente(){
   plan.paciente=null; plan.info=null; $("paciente-elegido").classList.add("oculto");
@@ -861,7 +1044,8 @@ function preferenciasActuales(){
     manualCalories: $("d-manual").value||"",
     plate: plan.platoManual ? plan.plato : null,
     microHabits: habitos,
-    specificObjectives: []
+    specificObjectives: [],
+    generalRecommendations: RECOMENDACIONES.filter(function(r){ return chipsElegidos("chips-reco").indexOf(r.chip)!==-1; }).map(function(r){ return r.clave; })
   };
 }
 async function generarPlan(){
@@ -870,13 +1054,20 @@ async function generarPlan(){
   irPaso(5);
   $("plan-cargando").classList.remove("oculto"); $("plan-error").textContent=""; $("plan-resultado").innerHTML="";
   try{
+    var prefApi=Object.assign({}, plan.pref); delete prefApi.generalRecommendations; // texto fijo, no lo escribe la IA
     var r = await fetch("/api/generate-plan",{method:"POST",headers:{"Content-Type":"application/json"},
-      body:JSON.stringify({patientInfo:plan.info, metrics:plan.metricas, preferences:plan.pref})});
+      body:JSON.stringify({patientInfo:plan.info, metrics:plan.metricas, preferences:prefApi})});
     var data = await r.json();
     if(!r.ok||data.error) throw new Error(data.error||("HTTP "+r.status));
     var litros=parseFloat((plan.info.weight*35/1000).toFixed(1));
     data.hydrationPlan=data.hydrationPlan||{}; data.hydrationPlan.targetLiters=litros; data.hydrationPlan.equivalentGlasses=Math.round(litros*4);
     if(plan.platoManual) data.healthyPlate={proteinsPct:plan.plato.prot, carbsPct:plan.plato.carb, fatsPct:0, vegetablesPct:plan.plato.veg};
+    // las recomendaciones generales viajan dentro del mismo campo que la app ya muestra; "general" marca cuáles son
+    var generales=(plan.pref.generalRecommendations||[]).map(recoPorClave).filter(Boolean);
+    if(generales.length){
+      data.recommendationsAndRecipes=(Array.isArray(data.recommendationsAndRecipes)?data.recommendationsAndRecipes:[]).filter(function(x){ return x && !x.general; })
+        .concat(generales.map(function(r){ return {title:r.titulo, content:textoRecomendacion(r), general:r.clave}; }));
+    }
     plan.resultado=data;
     pintarPlan(data);
     await guardarDocumento({type:"meal_plan", patientName:nombreCompleto(plan.paciente), patientId:plan.paciente.id,
@@ -888,12 +1079,16 @@ async function generarPlan(){
   }finally{ $("plan-cargando").classList.add("oculto"); }
 }
 function pintarPlan(d){
-  var h='<div class="res-cabecera"><div><h2>'+esc(nombreCompleto(plan.paciente))+'</h2><p class="bajada" style="margin:0;">'+esc(d.planObjective||"")+'</p></div>'+
+  var h='<div class="res-cabecera cabecera-doc"><div><h2>'+esc(nombreCompleto(plan.paciente))+'</h2><p class="bajada" style="margin:0;">'+esc(d.planObjective||"")+'</p></div>'+
     '<div class="dato"><span class="l">Objetivo</span><span class="v">'+((plan.pref.hideCalories||plan.pref.intolerances.indexOf('Embarazo y Lactancia')!==-1)?"—":plan.metricas.calories+' <small>kcal</small>')+'</span></div></div>';
   (d.dailyPlan||[]).forEach(function(c){
     h+='<div class="comida"><span class="tipo">'+esc(c.type)+'</span><div class="hora">'+esc(c.title||"")+'</div><ul>'+
       (c.items||[]).map(function(i){return '<li>'+esc(i)+'</li>';}).join("")+'</ul>'+(c.tip?'<p class="tip">'+esc(c.tip)+'</p>':'')+'</div>';
   });
+  if(d.sampleDayMenu&&d.sampleDayMenu.length){
+    h+='<div class="bloque-res"><h3>Menú modelo del día</h3>'+d.sampleDayMenu.map(function(m){
+      return '<div class="comida"><span class="tipo">'+esc(m.meal)+'</span><p style="margin:6px 0 0;font-size:1.08rem;">'+esc(m.dish)+'</p></div>';}).join("")+'</div>';
+  }
   if(d.microHabits&&d.microHabits.length){
     h+='<div class="bloque-res"><h3>Micro hábitos para empezar</h3>'+d.microHabits.map(function(m,i){
       return '<div class="habito"><span class="num">'+(i+1)+'</span><div><b>'+esc(m.habit)+'</b><span>'+esc(m.tip||"")+'</span></div></div>';}).join("")+'</div>';
@@ -911,8 +1106,10 @@ function pintarPlan(d){
     h+='<div class="bloque-res"><h3>Hidratación · '+hp.targetLiters+' litros · '+hp.equivalentGlasses+' vasos</h3><ul class="lista-simple">'+
       [hp.wakeupTip,hp.workDayTip,hp.nightTip].filter(Boolean).map(function(x){return '<li>'+esc(x)+'</li>';}).join("")+'</ul></div>';
   }
-  if(d.recommendationsAndRecipes&&d.recommendationsAndRecipes.length){
-    h+='<div class="bloque-res"><h3>Recomendaciones y recetas</h3>'+d.recommendationsAndRecipes.map(function(r){
+  var recomendaciones=(d.recommendationsAndRecipes||[]).filter(function(r){ return r && !r.general; });
+  var generales=(d.recommendationsAndRecipes||[]).filter(function(r){ return r && r.general; }).map(function(r){ return recoPorClave(r.general); }).filter(Boolean);
+  if(recomendaciones.length){
+    h+='<div class="bloque-res"><h3>Recomendaciones y recetas</h3>'+recomendaciones.map(function(r){
       return '<div class="comida"><b>'+esc(r.title)+'</b><p style="margin:8px 0 0;">'+esc(r.content)+'</p></div>';}).join("")+'</div>';
   }
   if(d.substitutes&&d.substitutes.length){
@@ -923,10 +1120,14 @@ function pintarPlan(d){
     h+='<div class="bloque-res"><h3>Suplementos sugeridos</h3><ul class="lista-simple">'+d.supplements.map(function(s){
       return '<li><b>'+esc(s.name)+'</b> · '+esc(s.dosage)+' · '+esc(s.reason)+'</li>';}).join("")+'</ul></div>';
   }
+  if(generales.length){
+    h+='<div class="bloque-res"><h3>Recomendaciones generales</h3>'+generales.map(htmlRecomendacion).join("")+'</div>';
+  }
   if(d.shoppingList){ var sl=d.shoppingList, ns={carbsAndLegumes:"Carbohidratos y legumbres",proteins:"Proteínas",dairy:"Lácteos",vegetablesAndFruits:"Vegetales y frutas",fats:"Grasas",canned:"Enlatados",frozen:"Congelados"};
     h+='<div class="bloque-res"><h3>Lista de compras</h3><div class="grupos">'+Object.keys(ns).map(function(k){
       return (sl[k]&&sl[k].length)?'<div class="grupo"><b>'+ns[k]+'</b><ul>'+sl[k].map(function(x){return '<li>'+esc(x)+'</li>';}).join("")+'</ul></div>':'';}).join("")+'</div></div>';
   }
+  h=hoja("Plan alimentario · "+nombreCompleto(plan.paciente), h);
   h+='<div class="acciones-res"><button class="btn" onclick="window.print()">Imprimir o guardar PDF</button>'+
      '<button class="btn ghost" onclick="irPaso(4)">Ajustar y volver a generar</button>'+
      '<button class="btn suave" onclick="irA(\'inicio\')">Volver al inicio</button></div>'+
@@ -1012,7 +1213,7 @@ async function generarRecetas(){
   finally{ $("rec-cargando").classList.add("oculto"); $("btn-recetas").disabled=false; }
 }
 function pintarRecetas(d){
-  var h='<div class="bloque-res"><h2>'+esc(d.headerTitle||"Recetario")+'</h2><p class="bajada">'+esc(d.headerNote||"")+'</p></div>';
+  var h='<div class="bloque-res cabecera-doc"><h2>'+esc(d.headerTitle||"Recetario")+'</h2><p class="bajada">'+esc(d.headerNote||"")+'</p></div>';
   (d.recipes||[]).forEach(function(r,i){
     h+='<div class="receta" id="rec-'+i+'"><button class="quitar no-imprimir" onclick="quitarReceta('+i+')">Quitar</button><h4>'+esc(r.title)+'</h4>'+
       '<div class="meta"><span>'+esc(r.prepTime||"")+'</span><span>'+esc(r.servings||"")+'</span><span>'+esc(r.difficulty||"")+'</span></div>'+
@@ -1020,6 +1221,7 @@ function pintarRecetas(d){
       '<div><b class="t">Preparación</b><ol>'+(r.preparation||[]).map(function(x){return '<li>'+esc(x)+'</li>';}).join("")+'</ol></div></div>'+
       (r.nutritionalHighlight?'<p class="tip"><b>Aporte:</b> '+esc(r.nutritionalHighlight)+'</p>':'')+(r.tip?'<p class="tip">'+esc(r.tip)+'</p>':'')+'</div>';
   });
+  h=hoja("Recetario"+(rec.paciente?" · "+nombreCompleto(rec.paciente):""), h);
   h+='<div class="acciones-res"><button class="btn" onclick="window.print()">Imprimir o guardar PDF</button><button class="btn suave" onclick="irA(\'inicio\')">Volver al inicio</button></div><p class="aviso ok no-imprimir" id="rec-guardado"></p>';
   $("rec-resultado").innerHTML=h;
 }
@@ -1127,11 +1329,24 @@ async function cargarListado(){
   var nombreMes=new Date(y,m-1,1).toLocaleDateString("es-AR",{month:"long",year:"numeric"});
   $("l-aviso").textContent="";
   if(!filas.length){ $("l-resultado").innerHTML='<div class="caja"><p style="margin:0;">Nadie tuvo sesión en '+esc(empresa)+' en '+esc(nombreMes)+'.</p></div>'; return; }
-  var h='<div class="caja"><h3>'+esc(empresa)+' · '+esc(nombreMes)+'</h3><p class="resumen-listado">'+filas.length+' persona'+(filas.length===1?"":"s")+' · '+(r.data||[]).length+' sesi'+((r.data||[]).length===1?'ón':'ones')+'</p>'+
+  var totalSes=(r.data||[]).length;
+  var h='<div class="caja"><h3>'+esc(empresa)+' · '+esc(nombreMes)+'</h3>'+
+    '<div class="grid2" style="margin-top:18px;">'+
+      '<div class="dato"><span class="l">Consultas del mes</span><span class="v">'+totalSes+'</span></div>'+
+      '<div class="dato"><span class="l">Personas atendidas</span><span class="v">'+filas.length+'</span></div>'+
+    '</div>'+
     '<div class="tabla-scroll"><table class="tabla"><thead><tr><th>#</th><th>Nombre</th><th>Sesiones</th><th>Fechas</th></tr></thead><tbody>'+
     filas.map(function(f,i){ return '<tr><td class="n">'+(i+1)+'</td><td>'+esc(f.n)+'</td><td class="n">'+f.veces+'</td><td class="n">'+(f.fechas.length?f.fechas.map(function(x){return x.slice(8,10)+"/"+x.slice(5,7);}).join(", "):"—")+'</td></tr>'; }).join("")+
-    '</tbody></table></div><div class="acciones-res"><button class="btn" onclick="window.print()">Imprimir o guardar PDF</button></div></div>';
-  $("l-resultado").innerHTML=h;
+    '</tbody></table></div></div>';
+  $("l-resultado").innerHTML=hoja("Informe mensual · "+empresa, h)+'<div class="acciones-res"><button class="btn" onclick="window.print()">Imprimir o guardar PDF</button></div>';
+}
+
+/* =====================================================================
+   RECOMENDACIONES · pantalla propia, para imprimir sin plan
+   ===================================================================== */
+function abrirRecomendaciones(){
+  irA("recomendaciones");
+  $("reco-resultado").innerHTML=hoja("Recomendaciones generales", RECOMENDACIONES.map(htmlRecomendacion).join(""));
 }
 
 /* =====================================================================
@@ -1145,6 +1360,8 @@ async function cargarListado(){
   armarChips("chips-clinicas", CLINICAS, false, recalcular);
   armarChips("chips-dieta", DIETAS, true); marcarChip("chips-dieta","Normal");
   armarChips("chips-habitos", MICRO_HABITOS, false);
+  armarChips("chips-reco", RECOMENDACIONES.map(function(r){ return r.chip; }), false);
+  $("chips-reco").querySelectorAll(".chip").forEach(function(b){ b.classList.add("on"); });
   armarChips("chips-dieta-rec", DIETAS, true); marcarChip("chips-dieta-rec","Normal");
   armarChips("chips-clinicas-rec", CLINICAS, false);
   armarEscala("c-adherencia", ESCALAS.adherencia); armarEscala("c-frutas", ESCALAS.frutas);

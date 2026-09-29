@@ -67,6 +67,141 @@ const ESQUEMA = `{
 
 
 // ============================================================================
+// CATÁLOGO COMPLETO POR GRUPO — pedido de la Lic. Roldán (29 sep 2026):
+// en "Grupos de alimentos" tienen que figurar TODAS las posibilidades de cada
+// grupo, para que la paciente sepa todo lo que puede comer. Se edita ACÁ.
+// ============================================================================
+function perfilDeDieta(preferences = {}) {
+  const dieta = String(preferences?.dietType || "Normal");
+  const etiquetas = Array.isArray(preferences?.intolerances) ? preferences.intolerances : [];
+  return {
+    etiquetas,
+    celiaco: etiquetas.some((e) => /gluten|cel[ií]ac|tacc/i.test(String(e))),
+    vegetariano: dieta === "Vegetariano",
+    vegano: dieta === "Vegano",
+  };
+}
+
+function catalogoDeGrupos(preferences = {}) {
+  const { celiaco, vegetariano, vegano } = perfilDeDieta(preferences);
+
+  const legumbres = ["lentejas", "garbanzos", "porotos", "arvejas secas", "habas", "soja"];
+  const tuberculos = ["papa", "batata", "boniato", "choclo", "mandioca"];
+  const cerealesComunes = [
+    "arroz integral", "arroz yamaní", "arroz parboil", "avena arrollada", "polenta", "quinoa",
+    "trigo burgol", "cous-cous", "pastas de trigo candeal", "pastas integrales", "pastas de arroz",
+    "ravioles", "ñoquis", "pan integral", "pan árabe", "pan de salvado", "galletitas integrales o de salvado",
+    "galletas de arroz", "tostadas de gluten", "copos de cereal sin azúcar", "granola", "barritas de cereal",
+    "arepa de harina de maíz", "masa de tarta o empanadas",
+  ];
+  const cerealesSinTacc = [
+    "arroz integral", "arroz yamaní", "arroz parboil", "avena certificada sin TACC", "polenta (harina de maíz sin TACC)",
+    "quinoa", "trigo sarraceno", "mijo", "amaranto", "pastas sin TACC (de arroz, de maíz o premezcla)",
+    "ravioles o ñoquis sin TACC", "pan sin TACC", "galletitas sin TACC", "galletas de arroz", "copos de arroz",
+    "granola sin TACC", "barritas sin TACC", "arepa de harina de maíz", "masa de tarta sin TACC",
+  ];
+
+  const carnes = [
+    "lomo", "nalga", "peceto", "cuadrada", "cuadril", "colita de cuadril", "bola de lomo", "bife angosto",
+    "palomita", "carne picada magra", "solomillo de cerdo", "carré de cerdo deshuesado", "lomo de cerdo",
+    "paleta de cerdo", "pechuga de pollo sin piel", "pata y muslo de pollo sin piel", "pavo",
+    "merluza", "brótola", "lenguado", "abadejo", "salmón", "trucha", "atún al natural", "caballa al natural",
+    "jurel al natural", "sardinas al natural", "kani kama", "mariscos (camarones, mejillones, calamar)",
+  ];
+  const huevos = ["huevos", "claras de huevo"];
+  const lacteos = [
+    "leche descremada", "yogur descremado", "queso untable descremado", "queso port salut descremado",
+    "ricota magra", "queso fresco descremado", "queso crema 0%",
+  ];
+  const lechesVegetales = ["leche de soja", "leche de almendras", "leche de coco", "yogur de soja"];
+  const proteVegetal = ["tofu", "soja texturizada", ...(celiaco ? [] : ["seitán"]), "milanesas de soja", "medallones o hamburguesas de legumbres"];
+
+  const proteins = vegano
+    ? [...proteVegetal, ...legumbres, ...lechesVegetales]
+    : vegetariano
+    ? [...huevos, ...lacteos, "leche de soja", "leche de almendras", ...proteVegetal]
+    : [...carnes, ...huevos, ...lacteos, ...proteVegetal];
+
+  return {
+    carbs: [...legumbres, ...tuberculos, ...(celiaco ? cerealesSinTacc : cerealesComunes)],
+    proteins,
+    fats: [
+      "aceite de oliva", "aceite de soja", "aceite de maíz", "palta", "aceitunas", "almendras", "nueces",
+      "avellanas", "castañas de cajú", "maní", "pasta de maní", "semillas de chía", "semillas de lino",
+      "semillas de sésamo", "semillas de girasol", "semillas de zapallo",
+    ],
+    vegetablesA: [
+      "acelga", "achicoria", "apio", "berro", "rúcula", "berenjena", "brócoli", "coliflor", "escarola",
+      "espárrago", "espinaca", "hinojo", "lechuga", "pepino", "pimiento", "rábano", "rabanito", "radicheta",
+      "repollo", "repollito de Bruselas", "tomate", "zapallito", "champiñones",
+    ],
+    vegetablesB: [
+      "alcaucil", "arvejas frescas", "brotes de soja", "cebolla", "cebolla de verdeo", "chaucha", "nabo",
+      "palmitos", "puerro", "remolacha", "zapallo", "calabaza", "zanahoria",
+    ],
+    fruits: [
+      "ananá", "arándanos", "cereza", "ciruela", "damasco", "durazno", "frutilla", "kiwi", "lima", "limón",
+      "mandarina", "manzana", "melón", "naranja", "pera", "pomelo", "sandía", "banana (con moderación)",
+      "uvas (con moderación)", "higos (con moderación)",
+    ],
+  };
+}
+
+const NOMBRES_DE_GRUPO = {
+  carbs: "Carbohidratos", proteins: "Proteínas", fats: "Grasas",
+  vegetablesA: "Vegetales A", vegetablesB: "Vegetales B", fruits: "Frutas",
+};
+
+function bloqueCatalogo(preferences = {}) {
+  const cat = catalogoDeGrupos(preferences);
+  return [
+    `GRUPOS DE ALIMENTOS ("foodGroupsDetail"): la paciente usa esta parte para saber TODO lo que puede comer. Partí del catálogo completo de abajo y devolvé, en cada grupo, todos los alimentos que esta paciente puede consumir, con estos mismos nombres. Quitá únicamente los que estén prohibidos por sus guías clínicas, alergias, rechazos o tipo de alimentación. No resumas, no elijas "los principales", no dejes un grupo con 3 o 4 alimentos. Podés sumar alimentos que no figuren si son adecuados para ella.`,
+    ...Object.keys(cat).map((k) => `- ${NOMBRES_DE_GRUPO[k]}: ${cat[k].join(", ")}.`),
+  ].join("\n");
+}
+
+// Después de generar: si la paciente no tiene condiciones que exijan sacar
+// alimentos más allá de lo que el catálogo ya contempla, se completa cada grupo
+// con el catálogo entero (menos los términos vetados) y se suma lo que la IA
+// haya agregado. Con otras patologías o restricciones libres, manda la IA.
+const SEGURAS_PARA_COMPLETAR = /gluten|cel[ií]ac|tacc|deportista|menopausia|embarazo|lactancia|constipaci|anemia/i;
+
+function normalizar(s) {
+  return String(s || "").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/\s+/g, " ").trim();
+}
+
+function unirListas(base, extra) {
+  const out = base.slice();
+  const claves = out.map(normalizar);
+  for (const item of extra) {
+    const n = normalizar(item);
+    if (!n) continue;
+    const repetido = claves.some((c) => c === n || (n.length >= 4 && c.length >= 4 && (c.includes(n) || n.includes(c))));
+    if (!repetido) { out.push(String(item).trim()); claves.push(n); }
+  }
+  return out;
+}
+
+function completarGrupos(plan, preferences = {}) {
+  const { etiquetas } = perfilDeDieta(preferences);
+  const deLaIA = plan.foodGroupsDetail && typeof plan.foodGroupsDetail === "object" ? plan.foodGroupsDetail : {};
+  const limpio = (lista) => (Array.isArray(lista) ? lista : []).map((x) => String(x ?? "").trim()).filter(Boolean);
+  const restricciones = String(preferences?.foodRestrictions || "").trim();
+  const puedeCompletar = !restricciones && etiquetas.every((e) => SEGURAS_PARA_COMPLETAR.test(String(e)));
+
+  const cat = catalogoDeGrupos(preferences);
+  const out = {};
+  const permitido = (item) => !coladosEnElPlan(etiquetas, item).length;
+  for (const k of Object.keys(cat)) {
+    const propio = limpio(deLaIA[k]).filter(permitido);
+    if (!puedeCompletar) { out[k] = propio; continue; }
+    out[k] = unirListas(cat[k].filter(permitido), propio);
+  }
+  plan.foodGroupsDetail = out;
+  return plan;
+}
+
+// ============================================================================
 // MODELO DE PLAN DE LA LIC. ROLDÁN — transcripto de sus documentos (sep 2026):
 // "Plan alimentario hipocalórico 1500 HIPER PRO" (modelo normal),
 // "Plan alimentario vegetariano", "Plan vegano" y "Plan normocalórico celíaco".
@@ -175,7 +310,7 @@ Proteínas: omelette de 3 claras con queso crema descremado 0% y champiñón o a
     ? `SUPLEMENTOS SEGÚN EL MODELO DE LA LIC. ROLDÁN: en "supplements" incluí vitamina B12 (obligatoria en este modelo) y "evaluar niveles de vitamina D y suplementar si corresponde". Vitamina D: exposición solar entre las 10 y las 16 hs, sin protector en cara, cuello o brazos, sumando 40 a 50 minutos por semana. Evitar infusiones (té, mate, café) cerca de las comidas principales, para no frenar la absorción del hierro.`
     : `TIPS DE LA LIC. ROLDÁN para "recommendationsAndRecipes": calcular la cantidad semanal de frutas y verduras para la compra, evitando desperdicios; disponer de un momento en la semana para preparar las comidas (lavar y hervir vegetales, legumbres, pastas o arroz y tenerlos listos en la heladera); disponer de carnes en porciones chicas freezadas, listas para descongelar en el momento.`;
 
-  return [listaCompras, porcionesCarbos, porcionesProte, desayunos, vegetales, ideas, suplementos,
+  return [listaCompras, porcionesCarbos, porcionesProte, desayunos, vegetales, ideas, suplementos, bloqueCatalogo(preferences),
     `LISTA DE COMPRAS DE SALIDA ("shoppingList"): completala con los mismos grupos y los mismos alimentos de la lista de compras de arriba, alimento por alimento, nunca el nombre del grupo solo. "carbsAndLegumes" = grupo carbohidratos; "proteins" = grupo proteínas sin los lácteos; "dairy" = lácteos${vegano ? " (vacío en el modelo vegano: van las leches y yogures vegetales en proteins)" : ""}; "vegetablesAndFruits" = grupo fibras completo, vegetales A, vegetales B y frutas; "fats" = grupo grasas; "canned" = enlatados; "frozen" = congelados.`,
     `MENÚ MODELO DEL DÍA ("sampleDayMenu"): un día completo y concreto, con platos reales tomados de las ideas de menú de arriba y con las porciones de este plan: desayuno, media mañana, almuerzo, merienda y cena. Es lo que la paciente se lleva impreso para saber qué comer mañana.`
   ].join("\n\n");
@@ -455,6 +590,7 @@ Rehacé el plan completo sin ninguno de esos alimentos, en ninguna comida, ni co
   if (!plan.healthyPlate || typeof plan.healthyPlate !== "object") plan.healthyPlate = {};
   if (!Array.isArray(plan.dailyPlan)) plan.dailyPlan = [];
   plan.supplements = limpiarSuplementos(plan.supplements, datos?.preferences);
+  completarGrupos(plan, datos?.preferences);
 
   const restantes = coladosEnElPlan(etiquetas, textoDelPlan(plan));
   if (restantes.length) {
@@ -477,4 +613,4 @@ export async function POST(req) {
 }
 
 // Exportado solo para pruebas locales.
-export { construirPrompt, limpiarSuplementos };
+export { construirPrompt, limpiarSuplementos, catalogoDeGrupos, completarGrupos };

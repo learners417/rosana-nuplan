@@ -233,6 +233,26 @@
   .reco tr.total td{border-top:2px solid var(--line);font-weight:700;}
   .reco .nota{margin-top:12px;}
 
+  /* ---------- edición del plan ---------- */
+  .solo-edicion{display:none;}
+  .editando .solo-edicion{display:inline-flex;align-items:center;}
+  .editando [data-ruta],.editando [data-texto]{outline:2px dashed var(--accent);outline-offset:2px;border-radius:6px;min-width:2.5em;cursor:text;}
+  .editando [data-ruta]:focus,.editando [data-texto]:focus{outline:2px solid var(--coral);background:#fff;}
+  .editando [data-ruta]:empty::before,.editando [data-texto]:empty::before{content:attr(data-vacio);color:#b9bfc7;}
+  .tip[data-ruta]:empty{display:none;} .editando .tip[data-ruta]:empty{display:block;}
+  li.hid:has(> [data-ruta]:empty){display:none;} .editando li.hid:has(> [data-ruta]:empty){display:list-item;}
+  .grupo:has(> ul[data-lista]:empty){display:none;} .editando .grupo:has(> ul[data-lista]:empty){display:block;}
+  .quitar-item{margin-left:8px;border:none;background:none;color:var(--muted);cursor:pointer;font-size:1.05rem;line-height:1;padding:0 4px;vertical-align:middle;}
+  .quitar-item:hover{color:var(--coral);}
+  .agregar-item{margin-top:8px;background:none;border:1px dashed var(--accent);color:var(--coral-dark);border-radius:999px;padding:6px 14px;font-size:.9rem;cursor:pointer;font-family:var(--body);}
+  .agregar-item:hover{background:var(--bg);}
+  .agregar-comida{margin:0 0 18px;background:var(--surface);border:2px dashed var(--accent);color:var(--coral-dark);border-radius:var(--r-xl);padding:14px 20px;font-size:1rem;cursor:pointer;font-family:var(--body);width:100%;justify-content:center;}
+  .quitar-tarjeta{float:right;background:none;border:1px solid var(--line);color:var(--muted);border-radius:999px;padding:4px 12px;font-size:.85rem;cursor:pointer;font-family:var(--body);margin-left:12px;}
+  .quitar-tarjeta:hover{color:var(--coral);border-color:var(--coral);}
+  .res-cabecera .bajada{margin:0;}
+  .comida .plato-txt{margin:6px 0 0;font-size:1.08rem;} .comida .reco-txt{margin:8px 0 0;}
+  .ayuda-edicion{font-family:var(--mono);font-size:.88rem;color:var(--coral-dark);margin:0 0 18px;}
+
   /* ---------- hoja de impresión: encabezado y pie en cada página ---------- */
   .hoja{width:100%;table-layout:fixed;border-collapse:collapse;border-spacing:0;}
   .hoja>thead,.hoja>tfoot{display:none;}
@@ -242,7 +262,8 @@
   @media print{
     html{font-size:11.5pt;}
     body{background:#fff;padding:0;}
-    .topbar,.nav-pasos,.acciones-res,.btn,.pasos,footer,.no-imprimir,.kicker,.cargando,.aviso,.quitar{display:none !important;}
+    .topbar,.nav-pasos,.acciones-res,.btn,.pasos,footer,.no-imprimir,.kicker,.cargando,.aviso,.quitar,.solo-edicion,.ayuda-edicion{display:none !important;}
+    [data-ruta],[data-texto]{outline:none !important;}
     #p-login>*,#p-inicio>*,#p-consulta>*{display:none !important;}
     #p-planes>:not(#plan-5),#p-recetario>:not(#rec-resultado),#p-listado>:not(#l-resultado),#p-recomendaciones>:not(#reco-resultado){display:none !important;}
     .pantalla{padding:0;animation:none;}
@@ -776,7 +797,7 @@ function hoja(titulo, contenido){
 var sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 var usuario = null, perfil = null, empresa = null, empresas = [];
 var pacientes = [];
-var plan = { paciente:null, info:null, metricas:null, pref:null, plato:null, platoManual:false, resultado:null };
+var plan = { paciente:null, info:null, metricas:null, pref:null, plato:null, platoManual:false, resultado:null, docId:null };
 var rec = { paciente:null, info:null, cantidades:{}, dieta:"Normal", clinicas:[], resultado:null };
 
 function $(id){ return document.getElementById(id); }
@@ -1068,9 +1089,9 @@ async function generarPlan(){
       data.recommendationsAndRecipes=(Array.isArray(data.recommendationsAndRecipes)?data.recommendationsAndRecipes:[]).filter(function(x){ return x && !x.general; })
         .concat(generales.map(function(r){ return {title:r.titulo, content:textoRecomendacion(r), general:r.clave}; }));
     }
-    plan.resultado=data;
+    plan.resultado=data; plan.docId=null;
     pintarPlan(data);
-    await guardarDocumento({type:"meal_plan", patientName:nombreCompleto(plan.paciente), patientId:plan.paciente.id,
+    plan.docId = await guardarDocumento({type:"meal_plan", patientName:nombreCompleto(plan.paciente), patientId:plan.paciente.id,
       input:{selectedPatientId:plan.paciente.id, patientInfo:plan.info, metrics:plan.metricas, preferences:plan.pref}, output:data});
   }catch(e){
     console.error(e);
@@ -1078,62 +1099,161 @@ async function generarPlan(){
     $("plan-resultado").innerHTML='<div class="nav-pasos"><button class="btn suave" onclick="irPaso(4)">Atrás</button><button class="btn" onclick="generarPlan()">Volver a intentar</button></div>';
   }finally{ $("plan-cargando").classList.add("oculto"); }
 }
+var NOMBRES_GRUPOS={carbs:"Carbohidratos",proteins:"Proteínas",fats:"Grasas",vegetablesA:"Vegetales A",vegetablesB:"Vegetales B",fruits:"Frutas"};
+var NOMBRES_COMPRAS={carbsAndLegumes:"Carbohidratos y legumbres",proteins:"Proteínas",dairy:"Lácteos",vegetablesAndFruits:"Vegetales y frutas",fats:"Grasas",canned:"Enlatados",frozen:"Congelados"};
+
+/* piezas editables: data-ruta = un texto suelto · data-lista/data-texto = renglones de una lista */
+function edTexto(ruta, txt, tag, cls, vacio){
+  tag=tag||"span";
+  return '<'+tag+(cls?' class="'+cls+'"':'')+' data-ruta="'+ruta+'"'+(vacio?' data-vacio="'+esc(vacio)+'"':'')+'>'+esc(txt||"")+'</'+tag+'>';
+}
+function edItem(txt){
+  return '<li><span data-texto data-vacio="Escribí acá">'+esc(txt||"")+'</span><button type="button" class="quitar-item solo-edicion" onclick="quitarItem(this)" aria-label="Sacar este renglón">×</button></li>';
+}
+function edLista(nombre, items, cls){
+  return '<ul'+(cls?' class="'+cls+'"':'')+' data-lista="'+nombre+'">'+(items||[]).map(edItem).join("")+'</ul>'+
+    '<button type="button" class="agregar-item solo-edicion" onclick="agregarItem(this)">+ agregar</button>';
+}
+function edQuitarTarjeta(){ return '<button type="button" class="quitar-tarjeta solo-edicion" onclick="quitarTarjeta(this)">× sacar</button>'; }
+function htmlComida(c){
+  c=c||{};
+  return '<div class="comida" data-comida>'+edQuitarTarjeta()+edTexto("type", c.type, "span", "tipo", "Nombre de la comida")+edTexto("title", c.title, "div", "hora", "Horario")+
+    edLista("items", c.items||[])+edTexto("tip", c.tip, "p", "tip", "Consejo para esta comida (opcional)")+'</div>';
+}
+
 function pintarPlan(d){
-  var h='<div class="res-cabecera cabecera-doc"><div><h2>'+esc(nombreCompleto(plan.paciente))+'</h2><p class="bajada" style="margin:0;">'+esc(d.planObjective||"")+'</p></div>'+
+  var h='<div class="res-cabecera cabecera-doc"><div><h2>'+esc(nombreCompleto(plan.paciente))+'</h2>'+edTexto("planObjective", d.planObjective, "p", "bajada", "Objetivo del plan")+'</div>'+
     '<div class="dato"><span class="l">Objetivo</span><span class="v">'+((plan.pref.hideCalories||plan.pref.intolerances.indexOf('Embarazo y Lactancia')!==-1)?"—":plan.metricas.calories+' <small>kcal</small>')+'</span></div></div>';
-  (d.dailyPlan||[]).forEach(function(c){
-    h+='<div class="comida"><span class="tipo">'+esc(c.type)+'</span><div class="hora">'+esc(c.title||"")+'</div><ul>'+
-      (c.items||[]).map(function(i){return '<li>'+esc(i)+'</li>';}).join("")+'</ul>'+(c.tip?'<p class="tip">'+esc(c.tip)+'</p>':'')+'</div>';
-  });
+  h+='<p class="ayuda-edicion solo-edicion">Tocá cualquier texto para cambiarlo. Con × sacás un renglón o una comida, con + agregás. Al final, Guardar cambios.</p>';
+  h+='<div id="comidas">'+(d.dailyPlan||[]).map(htmlComida).join("")+'</div>';
+  h+='<button type="button" class="agregar-comida solo-edicion" onclick="agregarComida()">+ agregar una comida</button>';
   if(d.sampleDayMenu&&d.sampleDayMenu.length){
     h+='<div class="bloque-res"><h3>Menú modelo del día</h3>'+d.sampleDayMenu.map(function(m){
-      return '<div class="comida"><span class="tipo">'+esc(m.meal)+'</span><p style="margin:6px 0 0;font-size:1.08rem;">'+esc(m.dish)+'</p></div>';}).join("")+'</div>';
+      return '<div class="comida" data-menu>'+edQuitarTarjeta()+edTexto("meal", m.meal, "span", "tipo", "Comida")+edTexto("dish", m.dish, "p", "plato-txt", "Plato")+'</div>';}).join("")+'</div>';
   }
   if(d.microHabits&&d.microHabits.length){
     h+='<div class="bloque-res"><h3>Micro hábitos para empezar</h3>'+d.microHabits.map(function(m,i){
-      return '<div class="habito"><span class="num">'+(i+1)+'</span><div><b>'+esc(m.habit)+'</b><span>'+esc(m.tip||"")+'</span></div></div>';}).join("")+'</div>';
+      return '<div class="habito" data-habito><span class="num">'+(i+1)+'</span><div>'+edTexto("habit", m.habit, "b", "", "Hábito")+edTexto("tip", m.tip, "span", "", "Cómo empezar")+'</div>'+edQuitarTarjeta()+'</div>';}).join("")+'</div>';
   }
   if(d.healthyPlate){
     var p=plan.plato||{veg:50,prot:25,carb:25};
     h+='<div class="bloque-res"><h3>Plato saludable</h3><p>'+p.veg+'% vegetales · '+p.prot+'% proteína · '+p.carb+'% carbohidrato</p></div>';
   }
   if(d.foodGroupsDetail){
-    var g=d.foodGroupsDetail, nombres={carbs:"Carbohidratos",proteins:"Proteínas",fats:"Grasas",vegetablesA:"Vegetales A",vegetablesB:"Vegetales B",fruits:"Frutas"};
-    h+='<div class="bloque-res"><h3>Grupos de alimentos</h3><div class="grupos">'+Object.keys(nombres).map(function(k){
-      return '<div class="grupo"><b>'+nombres[k]+'</b><ul>'+(g[k]||[]).map(function(x){return '<li>'+esc(x)+'</li>';}).join("")+'</ul></div>';}).join("")+'</div></div>';
+    var g=d.foodGroupsDetail;
+    h+='<div class="bloque-res"><h3>Grupos de alimentos</h3><div class="grupos">'+Object.keys(NOMBRES_GRUPOS).map(function(k){
+      return '<div class="grupo"><b>'+NOMBRES_GRUPOS[k]+'</b>'+edLista("foodGroupsDetail."+k, g[k]||[])+'</div>';}).join("")+'</div></div>';
   }
   if(d.hydrationPlan){ var hp=d.hydrationPlan;
     h+='<div class="bloque-res"><h3>Hidratación · '+hp.targetLiters+' litros · '+hp.equivalentGlasses+' vasos</h3><ul class="lista-simple">'+
-      [hp.wakeupTip,hp.workDayTip,hp.nightTip].filter(Boolean).map(function(x){return '<li>'+esc(x)+'</li>';}).join("")+'</ul></div>';
+      [["wakeupTip","Al despertar"],["workDayTip","Durante el día"],["nightTip","A la noche"]].map(function(par){
+        return '<li class="hid">'+edTexto("hydrationPlan."+par[0], hp[par[0]], "span", "", par[1])+'</li>';}).join("")+'</ul></div>';
   }
   var recomendaciones=(d.recommendationsAndRecipes||[]).filter(function(r){ return r && !r.general; });
   var generales=(d.recommendationsAndRecipes||[]).filter(function(r){ return r && r.general; }).map(function(r){ return recoPorClave(r.general); }).filter(Boolean);
   if(recomendaciones.length){
     h+='<div class="bloque-res"><h3>Recomendaciones y recetas</h3>'+recomendaciones.map(function(r){
-      return '<div class="comida"><b>'+esc(r.title)+'</b><p style="margin:8px 0 0;">'+esc(r.content)+'</p></div>';}).join("")+'</div>';
+      return '<div class="comida" data-reco>'+edQuitarTarjeta()+edTexto("title", r.title, "b", "", "Título")+edTexto("content", r.content, "p", "reco-txt", "Texto")+'</div>';}).join("")+'</div>';
   }
   if(d.substitutes&&d.substitutes.length){
     h+='<div class="bloque-res"><h3>Reemplazos</h3><div class="grupos">'+d.substitutes.map(function(s){
-      return '<div class="grupo"><b>'+esc(s.category)+'</b><ul>'+(s.options||[]).map(function(x){return '<li>'+esc(x)+'</li>';}).join("")+'</ul></div>';}).join("")+'</div></div>';
+      return '<div class="grupo" data-sust>'+edQuitarTarjeta()+edTexto("category", s.category, "b", "", "Grupo")+edLista("options", s.options||[])+'</div>';}).join("")+'</div></div>';
   }
   if(d.supplements&&d.supplements.length){
     h+='<div class="bloque-res"><h3>Suplementos sugeridos</h3><ul class="lista-simple">'+d.supplements.map(function(s){
-      return '<li><b>'+esc(s.name)+'</b> · '+esc(s.dosage)+' · '+esc(s.reason)+'</li>';}).join("")+'</ul></div>';
+      return '<li data-supl>'+edTexto("name", s.name, "b", "", "Suplemento")+' · '+edTexto("dosage", s.dosage, "span", "", "Dosis")+' · '+edTexto("reason", s.reason, "span", "", "Motivo")+
+        '<button type="button" class="quitar-item solo-edicion" onclick="quitarItem(this)" aria-label="Sacar">×</button></li>';}).join("")+'</ul></div>';
   }
   if(generales.length){
     h+='<div class="bloque-res"><h3>Recomendaciones generales</h3>'+generales.map(htmlRecomendacion).join("")+'</div>';
   }
-  if(d.shoppingList){ var sl=d.shoppingList, ns={carbsAndLegumes:"Carbohidratos y legumbres",proteins:"Proteínas",dairy:"Lácteos",vegetablesAndFruits:"Vegetales y frutas",fats:"Grasas",canned:"Enlatados",frozen:"Congelados"};
-    h+='<div class="bloque-res"><h3>Lista de compras</h3><div class="grupos">'+Object.keys(ns).map(function(k){
-      return (sl[k]&&sl[k].length)?'<div class="grupo"><b>'+ns[k]+'</b><ul>'+sl[k].map(function(x){return '<li>'+esc(x)+'</li>';}).join("")+'</ul></div>':'';}).join("")+'</div></div>';
+  if(d.shoppingList){ var sl=d.shoppingList;
+    h+='<div class="bloque-res"><h3>Lista de compras</h3><div class="grupos">'+Object.keys(NOMBRES_COMPRAS).map(function(k){
+      return '<div class="grupo"><b>'+NOMBRES_COMPRAS[k]+'</b>'+edLista("shoppingList."+k, sl[k]||[])+'</div>';}).join("")+'</div></div>';
   }
   h=hoja("Plan alimentario · "+nombreCompleto(plan.paciente), h);
-  h+='<div class="acciones-res"><button class="btn" onclick="window.print()">Imprimir o guardar PDF</button>'+
-     '<button class="btn ghost" onclick="irPaso(4)">Ajustar y volver a generar</button>'+
+  h+='<div class="acciones-res" id="acciones-ver"><button class="btn" onclick="window.print()">Imprimir o guardar PDF</button>'+
+     '<button class="btn ghost" onclick="editarPlan()">Editar el plan</button>'+
+     '<button class="btn suave" onclick="irPaso(4)">Ajustar y volver a generar</button>'+
      '<button class="btn suave" onclick="irA(\'inicio\')">Volver al inicio</button></div>'+
+     '<div class="acciones-res oculto" id="acciones-editar"><button class="btn" onclick="guardarEdicion()">Guardar cambios</button>'+
+     '<button class="btn suave" onclick="cancelarEdicion()">Cancelar</button></div>'+
      '<p class="aviso ok no-imprimir" id="plan-guardado"></p>';
+  $("plan-resultado").classList.remove("editando");
   $("plan-resultado").innerHTML=h;
 }
+
+/* =====================================================================
+   EDICIÓN DEL PLAN · se edita en la misma hoja y se guarda en la app
+   ===================================================================== */
+function editablesDe(raiz){ return raiz.querySelectorAll('[data-ruta],[data-texto]'); }
+function activarEdicion(el){ el.setAttribute("contenteditable","true"); el.setAttribute("spellcheck","false"); }
+function editarPlan(){
+  var raiz=$("plan-resultado"); raiz.classList.add("editando");
+  editablesDe(raiz).forEach(activarEdicion);
+  $("acciones-ver").classList.add("oculto"); $("acciones-editar").classList.remove("oculto");
+  $("plan-guardado").textContent="";
+}
+function cancelarEdicion(){ pintarPlan(plan.resultado); }
+async function guardarEdicion(){
+  var nuevo=leerPlanEditado(plan.resultado);
+  plan.resultado=nuevo; pintarPlan(nuevo);
+  $("plan-guardado").textContent="Guardando los cambios…";
+  plan.docId = await guardarDocumento({type:"meal_plan", patientName:nombreCompleto(plan.paciente), patientId:plan.paciente.id, docId:plan.docId, edicion:true,
+    input:{selectedPatientId:plan.paciente.id, patientInfo:plan.info, metrics:plan.metricas, preferences:plan.pref}, output:nuevo});
+}
+function leerPlanEditado(base){
+  var d=JSON.parse(JSON.stringify(base)), raiz=$("plan-resultado");
+  function t(el){ return el ? String(el.innerText!=null?el.innerText:el.textContent).replace(/\s+/g," ").trim() : ""; }
+  function ruta(ambito, r){ return t(ambito.querySelector('[data-ruta="'+r+'"]')); }
+  function items(ambito, nombre){ var ul=ambito.querySelector('ul[data-lista="'+nombre+'"]'); return ul ? Array.prototype.map.call(ul.querySelectorAll(':scope > li > [data-texto]'), t).filter(Boolean) : []; }
+  function tarjetas(sel, f){ return Array.prototype.map.call(raiz.querySelectorAll(sel), f); }
+  d.planObjective=ruta(raiz,"planObjective");
+  d.dailyPlan=tarjetas('[data-comida]', function(c){ return {type:ruta(c,"type"), title:ruta(c,"title"), items:items(c,"items"), tip:ruta(c,"tip")}; })
+    .filter(function(c){ return c.type||c.items.length; });
+  if(d.sampleDayMenu) d.sampleDayMenu=tarjetas('[data-menu]', function(m){ return {meal:ruta(m,"meal"), dish:ruta(m,"dish")}; }).filter(function(m){ return m.meal||m.dish; });
+  if(d.microHabits) d.microHabits=tarjetas('[data-habito]', function(m){ return {habit:ruta(m,"habit"), tip:ruta(m,"tip")}; }).filter(function(m){ return m.habit; });
+  if(d.foodGroupsDetail) Object.keys(NOMBRES_GRUPOS).forEach(function(k){ d.foodGroupsDetail[k]=items(raiz,"foodGroupsDetail."+k); });
+  if(d.hydrationPlan) ["wakeupTip","workDayTip","nightTip"].forEach(function(k){ d.hydrationPlan[k]=ruta(raiz,"hydrationPlan."+k); });
+  var generales=(base.recommendationsAndRecipes||[]).filter(function(r){ return r&&r.general; });
+  var propias=tarjetas('[data-reco]', function(r){ return {title:ruta(r,"title"), content:ruta(r,"content")}; }).filter(function(r){ return r.title||r.content; });
+  d.recommendationsAndRecipes=propias.concat(generales);
+  if(d.substitutes) d.substitutes=tarjetas('[data-sust]', function(x){ return {category:ruta(x,"category"), options:items(x,"options")}; }).filter(function(x){ return x.category||x.options.length; });
+  if(d.supplements) d.supplements=tarjetas('[data-supl]', function(x){ return {name:ruta(x,"name"), dosage:ruta(x,"dosage"), reason:ruta(x,"reason")}; }).filter(function(x){ return x.name; });
+  if(d.shoppingList) Object.keys(NOMBRES_COMPRAS).forEach(function(k){ d.shoppingList[k]=items(raiz,"shoppingList."+k); });
+  return d;
+}
+function agregarItem(btn){
+  var ul=btn.previousElementSibling; if(!ul||ul.tagName!=="UL") return;
+  ul.insertAdjacentHTML("beforeend", edItem(""));
+  var nuevo=ul.lastElementChild.querySelector("[data-texto]"); activarEdicion(nuevo); nuevo.focus();
+}
+function agregarItemDespues(li){
+  li.insertAdjacentHTML("afterend", edItem(""));
+  var nuevo=li.nextElementSibling.querySelector("[data-texto]"); activarEdicion(nuevo); nuevo.focus();
+}
+function quitarItem(btn){ var li=btn.closest("li"); if(li) li.remove(); }
+function quitarTarjeta(btn){ var t=btn.closest("[data-comida],[data-menu],[data-habito],[data-reco],[data-sust]"); if(t) t.remove(); }
+function agregarComida(){
+  var cont=$("comidas"); if(!cont) return;
+  cont.insertAdjacentHTML("beforeend", htmlComida({type:"",title:"",items:[""],tip:""}));
+  var tarjeta=cont.lastElementChild; editablesDe(tarjeta).forEach(activarEdicion);
+  tarjeta.querySelector('[data-ruta="type"]').focus();
+}
+document.addEventListener("keydown", function(e){
+  if(e.key!=="Enter") return;
+  var el=e.target; if(!el||!el.isContentEditable) return;
+  if(!el.closest(".editando")) return;
+  e.preventDefault();
+  if(el.hasAttribute("data-texto")){ var li=el.closest("li"); if(li) agregarItemDespues(li); }
+  else el.blur();
+});
+document.addEventListener("paste", function(e){
+  var el=e.target; if(!el||!el.isContentEditable||!el.closest(".editando")) return;
+  e.preventDefault();
+  var texto=(e.clipboardData||window.clipboardData).getData("text/plain").replace(/\s+/g," ");
+  document.execCommand("insertText", false, texto);
+});
 
 /* =====================================================================
    GUARDAR · misma tabla y misma regla de la app (actualiza si es de la última hora)
@@ -1146,17 +1266,24 @@ function tituloDocumento(tipo, nombre){
 async function guardarDocumento(o){
   var titulo=tituloDocumento(o.type, o.patientName);
   var hace1h=new Date(Date.now()-3600*1000).toISOString();
-  var idExistente=null;
-  if(o.patientId){
-    var q = await sb.from("generated_documents").select("id").eq("type",o.type).eq("company",empresa).eq("patient_id",o.patientId).eq("title",titulo).gte("created_at",hace1h).maybeSingle();
-    if(q.data) idExistente=q.data.id;
+  var idExistente=o.docId||null;
+  function buscarReciente(){
+    return sb.from("generated_documents").select("id").eq("type",o.type).eq("company",empresa).eq("patient_id",o.patientId).eq("title",titulo).gte("created_at",hace1h).order("created_at",{ascending:false}).limit(1).maybeSingle();
   }
+  if(!idExistente && o.patientId){ var q = await buscarReciente(); if(q.data) idExistente=q.data.id; }
   var r;
   if(idExistente) r = await sb.from("generated_documents").update({input:o.input, output:o.output, updated_at:new Date().toISOString()}).eq("id",idExistente);
-  else r = await sb.from("generated_documents").insert({type:o.type, title:titulo, company:empresa, patient_id:o.patientId||null, patient_name:o.patientName||null, nutritionist_id:usuario.id, input:o.input, output:o.output});
+  else {
+    r = await sb.from("generated_documents").insert({type:o.type, title:titulo, company:empresa, patient_id:o.patientId||null, patient_name:o.patientName||null, nutritionist_id:usuario.id, input:o.input, output:o.output});
+    if(!r.error && o.patientId){ var q2 = await buscarReciente(); if(q2.data) idExistente=q2.data.id; }
+  }
   var av = $(o.type==="meal_plan"?"plan-guardado":"rec-guardado");
-  if(av) av.textContent = r.error ? "Se generó pero no se pudo guardar en la app: "+r.error.message : "Guardado en la app, en la ficha de "+(o.patientName||"la empresa")+".";
-  if(av && r.error) av.className="aviso error no-imprimir";
+  if(av){
+    av.className="aviso "+(r.error?"error":"ok")+" no-imprimir";
+    av.textContent = r.error ? (o.edicion?"Los cambios quedaron acá pero no se pudieron guardar en la app: ":"Se generó pero no se pudo guardar en la app: ")+r.error.message
+      : (o.edicion?"Cambios guardados en la app, en la ficha de ":"Guardado en la app, en la ficha de ")+(o.patientName||"la empresa")+".";
+  }
+  return r.error ? (o.docId||null) : idExistente;
 }
 
 /* =====================================================================

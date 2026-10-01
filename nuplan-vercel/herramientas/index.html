@@ -120,6 +120,8 @@
   .elegido{display:flex;align-items:center;justify-content:space-between;gap:16px;background:var(--verde-suave);
     border:2px solid var(--verde);border-radius:var(--r-xl);padding:18px 20px;margin-top:16px;}
   .elegido b{font-size:1.15rem;}
+  .elegido .botonera{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end;}
+  @media(max-width:640px){.elegido{flex-direction:column;align-items:flex-start;}.elegido .botonera{justify-content:flex-start;}}
   .elegido small{font-family:var(--mono);font-size:.8rem;color:var(--muted);display:block;margin-top:4px;}
 
   /* ---------- métricas ---------- */
@@ -361,11 +363,14 @@
     </div>
     <div class="elegido oculto" id="con-elegido">
       <div><b id="ce-nombre"></b><small id="ce-datos"></small></div>
-      <button class="btn chico suave" onclick="conDeselegir()">Cambiar</button>
+      <div class="botonera"><button class="btn chico suave" onclick="abrirCorregirNombre('con')">Corregir nombre</button><button class="btn chico suave oculto" id="btn-ultima-consulta" onclick="editarUltimaConsulta()">Corregir la última consulta</button><button class="btn chico suave" onclick="conDeselegir()">Cambiar</button></div>
     </div>
   </div>
 
   <div id="con-form" class="oculto">
+    <div class="caja oculto" id="con-editando" style="border-color:var(--coral);background:#fdeeea;">
+      <p style="margin:0;"><b>Estás corrigiendo una consulta ya guardada</b> <span id="con-editando-fecha"></span>. Cambiá lo que haga falta y tocá Guardar cambios.</p>
+    </div>
     <div class="caja">
       <span class="sub">Medidas</span>
       <div class="grid3">
@@ -405,6 +410,7 @@
     </div>
     <div class="nav-pasos">
       <button class="btn" onclick="conOtra()">Cargar otra consulta</button>
+      <button class="btn ghost oculto" id="btn-corregir-consulta" onclick="editarConsultaGuardada()">Corregir esta consulta</button>
       <button class="btn suave" onclick="irA('inicio')">Volver al inicio</button>
     </div>
   </div>
@@ -426,7 +432,7 @@
       </div>
       <div class="elegido oculto" id="paciente-elegido">
         <div><b id="pe-nombre"></b><small id="pe-datos"></small></div>
-        <button class="btn chico suave" onclick="deselegirPaciente()">Cambiar</button>
+        <div class="botonera"><button class="btn chico suave" onclick="abrirCorregirNombre('plan')">Corregir nombre</button><button class="btn chico suave" onclick="deselegirPaciente()">Cambiar</button></div>
       </div>
       <p class="aviso" id="pac-aviso"></p>
     </div>
@@ -564,7 +570,7 @@
     </div>
     <div class="elegido oculto" id="rec-elegido">
       <div><b id="re-nombre"></b><small id="re-datos"></small></div>
-      <button class="btn chico suave" onclick="recDeselegir()">Quitar</button>
+      <div class="botonera"><button class="btn chico suave" onclick="abrirCorregirNombre('rec')">Corregir nombre</button><button class="btn chico suave" onclick="recDeselegir()">Quitar</button></div>
     </div>
   </div>
   <div class="caja">
@@ -616,6 +622,20 @@
   <div id="reco-resultado"></div>
   <div class="nav-pasos"><button class="btn suave" onclick="irA('inicio')">Volver</button><button class="btn" onclick="window.print()">Imprimir o guardar PDF</button></div>
 </section>
+
+<div class="caja oculto" id="panel-nombre">
+  <span class="sub">Corregir el nombre</span>
+  <div class="grid2">
+    <label class="campo">Nombre<input type="text" id="n-nombre" autocomplete="off"></label>
+    <label class="campo">Apellido<input type="text" id="n-apellido" autocomplete="off"></label>
+  </div>
+  <p class="nota">Se guarda con mayúscula inicial en cada palabra, en la ficha de la app.</p>
+  <div class="nav-pasos">
+    <button class="btn suave" onclick="cerrarCorregirNombre()">Cancelar</button>
+    <button class="btn" id="btn-nombre" onclick="guardarNombre()">Guardar el nombre</button>
+  </div>
+  <p class="aviso" id="n-aviso"></p>
+</div>
 
 <footer><p>Lic. Rosana Roldán · NuPlan&trade; · Herramientas</p></footer>
 
@@ -834,6 +854,19 @@ async function iniciarSesion(u){
   if(!empresa){ $("login-aviso").className="aviso error"; $("login-aviso").textContent="Tu usuario no tiene ninguna empresa cargada. Revisalo en la app."; irA("login"); return; }
   $("barra-sesion").classList.remove("oculto");
   irA("inicio");
+  repararDocumentos();
+}
+/* Planes guardados desde acá antes del 1/10/2026: les falta input.patientData y la app no los abre. Se completa una vez. */
+async function repararDocumentos(){
+  try{
+    var r = await sb.from("generated_documents").select("id, input").eq("type","meal_plan").is("input->patientData", null).not("input->patientInfo","is",null).limit(100);
+    var filas=(r.data||[]).filter(function(d){ return d.input && d.input.patientInfo && !d.input.patientData; });
+    for(var i=0;i<filas.length;i++){
+      var nuevo=Object.assign({}, filas[i].input, {patientData:filas[i].input.patientInfo});
+      await sb.from("generated_documents").update({input:nuevo}).eq("id",filas[i].id);
+    }
+    if(filas.length) console.log("Herramientas: "+filas.length+" plan(es) reparado(s) para que la app los abra.");
+  }catch(e){ console.warn("No se pudieron revisar los planes guardados", e); }
 }
 async function salir(){ await sb.auth.signOut({scope:"local"}); usuario=null; $("barra-sesion").classList.add("oculto"); irA("login"); }
 async function cargarEmpresas(){
@@ -919,6 +952,48 @@ function limpiarFormularioPlan(){
 function deselegirPaciente(){
   plan.paciente=null; plan.info=null; $("paciente-elegido").classList.add("oculto");
   $("busca-paciente").value=""; $("lista-pacientes").innerHTML=""; $("btn-p1").disabled=true;
+}
+
+/* =====================================================================
+   CORREGIR EL NOMBRE · se guarda en la ficha de la app (tabla patients)
+   ===================================================================== */
+var nombreCtx=null;
+var PARTICULAS={"de":1,"del":1,"la":1,"las":1,"los":1,"y":1,"e":1,"da":1,"do":1,"dos":1,"das":1,"van":1,"von":1,"di":1};
+function capitalizar(s){
+  return String(s||"").trim().toLowerCase().replace(/\s+/g," ").split(" ").map(function(pal,i){
+    if(i>0 && PARTICULAS[pal]) return pal;
+    return pal.replace(/(^|['\u2019-])(\p{L})/gu, function(m,p,c){ return p+c.toUpperCase(); });
+  }).join(" ");
+}
+function pacienteDeContexto(ctx){ return ctx==="plan"?plan.paciente : ctx==="con"?con.paciente : rec.paciente; }
+function abrirCorregirNombre(ctx){
+  var p=pacienteDeContexto(ctx); if(!p) return;
+  nombreCtx=ctx;
+  var ancla=$(ctx==="plan"?"paciente-elegido":ctx==="con"?"con-elegido":"rec-elegido");
+  var caja=ancla.closest(".caja"); caja.parentNode.insertBefore($("panel-nombre"), caja.nextSibling);
+  $("n-nombre").value=p.first_name||""; $("n-apellido").value=p.last_name||"";
+  $("n-aviso").className="aviso"; $("n-aviso").textContent="";
+  $("panel-nombre").classList.remove("oculto"); $("n-nombre").focus();
+}
+function cerrarCorregirNombre(){ $("panel-nombre").classList.add("oculto"); nombreCtx=null; }
+async function guardarNombre(){
+  var p=pacienteDeContexto(nombreCtx); if(!p) return;
+  var nombre=capitalizar($("n-nombre").value), apellido=capitalizar($("n-apellido").value);
+  var av=$("n-aviso"); av.className="aviso";
+  if(!nombre||!apellido){ av.className="aviso error"; av.textContent="Completá nombre y apellido."; return; }
+  $("btn-nombre").disabled=true; av.textContent="Guardando…";
+  var r=await sb.from("patients").update({first_name:nombre, last_name:apellido}).eq("id",p.id).select("id");
+  $("btn-nombre").disabled=false;
+  if(r.error){ av.className="aviso error"; av.textContent="No se pudo guardar: "+r.error.message; return; }
+  if(!r.data||!r.data.length){ av.className="aviso error"; av.textContent="La app no permitió cambiar este nombre. Corregilo desde la ficha de la paciente en la app."; return; }
+  p.first_name=nombre; p.last_name=apellido;
+  pacientes.forEach(function(x){ if(x.id===p.id){ x.first_name=nombre; x.last_name=apellido; } });
+  if(plan.paciente&&plan.paciente.id===p.id){ plan.paciente.first_name=nombre; plan.paciente.last_name=apellido; if(plan.info){ plan.info.firstName=nombre; plan.info.lastName=apellido; } $("pe-nombre").textContent=nombreCompleto(p); $("busca-paciente").value=nombreCompleto(p); }
+  if(con.paciente&&con.paciente.id===p.id){ $("ce-nombre").textContent=nombreCompleto(p); $("busca-paciente-con").value=nombreCompleto(p); }
+  if(rec.paciente&&rec.paciente.id===p.id){ if(rec.info){ rec.info.firstName=nombre; rec.info.lastName=apellido; } $("re-nombre").textContent=nombreCompleto(p); $("busca-paciente-rec").value=nombreCompleto(p); }
+  var avisoCtx=$(nombreCtx==="plan"?"pac-aviso":nombreCtx==="con"?"c-aviso":"rec-error");
+  cerrarCorregirNombre();
+  if(avisoCtx){ avisoCtx.className="aviso ok"; avisoCtx.textContent="Nombre corregido: "+nombreCompleto(p)+". Ya quedó así en la app."; }
 }
 
 /* =====================================================================
@@ -1092,7 +1167,7 @@ async function generarPlan(){
     plan.resultado=data; plan.docId=null;
     pintarPlan(data);
     plan.docId = await guardarDocumento({type:"meal_plan", patientName:nombreCompleto(plan.paciente), patientId:plan.paciente.id,
-      input:{selectedPatientId:plan.paciente.id, patientInfo:plan.info, metrics:plan.metricas, preferences:plan.pref}, output:data});
+      input:inputDelPlan(), output:data});
   }catch(e){
     console.error(e);
     $("plan-error").textContent="No se pudo generar el plan: "+e.message+". Probá de nuevo.";
@@ -1121,6 +1196,10 @@ function htmlComida(c){
     edLista("items", c.items||[])+edTexto("tip", c.tip, "p", "tip", "Consejo para esta comida (opcional)")+'</div>';
 }
 
+/* La app abre el plan leyendo input.patientData (no patientInfo). Sin ese dato, la app queda en blanco. */
+function inputDelPlan(){
+  return {selectedPatientId:plan.paciente.id, patientData:plan.info, patientInfo:plan.info, metrics:plan.metricas, preferences:plan.pref};
+}
 function pintarPlan(d){
   var h='<div class="res-cabecera cabecera-doc"><div><h2>'+esc(nombreCompleto(plan.paciente))+'</h2>'+edTexto("planObjective", d.planObjective, "p", "bajada", "Objetivo del plan")+'</div>'+
     '<div class="dato"><span class="l">Objetivo</span><span class="v">'+((plan.pref.hideCalories||plan.pref.intolerances.indexOf('Embarazo y Lactancia')!==-1)?"—":plan.metricas.calories+' <small>kcal</small>')+'</span></div></div>';
@@ -1200,7 +1279,7 @@ async function guardarEdicion(){
   plan.resultado=nuevo; pintarPlan(nuevo);
   $("plan-guardado").textContent="Guardando los cambios…";
   plan.docId = await guardarDocumento({type:"meal_plan", patientName:nombreCompleto(plan.paciente), patientId:plan.paciente.id, docId:plan.docId, edicion:true,
-    input:{selectedPatientId:plan.paciente.id, patientInfo:plan.info, metrics:plan.metricas, preferences:plan.pref}, output:nuevo});
+    input:inputDelPlan(), output:nuevo});
 }
 function leerPlanEditado(base){
   var d=JSON.parse(JSON.stringify(base)), raiz=$("plan-resultado");
@@ -1335,7 +1414,8 @@ async function generarRecetas(){
     var data=await r.json();
     if(!r.ok||data.error) throw new Error(data.error||("HTTP "+r.status));
     rec.resultado=data; pintarRecetas(data);
-    await guardarDocumento({type:"recipes", patientName:rec.paciente?nombreCompleto(rec.paciente):null, patientId:rec.paciente?rec.paciente.id:null, input:cuerpo, output:data});
+    await guardarDocumento({type:"recipes", patientName:rec.paciente?nombreCompleto(rec.paciente):null, patientId:rec.paciente?rec.paciente.id:null,
+      input:Object.assign({selectedPatientId:rec.paciente?rec.paciente.id:null, patientData:rec.info||null}, cuerpo), output:data});
   }catch(e){ console.error(e); $("rec-error").textContent="No se pudieron generar: "+e.message+". Probá de nuevo."; }
   finally{ $("rec-cargando").classList.add("oculto"); $("btn-recetas").disabled=false; }
 }
@@ -1363,7 +1443,7 @@ var ESCALAS = {
   energia:    ["1 - Muy bajo","2 - Bajo","3 - Regular","4 - Bueno","5 - Excelente"],
   sueno:      ["1 - Muy mala","2 - Mala","3 - Regular","4 - Buena","5 - Excelente"]
 };
-var con = { paciente:null, ultima:null };
+var con = { paciente:null, ultima:null, editandoId:null, ultimaFila:null, ultimaId:null };
 function armarEscala(id, etiquetas){
   var sel=$(id); sel.innerHTML='<option value="">Elegí</option>';
   etiquetas.forEach(function(t,i){ var o=document.createElement("option"); o.value=String(i+1); o.textContent=t; sel.appendChild(o); });
@@ -1384,9 +1464,12 @@ async function filtrarPacientesCon(q){
   });
 }
 async function conElegir(p){
-  con.paciente=p; $("lista-pacientes-con").innerHTML=""; $("busca-paciente-con").value=nombreCompleto(p);
-  var r=await sb.from("sessions").select("weight, height, girth_waist, adherence, session_date").eq("patient_id",p.id).order("session_date",{ascending:false}).order("created_at",{ascending:false}).limit(1);
+  con.paciente=p; con.editandoId=null; $("lista-pacientes-con").innerHTML=""; $("busca-paciente-con").value=nombreCompleto(p);
+  var r=await sb.from("sessions").select("*").eq("patient_id",p.id).order("session_date",{ascending:false}).order("created_at",{ascending:false}).limit(1);
   con.ultima=(r.data&&r.data[0])||null;
+  $("btn-ultima-consulta").classList.toggle("oculto", !(con.ultima&&con.ultima.id));
+  $("con-editando").classList.add("oculto"); $("btn-guardar-consulta").textContent="Guardar consulta";
+  var h=new Date(); $("c-fecha").value=h.getFullYear()+"-"+String(h.getMonth()+1).padStart(2,"0")+"-"+String(h.getDate()).padStart(2,"0");
   $("ce-nombre").textContent=nombreCompleto(p);
   $("ce-datos").textContent = con.ultima
     ? "Última consulta "+String(con.ultima.session_date||"").slice(0,10).split("-").reverse().join("/")+" · "+(con.ultima.weight!=null?con.ultima.weight+" kg":"")+(con.ultima.girth_waist!=null?" · cintura "+con.ultima.girth_waist+" cm":"")
@@ -1398,11 +1481,32 @@ async function conElegir(p){
   $("c-aviso").textContent=""; $("c-imc").textContent="";
   $("c-peso").focus();
 }
-function conDeselegir(){ con.paciente=null; con.ultima=null; $("con-elegido").classList.add("oculto"); $("con-form").classList.add("oculto"); $("busca-paciente-con").value=""; $("lista-pacientes-con").innerHTML=""; }
+function conDeselegir(){ con.paciente=null; con.ultima=null; con.editandoId=null; $("con-elegido").classList.add("oculto"); $("con-form").classList.add("oculto"); $("busca-paciente-con").value=""; $("lista-pacientes-con").innerHTML=""; cerrarCorregirNombre(); }
 function conOtra(){ conDeselegir(); $("con-listo").classList.add("oculto"); $("busca-paciente-con").focus(); }
+function fechaCorta(iso){ return String(iso||"").slice(0,10).split("-").reverse().join("/"); }
+/* carga una consulta guardada en el formulario para corregirla */
+function cargarConsultaEnFormulario(fila, id){
+  con.editandoId=id;
+  $("c-peso").value=fila.weight!=null?fila.weight:""; $("c-talla").value=fila.height!=null?fila.height:""; $("c-cintura").value=fila.girth_waist!=null?fila.girth_waist:"";
+  $("c-adherencia").value=fila.adherence!=null?String(fila.adherence):"";
+  $("c-hidratacion").value=fila.hydration===true?"true":fila.hydration===false?"false":"";
+  $("c-actividad").value=fila.physical_activity||"";
+  $("c-frutas").value=fila.consumo_frutas_verduras!=null?String(fila.consumo_frutas_verduras):"";
+  $("c-energia").value=fila.energy_level!=null?String(fila.energy_level):"";
+  $("c-sueno").value=fila.sleep_quality!=null?String(fila.sleep_quality):"";
+  $("c-motivo").value=fila.consultation_reason||""; $("c-notas").value=fila.consultation_notes||"";
+  $("c-fecha").value=String(fila.session_date||"").slice(0,10);
+  $("con-editando-fecha").textContent="del "+fechaCorta(fila.session_date);
+  $("con-editando").classList.remove("oculto"); $("btn-guardar-consulta").textContent="Guardar cambios";
+  $("con-listo").classList.add("oculto"); $("con-form").classList.remove("oculto"); $("c-aviso").textContent="";
+  conCalcIMC(); window.scrollTo(0,0); $("c-peso").focus();
+}
+function editarUltimaConsulta(){ if(con.ultima&&con.ultima.id) cargarConsultaEnFormulario(con.ultima, con.ultima.id); }
+function editarConsultaGuardada(){ if(con.ultimaFila&&con.ultimaId) cargarConsultaEnFormulario(con.ultimaFila, con.ultimaId); }
 function conCalcIMC(){
   var p=parseFloat($("c-peso").value), t=parseFloat($("c-talla").value);
-  $("c-imc").textContent = (p>0&&t>0) ? "IMC "+(p/Math.pow(t/100,2)).toFixed(1)+(con.ultima&&con.ultima.weight?" · "+(p-con.ultima.weight>=0?"+":"")+(p-con.ultima.weight).toFixed(1)+" kg desde la última":"") : "";
+  var comparar = con.ultima && con.ultima.weight && !(con.editandoId && con.ultima.id===con.editandoId);
+  $("c-imc").textContent = (p>0&&t>0) ? "IMC "+(p/Math.pow(t/100,2)).toFixed(1)+(comparar?" · "+(p-con.ultima.weight>=0?"+":"")+(p-con.ultima.weight).toFixed(1)+" kg desde la última":"") : "";
 }
 async function guardarConsulta(){
   var av=$("c-aviso"); av.className="aviso";
@@ -1426,12 +1530,24 @@ async function guardarConsulta(){
     consultation_reason: $("c-motivo").value.trim()||null,
     consultation_notes: $("c-notas").value.trim()||null
   };
-  var r=await sb.from("sessions").insert(fila);
+  var editando=con.editandoId;
+  var r = editando ? await sb.from("sessions").update(fila).eq("id",editando).select("id") : await sb.from("sessions").insert(fila);
   btn.disabled=false;
   if(r.error){ av.className="aviso error"; av.textContent="No se pudo guardar: "+r.error.message; return; }
+  if(editando&&(!r.data||!r.data.length)){ av.className="aviso error"; av.textContent="La app no permitió corregir esta consulta. Corregila desde la ficha de la paciente en la app."; return; }
   av.textContent="";
+  var id=editando||null;
+  if(!id){
+    var q=await sb.from("sessions").select("id").eq("patient_id",con.paciente.id).order("created_at",{ascending:false}).limit(1).maybeSingle();
+    if(q.data) id=q.data.id;
+  }
+  con.ultimaFila=fila; con.ultimaId=id; con.editandoId=null;
+  con.ultima=Object.assign({}, fila, {id:id}); $("btn-ultima-consulta").classList.toggle("oculto", !id);
+  $("btn-corregir-consulta").classList.toggle("oculto", !id);
+  $("con-editando").classList.add("oculto"); $("btn-guardar-consulta").textContent="Guardar consulta";
   $("con-form").classList.add("oculto");
-  $("con-listo-texto").textContent=nombreCompleto(con.paciente)+" · "+fila.weight+" kg · adherencia "+fila.adherence+"/5 · guardada en su ficha.";
+  $("con-listo-titulo").textContent = editando ? "Consulta corregida" : "Consulta guardada";
+  $("con-listo-texto").textContent=nombreCompleto(con.paciente)+" · "+fila.weight+" kg · adherencia "+fila.adherence+"/5 · "+(editando?"corregida en su ficha.":"guardada en su ficha.");
   $("con-listo").classList.remove("oculto"); window.scrollTo(0,0);
 }
 

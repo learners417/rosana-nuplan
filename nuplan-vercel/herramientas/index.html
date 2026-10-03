@@ -22,7 +22,7 @@
   *{box-sizing:border-box;}
   html{font-size:18px;scroll-behavior:smooth;}
   @media(max-width:640px){html{font-size:17px;}}
-  html,body{overflow-x:hidden;max-width:100%;}
+  html,body{overflow-x:hidden;overflow-x:clip;max-width:100%;}
   body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);
     font-size:1.05rem;line-height:1.6;-webkit-font-smoothing:antialiased;}
   button,input,select,textarea{font-family:var(--body);font-size:1rem;}
@@ -48,8 +48,8 @@
 
   /* ---------- pantallas ---------- */
   .pantalla{padding:48px 0 96px;animation:aparecer .25s ease;}
-  @keyframes aparecer{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:none;}}
-  .kicker{font-family:var(--mono);font-size:.8rem;color:var(--coral);display:block;margin-bottom:12px;}
+  @keyframes aparecer{from{opacity:0;}to{opacity:1;}}
+  .kicker{font-family:var(--mono);font-size:.9rem;color:var(--coral);display:block;margin-bottom:12px;}
   h1{font-size:clamp(30px,4.6vw,44px);font-weight:700;letter-spacing:-.03em;line-height:1.08;margin:0 0 12px;}
   h2{font-size:clamp(24px,3.4vw,32px);font-weight:700;letter-spacing:-.025em;line-height:1.12;margin:0 0 10px;}
   h3{font-size:1.3rem;font-weight:700;letter-spacing:-.02em;margin:0 0 8px;}
@@ -140,7 +140,7 @@
     font-size:1rem;color:var(--ink);transition:border-color .12s ease, background .12s ease;}
   .chip:hover{border-color:var(--accent);}
   .chip.on{background:var(--coral);border-color:var(--coral);color:#fff;font-weight:500;}
-  .sub{font-family:var(--mono);font-size:.8rem;color:var(--coral-dark);margin:26px 0 8px;display:block;}
+  .sub{font-family:var(--mono);font-size:.88rem;color:var(--coral-dark);margin:26px 0 8px;display:block;}
   .sub:first-child{margin-top:0;}
   .interruptor{display:flex;align-items:center;gap:12px;margin-top:22px;font-size:1rem;cursor:pointer;}
   .interruptor input{width:22px;height:22px;accent-color:var(--coral);}
@@ -148,7 +148,7 @@
   /* ---------- plato ---------- */
   .plato-layout{display:grid;grid-template-columns:260px 1fr;gap:36px;align-items:center;margin-top:10px;}
   @media(max-width:720px){.plato-layout{grid-template-columns:1fr;}}
-  .plato-svg{width:240px;height:240px;margin:0 auto;display:block;}
+  .plato-svg{width:240px;height:240px;margin:0 auto;display:block;} .plato-svg svg{width:240px;height:240px;display:block;}
   .desliz{margin-bottom:22px;}
   .desliz .fila{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;}
   .desliz .fila b{font-size:1.05rem;}
@@ -160,6 +160,52 @@
   .desliz.veg .pct{color:var(--verde);} .desliz.prot .pct{color:var(--coral-dark);} .desliz.carb .pct{color:#b7791f;}
   .plato-total{font-family:var(--mono);font-size:.85rem;margin-top:4px;}
   .plato-total.mal{color:var(--coral);}
+
+  /* ---------- ficha ---------- */
+  .resultados li.sin{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;}
+  #ficha-caja .elegido{margin:0;} #fi-aviso{margin:14px 0 0;} #fi-aviso:empty{display:none;}
+  .ficha-medidas{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-bottom:28px;}
+  @media(max-width:640px){.ficha-medidas{grid-template-columns:1fr;}}
+  .dato .delta{display:block;font-family:var(--mono);font-size:.85rem;font-weight:400;color:var(--muted);margin-top:6px;}
+  .dato .delta.baja{color:var(--verde);} .dato .delta.sube{color:var(--coral-dark);}
+  .evo{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-bottom:28px;}
+  @media(max-width:720px){.evo{grid-template-columns:1fr;}}
+  .evo .graf{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-xl);padding:20px 22px 14px;break-inside:avoid;}
+  .evo .graf .t{font-family:var(--mono);font-size:.8rem;color:var(--coral-dark);display:block;margin-bottom:10px;}
+  .evo svg{width:100%;height:auto;display:block;}
+  .evo .vacio{color:var(--muted);margin:0;font-size:1rem;}
+  .tabla td.mono{font-family:var(--mono);white-space:nowrap;}
+  .tabla th.notas,.tabla td.notas{width:32%;min-width:160px;overflow-wrap:break-word;}
+  .tabla .btn.chico{padding:8px 14px;font-size:.9rem;}
+  .ficha-planes{font-size:1.05rem;margin:0 0 28px;}
+
+  /* ---------- planes guardados ---------- */
+  .doc-fila{display:flex;justify-content:space-between;align-items:center;gap:16px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-xl);padding:18px 22px;margin-bottom:12px;flex-wrap:wrap;}
+  .doc-fila .tipo{font-family:var(--mono);font-size:.8rem;color:var(--coral);display:block;margin-bottom:4px;letter-spacing:.02em;}
+  .doc-fila b{font-size:1.15rem;}
+  .doc-fila small{display:block;color:var(--muted);margin-top:4px;font-size:.95rem;}
+  .doc-fila .botonera{display:flex;gap:8px;flex-wrap:wrap;}
+  .enlace{background:none;border:none;color:var(--coral-dark);font:inherit;font-weight:700;cursor:pointer;padding:0;text-decoration:underline;}
+  .solo-imprimir{display:none;}
+  #aviso-flotante{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(20px);opacity:0;pointer-events:none;z-index:50;background:var(--ink);color:#fff;padding:14px 22px;border-radius:999px;font-size:1rem;max-width:min(92vw,640px);text-align:center;transition:all .25s;box-shadow:0 8px 30px rgba(0,0,0,.18);}
+  #aviso-flotante.visible{opacity:1;transform:translateX(-50%) translateY(0);}
+  @media(max-width:640px){#aviso-flotante{left:12px;right:12px;max-width:none;bottom:auto;top:12px;border-radius:var(--r-xl);transform:translateY(-20px);} #aviso-flotante.visible{transform:translateY(0);}}
+  #p-recetario.solo-resultado > h2, #p-recetario.solo-resultado > .bajada, #p-recetario.solo-resultado > .caja, #p-recetario.solo-resultado > .nav-pasos{display:none;}
+
+  /* ---------- plato dentro del plan ---------- */
+  .plato-res{display:grid;grid-template-columns:220px 1fr;gap:32px;align-items:center;}
+  .plato-svg-res{width:220px;height:220px;display:block;margin:0 auto;}
+  .plato-leyenda{list-style:none;margin:0;padding:0;display:grid;gap:14px;}
+  .plato-leyenda li{display:flex;align-items:center;gap:14px;font-size:1.15rem;}
+  .plato-leyenda li::before{content:"";width:16px;height:16px;border-radius:50%;flex:none;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  .plato-leyenda li.veg::before{background:#3f7d54;} .plato-leyenda li.prot::before{background:#e8472a;} .plato-leyenda li.carb::before{background:#e2a83a;}
+  .plato-leyenda b{font-family:var(--mono);font-size:1.5rem;min-width:3em;}
+  .plato-bloque{break-inside:avoid;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-xl);padding:22px 28px 26px;margin:0 0 28px;}
+  .plato-bloque h3{margin:0 0 16px;}
+  .plato-leyenda li.agua{margin-top:4px;color:var(--muted);font-size:1.05rem;}
+  .plato-leyenda li.agua b{color:var(--ink);}
+  .plato-leyenda li.agua::before{background:#7cb6e6;}
+  @media(max-width:720px){.plato-res{grid-template-columns:1fr;gap:18px;}}
 
   /* ---------- resultado del plan ---------- */
   .res-cabecera{display:flex;justify-content:space-between;align-items:flex-start;gap:20px;flex-wrap:wrap;margin-bottom:28px;}
@@ -182,6 +228,16 @@
   .habito b{display:block;margin-bottom:4px;}
   .habito span{color:var(--muted);font-size:.98rem;}
   .acciones-res{display:flex;gap:12px;flex-wrap:wrap;margin-top:30px;}
+  .acciones-fijas{position:sticky;top:66px;z-index:10;background:rgba(255,246,243,.97);padding:10px 0 12px;margin:0 0 18px;border-bottom:1px solid var(--line);}
+  .acciones-fijas .acciones-res{margin-top:0;}
+  .acciones-fijas .aviso{margin:10px 0 0;} .acciones-fijas .aviso:empty{display:none;}
+  @media(max-width:640px){
+    .acciones-fijas{position:fixed;top:auto;bottom:0;left:0;right:0;z-index:30;margin:0;padding:10px 12px calc(10px + env(safe-area-inset-bottom));background:var(--bg);border-top:1px solid var(--line);border-bottom:none;box-shadow:0 -6px 20px rgba(0,0,0,.08);}
+    .acciones-fijas .acciones-res{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+    .acciones-fijas .acciones-res .btn{width:100%;padding:12px 10px;font-size:.92rem;white-space:normal;line-height:1.2;}
+    .acciones-fijas .aviso{font-size:.88rem;margin-top:8px;}
+    #plan-resultado,#rec-resultado{padding-bottom:170px;}
+  }
   .cargando{display:flex;align-items:center;gap:14px;font-family:var(--mono);font-size:.95rem;color:var(--muted);padding:28px 0;}
   .cargando .punto{width:12px;height:12px;border-radius:999px;background:var(--coral);animation:pulso 1s infinite;}
   @keyframes pulso{0%,100%{opacity:.25;}50%{opacity:1;}}
@@ -263,18 +319,24 @@
   @page{margin:0;}
   @media print{
     html{font-size:11.5pt;}
+    html,body{overflow:visible;}
     body{background:#fff;padding:0;}
-    .topbar,.nav-pasos,.acciones-res,.btn,.pasos,footer,.no-imprimir,.kicker,.cargando,.aviso,.quitar,.solo-edicion,.ayuda-edicion{display:none !important;}
+    .topbar,.nav-pasos,.acciones-res,.btn,.pasos,footer,.no-imprimir,.kicker,.cargando,.aviso,.quitar,.solo-edicion,.ayuda-edicion,#aviso-flotante{display:none !important;}
+    .editando .tip[data-ruta]:empty,.editando li.hid:has(> [data-ruta]:empty),.editando .grupo:has(> ul[data-lista]:empty),.editando li:has(> [data-texto]:empty){display:none !important;}
     [data-ruta],[data-texto]{outline:none !important;}
+    [data-ruta]:empty::before,[data-texto]:empty::before{content:none !important;}
     #p-login>*,#p-inicio>*,#p-consulta>*{display:none !important;}
-    #p-planes>:not(#plan-5),#p-recetario>:not(#rec-resultado),#p-listado>:not(#l-resultado),#p-recomendaciones>:not(#reco-resultado){display:none !important;}
+    #p-planes>:not(#plan-5),#p-recetario>:not(#rec-resultado),#p-listado>:not(#l-resultado),#p-recomendaciones>:not(#reco-resultado),#p-ficha>:not(#ficha-cuerpo),#p-alta>*,#p-guardados>*{display:none !important;}
     .pantalla{padding:0;animation:none;}
     .wrap{max-width:none;padding:0;}
     .hoja>thead{display:table-header-group;}
     .hoja>tfoot{display:table-footer-group;}
     .hoja>thead>tr>td{height:18mm;padding:0 14mm;vertical-align:bottom;}
     .hoja>tfoot>tr>td{height:16mm;padding:0 14mm;vertical-align:top;}
-    .hoja>tbody>tr>td{padding:5mm 14mm;}
+    .hoja>tbody>tr>td{padding:4mm 14mm 0;}
+    .evo{margin-bottom:16px;}
+    #ficha-cuerpo .tabla tr{break-inside:auto;}
+    .reco:last-child,.receta:last-child,.bloque-res:last-child{margin-bottom:0;}
     .hoja-cab,.hoja-pie{display:flex;justify-content:space-between;gap:12px;font-family:var(--mono);font-size:8pt;color:#6b7280;}
     .hoja-cab{border-bottom:1px solid #d9d9d9;padding-bottom:5px;}
     .hoja-pie{border-top:1px solid #d9d9d9;padding-top:5px;}
@@ -286,6 +348,8 @@
     .habito,.grupo,.dato,.comida .tip,.receta .tip{background:#fff;}
     .grupos{grid-template-columns:1fr 1fr;}
     .tabla-scroll{overflow:visible;} .tabla{min-width:0;}
+    .evo{grid-template-columns:1fr;gap:14px;} .evo .graf{padding:12px 16px 8px;}
+    .solo-imprimir{display:flex !important;}
     .bajada{max-width:none;}
   }
 </style>
@@ -296,7 +360,8 @@
   <div class="wrap row">
     <div class="brand" onclick="irA('inicio')">NuPlan<sup>&trade;</sup> <span>Herramientas</span></div>
     <div class="der oculto" id="barra-sesion">
-      <a class="salir" href="/" style="text-decoration:none;">Volver a la app</a>
+      <button class="salir" onclick="irA('inicio')">Inicio</button>
+      <a class="salir" href="/" style="text-decoration:none;">App anterior</a>
       <select class="empresa-sel" id="empresa" onchange="cambiarEmpresa(this.value)"></select>
       <button class="salir" onclick="salir()">Salir</button>
     </div>
@@ -311,7 +376,7 @@
     <p class="bajada" style="margin-bottom:26px;">El mismo mail y contraseña de la app.</p>
     <label class="campo">Mail<input type="email" id="login-mail" autocomplete="username" placeholder="tu@mail.com"></label>
     <label class="campo">Contraseña<input type="password" id="login-pass" autocomplete="current-password" placeholder="••••••••"
-      onkeydown="if(event.key==='Enter') entrar()"></label>
+      onkeydown="if(event.key==='Enter' &amp;&amp; !document.getElementById('btn-entrar').disabled) entrar()"></label>
     <button class="btn ancho" id="btn-entrar" onclick="entrar()">Entrar</button>
     <p class="aviso" id="login-aviso"></p>
   </div>
@@ -320,34 +385,143 @@
 <!-- ============ INICIO ============ -->
 <section class="pantalla wrap oculto" id="p-inicio">
   <span class="kicker">Hola, <span id="saludo-nombre"></span></span>
-  <h1>¿Qué vas a hacer hoy?</h1>
-  <p class="bajada">Todo lo que generes acá se guarda en la misma app y en la ficha del mismo paciente.</p>
-  <div class="tarjetas">
+  <h1>¿A quién atendés hoy?</h1>
+  <p class="bajada">Tres letras y se abre su ficha. Si es nueva, la das de alta acá.</p>
+  <div class="caja">
+    <div class="buscador">
+      <input type="text" id="busca-paciente-ini" placeholder="Buscar paciente…" autocomplete="off" oninput="filtrarPacientesIni(this.value)">
+      <ul class="resultados" id="lista-pacientes-ini"></ul>
+    </div>
+    <p class="nota" style="margin:14px 0 0;">¿Paciente nueva? <button type="button" class="enlace" onclick="abrirAlta('')">Darla de alta</button></p>
+  </div>
+  <span class="sub" style="display:block;margin-top:34px;">O andá directo a</span>
+  <div class="tarjetas" style="margin-top:14px;">
     <button class="tarjeta" onclick="abrirConsulta()">
       <span class="n">01</span>
       <h3>Nueva consulta</h3>
-      <p>Buscás a la paciente con tres letras, cargás peso, cintura, adherencia, sueño y energía. Se guarda en su ficha.</p>
+      <p>Peso, cintura, adherencia, energía y sueño.</p>
     </button>
     <button class="tarjeta" onclick="abrirPlanes()">
       <span class="n">02</span>
       <h3>Plan alimentario</h3>
-      <p>Con el plato a tu medida y los micro hábitos que la paciente tiene que empezar a mover.</p>
+      <p>Plato, micro hábitos y lista de compras.</p>
     </button>
     <button class="tarjeta" onclick="abrirRecetario()">
       <span class="n">03</span>
       <h3>Recetario</h3>
-      <p>Elegís cuántas recetas de cada tipo. Dos de almuerzo, dos de cena, una de desayuno. Lo que haga falta.</p>
+      <p>Las recetas que elijas, listas para imprimir.</p>
     </button>
     <button class="tarjeta" onclick="abrirListado()">
       <span class="n">04</span>
       <h3>Informe mensual</h3>
-      <p>Cuántas consultas hubo en el mes y quiénes asistieron, por empresa. Lo que te piden las empresas.</p>
+      <p>Consultas del mes, por empresa.</p>
     </button>
     <button class="tarjeta" onclick="abrirRecomendaciones()">
       <span class="n">05</span>
       <h3>Recomendaciones</h3>
-      <p>Fibra, hidratación y ultraprocesados. Las mismas que van al final de cada plan, listas para imprimir o mandar.</p>
+      <p>Fibra, hidratación y ultraprocesados, para imprimir.</p>
     </button>
+    <button class="tarjeta" onclick="abrirGuardados()">
+      <span class="n">06</span>
+      <h3>Planes guardados</h3>
+      <p>Abrir, imprimir o corregir planes ya hechos.</p>
+    </button>
+  </div>
+</section>
+
+<!-- ============ PLANES GUARDADOS ============ -->
+<section class="pantalla wrap oculto" id="p-guardados">
+  <span class="kicker">Planes guardados</span>
+  <h2>¿De quién?</h2>
+  <p class="bajada">Escribí las primeras letras. Vas a ver sus planes y recetarios, del más nuevo al más viejo.</p>
+  <div class="caja">
+    <div class="buscador">
+      <input type="text" id="busca-paciente-gua" placeholder="Buscar paciente…" autocomplete="off" oninput="filtrarPacientesGua(this.value)">
+      <ul class="resultados" id="lista-pacientes-gua"></ul>
+    </div>
+    <div class="elegido oculto" id="gua-elegido">
+      <div><b id="ge-nombre"></b><small id="ge-datos"></small></div>
+      <div class="botonera"><button class="btn chico" onclick="nuevoPlanPara()">Plan nuevo</button><button class="btn chico suave" onclick="guaDeselegir()">Cambiar</button></div>
+    </div>
+    <p class="aviso" id="gua-aviso"></p>
+    <p class="nota" style="margin:14px 0 0;">¿Un recetario sin paciente? <button type="button" class="enlace" onclick="listarGenerales()">Ver los recetarios generales</button></p>
+  </div>
+  <div id="gua-lista"></div>
+  <div class="nav-pasos">
+    <button class="btn suave" onclick="irA('inicio')">Volver al inicio</button>
+  </div>
+</section>
+
+<!-- ============ FICHA DE LA PACIENTE ============ -->
+<section class="pantalla wrap oculto" id="p-ficha">
+  <span class="kicker no-imprimir">Ficha de la paciente</span>
+  <div class="caja no-imprimir" id="ficha-caja">
+    <div class="elegido" id="ficha-cab" style="margin-top:0;">
+      <div><b id="fi-nombre"></b><small id="fi-datos"></small></div>
+      <div class="botonera">
+        <button class="btn chico" onclick="fichaNuevaConsulta()">Nueva consulta</button>
+        <button class="btn chico" onclick="fichaNuevoPlan()">Plan nuevo</button>
+        <button class="btn chico suave" onclick="fichaRecetario()">Recetario</button>
+        <button class="btn chico suave" onclick="fichaGuardados()">Planes guardados</button>
+        <button class="btn chico suave" onclick="abrirEditarDatos()">Editar datos</button>
+      </div>
+    </div>
+    <p class="aviso" id="fi-aviso"></p>
+  </div>
+  <div class="caja oculto no-imprimir" id="panel-datos">
+    <span class="sub">Editar los datos</span>
+    <div class="grid2">
+      <label class="campo">Nombre<input type="text" id="fd-nombre" autocomplete="off"></label>
+      <label class="campo">Apellido<input type="text" id="fd-apellido" autocomplete="off"></label>
+    </div>
+    <div class="grid3">
+      <label class="campo">Fecha de nacimiento<input type="date" id="fd-nacimiento"></label>
+      <label class="campo">Sexo<select id="fd-sexo"><option value="Femenino">Femenino</option><option value="Masculino">Masculino</option></select></label>
+      <label class="campo">Estado<select id="fd-estado"></select></label>
+      <label class="campo">Talla (cm)<input type="number" id="fd-talla" step="0.1" min="100" max="230"></label>
+      <label class="campo">Peso inicial (kg)<input type="number" id="fd-peso" step="0.1" min="25" max="300"></label>
+      <label class="campo">Área / sector<input type="text" id="fd-area" autocomplete="off"></label>
+      <label class="campo">Teléfono<input type="tel" id="fd-telefono" autocomplete="off"></label>
+      <label class="campo">Mail<input type="email" id="fd-mail" autocomplete="off"></label>
+    </div>
+    <p class="aviso" id="fd-aviso"></p>
+    <div class="nav-pasos">
+      <button class="btn suave" onclick="cerrarEditarDatos()">Cancelar</button>
+      <button class="btn" id="btn-datos" onclick="guardarDatos()">Guardar los datos</button>
+    </div>
+  </div>
+  <div id="ficha-cuerpo"></div>
+  <div class="nav-pasos no-imprimir">
+    <button class="btn" onclick="window.print()">Imprimir la evolución</button>
+    <button class="btn suave" onclick="irA('inicio')">Volver al inicio</button>
+  </div>
+</section>
+
+<!-- ============ ALTA DE PACIENTE ============ -->
+<section class="pantalla wrap oculto" id="p-alta">
+  <span class="kicker">Paciente nueva</span>
+  <h2>¿Quién es?</h2>
+  <p class="bajada">Con nombre, apellido, peso y talla alcanza. Lo demás se puede completar después desde su ficha.</p>
+  <div class="caja">
+    <div class="grid2">
+      <label class="campo">Nombre *<input type="text" id="a-nombre" autocomplete="off"></label>
+      <label class="campo">Apellido *<input type="text" id="a-apellido" autocomplete="off"></label>
+    </div>
+    <div class="grid3">
+      <label class="campo">Peso (kg) *<input type="number" id="a-peso" step="0.1" min="25" max="300" inputmode="decimal"></label>
+      <label class="campo">Talla (cm) *<input type="number" id="a-talla" step="0.1" min="100" max="230" inputmode="decimal"></label>
+      <label class="campo">Sexo<select id="a-sexo"><option value="Femenino">Femenino</option><option value="Masculino">Masculino</option></select></label>
+      <label class="campo">Fecha de nacimiento<input type="date" id="a-nacimiento"></label>
+      <label class="campo">Teléfono<input type="tel" id="a-telefono" autocomplete="off"></label>
+      <label class="campo">Mail<input type="email" id="a-mail" autocomplete="off"></label>
+    </div>
+    <label class="campo">Área / sector (opcional)<input type="text" id="a-area" autocomplete="off" placeholder="Ej: Administración"></label>
+    <p class="nota">Queda en <b id="a-empresa"></b>, como paciente en progreso. Se guarda en la misma app.</p>
+    <p class="aviso" id="a-aviso"></p>
+  </div>
+  <div class="nav-pasos">
+    <button class="btn suave" onclick="irA('inicio')">Cancelar</button>
+    <button class="btn" id="btn-alta" onclick="guardarAlta()">Dar de alta</button>
   </div>
 </section>
 
@@ -411,6 +585,7 @@
     <div class="nav-pasos">
       <button class="btn" onclick="conOtra()">Cargar otra consulta</button>
       <button class="btn ghost oculto" id="btn-corregir-consulta" onclick="editarConsultaGuardada()">Corregir esta consulta</button>
+      <button class="btn suave oculto" id="btn-volver-ficha" onclick="abrirFicha(ficha.paciente)">Volver a la ficha</button>
       <button class="btn suave" onclick="irA('inicio')">Volver al inicio</button>
     </div>
   </div>
@@ -435,9 +610,10 @@
         <div class="botonera"><button class="btn chico suave" onclick="abrirCorregirNombre('plan')">Corregir nombre</button><button class="btn chico suave" onclick="deselegirPaciente()">Cambiar</button></div>
       </div>
       <p class="aviso" id="pac-aviso"></p>
+      <p class="aviso oculto" id="pac-guardados"></p>
     </div>
     <div class="nav-pasos">
-      <button class="btn suave" onclick="irA('inicio')">Volver</button>
+      <button class="btn suave" onclick="irA('inicio')">Volver al inicio</button>
       <button class="btn" id="btn-p1" disabled onclick="irPaso(2)">Siguiente</button>
     </div>
   </div>
@@ -511,13 +687,7 @@
     <div class="caja">
       <span class="sub">Plato saludable</span>
       <div class="plato-layout">
-        <svg class="plato-svg" viewBox="0 0 220 220" aria-label="Plato">
-          <circle cx="110" cy="110" r="100" fill="#fff" stroke="#e5e7eb" stroke-width="2"/>
-          <path id="pl-veg" fill="#3f7d54" opacity=".85"/>
-          <path id="pl-prot" fill="#e8472a" opacity=".85"/>
-          <path id="pl-carb" fill="#e2a83a" opacity=".85"/>
-          <circle cx="110" cy="110" r="100" fill="none" stroke="#e5e7eb" stroke-width="2"/>
-        </svg>
+        <div id="plato-paso4" class="plato-svg"></div>
         <div>
           <div class="desliz veg"><div class="fila"><b>Vegetales</b><span class="pct" id="pct-veg">50%</span></div>
             <input type="range" min="10" max="80" step="5" id="r-veg" oninput="moverPlato('veg')"></div>
@@ -550,7 +720,7 @@
 
   <!-- paso 5: resultado -->
   <div id="plan-5" class="oculto">
-    <span class="kicker">Plan alimentario · 5 de 5</span>
+    <span class="kicker" id="plan-5-kicker">Plan alimentario · 5 de 5</span>
     <div id="plan-cargando" class="cargando oculto"><span class="punto"></span> Armando el plan. Tarda entre 30 y 60 segundos.</div>
     <div id="plan-error" class="aviso error"></div>
     <div id="plan-resultado"></div>
@@ -590,7 +760,7 @@
     <label class="interruptor"><input type="checkbox" id="rec-ocultar"> Ocultar cifras calóricas</label>
   </div>
   <div class="nav-pasos">
-    <button class="btn suave" onclick="irA('inicio')">Volver</button>
+    <button class="btn suave" onclick="irA('inicio')">Volver al inicio</button>
     <button class="btn" id="btn-recetas" onclick="generarRecetas()">Generar las recetas</button>
   </div>
   <div id="rec-cargando" class="cargando oculto"><span class="punto"></span> Cocinando. Tarda entre 30 y 90 segundos.</div>
@@ -611,7 +781,7 @@
     <p class="aviso" id="l-aviso"></p>
   </div>
   <div id="l-resultado"></div>
-  <div class="nav-pasos"><button class="btn suave" onclick="irA('inicio')">Volver</button></div>
+  <div class="nav-pasos"><button class="btn suave" onclick="irA('inicio')">Volver al inicio</button></div>
 </section>
 
 <!-- ============ RECOMENDACIONES ============ -->
@@ -620,7 +790,7 @@
   <h2>Fibra, hidratación y ultraprocesados</h2>
   <p class="bajada">Las tres recomendaciones generales, tal cual salen al final de cada plan. Imprimilas o guardalas en PDF para entregar.</p>
   <div id="reco-resultado"></div>
-  <div class="nav-pasos"><button class="btn suave" onclick="irA('inicio')">Volver</button><button class="btn" onclick="window.print()">Imprimir o guardar PDF</button></div>
+  <div class="nav-pasos"><button class="btn suave" onclick="irA('inicio')">Volver al inicio</button><button class="btn" onclick="window.print()">Imprimir o guardar PDF</button></div>
 </section>
 
 <div class="caja oculto" id="panel-nombre">
@@ -804,8 +974,8 @@ function textoRecomendacion(r){
   if(r.nota) partes.push(r.nota);
   return partes.join(" ");
 }
-function hoja(titulo, contenido){
-  var hoy=new Date().toLocaleDateString("es-AR",{day:"2-digit",month:"2-digit",year:"numeric"});
+function hoja(titulo, contenido, fecha){
+  var hoy=(fecha?new Date(fecha):new Date()).toLocaleDateString("es-AR",{day:"2-digit",month:"2-digit",year:"numeric"});
   return '<table class="hoja"><thead><tr><td><div class="hoja-cab"><span>NuPlan&trade; &middot; Lic. Rosana Rold&aacute;n</span><span>'+esc(titulo)+' &middot; '+hoy+'</span></div></td></tr></thead>'+
     '<tfoot><tr><td><div class="hoja-pie"><span>Lic. Rosana Rold&aacute;n &middot; Nutricionista</span><span>@lic.rosanaroldan</span></div></td></tr></tfoot>'+
     '<tbody><tr><td>'+contenido+'</td></tr></tbody></table>';
@@ -816,15 +986,36 @@ function hoja(titulo, contenido){
    ===================================================================== */
 var sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 var usuario = null, perfil = null, empresa = null, empresas = [];
-var pacientes = [];
-var plan = { paciente:null, info:null, metricas:null, pref:null, plato:null, platoManual:false, resultado:null, docId:null };
+var pacientes = []; var pacientesError = null;
+var plan = { paciente:null, info:null, metricas:null, pref:null, plato:null, platoManual:false, resultado:null, docId:null, gen:0, generando:false, guardando:null, guardandoEdicion:false };
 var rec = { paciente:null, info:null, cantidades:{}, dieta:"Normal", clinicas:[], resultado:null };
 
 function $(id){ return document.getElementById(id); }
+/* errores técnicos → frase que Rosana entienda */
+function errorLegible(e){
+  var m=String((e&&e.message)||e||"");
+  if(/Failed to fetch|NetworkError|Load failed|network/i.test(m)) return "Sin conexión. Revisá internet y probá de nuevo.";
+  if(/JWT|expired|not authenticated|401/i.test(m)) return "Se venció la sesión. Tocá Salir y volvé a entrar.";
+  if(/not valid JSON|Unexpected token|respuesta inválida|HTTP \d{3}|timeout/i.test(m)) return "El servidor no respondió bien. Esperá un minuto y probá de nuevo.";
+  if(/row-level security|permission|policy/i.test(m)) return "La app no permitió esta acción con tu usuario.";
+  return m || "Algo falló. Probá de nuevo.";
+}
+/* aviso flotante, para cosas que pasan mientras la pantalla ya es otra */
+function avisar(texto, ms){
+  var t=$("aviso-flotante"); if(!t){ t=document.createElement("div"); t.id="aviso-flotante"; document.body.appendChild(t); }
+  t.textContent=texto; t.classList.add("visible");
+  clearTimeout(avisar._t); avisar._t=setTimeout(function(){ t.classList.remove("visible"); }, ms||7000);
+}
 function esc(s){ return String(s==null?"":s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];}); }
-function irA(nombre){
-  ["login","inicio","consulta","planes","recetario","listado","recomendaciones"].forEach(function(p){ $("p-"+p).classList.toggle("oculto", p!==nombre); });
+function hayCambiosSinGuardar(){
+  var r=$("plan-resultado"); if(!(r && r.classList.contains("editando") && !$("p-planes").classList.contains("oculto") && plan.resultado)) return false;
+  try{ var ahora=JSON.stringify(leerPlanEditado(plan.resultado)); return plan.baseEdicion ? ahora!==plan.baseEdicion : ahora!==JSON.stringify(plan.resultado); }catch(e){ return true; }
+}
+function irA(nombre, forzar){
+  if(!forzar && nombre!=="planes" && hayCambiosSinGuardar() && !confirm("Tenés cambios sin guardar en el plan. ¿Salir igual y perderlos?")) return false;
+  ["login","inicio","consulta","planes","recetario","listado","recomendaciones","guardados","ficha","alta"].forEach(function(p){ $("p-"+p).classList.toggle("oculto", p!==nombre); });
   window.scrollTo(0,0);
+  return true;
 }
 
 /* =====================================================================
@@ -835,26 +1026,50 @@ async function entrar(){
   var av=$("login-aviso"); av.className="aviso"; av.textContent="";
   if(!mail||!pass){ av.className="aviso error"; av.textContent="Completá mail y contraseña."; return; }
   $("btn-entrar").disabled=true; av.textContent="Entrando…";
-  var r = await sb.auth.signInWithPassword({email:mail,password:pass});
+  var r;
+  try{ r = await sb.auth.signInWithPassword({email:mail,password:pass}); }catch(e){ r={error:e}; }
   $("btn-entrar").disabled=false;
-  if(r.error){ av.className="aviso error"; av.textContent="No pudimos entrar. Revisá mail y contraseña."; return; }
+  if(r.error){ av.className="aviso error"; av.textContent=/invalid|credentials|password|email/i.test(String(r.error.message||""))?"No pudimos entrar. Revisá mail y contraseña.":errorLegible(r.error); return; }
   await iniciarSesion(r.data.user);
 }
+var sesionN=0;
 async function iniciarSesion(u){
-  usuario=u;
-  var p = await sb.from("profiles").select("*").eq("id",u.id).single();
+  usuario=u; sesionN++; limpiarTodo();
+  var p = await sb.from("profiles").select("*").eq("id",u.id).maybeSingle();
+  var av=$("login-aviso");
+  if(p.error){ av.className="aviso error"; av.textContent="No se pudo leer tu usuario: "+errorLegible(p.error); irA("login", true); return; }
   perfil = p.data||null;
   if(!perfil || perfil.role==="pending"){
-    $("login-aviso").className="aviso error";
-    $("login-aviso").textContent="Tu usuario todavía no está habilitado.";
-    await sb.auth.signOut({scope:"local"}); return;
+    av.className="aviso error"; av.textContent="Tu usuario todavía no está habilitado en la app.";
+    await sb.auth.signOut({scope:"local"}); usuario=null; irA("login", true); return;
   }
   $("saludo-nombre").textContent = perfil.first_name || perfil.full_name || u.email;
-  await cargarEmpresas();
-  if(!empresa){ $("login-aviso").className="aviso error"; $("login-aviso").textContent="Tu usuario no tiene ninguna empresa cargada. Revisalo en la app."; irA("login"); return; }
+  var e = await cargarEmpresas();
+  if(e&&e.error){ av.className="aviso error"; av.textContent="No se pudieron cargar las empresas: "+errorLegible(e.error); irA("login", true); return; }
+  if(!empresa){ av.className="aviso error"; av.textContent="Tu usuario no tiene ninguna empresa cargada. Revisalo en la app."; irA("login", true); return; }
+  av.className="aviso"; av.textContent="";
   $("barra-sesion").classList.remove("oculto");
-  irA("inicio");
+  irA("inicio", true);
   repararDocumentos();
+}
+/* todo lo que una sesión o empresa deja a medias: se limpia al entrar, al salir y al cambiar de empresa */
+function limpiarTodo(){
+  pacientes=[]; pacientesError=null;
+  deselegirPaciente(); recDeselegir(); conDeselegir(); guaDeselegir(); cerrarCorregirNombre();
+  plan.resultado=null; plan.docId=null; plan.deGuardado=false; plan.docFecha=null; plan.metricas=null; plan.gen=(plan.gen||0)+1;
+  rec.resultado=null; rec.deGuardado=false; rec.deGuardadoResultado=false; rec.docFecha=null; rec.docId=null; rec.cantidades={};
+  ficha.paciente=null; ficha.sesiones=[]; ficha.docs=[];
+  ["plan-resultado","rec-resultado","l-resultado","ficha-cuerpo","lista-pacientes-ini"].forEach(function(id){ if($(id)) $(id).innerHTML=""; });
+  ["busca-paciente-ini","c-peso","c-talla","c-cintura","c-motivo","c-notas","c-adherencia","c-hidratacion","c-actividad","c-frutas","c-energia","c-sueno","rec-objetivo","rec-restricciones"].forEach(function(id){ if($(id)) $(id).value=""; });
+  ["l-aviso","gua-aviso","fi-aviso","pac-aviso","c-aviso","a-aviso","rec-guardado","plan-guardado"].forEach(function(id){ if($(id)){ $(id).textContent=""; $(id).className="aviso"; } });
+  ["plan-error","rec-error"].forEach(function(id){ if($(id)) $(id).textContent=""; });
+  if($("rec-ocultar")) $("rec-ocultar").checked=false;
+  if($("chips-clinicas-rec")) $("chips-clinicas-rec").querySelectorAll(".chip.on").forEach(function(b){ b.classList.remove("on"); });
+  if($("chips-dieta-rec")&&$("chips-dieta-rec").children.length) marcarChip("chips-dieta-rec","Normal");
+  if($("chips-objetivo")&&$("chips-dieta").children.length) limpiarFormularioPlan();
+  $("plan-resultado").classList.remove("editando"); $("con-form").classList.add("oculto"); $("con-listo").classList.add("oculto");
+  $("p-recetario").classList.remove("solo-resultado"); $("pasos-plan").classList.remove("oculto");
+  if($("pasos-plan").children.length) irPaso(1);
 }
 /* Planes guardados desde acá antes del 1/10/2026: les falta input.patientData y la app no los abre. Se completa una vez. */
 async function repararDocumentos(){
@@ -868,9 +1083,16 @@ async function repararDocumentos(){
     if(filas.length) console.log("Herramientas: "+filas.length+" plan(es) reparado(s) para que la app los abra.");
   }catch(e){ console.warn("No se pudieron revisar los planes guardados", e); }
 }
-async function salir(){ await sb.auth.signOut({scope:"local"}); usuario=null; $("barra-sesion").classList.add("oculto"); irA("login"); }
+async function salir(){
+  if(hayCambiosSinGuardar() && !confirm("Tenés cambios sin guardar en el plan. ¿Salir igual y perderlos?")) return;
+  if(plan.generando && !confirm("Se está armando un plan. Si salís ahora se pierde. ¿Salir igual?")) return;
+  plan.gen++; plan.generando=false; $("plan-cargando").classList.add("oculto"); $("btn-generar").disabled=false; $("login-pass").value="";
+  try{ await sb.auth.signOut({scope:"local"}); }catch(e){}
+  usuario=null; perfil=null; limpiarTodo(); $("barra-sesion").classList.add("oculto"); irA("login", true);
+}
 async function cargarEmpresas(){
   var r = await sb.from("companies").select("id, name, type").order("type",{ascending:true}).order("name",{ascending:true});
+  if(r.error) return {error:r.error};
   empresas = r.data||[];
   var guardada=null; try{ guardada=localStorage.getItem(CLAVE_EMPRESA); }catch(e){}
   if(guardada && guardada.charAt(0)==='"'){ try{ guardada=JSON.parse(guardada); }catch(e){} }
@@ -880,8 +1102,10 @@ async function cargarEmpresas(){
   pacientes=[];
 }
 function cambiarEmpresa(nombre){
+  if(hayCambiosSinGuardar() && !confirm("Tenés cambios sin guardar en el plan. ¿Cambiar de empresa igual y perderlos?")){ $("empresa").value=empresa; return; }
   empresa=nombre; try{ localStorage.setItem(CLAVE_EMPRESA, nombre); }catch(e){}
-  pacientes=[]; deselegirPaciente(); recDeselegir(); conDeselegir();
+  limpiarTodo(); irA("inicio", true);
+  avisar("Ahora estás en "+nombre+".", 4000);
 }
 
 /* =====================================================================
@@ -889,9 +1113,14 @@ function cambiarEmpresa(nombre){
    ===================================================================== */
 async function cargarPacientes(){
   if(pacientes.length) return pacientes;
-  var r = await sb.from("patients").select("id, first_name, last_name, sex, birth_date, initial_weight, height, status").eq("company",empresa).order("last_name",{ascending:true});
+  var r = await sb.from("patients").select("id, first_name, last_name, sex, birth_date, initial_weight, height, status, email, phone, area, company, created_at").eq("company",empresa).order("last_name",{ascending:true});
+  pacientesError = r.error ? errorLegible(r.error) : null;
   pacientes = r.data||[];
   return pacientes;
+}
+function sinResultados(ul, q){
+  if(pacientesError){ ul.innerHTML='<li><span>No se pudo cargar la lista de pacientes: '+esc(pacientesError)+'</span><button type="button" class="btn chico suave" onclick="pacientes=[];this.closest(\'ul\').previousElementSibling.dispatchEvent(new Event(\'input\'))">Reintentar</button></li>'; return true; }
+  return false;
 }
 function edadDe(fecha){
   if(!fecha) return 30;
@@ -901,14 +1130,19 @@ function edadDe(fecha){
 }
 function nombreCompleto(p){ return (p.first_name||"")+" "+(p.last_name||""); }
 function plano(s){ return String(s||"").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,""); }
+function palabras(s){ return plano(s).replace(/[-'\u2019.]/g," ").split(/\s+/).filter(Boolean); }
 function coincide(p, q){
-  var t=plano(q).trim(); if(t.length<2) return false;
-  return plano(nombreCompleto(p)).indexOf(t)!==-1 || plano(p.last_name).indexOf(t)===0;
+  var t=plano(q).replace(/[-'\u2019.]/g," ").replace(/\s+/g," ").trim(); if(t.length<2) return false;
+  var nombre=palabras(nombreCompleto(p)).join(" ");
+  if(nombre.indexOf(t)!==-1) return true;
+  var qs=palabras(q), ns=palabras(nombreCompleto(p));
+  return qs.length>0 && qs.every(function(w){ return ns.some(function(n){ return n.indexOf(w)===0; }); });
 }
 async function filtrarPacientes(q){
   await cargarPacientes();
   var ul=$("lista-pacientes"); ul.innerHTML="";
   if(q.trim().length<2) return;
+  if(sinResultados(ul,q)) return;
   var hits=pacientes.filter(function(p){return coincide(p,q);}).slice(0,12);
   if(!hits.length){ ul.innerHTML='<li><span>Nadie con ese nombre en '+esc(empresa)+'</span></li>'; return; }
   hits.forEach(function(p){
@@ -920,27 +1154,43 @@ async function filtrarPacientes(q){
 }
 async function ultimasMedidas(pacienteId){
   var r = await sb.from("sessions").select("weight, height, girth_waist, session_date").eq("patient_id",pacienteId).order("session_date",{ascending:false}).order("created_at",{ascending:false}).limit(6);
-  var out={weight:null,height:null,girth_waist:null};
-  (r.data||[]).forEach(function(s){ ["weight","height","girth_waist"].forEach(function(k){ if(out[k]==null && s[k]!=null) out[k]=s[k]; }); });
+  var out={weight:null,height:null,girth_waist:null,error:r.error?errorLegible(r.error):null};
+  (r.data||[]).forEach(function(s){ ["weight","height","girth_waist"].forEach(function(k){ if(out[k]==null && s[k]!=null && Number(s[k])>0) out[k]=s[k]; }); });
   return out;
 }
+elegirPaciente.n=0;
 async function elegirPaciente(p){
-  plan.paciente=p;
-  $("lista-pacientes").innerHTML=""; $("busca-paciente").value=nombreCompleto(p);
-  $("pac-aviso").textContent="Cargando la última sesión…";
+  var token=++elegirPaciente.n;
+  plan.paciente=p; plan.docId=null; plan.resultado=null; plan.deGuardado=false; plan.docFecha=null; cerrarCorregirNombre();
+  $("plan-resultado").innerHTML=""; $("plan-resultado").classList.remove("editando");
+  $("lista-pacientes").innerHTML=""; $("busca-paciente").value=nombreCompleto(p); $("paciente-elegido").classList.add("oculto"); $("btn-p1").disabled=true;
+  $("pac-aviso").className="aviso"; $("pac-aviso").textContent="Cargando la última sesión…";
   var m = await ultimasMedidas(p.id);
+  if(token!==elegirPaciente.n) return;
   var peso = m.weight ?? p.initial_weight ?? 70, talla = m.height ?? p.height ?? 165;
-  plan.info = { firstName:p.first_name, lastName:p.last_name, age:edadDe(p.birth_date), sex:p.sex||"Masculino", weight:Number(peso), height:Number(talla), waist:m.girth_waist!=null?Number(m.girth_waist):null };
+  plan.info = { firstName:p.first_name, lastName:p.last_name, age:edadDe(p.birth_date), sex:p.sex||"Femenino", weight:Number(peso), height:Number(talla), waist:m.girth_waist!=null?Number(m.girth_waist):null };
   $("pe-nombre").textContent=nombreCompleto(p);
-  $("pe-datos").textContent=plan.info.age+" años · "+plan.info.sex+" · "+plan.info.weight+" kg · "+plan.info.height+" cm";
+  $("pe-datos").textContent=(p.birth_date?plan.info.age+" años":"sin fecha de nacimiento (usa "+plan.info.age+" años)")+" · "+plan.info.sex+" · "+plan.info.weight+" kg · "+plan.info.height+" cm";
   $("paciente-elegido").classList.remove("oculto");
   $("pac-aviso").textContent="";
+  if(m.error){ $("pac-aviso").className="aviso error"; $("pac-aviso").textContent="No se pudo leer su última consulta ("+m.error+"). Se usan los datos de la ficha: revisalos en el paso 2."; }
   $("btn-p1").disabled=false;
   $("d-peso").value=plan.info.weight; $("d-talla").value=plan.info.height; $("d-cintura").value=plan.info.waist??"";
   $("d-edad").value=plan.info.age; $("d-sexo").value=plan.info.sex;
   limpiarFormularioPlan();
   plan.platoManual=false; recalcular();
+  avisarPlanesPrevios(p);
 }
+async function avisarPlanesPrevios(p){
+  var av=$("pac-guardados"); av.classList.add("oculto"); av.innerHTML="";
+  var r=await sb.from("generated_documents").select("id,created_at").eq("type","meal_plan").eq("patient_id",p.id).order("created_at",{ascending:false}).limit(21);
+  if(r.error||!r.data||!r.data.length||!plan.paciente||plan.paciente.id!==p.id) return;
+  var n=r.data.length;
+  av.innerHTML="Ya tiene "+(n>20?"más de 20":n)+" plan"+(n===1?"":"es")+" guardado"+(n===1?"":"s")+" · el último del "+fechaCorta(r.data[0].created_at)+". "+
+    '<button type="button" class="enlace" onclick="verGuardadosDe()">Verlos</button>';
+  av.classList.remove("oculto");
+}
+function verGuardadosDe(){ if(!plan.paciente) return; gua.paciente=plan.paciente; abrirGuardados(); }
 function limpiarFormularioPlan(){
   ["chips-objetivo","chips-fisio","chips-clinicas","chips-habitos"].forEach(function(id){ $(id).querySelectorAll(".chip.on").forEach(function(b){ b.classList.remove("on"); }); });
   marcarChip("chips-dieta","Normal");
@@ -950,7 +1200,8 @@ function limpiarFormularioPlan(){
   $("chips-reco").querySelectorAll(".chip").forEach(function(b){ b.classList.add("on"); });
 }
 function deselegirPaciente(){
-  plan.paciente=null; plan.info=null; $("paciente-elegido").classList.add("oculto");
+  elegirPaciente.n++; plan.gen++; cerrarCorregirNombre();
+  plan.paciente=null; plan.info=null; $("paciente-elegido").classList.add("oculto"); $("pac-guardados").classList.add("oculto"); $("pac-aviso").textContent="";
   $("busca-paciente").value=""; $("lista-pacientes").innerHTML=""; $("btn-p1").disabled=true;
 }
 
@@ -965,11 +1216,11 @@ function capitalizar(s){
     return pal.replace(/(^|['\u2019-])(\p{L})/gu, function(m,p,c){ return p+c.toUpperCase(); });
   }).join(" ");
 }
-function pacienteDeContexto(ctx){ return ctx==="plan"?plan.paciente : ctx==="con"?con.paciente : rec.paciente; }
+function pacienteDeContexto(ctx){ return ctx==="plan"?plan.paciente : ctx==="con"?con.paciente : ctx==="ficha"?ficha.paciente : rec.paciente; }
 function abrirCorregirNombre(ctx){
   var p=pacienteDeContexto(ctx); if(!p) return;
   nombreCtx=ctx;
-  var ancla=$(ctx==="plan"?"paciente-elegido":ctx==="con"?"con-elegido":"rec-elegido");
+  var ancla=$(ctx==="plan"?"paciente-elegido":ctx==="con"?"con-elegido":ctx==="ficha"?"ficha-cab":"rec-elegido");
   var caja=ancla.closest(".caja"); caja.parentNode.insertBefore($("panel-nombre"), caja.nextSibling);
   $("n-nombre").value=p.first_name||""; $("n-apellido").value=p.last_name||"";
   $("n-aviso").className="aviso"; $("n-aviso").textContent="";
@@ -984,16 +1235,27 @@ async function guardarNombre(){
   $("btn-nombre").disabled=true; av.textContent="Guardando…";
   var r=await sb.from("patients").update({first_name:nombre, last_name:apellido}).eq("id",p.id).select("id");
   $("btn-nombre").disabled=false;
-  if(r.error){ av.className="aviso error"; av.textContent="No se pudo guardar: "+r.error.message; return; }
+  if(r.error){ av.className="aviso error"; av.textContent="No se pudo guardar: "+errorLegible(r.error); return; }
   if(!r.data||!r.data.length){ av.className="aviso error"; av.textContent="La app no permitió cambiar este nombre. Corregilo desde la ficha de la paciente en la app."; return; }
   p.first_name=nombre; p.last_name=apellido;
   pacientes.forEach(function(x){ if(x.id===p.id){ x.first_name=nombre; x.last_name=apellido; } });
-  if(plan.paciente&&plan.paciente.id===p.id){ plan.paciente.first_name=nombre; plan.paciente.last_name=apellido; if(plan.info){ plan.info.firstName=nombre; plan.info.lastName=apellido; } $("pe-nombre").textContent=nombreCompleto(p); $("busca-paciente").value=nombreCompleto(p); }
-  if(con.paciente&&con.paciente.id===p.id){ $("ce-nombre").textContent=nombreCompleto(p); $("busca-paciente-con").value=nombreCompleto(p); }
-  if(rec.paciente&&rec.paciente.id===p.id){ if(rec.info){ rec.info.firstName=nombre; rec.info.lastName=apellido; } $("re-nombre").textContent=nombreCompleto(p); $("busca-paciente-rec").value=nombreCompleto(p); }
-  var avisoCtx=$(nombreCtx==="plan"?"pac-aviso":nombreCtx==="con"?"c-aviso":"rec-error");
+  aplicarNombreLocal(p);
+  var avisoCtx=$(nombreCtx==="plan"?"pac-aviso":nombreCtx==="con"?"c-aviso":nombreCtx==="ficha"?"fi-aviso":null);
   cerrarCorregirNombre();
   if(avisoCtx){ avisoCtx.className="aviso ok"; avisoCtx.textContent="Nombre corregido: "+nombreCompleto(p)+". Ya quedó así en la app."; }
+  else avisar("Nombre corregido: "+nombreCompleto(p)+". Ya quedó así en la app.", 6000);
+}
+
+/* el nombre corregido se refleja en todas las pantallas que tengan a esa paciente */
+function aplicarNombreLocal(p){
+  var nombre=p.first_name, apellido=p.last_name;
+  if(plan.paciente&&plan.paciente.id===p.id){ plan.paciente.first_name=nombre; plan.paciente.last_name=apellido; if(plan.info){ plan.info.firstName=nombre; plan.info.lastName=apellido; } $("pe-nombre").textContent=nombreCompleto(p); $("busca-paciente").value=nombreCompleto(p); }
+  if(con.paciente&&con.paciente.id===p.id){ con.paciente.first_name=nombre; con.paciente.last_name=apellido; $("ce-nombre").textContent=nombreCompleto(p); $("busca-paciente-con").value=nombreCompleto(p); }
+  if(rec.paciente&&rec.paciente.id===p.id){ rec.paciente.first_name=nombre; rec.paciente.last_name=apellido; if(rec.info){ rec.info.firstName=nombre; rec.info.lastName=apellido; } $("re-nombre").textContent=nombreCompleto(p); $("busca-paciente-rec").value=nombreCompleto(p); }
+  if(gua.paciente&&gua.paciente.id===p.id){ gua.paciente.first_name=nombre; gua.paciente.last_name=apellido; $("ge-nombre").textContent=nombreCompleto(p); $("busca-paciente-gua").value=nombreCompleto(p); }
+  if(ficha.paciente&&ficha.paciente.id===p.id){ ficha.paciente.first_name=nombre; ficha.paciente.last_name=apellido; $("fi-nombre").textContent=nombreCompleto(p); }
+  if(plan.paciente&&plan.paciente.id===p.id&&plan.resultado&&$("plan-resultado").querySelector(".hoja")&&!$("plan-resultado").classList.contains("editando")) pintarPlan(plan.resultado);
+  if(rec.paciente&&rec.paciente.id===p.id&&rec.resultado&&$("rec-resultado").querySelector(".hoja")) pintarRecetas(rec.resultado);
 }
 
 /* =====================================================================
@@ -1053,14 +1315,33 @@ function arco(cx,cy,r,desde,hasta){
   var grande=(hasta-desde)>180?1:0;
   return "M"+cx+","+cy+" L"+x1.toFixed(1)+","+y1.toFixed(1)+" A"+r+","+r+" 0 "+grande+",1 "+x2.toFixed(1)+","+y2.toFixed(1)+" Z";
 }
+/* el plato del plan: lo que eligió en el paso 4, o lo que vino guardado en el plan */
+function platoDelPlan(d){
+  var hp=d&&d.healthyPlate;
+  if(hp&&hp.vegetablesPct!=null&&hp.proteinsPct!=null&&hp.carbsPct!=null) return {veg:Math.round(hp.vegetablesPct), prot:Math.round(hp.proteinsPct), carb:Math.round(hp.carbsPct)};
+  return plan.plato||{veg:50,prot:25,carb:25};
+}
+/* dibujo del plato para la hoja del plan (pantalla e impresión) */
+function svgPlato(p){
+  var g1=p.veg*3.6, g2=g1+p.prot*3.6, g3=Math.min(g2+p.carb*3.6, 359.9);
+  function sector(desde,hasta,color){ return hasta-desde<=0 ? "" : '<path d="'+arco(110,110,96,desde,hasta)+'" fill="'+color+'" stroke="#fff" stroke-width="3" stroke-linejoin="round"/>'; }
+  function etiqueta(desde,hasta,pct){
+    if(pct<12) return "";
+    var a=((desde+hasta)/2-90)*Math.PI/180, r=60, x=110+r*Math.cos(a), y=110+r*Math.sin(a);
+    return '<text x="'+x.toFixed(1)+'" y="'+y.toFixed(1)+'" text-anchor="middle" dominant-baseline="central" fill="#fff" font-family="Space Mono, monospace" font-weight="700" font-size="19">'+pct+'%</text>';
+  }
+  return '<svg class="plato-svg-res" viewBox="0 0 220 220" role="img" aria-label="Plato: '+p.veg+'% vegetales, '+p.prot+'% proteína, '+p.carb+'% carbohidrato">'+
+    '<circle cx="110" cy="110" r="108" fill="#fff" stroke="#e5e7eb" stroke-width="2"/>'+
+    '<circle cx="110" cy="110" r="97" fill="none" stroke="#f1f1f1" stroke-width="1"/>'+
+    sector(0,g1,"#3f7d54")+sector(g1,g2,"#e8472a")+sector(g2,g3,"#e2a83a")+
+    etiqueta(0,g1,p.veg)+etiqueta(g1,g2,p.prot)+etiqueta(g2,g3,p.carb)+
+    '</svg>';
+}
 function pintarPlato(){
   var p=plan.plato; if(!p) return;
   $("r-veg").value=p.veg; $("r-prot").value=p.prot; $("r-carb").value=p.carb;
   $("pct-veg").textContent=p.veg+"%"; $("pct-prot").textContent=p.prot+"%"; $("pct-carb").textContent=p.carb+"%";
-  var g1=p.veg*3.6, g2=g1+p.prot*3.6, g3=g2+p.carb*3.6;
-  $("pl-veg").setAttribute("d", arco(110,110,100,0,g1));
-  $("pl-prot").setAttribute("d", arco(110,110,100,g1,g2));
-  $("pl-carb").setAttribute("d", arco(110,110,100,g2,Math.min(g3,359.9)));
+  $("plato-paso4").innerHTML=svgPlato(p);
   var total=p.veg+p.prot+p.carb, t=$("plato-total");
   t.textContent = total===100 ? (plan.platoManual?"Plato definido a mano · 100%":"Plato automático según el cálculo · 100%") : "Suma "+total+"%. Tiene que dar 100.";
   t.className="plato-total"+(total===100?"":" mal");
@@ -1116,16 +1397,32 @@ function pintarPasos(){
   PASOS_PLAN.forEach(function(n,i){
     var d=document.createElement("div"); d.className="paso"+(i+1===pasoActual?" on":i+1<pasoActual?" hecho":"");
     d.innerHTML='<span class="b">'+(i+1)+'</span><span class="no-movil">'+esc(n)+'</span>'+(i<PASOS_PLAN.length-1?'<span class="seg"></span>':'');
+    if(i+1<pasoActual && plan.paciente){ d.style.cursor="pointer"; d.title="Volver a este paso"; d.onclick=(function(k){ return function(){ if(!ocupado()) irPaso(k); }; })(i+1); }
     c.appendChild(d);
   });
 }
 function irPaso(n){
+  if(n!==5 && pasoActual===5 && hayCambiosSinGuardar() && !confirm("Tenés cambios sin guardar en el plan. ¿Salir del plan igual y perderlos?")) return;
+  if(n!==5 && pasoActual===5 && $("plan-resultado").classList.contains("editando")) cancelarEdicion();
   pasoActual=n; pintarPasos();
   for(var i=1;i<=5;i++) $("plan-"+i).classList.toggle("oculto", i!==n);
   if(n===2||n===4) recalcular();
   window.scrollTo(0,0);
 }
-function abrirPlanes(){ irA("planes"); irPaso(1); cargarPacientes(); }
+function otraPaciente(){
+  if(plan.generando) return;
+  if(hayCambiosSinGuardar() && !confirm("Tenés cambios sin guardar en el plan. ¿Seguir igual y perderlos?")) return;
+  deselegirPaciente(); plan.resultado=null; plan.docId=null; $("plan-resultado").innerHTML=""; $("plan-resultado").classList.remove("editando"); irPaso(1); $("busca-paciente").focus();
+}
+function abrirPlanes(){
+  if(plan.deGuardado){ deselegirPaciente(); plan.resultado=null; plan.docId=null; $("plan-resultado").innerHTML=""; }
+  plan.deGuardado=false; plan.docFecha=null; $("pasos-plan").classList.remove("oculto"); $("plan-5-kicker").textContent="Plan alimentario · 5 de 5";
+  if(!irA("planes")) return;
+  cargarPacientes();
+  // si hay un plan recién armado para esta paciente, se muestra ese (y "Ajustar y volver a generar" lo actualiza); si no, se arranca uno nuevo
+  if(plan.resultado && plan.paciente && !plan.generando && $("plan-resultado").querySelector(".hoja")) irPaso(5);
+  else { plan.docId=null; irPaso(1); }
+}
 
 function preferenciasActuales(){
   var habitos=chipsElegidos("chips-habitos"); var libre=$("d-habito-libre").value.trim(); if(libre) habitos.push(libre);
@@ -1145,34 +1442,54 @@ function preferenciasActuales(){
   };
 }
 async function generarPlan(){
-  if(!plan.info||!plan.metricas) return;
+  if(!plan.info||!plan.metricas||!plan.paciente){ $("plan-error").textContent="Elegí a la paciente de nuevo: se perdieron los datos del cálculo."; return; }
+  if(ocupado()) return;
   plan.pref=preferenciasActuales();
+  // se congela todo lo que el plan necesita: si Rosana cambia de paciente mientras la IA trabaja, el plan igual se guarda en la ficha correcta
+  var pac=plan.paciente, info=plan.info, met=plan.metricas, pref=plan.pref, plato=plan.plato, platoManual=plan.platoManual, docId=plan.docId, token=++plan.gen, emp=empresa, usr=usuario, ses=sesionN;
+  plan.generando=true;
   irPaso(5);
   $("plan-cargando").classList.remove("oculto"); $("plan-error").textContent=""; $("plan-resultado").innerHTML="";
+  $("btn-generar").disabled=true;
   try{
-    var prefApi=Object.assign({}, plan.pref); delete prefApi.generalRecommendations; // texto fijo, no lo escribe la IA
+    var prefApi=Object.assign({}, pref); delete prefApi.generalRecommendations; // texto fijo, no lo escribe la IA
     var r = await fetch("/api/generate-plan",{method:"POST",headers:{"Content-Type":"application/json"},
-      body:JSON.stringify({patientInfo:plan.info, metrics:plan.metricas, preferences:prefApi})});
-    var data = await r.json();
+      body:JSON.stringify({patientInfo:info, metrics:met, preferences:prefApi})});
+    var data;
+    try{ data = await r.json(); }catch(e){ throw new Error("respuesta inválida del servidor (HTTP "+r.status+")"); }
     if(!r.ok||data.error) throw new Error(data.error||("HTTP "+r.status));
-    var litros=parseFloat((plan.info.weight*35/1000).toFixed(1));
+    if(!Array.isArray(data.dailyPlan)||!data.dailyPlan.length) throw new Error("El plan vino sin comidas. Probá de nuevo.");
+    var litros=parseFloat((info.weight*35/1000).toFixed(1));
     data.hydrationPlan=data.hydrationPlan||{}; data.hydrationPlan.targetLiters=litros; data.hydrationPlan.equivalentGlasses=Math.round(litros*4);
-    if(plan.platoManual) data.healthyPlate={proteinsPct:plan.plato.prot, carbsPct:plan.plato.carb, fatsPct:0, vegetablesPct:plan.plato.veg};
+    if(platoManual) data.healthyPlate={proteinsPct:plato.prot, carbsPct:plato.carb, fatsPct:0, vegetablesPct:plato.veg};
     // las recomendaciones generales viajan dentro del mismo campo que la app ya muestra; "general" marca cuáles son
-    var generales=(plan.pref.generalRecommendations||[]).map(recoPorClave).filter(Boolean);
+    var generales=(pref.generalRecommendations||[]).map(recoPorClave).filter(Boolean);
     if(generales.length){
       data.recommendationsAndRecipes=(Array.isArray(data.recommendationsAndRecipes)?data.recommendationsAndRecipes:[]).filter(function(x){ return x && !x.general; })
         .concat(generales.map(function(r){ return {title:r.titulo, content:textoRecomendacion(r), general:r.clave}; }));
     }
-    plan.resultado=data; plan.docId=null;
+    data=normalizarPlan(data);
+    var entrada={selectedPatientId:pac.id, patientData:info, patientInfo:info, metrics:met, preferences:pref};
+    if(token!==plan.gen || plan.paciente!==pac){
+      // Rosana se fue a otra cosa mientras se armaba: se guarda igual, en la ficha correcta, y se avisa
+      if(!usuario || sesionN!==ses){ return; } // salió de la sesión: se descarta, como avisó el diálogo
+      var idAparte = await guardarDocumento({type:"meal_plan", patientName:nombreCompleto(pac), patientId:pac.id, docId:docId, input:entrada, output:data, silencioso:true, company:emp, usuario:usr});
+      avisar(idAparte ? "El plan de "+nombreCompleto(pac)+" terminó de armarse y quedó en Planes guardados." : "El plan de "+nombreCompleto(pac)+" terminó pero no se pudo guardar.", 9000);
+      return;
+    }
+    plan.resultado=data;
     pintarPlan(data);
-    plan.docId = await guardarDocumento({type:"meal_plan", patientName:nombreCompleto(plan.paciente), patientId:plan.paciente.id,
-      input:inputDelPlan(), output:data});
+    // "Ajustar y volver a generar" actualiza el mismo documento de esta sesión; un plan nuevo (otra paciente, o "Plan nuevo") crea otro
+    plan.guardando = guardarDocumento({type:"meal_plan", patientName:nombreCompleto(pac), patientId:pac.id, docId:docId, input:entrada, output:data, company:emp, usuario:usr});
+    var idNuevo = await plan.guardando; plan.guardando=null;
+    if(token===plan.gen && plan.paciente===pac) plan.docId=idNuevo;
+    if($("p-planes").classList.contains("oculto") || pasoActual!==5) avisar("El plan de "+nombreCompleto(pac)+" ya está listo. Lo ves en Plan alimentario o en Planes guardados.", 9000);
   }catch(e){
     console.error(e);
-    $("plan-error").textContent="No se pudo generar el plan: "+e.message+". Probá de nuevo.";
+    if(token!==plan.gen){ if(usuario && sesionN===ses) avisar("No se pudo armar el plan de "+nombreCompleto(pac)+": "+errorLegible(e), 9000); return; }
+    $("plan-error").className="aviso error"; $("plan-error").textContent="No se pudo generar el plan: "+errorLegible(e);
     $("plan-resultado").innerHTML='<div class="nav-pasos"><button class="btn suave" onclick="irPaso(4)">Atrás</button><button class="btn" onclick="generarPlan()">Volver a intentar</button></div>';
-  }finally{ $("plan-cargando").classList.add("oculto"); }
+  }finally{ if(token===plan.gen){ plan.generando=false; $("plan-cargando").classList.add("oculto"); $("btn-generar").disabled=false; } }
 }
 var NOMBRES_GRUPOS={carbs:"Carbohidratos",proteins:"Proteínas",fats:"Grasas",vegetablesA:"Vegetales A",vegetablesB:"Vegetales B",fruits:"Frutas"};
 var NOMBRES_COMPRAS={carbsAndLegumes:"Carbohidratos y legumbres",proteins:"Proteínas",dairy:"Lácteos",vegetablesAndFruits:"Vegetales y frutas",fats:"Grasas",canned:"Enlatados",frozen:"Congelados"};
@@ -1200,9 +1517,36 @@ function htmlComida(c){
 function inputDelPlan(){
   return {selectedPatientId:plan.paciente.id, patientData:plan.info, patientInfo:plan.info, metrics:plan.metricas, preferences:plan.pref};
 }
+/* deja el plan con la forma que espera la hoja, venga de donde venga (API vieja, app, edición a mano) */
+function listaDe(x){ if(Array.isArray(x)) return x.filter(function(v){ return v!=null; }).map(function(v){ return typeof v==="object" ? v : String(v); }); if(x==null||x==="") return []; return [typeof x==="object"?x:String(x)]; }
+function textoDe(x){ return x==null ? "" : (typeof x==="object" ? JSON.stringify(x) : String(x)); }
+function normalizarPlan(d){
+  d = (d && typeof d==="object" && !Array.isArray(d)) ? d : {};
+  d.planObjective = textoDe(d.planObjective);
+  d.dailyPlan = listaDe(d.dailyPlan).map(function(c){ c = (c&&typeof c==="object")?c:{items:[c]}; return {type:textoDe(c.type), title:textoDe(c.title), items:listaDe(c.items).map(textoDe), tip:textoDe(c.tip)}; });
+  if(d.sampleDayMenu!=null) d.sampleDayMenu = listaDe(d.sampleDayMenu).map(function(m){ m=(m&&typeof m==="object")?m:{dish:m}; return {meal:textoDe(m.meal), dish:textoDe(m.dish)}; });
+  if(d.microHabits!=null) d.microHabits = listaDe(d.microHabits).map(function(m){ m=(m&&typeof m==="object")?m:{habit:m}; return {habit:textoDe(m.habit), tip:textoDe(m.tip)}; });
+  if(d.foodGroupsDetail!=null){ if(typeof d.foodGroupsDetail!=="object"||Array.isArray(d.foodGroupsDetail)) d.foodGroupsDetail={}; Object.keys(d.foodGroupsDetail).forEach(function(k){ d.foodGroupsDetail[k]=listaDe(d.foodGroupsDetail[k]).map(textoDe); }); }
+  if(d.hydrationPlan!=null && (typeof d.hydrationPlan!=="object"||Array.isArray(d.hydrationPlan))) d.hydrationPlan={};
+  if(d.healthyPlate!=null && (typeof d.healthyPlate!=="object"||Array.isArray(d.healthyPlate))) d.healthyPlate={};
+  if(d.recommendationsAndRecipes!=null) d.recommendationsAndRecipes = listaDe(d.recommendationsAndRecipes).map(function(r){ r=(r&&typeof r==="object")?r:{content:r}; var o={title:textoDe(r.title), content:textoDe(r.content)}; if(r.general) o.general=r.general; return o; });
+  if(d.substitutes!=null) d.substitutes = listaDe(d.substitutes).map(function(x){ x=(x&&typeof x==="object")?x:{category:x}; return {category:textoDe(x.category), options:listaDe(x.options).map(textoDe)}; });
+  if(d.supplements!=null) d.supplements = listaDe(d.supplements).map(function(x){ x=(x&&typeof x==="object")?x:{name:x}; return {name:textoDe(x.name), dosage:textoDe(x.dosage), reason:textoDe(x.reason)}; });
+  if(d.shoppingList!=null){ if(typeof d.shoppingList!=="object"||Array.isArray(d.shoppingList)) d.shoppingList={}; Object.keys(d.shoppingList).forEach(function(k){ d.shoppingList[k]=listaDe(d.shoppingList[k]).map(textoDe); }); }
+  return d;
+}
 function pintarPlan(d){
+  d=normalizarPlan(d);
   var h='<div class="res-cabecera cabecera-doc"><div><h2>'+esc(nombreCompleto(plan.paciente))+'</h2>'+edTexto("planObjective", d.planObjective, "p", "bajada", "Objetivo del plan")+'</div>'+
-    '<div class="dato"><span class="l">Objetivo</span><span class="v">'+((plan.pref.hideCalories||plan.pref.intolerances.indexOf('Embarazo y Lactancia')!==-1)?"—":plan.metricas.calories+' <small>kcal</small>')+'</span></div></div>';
+    '<div class="dato"><span class="l">Objetivo</span><span class="v">'+((plan.pref.hideCalories||(plan.pref.intolerances||[]).indexOf('Embarazo y Lactancia')!==-1||!(plan.metricas&&plan.metricas.calories))?"—":plan.metricas.calories+' <small>kcal</small>')+'</span></div></div>';
+  {
+    var p=platoDelPlan(d), hp=d.hydrationPlan||{};
+    var agua = hp.targetLiters ? '<li class="agua"><b>'+String(hp.targetLiters).replace('.',',')+'</b><span>litros de agua por día'+(hp.equivalentGlasses?' · '+hp.equivalentGlasses+' vasos':'')+'</span></li>' : '';
+    h+='<div class="plato-bloque"><h3>Plato saludable</h3><div class="plato-res">'+svgPlato(p)+
+       '<ul class="plato-leyenda"><li class="veg"><b>'+p.veg+'%</b><span>vegetales</span></li>'+
+       '<li class="prot"><b>'+p.prot+'%</b><span>proteína</span></li>'+
+       '<li class="carb"><b>'+p.carb+'%</b><span>carbohidrato</span></li>'+agua+'</ul></div></div>';
+  }
   h+='<p class="ayuda-edicion solo-edicion">Tocá cualquier texto para cambiarlo. Con × sacás un renglón o una comida, con + agregás. Al final, Guardar cambios.</p>';
   h+='<div id="comidas">'+(d.dailyPlan||[]).map(htmlComida).join("")+'</div>';
   h+='<button type="button" class="agregar-comida solo-edicion" onclick="agregarComida()">+ agregar una comida</button>';
@@ -1214,17 +1558,13 @@ function pintarPlan(d){
     h+='<div class="bloque-res"><h3>Micro hábitos para empezar</h3>'+d.microHabits.map(function(m,i){
       return '<div class="habito" data-habito><span class="num">'+(i+1)+'</span><div>'+edTexto("habit", m.habit, "b", "", "Hábito")+edTexto("tip", m.tip, "span", "", "Cómo empezar")+'</div>'+edQuitarTarjeta()+'</div>';}).join("")+'</div>';
   }
-  if(d.healthyPlate){
-    var p=plan.plato||{veg:50,prot:25,carb:25};
-    h+='<div class="bloque-res"><h3>Plato saludable</h3><p>'+p.veg+'% vegetales · '+p.prot+'% proteína · '+p.carb+'% carbohidrato</p></div>';
-  }
   if(d.foodGroupsDetail){
     var g=d.foodGroupsDetail;
     h+='<div class="bloque-res"><h3>Grupos de alimentos</h3><div class="grupos">'+Object.keys(NOMBRES_GRUPOS).map(function(k){
       return '<div class="grupo"><b>'+NOMBRES_GRUPOS[k]+'</b>'+edLista("foodGroupsDetail."+k, g[k]||[])+'</div>';}).join("")+'</div></div>';
   }
   if(d.hydrationPlan){ var hp=d.hydrationPlan;
-    h+='<div class="bloque-res"><h3>Hidratación · '+hp.targetLiters+' litros · '+hp.equivalentGlasses+' vasos</h3><ul class="lista-simple">'+
+    h+='<div class="bloque-res"><h3>Hidratación'+(hp.targetLiters?' · '+String(hp.targetLiters).replace('.',',')+' litros'+(hp.equivalentGlasses?' · '+hp.equivalentGlasses+' vasos':''):'')+'</h3><ul class="lista-simple">'+
       [["wakeupTip","Al despertar"],["workDayTip","Durante el día"],["nightTip","A la noche"]].map(function(par){
         return '<li class="hid">'+edTexto("hydrationPlan."+par[0], hp[par[0]], "span", "", par[1])+'</li>';}).join("")+'</ul></div>';
   }
@@ -1250,14 +1590,15 @@ function pintarPlan(d){
     h+='<div class="bloque-res"><h3>Lista de compras</h3><div class="grupos">'+Object.keys(NOMBRES_COMPRAS).map(function(k){
       return '<div class="grupo"><b>'+NOMBRES_COMPRAS[k]+'</b>'+edLista("shoppingList."+k, sl[k]||[])+'</div>';}).join("")+'</div></div>';
   }
-  h=hoja("Plan alimentario · "+nombreCompleto(plan.paciente), h);
-  h+='<div class="acciones-res" id="acciones-ver"><button class="btn" onclick="window.print()">Imprimir o guardar PDF</button>'+
+  var acciones='<div class="acciones-fijas no-imprimir"><div class="acciones-res" id="acciones-ver"><button class="btn" onclick="window.print()">Imprimir o guardar PDF</button>'+
      '<button class="btn ghost" onclick="editarPlan()">Editar el plan</button>'+
-     '<button class="btn suave" onclick="irPaso(4)">Ajustar y volver a generar</button>'+
-     '<button class="btn suave" onclick="irA(\'inicio\')">Volver al inicio</button></div>'+
+     (plan.deGuardado
+       ? '<button class="btn suave" onclick="nuevoPlanPara(plan.paciente)">Plan nuevo para esta paciente</button><button class="btn suave" onclick="abrirGuardados()">Volver a los guardados</button>'
+       : '<button class="btn suave" onclick="irPaso(4)">Ajustar y volver a generar</button><button class="btn suave" onclick="otraPaciente()">Plan para otra paciente</button><button class="btn suave" onclick="irA(\'inicio\')">Volver al inicio</button>')+'</div>'+
      '<div class="acciones-res oculto" id="acciones-editar"><button class="btn" onclick="guardarEdicion()">Guardar cambios</button>'+
      '<button class="btn suave" onclick="cancelarEdicion()">Cancelar</button></div>'+
-     '<p class="aviso ok no-imprimir" id="plan-guardado"></p>';
+     '<p class="aviso ok" id="plan-guardado"></p></div>';
+  h=acciones+hoja("Plan alimentario · "+nombreCompleto(plan.paciente), h, plan.docFecha);
   $("plan-resultado").classList.remove("editando");
   $("plan-resultado").innerHTML=h;
 }
@@ -1268,18 +1609,31 @@ function pintarPlan(d){
 function editablesDe(raiz){ return raiz.querySelectorAll('[data-ruta],[data-texto]'); }
 function activarEdicion(el){ el.setAttribute("contenteditable","true"); el.setAttribute("spellcheck","false"); }
 function editarPlan(){
+  if(plan.guardandoEdicion){ avisar("Esperá: se están guardando los cambios anteriores.", 5000); return; }
+  if(ocupado()) return;
   var raiz=$("plan-resultado"); raiz.classList.add("editando");
   editablesDe(raiz).forEach(activarEdicion);
   $("acciones-ver").classList.add("oculto"); $("acciones-editar").classList.remove("oculto");
   $("plan-guardado").textContent="";
+  try{ plan.baseEdicion=JSON.stringify(leerPlanEditado(plan.resultado)); }catch(e){ plan.baseEdicion=null; }
 }
-function cancelarEdicion(){ pintarPlan(plan.resultado); }
+function cancelarEdicion(){ plan.baseEdicion=null; if(plan.resultado) pintarPlan(plan.resultado); else { $("plan-resultado").innerHTML=""; $("plan-resultado").classList.remove("editando"); } }
 async function guardarEdicion(){
+  if(plan.guardandoEdicion){ avisar("Esperá: se están guardando los cambios.", 5000); return; }
+  if(!plan.paciente||!plan.resultado){ avisar("Se perdió la paciente del plan. Abrilo de nuevo desde Planes guardados.", 8000); return; }
+  plan.guardandoEdicion=true;
   var nuevo=leerPlanEditado(plan.resultado);
   plan.resultado=nuevo; pintarPlan(nuevo);
+  var barra=$("plan-resultado").querySelector(".acciones-fijas"); if(barra) barra.style.pointerEvents="none";
   $("plan-guardado").textContent="Guardando los cambios…";
-  plan.docId = await guardarDocumento({type:"meal_plan", patientName:nombreCompleto(plan.paciente), patientId:plan.paciente.id, docId:plan.docId, edicion:true,
-    input:inputDelPlan(), output:nuevo});
+  try{
+    if(plan.guardando){ try{ await plan.guardando; }catch(e){} }
+    plan.docId = await guardarDocumento({type:"meal_plan", patientName:nombreCompleto(plan.paciente), patientId:plan.paciente.id, docId:plan.docId, edicion:true,
+      input:inputDelPlan(), output:nuevo});
+  } finally {
+    plan.guardandoEdicion=false;
+    var b2=$("plan-resultado").querySelector(".acciones-fijas"); if(b2) setTimeout(function(){ b2.style.pointerEvents=""; }, 400);
+  }
 }
 function leerPlanEditado(base){
   var d=JSON.parse(JSON.stringify(base)), raiz=$("plan-resultado");
@@ -1344,31 +1698,377 @@ function tituloDocumento(tipo, nombre){
 }
 async function guardarDocumento(o){
   var titulo=tituloDocumento(o.type, o.patientName);
-  var hace1h=new Date(Date.now()-3600*1000).toISOString();
   var idExistente=o.docId||null;
-  function buscarReciente(){
-    return sb.from("generated_documents").select("id").eq("type",o.type).eq("company",empresa).eq("patient_id",o.patientId).eq("title",titulo).gte("created_at",hace1h).order("created_at",{ascending:false}).limit(1).maybeSingle();
-  }
-  if(!idExistente && o.patientId){ var q = await buscarReciente(); if(q.data) idExistente=q.data.id; }
   var r;
-  if(idExistente) r = await sb.from("generated_documents").update({input:o.input, output:o.output, updated_at:new Date().toISOString()}).eq("id",idExistente);
-  else {
-    r = await sb.from("generated_documents").insert({type:o.type, title:titulo, company:empresa, patient_id:o.patientId||null, patient_name:o.patientName||null, nutritionist_id:usuario.id, input:o.input, output:o.output});
-    if(!r.error && o.patientId){ var q2 = await buscarReciente(); if(q2.data) idExistente=q2.data.id; }
+  if(idExistente){
+    r = await sb.from("generated_documents").update({input:o.input, output:o.output, updated_at:new Date().toISOString()}).eq("id",idExistente).select("id");
+    if(!r.error && (!r.data||!r.data.length)) idExistente=null; // lo borraron o no es de esta usuaria: va como documento nuevo
   }
-  var av = $(o.type==="meal_plan"?"plan-guardado":"rec-guardado");
+  if(!idExistente){
+    var quien=o.usuario||usuario;
+    if(!quien){ r={error:{message:"not authenticated"}}; }
+    else r = await sb.from("generated_documents").insert({type:o.type, title:titulo, company:o.company||empresa, patient_id:o.patientId||null, patient_name:o.patientName||null, nutritionist_id:quien.id, input:o.input, output:o.output}).select("id").maybeSingle();
+    if(!r.error && r.data && r.data.id) idExistente=r.data.id;
+    else if(!r.error && o.patientId){
+      var hace1h=new Date(Date.now()-3600*1000).toISOString();
+      var q2 = await sb.from("generated_documents").select("id").eq("type",o.type).eq("company",o.company||empresa).eq("patient_id",o.patientId).eq("title",titulo).gte("created_at",hace1h).order("created_at",{ascending:false}).limit(1).maybeSingle();
+      if(q2.data) idExistente=q2.data.id;
+    }
+  }
+  var av = o.silencioso ? null : $(o.type==="meal_plan"?"plan-guardado":"rec-guardado");
   if(av){
-    av.className="aviso "+(r.error?"error":"ok")+" no-imprimir";
-    av.textContent = r.error ? (o.edicion?"Los cambios quedaron acá pero no se pudieron guardar en la app: ":"Se generó pero no se pudo guardar en la app: ")+r.error.message
-      : (o.edicion?"Cambios guardados en la app, en la ficha de ":"Guardado en la app, en la ficha de ")+(o.patientName||"la empresa")+".";
+    av.className="aviso "+(r.error?"error":"ok");
+    av.textContent = r.error ? (o.edicion?"Los cambios quedaron acá pero no se pudieron guardar: ":"Se generó pero no se pudo guardar: ")+errorLegible(r.error)
+      : o.edicion ? "Cambios guardados"+(o.patientName?" en la ficha de "+o.patientName:"")+"."
+      : o.patientName ? "Guardado en la ficha de "+o.patientName+". Lo encontrás en Planes guardados." : "Guardado como recetario general.";
   }
   return r.error ? (o.docId||null) : idExistente;
 }
 
 /* =====================================================================
+   FICHA DE LA PACIENTE · datos, evolución, consultas y planes en un lugar
+   ===================================================================== */
+var ficha = { paciente:null, sesiones:[], docs:[] };
+var ESTADOS_PACIENTE = ["En Progreso","Objetivo Alcanzado","En Riesgo","Requiere Derivación"];
+async function filtrarPacientesIni(q){
+  await cargarPacientes();
+  var ul=$("lista-pacientes-ini"); ul.innerHTML="";
+  if(q.trim().length<2) return;
+  if(sinResultados(ul,q)) return;
+  var hits=pacientes.filter(function(p){return coincide(p,q);}).slice(0,12);
+  if(!hits.length){
+    ul.innerHTML='<li class="sin"><span>Nadie con ese nombre en '+esc(empresa)+'</span><button type="button" class="btn chico" onclick="abrirAlta(document.getElementById(\'busca-paciente-ini\').value)">Dar de alta a «'+esc(q.trim())+'»</button></li>';
+    return;
+  }
+  hits.forEach(function(p){
+    var li=document.createElement("li"); li.innerHTML='<span>'+esc(nombreCompleto(p))+'</span><small>'+esc(p.status||"")+'</small>';
+    li.onclick=function(){ abrirFicha(p); }; ul.appendChild(li);
+  });
+}
+function recortar(t, n){ t=String(t||""); return t.length>n ? t.slice(0,n-1).replace(/\s+\S*$/,"")+"…" : t; }
+function imcDe(peso, talla){ return (peso>0&&talla>0) ? peso/Math.pow(talla/100,2) : null; }
+function categoriaImc(i){ return i==null?"" : i<18.5?"Bajo peso" : i<25?"Normal" : i<30?"Sobrepeso" : "Obesidad"; }
+async function abrirFicha(p){
+  if(!p) return;
+  ficha.paciente=p; ficha.sesiones=[]; ficha.docs=[];
+  irA("ficha"); cerrarCorregirNombre(); cerrarEditarDatos();
+  $("fi-aviso").className="aviso"; $("fi-aviso").textContent="";
+  pintarCabeceraFicha();
+  $("ficha-cuerpo").innerHTML='<p class="aviso">Buscando sus consultas y planes…</p>';
+  var rs = await sb.from("sessions").select("*").eq("patient_id",p.id).order("session_date",{ascending:true}).order("created_at",{ascending:true}).limit(200);
+  var rd = await sb.from("generated_documents").select("id,type,title,created_at").eq("patient_id",p.id).in("type",["meal_plan","recipes"]).order("created_at",{ascending:false}).limit(200);
+  if(!ficha.paciente||ficha.paciente.id!==p.id) return;
+  if(rs.error){ $("ficha-cuerpo").innerHTML='<p class="aviso error">No se pudieron traer sus consultas: '+esc(errorLegible(rs.error))+'</p>'; return; }
+  if(rd.error){ $("fi-aviso").className="aviso error"; $("fi-aviso").textContent="No se pudieron traer sus planes: "+errorLegible(rd.error); }
+  ficha.sesiones=(rs.data||[]).slice().sort(function(a,b){ return String(a.session_date).localeCompare(String(b.session_date)) || String(a.created_at).localeCompare(String(b.created_at)); });
+  ficha.docs=rd.data||[];
+  pintarFicha();
+}
+function pintarCabeceraFicha(){
+  var p=ficha.paciente;
+  $("fi-nombre").textContent=nombreCompleto(p);
+  $("fi-datos").textContent=[p.birth_date?edadDe(p.birth_date)+" años":null, p.sex||null, p.status||null, p.area&&p.area!=="Sin especificar"?p.area:null, p.phone||null, p.email||null].filter(Boolean).join(" · ");
+}
+function pintarFicha(){
+  var p=ficha.paciente, ses=ficha.sesiones, h="";
+  var ult=ses.length?ses[ses.length-1]:null, pri=ses.length?ses[0]:null;
+  var conPeso=ses.filter(function(x){ return x.weight>0; }), conCintura=ses.filter(function(x){ return x.girth_waist>0; }), conTalla=ses.filter(function(x){ return x.height>0; });
+  var peso = conPeso.length ? Number(conPeso[conPeso.length-1].weight) : (p.initial_weight>0?Number(p.initial_weight):null);
+  var pesoIni = conPeso.length ? Number(conPeso[0].weight) : null;
+  var talla = conTalla.length ? Number(conTalla[conTalla.length-1].height) : (p.height>0?Number(p.height):null);
+  var cintura = conCintura.length ? Number(conCintura[conCintura.length-1].girth_waist) : null;
+  var cinturaIni = conCintura.length ? Number(conCintura[0].girth_waist) : null;
+  var imc = imcDe(peso, talla);
+  function delta(act, ini, unidad, desde, n){
+    if(act==null||ini==null||n<2) return "";
+    var d=act-ini; if(Math.abs(d)<0.05) return '<span class="delta">igual que en la primera consulta</span>';
+    return '<span class="delta '+(d<0?"baja":"sube")+'">'+(d>0?"+":"")+d.toFixed(1)+" "+unidad+" desde "+desde+'</span>';
+  }
+  h+='<div class="ficha-medidas no-imprimir">'+
+    '<div class="dato"><span class="l">Peso actual</span><span class="v">'+(peso!=null?peso+' <small>kg</small>':"—")+'</span>'+delta(peso,pesoIni,"kg",conPeso.length?"el "+fechaCorta(conPeso[0].session_date):"el inicio",conPeso.length)+'</div>'+
+    '<div class="dato"><span class="l">Cintura</span><span class="v">'+(cintura!=null?cintura+' <small>cm</small>':"—")+'</span>'+delta(cintura,cinturaIni,"cm","la primera medición",conCintura.length)+'</div>'+
+    '<div class="dato"><span class="l">IMC</span><span class="v">'+(imc!=null?imc.toFixed(1)+' <small>'+categoriaImc(imc)+'</small>':"—")+'</span>'+(talla?'<span class="delta">talla '+talla+' cm</span>':"")+'</div></div>';
+  var nPlanes=ficha.docs.filter(function(d){return d.type==="meal_plan";}).length, nRec=ficha.docs.filter(function(d){return d.type==="recipes";}).length;
+  h+='<p class="ficha-planes no-imprimir">'+(ficha.docs.length
+    ? [nPlanes?nPlanes+" plan"+(nPlanes===1?"":"es"):null, nRec?nRec+" recetario"+(nRec===1?"":"s"):null].filter(Boolean).join(" y ")+" guardado"+(ficha.docs.length===1?"":"s")+" · el último del "+fechaCorta(ficha.docs[0].created_at)+'. <button type="button" class="enlace" onclick="fichaGuardados()">Verlos</button>'
+    : 'Todavía no tiene planes guardados. <button type="button" class="enlace" onclick="fichaNuevoPlan()">Hacer el primero</button>')+'</p>';
+  // evolución (se imprime)
+  var cuerpo='<div class="res-cabecera cabecera-doc solo-imprimir"><div><h2>'+esc(nombreCompleto(p))+'</h2><p class="bajada">'+(ses.length?ses.length+" consulta"+(ses.length===1?"":"s")+" · desde el "+fechaCorta(pri.session_date):"Sin consultas cargadas todavía")+'</p></div></div>'+
+    '<span class="sub no-imprimir" style="margin-top:0;">Evolución · '+(ses.length?ses.length+" consulta"+(ses.length===1?"":"s")+" desde el "+fechaCorta(pri.session_date):"sin consultas todavía")+'</span>';
+  cuerpo+='<div class="evo">'+grafico("Peso (kg)", conPeso.map(function(x){return {f:x.session_date, v:Number(x.weight)};}), "#e8472a")+
+          grafico("Cintura (cm)", conCintura.map(function(x){return {f:x.session_date, v:Number(x.girth_waist)};}), "#3f7d54")+'</div>';
+  if(ses.length){
+    cuerpo+='<div class="tabla-scroll"><table class="tabla"><thead><tr><th>Fecha</th><th>Peso</th><th>Cintura</th><th>IMC</th><th>Adherencia</th><th>Energía</th><th>Sueño</th><th class="notas">Motivo / notas</th><th class="no-imprimir"></th></tr></thead><tbody>'+
+      ses.slice().reverse().map(function(x){
+        var i=imcDe(Number(x.weight), Number(x.height>0?x.height:talla));
+        return '<tr><td class="mono">'+fechaCorta(x.session_date)+'</td><td class="mono">'+(x.weight>0?x.weight+" kg":"—")+'</td><td class="mono">'+(x.girth_waist>0?x.girth_waist+" cm":"—")+'</td><td class="mono">'+(i!=null?i.toFixed(1):"—")+'</td>'+
+          '<td class="mono">'+(x.adherence!=null?x.adherence+"/5":"—")+'</td><td class="mono">'+(x.energy_level!=null?x.energy_level+"/5":"—")+'</td><td class="mono">'+(x.sleep_quality!=null?x.sleep_quality+"/5":"—")+'</td>'+
+          '<td class="notas">'+esc(recortar([x.consultation_reason,x.consultation_notes].filter(Boolean).join(" · "), 220))+'</td>'+
+          '<td class="no-imprimir"><button type="button" class="btn chico suave" onclick="fichaCorregirConsulta(\''+x.id+'\')">Corregir</button></td></tr>';
+      }).join("")+'</tbody></table></div>';
+  } else {
+    cuerpo+='<div class="caja"><p style="margin:0 0 16px;font-size:1.1rem;">Todavía no tiene consultas cargadas.</p><button class="btn" onclick="fichaNuevaConsulta()">Cargar la primera consulta</button></div>';
+  }
+  h+=hoja("Evolución · "+nombreCompleto(p), cuerpo);
+  $("ficha-cuerpo").innerHTML=h;
+}
+/* gráfico de línea simple, sin librerías: imprime bien y se ve en el celular */
+function grafico(titulo, puntos, color){
+  var W=(window.innerWidth<=640)?380:600, H=(window.innerWidth<=640)?220:240, L=58, R=22, T=30, B=46;
+  if(!puntos.length) return '<div class="graf"><span class="t">'+esc(titulo)+'</span><p class="vacio">Sin datos todavía.</p></div>';
+  if(puntos.length===1) return '<div class="graf"><span class="t">'+esc(titulo)+'</span><p class="vacio"><b style="font-family:var(--mono);font-size:1.4rem;color:var(--ink);">'+puntos[0].v+'</b> el '+fechaCorta(puntos[0].f)+'. La evolución aparece a partir de la segunda consulta.</p></div>';
+  var vals=puntos.map(function(p){return p.v;}), min=Math.min.apply(null,vals), max=Math.max.apply(null,vals);
+  var margen=Math.max((max-min)*0.25, 1); min-=margen; max+=margen;
+  var n=puntos.length, paso=(W-L-R)/(n-1);
+  function X(i){ return L+i*paso; } function Y(v){ return T+(H-T-B)*(1-(v-min)/(max-min)); }
+  var s='<svg viewBox="0 0 '+W+' '+H+'" role="img" aria-label="'+esc(titulo)+'">';
+  [0,0.5,1].forEach(function(f){ var y=T+(H-T-B)*f; var v=max-(max-min)*f; s+='<line x1="'+L+'" x2="'+(W-R)+'" y1="'+y.toFixed(1)+'" y2="'+y.toFixed(1)+'" stroke="#e5e7eb" stroke-width="1"/><text x="'+(L-8)+'" y="'+(y+4).toFixed(1)+'" text-anchor="end" font-family="Space Mono, monospace" font-size="13" fill="#6b7280">'+v.toFixed(1)+'</text>'; });
+  s+='<polyline fill="none" stroke="'+color+'" stroke-width="3" stroke-linejoin="round" stroke-linecap="round" points="'+puntos.map(function(p,i){return X(i).toFixed(1)+","+Y(p.v).toFixed(1);}).join(" ")+'"/>';
+  var maxEtiq=(W<500)?4:6, marcados={};
+  for(var k=0;k<maxEtiq;k++) marcados[Math.round(k*(n-1)/(maxEtiq-1))]=true;
+  puntos.forEach(function(p,i){
+    var x=X(i), y=Y(p.v);
+    s+='<circle cx="'+x.toFixed(1)+'" cy="'+y.toFixed(1)+'" r="5.5" fill="#fff" stroke="'+color+'" stroke-width="3"/>';
+    if(marcados[i]){
+      s+='<text x="'+x.toFixed(1)+'" y="'+(y-12).toFixed(1)+'" text-anchor="middle" font-family="Space Mono, monospace" font-weight="700" font-size="15" fill="#1a1a1a">'+p.v+'</text>';
+      s+='<text x="'+x.toFixed(1)+'" y="'+(H-B+22)+'" text-anchor="middle" font-family="Space Mono, monospace" font-size="13" fill="#6b7280">'+fechaCorta(p.f).slice(0,5)+'</text>';
+    }
+  });
+  s+='</svg>';
+  return '<div class="graf"><span class="t">'+esc(titulo)+'</span>'+s+'</div>';
+}
+function fichaNuevaConsulta(){ var p=ficha.paciente; if(!p) return; abrirConsulta(); conElegir(p); }
+function fichaNuevoPlan(){ if(ficha.paciente) nuevoPlanPara(ficha.paciente); }
+function fichaRecetario(){ var p=ficha.paciente; if(!p) return; abrirRecetario(); recElegirPaciente(p); }
+function fichaGuardados(){ if(!ficha.paciente) return; gua.paciente=ficha.paciente; abrirGuardados(); }
+async function fichaCorregirConsulta(id){
+  var p=ficha.paciente, fila=ficha.sesiones.filter(function(x){ return x.id===id; })[0]; if(!p||!fila) return;
+  abrirConsulta(); await conElegir(p); cargarConsultaEnFormulario(fila, id);
+}
+/* editar datos de la ficha (tabla patients) */
+function abrirEditarDatos(){
+  var p=ficha.paciente; if(!p) return;
+  var sel=$("fd-estado"); sel.innerHTML="";
+  ESTADOS_PACIENTE.concat(p.status&&ESTADOS_PACIENTE.indexOf(p.status)===-1?[p.status]:[]).forEach(function(e){ var o=document.createElement("option"); o.value=e; o.textContent=e; sel.appendChild(o); });
+  $("fd-nombre").value=p.first_name||""; $("fd-apellido").value=p.last_name||"";
+  $("fd-nacimiento").value=p.birth_date?String(p.birth_date).slice(0,10):""; $("fd-sexo").value=p.sex||"Femenino"; sel.value=p.status||"En Progreso";
+  $("fd-talla").value=p.height!=null?p.height:""; $("fd-peso").value=p.initial_weight!=null?p.initial_weight:"";
+  $("fd-area").value=p.area&&p.area!=="Sin especificar"?p.area:""; $("fd-telefono").value=p.phone||""; $("fd-mail").value=p.email||"";
+  $("fd-aviso").className="aviso"; $("fd-aviso").textContent="";
+  cerrarCorregirNombre(); $("panel-datos").classList.remove("oculto"); $("fd-nombre").focus();
+}
+function cerrarEditarDatos(){ $("panel-datos").classList.add("oculto"); }
+async function guardarDatos(){
+  var p=ficha.paciente; if(!p) return;
+  var av=$("fd-aviso"); av.className="aviso";
+  var talla=parseFloat($("fd-talla").value), peso=parseFloat($("fd-peso").value);
+  var nombre=capitalizar($("fd-nombre").value), apellido=capitalizar($("fd-apellido").value);
+  if(!nombre||!apellido){ av.className="aviso error"; av.textContent="Completá nombre y apellido."; return; }
+  var cambios={
+    first_name: nombre, last_name: apellido,
+    birth_date: $("fd-nacimiento").value||null, sex: $("fd-sexo").value, status: $("fd-estado").value,
+    height: isNaN(talla)?null:talla, initial_weight: isNaN(peso)?null:peso,
+    area: $("fd-area").value.trim()||"Sin especificar", phone: $("fd-telefono").value.trim()||null, email: $("fd-mail").value.trim()||null
+  };
+  $("btn-datos").disabled=true; av.textContent="Guardando…";
+  var r=await sb.from("patients").update(cambios).eq("id",p.id).select("id");
+  $("btn-datos").disabled=false;
+  if(r.error){ av.className="aviso error"; av.textContent="No se pudo guardar: "+errorLegible(r.error); return; }
+  if(!r.data||!r.data.length){ av.className="aviso error"; av.textContent="La app no permitió cambiar estos datos."; return; }
+  Object.assign(p, cambios); pacientes.forEach(function(x){ if(x.id===p.id) Object.assign(x, cambios); });
+  aplicarNombreLocal(p);
+  cerrarEditarDatos(); pintarCabeceraFicha(); pintarFicha();
+  $("fi-aviso").className="aviso ok"; $("fi-aviso").textContent="Datos guardados en la app.";
+}
+/* alta de paciente nueva (misma tabla y mismas columnas que la app) */
+function abrirAlta(texto){
+  var partes=capitalizar(texto||"").split(" ").filter(Boolean);
+  $("a-nombre").value=partes.shift()||""; $("a-apellido").value=partes.join(" ");
+  ["a-peso","a-talla","a-nacimiento","a-telefono","a-mail","a-area"].forEach(function(id){ $(id).value=""; });
+  $("a-sexo").value="Femenino"; $("a-empresa").textContent=empresa||""; $("a-aviso").className="aviso"; $("a-aviso").innerHTML="";
+  irA("alta"); $($("a-nombre").value?"a-apellido":"a-nombre").focus();
+}
+async function guardarAlta(fuerza){
+  var av=$("a-aviso"); av.className="aviso"; av.innerHTML="";
+  var nombre=capitalizar($("a-nombre").value), apellido=capitalizar($("a-apellido").value);
+  var peso=parseFloat($("a-peso").value), talla=parseFloat($("a-talla").value);
+  if(!nombre||!apellido){ av.className="aviso error"; av.textContent="Completá nombre y apellido."; return; }
+  if(!(peso>0)||!(talla>0)){ av.className="aviso error"; av.textContent="Completá peso y talla. Si no los tenés, poné los de la última vez que la viste."; return; }
+  if($("btn-alta").disabled) return;
+  $("btn-alta").disabled=true; av.textContent="Revisando que no exista…";
+  await cargarPacientes();
+  if(pacientesError){ $("btn-alta").disabled=false; av.className="aviso error"; av.textContent="No se pudo revisar la lista de pacientes ("+pacientesError+"). Probá de nuevo en un rato."; return; }
+  var repetida=pacientes.filter(function(x){ return plano(nombreCompleto(x)).trim()===plano(nombre+" "+apellido).trim(); })[0];
+  if(repetida&&!fuerza){
+    $("btn-alta").disabled=false; av.className="aviso error";
+    av.innerHTML='Ya existe '+esc(nombreCompleto(repetida))+' en '+esc(empresa)+'. <button type="button" class="enlace" onclick="abrirFichaPorId(\''+repetida.id+'\')">Abrir su ficha</button> · <button type="button" class="enlace" onclick="guardarAlta(true)">Es otra persona, dar de alta igual</button>';
+    return;
+  }
+  var fila={ first_name:nombre, last_name:apellido, sex:$("a-sexo").value, birth_date:$("a-nacimiento").value||null,
+    initial_weight:peso, height:talla, phone:$("a-telefono").value.trim()||null, email:$("a-mail").value.trim()||null,
+    area:$("a-area").value.trim()||"Sin especificar", status:"En Progreso", company:empresa, created_by:usuario.id };
+  av.className="aviso"; av.textContent="Guardando…";
+  var r=await sb.from("patients").insert(fila).select("id, first_name, last_name, sex, birth_date, initial_weight, height, status, email, phone, area, company, created_at").single();
+  $("btn-alta").disabled=false;
+  if(r.error){ av.className="aviso error"; av.textContent="No se pudo dar de alta: "+errorLegible(r.error); return; }
+  var p=r.data||null;
+  if(!p||!p.id){
+    var q=await sb.from("patients").select("id, first_name, last_name, sex, birth_date, initial_weight, height, status, email, phone, area, company, created_at").eq("company",empresa).eq("first_name",nombre).eq("last_name",apellido).order("created_at",{ascending:false}).limit(1).maybeSingle();
+    p=q.data||null;
+  }
+  if(!p||!p.id){ av.className="aviso error"; av.textContent="Se guardó, pero no pude abrir su ficha. Buscala desde el inicio por el nombre."; pacientes=[]; return; }
+  pacientes.push(p); pacientes.sort(function(a,b){ return String(a.last_name).localeCompare(String(b.last_name)); });
+  await abrirFicha(p);
+  $("fi-aviso").className="aviso ok"; $("fi-aviso").textContent="Dada de alta en "+empresa+". Ya está en la app. Ahora podés cargar su primera consulta.";
+}
+function abrirFichaPorId(id){ var p=pacientes.filter(function(x){ return x.id===id; })[0]; if(p) abrirFicha(p); }
+
+/* =====================================================================
+   PLANES GUARDADOS · los documentos de cada paciente (generated_documents)
+   ===================================================================== */
+var gua = { paciente:null, docs:[] };
+var NOMBRE_TIPO = { meal_plan:"Plan alimentario", recipes:"Recetario" };
+function abrirGuardados(){
+  if(!irA("guardados")) return;
+  cargarPacientes();
+  if(gua.paciente){ guaMostrarElegido(); listarGuardados(); }
+  else if(gua.docs.length && !gua.paciente && $("gua-lista").querySelector(".doc-fila")) listarGenerales();
+  else { $("gua-lista").innerHTML=""; $("busca-paciente-gua").focus(); }
+}
+async function filtrarPacientesGua(q){
+  await cargarPacientes();
+  var ul=$("lista-pacientes-gua"); ul.innerHTML="";
+  if(q.trim().length<2) return;
+  if(sinResultados(ul,q)) return;
+  var hits=pacientes.filter(function(p){return coincide(p,q);}).slice(0,12);
+  if(!hits.length){ ul.innerHTML='<li><span>Nadie con ese nombre en '+esc(empresa)+'</span></li>'; return; }
+  hits.forEach(function(p){
+    var li=document.createElement("li"); li.innerHTML='<span>'+esc(nombreCompleto(p))+'</span><small>'+esc(p.status||"")+'</small>';
+    li.onclick=function(){ guaElegir(p); }; ul.appendChild(li);
+  });
+}
+function guaElegir(p){ gua.paciente=p; $("lista-pacientes-gua").innerHTML=""; guaMostrarElegido(); listarGuardados(); }
+function guaMostrarElegido(){
+  var p=gua.paciente; $("busca-paciente-gua").value=nombreCompleto(p);
+  $("ge-nombre").textContent=nombreCompleto(p); $("ge-datos").textContent=(p.status||"")+(p.birth_date?" · "+edadDe(p.birth_date)+" años":"");
+  $("gua-elegido").classList.remove("oculto"); $("gua-aviso").textContent="";
+}
+function guaDeselegir(sinFoco){ cerrarCorregirNombre(); gua.paciente=null; gua.docs=[]; $("gua-elegido").classList.add("oculto"); $("busca-paciente-gua").value=""; $("lista-pacientes-gua").innerHTML=""; $("gua-lista").innerHTML=""; $("gua-aviso").textContent=""; $("gua-aviso").className="aviso"; if(!sinFoco) $("busca-paciente-gua").focus(); }
+async function listarGuardados(){
+  var p=gua.paciente; if(!p) return;
+  var cont=$("gua-lista"); cont.innerHTML='<p class="aviso">Buscando sus planes…</p>';
+  var r=await sb.from("generated_documents").select("id,type,title,created_at,updated_at,patient_id,patient_name").eq("patient_id",p.id).in("type",["meal_plan","recipes"]).order("created_at",{ascending:false}).limit(200);
+  if(!gua.paciente||gua.paciente.id!==p.id) return;
+  if(r.error){ cont.innerHTML='<p class="aviso error">No se pudieron traer los planes: '+esc(errorLegible(r.error))+'</p>'; return; }
+  gua.docs=r.data||[];
+  if(!gua.docs.length){
+    cont.innerHTML='<div class="caja"><p style="margin:0 0 16px;font-size:1.1rem;">'+esc(nombreCompleto(p))+' todavía no tiene planes guardados.</p><button class="btn" onclick="nuevoPlanPara()">Hacer el primero</button></div>';
+    return;
+  }
+  cont.innerHTML=(gua.docs.length>=200?'<p class="aviso">Se muestran los 200 más nuevos.</p>':'')+gua.docs.map(function(d){
+    var tipo=NOMBRE_TIPO[d.type]||d.type;
+    var abrir = d.type==="meal_plan" ? "abrirPlanGuardado('"+d.id+"')" : "abrirRecetarioGuardado('"+d.id+"')";
+    return '<div class="doc-fila" data-doc="'+esc(d.id)+'"><div><span class="tipo">'+esc(tipo)+'</span><b>'+fechaCorta(d.created_at)+'</b>'+
+      (d.updated_at&&fechaCorta(d.updated_at)!==fechaCorta(d.created_at)?'<small>Corregido el '+fechaCorta(d.updated_at)+'</small>':'')+
+      (extraDelTitulo(d)?'<small>'+esc(extraDelTitulo(d))+'</small>':'')+'</div>'+
+      '<div class="botonera"><button class="btn chico" onclick="'+abrir+'">Abrir</button>'+
+      '<button class="btn chico suave" onclick="borrarGuardado(\''+d.id+'\')">Borrar</button></div></div>';
+  }).join("");
+}
+/* lo que el título dice además del tipo, el nombre y la fecha (por ejemplo "Sin TACC") */
+function extraDelTitulo(d){
+  var nombre=nombreCompleto(gua.paciente||{}).trim();
+  return String(d.title||"").split(" · ").filter(function(x){
+    x=x.trim(); return x && !/^(Plan nutricional|Plan alimentario|Recetario)$/i.test(x) && x!==nombre && !/\d/.test(x);
+  }).join(" · ");
+}
+/* recetarios generales: los que se hicieron sin elegir paciente */
+async function listarGenerales(){
+  guaDeselegir(true);
+  var cont=$("gua-lista"); cont.innerHTML='<p class="aviso">Buscando recetarios generales…</p>';
+  var r=await sb.from("generated_documents").select("id,type,title,created_at,updated_at,patient_id,patient_name").is("patient_id",null).eq("type","recipes").eq("company",empresa).order("created_at",{ascending:false}).limit(100);
+  if(r.error){ cont.innerHTML='<p class="aviso error">No se pudieron traer: '+esc(errorLegible(r.error))+'</p>'; return; }
+  gua.docs=r.data||[]; gua.paciente=null;
+  if(!gua.docs.length){ cont.innerHTML='<div class="caja"><p style="margin:0;font-size:1.1rem;">No hay recetarios generales en '+esc(empresa)+'.</p></div>'; return; }
+  cont.innerHTML='<span class="sub">Recetarios generales · '+esc(empresa)+'</span>'+gua.docs.map(function(d){
+    return '<div class="doc-fila" data-doc="'+esc(d.id)+'"><div><span class="tipo">Recetario general</span><b>'+fechaCorta(d.created_at)+'</b>'+(extraDelTitulo(d)?'<small>'+esc(extraDelTitulo(d))+'</small>':'')+'</div>'+
+      '<div class="botonera"><button class="btn chico" onclick="abrirRecetarioGuardado(\''+d.id+'\')">Abrir</button><button class="btn chico suave" onclick="borrarGuardado(\''+d.id+'\')">Borrar</button></div></div>';
+  }).join("");
+}
+async function traerDocumento(id){
+  var r=await sb.from("generated_documents").select("*").eq("id",id).maybeSingle();
+  if(r.error||!r.data){ $("gua-aviso").className="aviso error"; $("gua-aviso").textContent="No se pudo abrir: "+(r.error?errorLegible(r.error):"ya no está guardado."); return null; }
+  return r.data;
+}
+function pacienteDeDoc(d){
+  if(gua.paciente&&gua.paciente.id===d.patient_id) return gua.paciente;
+  var p=pacientes.filter(function(x){ return x.id===d.patient_id; })[0];
+  if(p) return p;
+  var partes=String(d.patient_name||"").trim().split(" ");
+  return {id:d.patient_id||null, first_name:partes.shift()||"", last_name:partes.join(" ")};
+}
+/* abre un plan ya hecho (desde Herramientas o desde la app) en la misma hoja: se imprime, se edita, se guarda sobre el mismo */
+async function abrirPlanGuardado(id){
+  var d=await traerDocumento(id); if(!d) return;
+  var inp=d.input||{}, p=pacienteDeDoc(d);
+  plan.paciente=p;
+  plan.info = inp.patientData || inp.patientInfo || {firstName:p.first_name, lastName:p.last_name, age:edadDe(p.birth_date), sex:p.sex||"", weight:Number(p.initial_weight||0), height:Number(p.height||0), waist:null};
+  plan.metricas = inp.metrics || null;
+  plan.pref = Object.assign({dietType:"Normal", intolerances:[], generalRecommendations:[], hideCalories:false}, inp.preferences||{});
+  if(!Array.isArray(plan.pref.intolerances)) plan.pref.intolerances=[];
+  plan.platoManual=false; plan.plato = platoAutomaticoDe(plan.metricas); plan.plato = platoDelPlan(d.output||{});
+  plan.gen++; // si había un plan armándose, se guarda aparte y avisa; no pisa este
+  plan.resultado=normalizarPlan(d.output||{}); plan.docId=d.id; plan.deGuardado=true; plan.docFecha=d.created_at;
+  $("pasos-plan").classList.add("oculto");
+  $("plan-5-kicker").textContent="Plan guardado · "+fechaCorta(d.created_at)+(d.title?" · "+d.title:"");
+  $("plan-error").textContent=""; $("plan-cargando").classList.add("oculto");
+  irA("planes"); irPaso(5);
+  pintarPlan(plan.resultado);
+}
+async function abrirRecetarioGuardado(id){
+  var d=await traerDocumento(id); if(!d) return;
+  rec.paciente=pacienteDeDoc(d); rec.resultado=d.output||{}; rec.deGuardado=true; rec.deGuardadoResultado=true; rec.docFecha=d.created_at; rec.docId=d.id; rec.inputGuardado=d.input||null;
+  $("p-recetario").classList.add("solo-resultado"); $("rec-error").textContent=""; $("rec-cargando").classList.add("oculto");
+  irA("recetario");
+  pintarRecetas(rec.resultado);
+}
+async function borrarGuardado(id){
+  var d=gua.docs.filter(function(x){ return x.id===id; })[0]; if(!d||gua.borrando) return;
+  gua.borrando=true; try{ await borrarGuardadoReal(d); } finally { gua.borrando=false; }
+}
+async function borrarGuardadoReal(d){
+  var id=d.id;
+  if(!confirm("¿Borrar el "+(NOMBRE_TIPO[d.type]||"documento").toLowerCase()+" del "+fechaCorta(d.created_at)+(gua.paciente?" de "+nombreCompleto(gua.paciente):" (general)")+"? No se puede deshacer.")) return;
+  var r=await sb.from("generated_documents").delete().eq("id",id).select("id");
+  var av=$("gua-aviso");
+  if(r.error){ av.className="aviso error"; av.textContent="No se pudo borrar: "+errorLegible(r.error); return; }
+  if(!r.data||!r.data.length){ av.className="aviso error"; av.textContent="La app no permitió borrarlo."; return; }
+  if(gua.paciente) listarGuardados(); else await listarGenerales();
+  av.className="aviso ok"; av.textContent="Borrado.";
+}
+function nuevoPlanPara(p){
+  p=p||gua.paciente; if(!p) return;
+  if(ocupado()) return;
+  deselegirPaciente(); plan.resultado=null; plan.docId=null; plan.deGuardado=false; $("plan-resultado").innerHTML=""; $("plan-resultado").classList.remove("editando");
+  abrirPlanes(); elegirPaciente(p);
+}
+/* mientras la IA arma un plan, no se arranca otro */
+function ocupado(){
+  if(!plan.generando) return false;
+  avisar("Esperá: se está armando el plan de "+(plan.paciente?nombreCompleto(plan.paciente):"la paciente")+". Cuando termine te aviso.", 6000);
+  return true;
+}
+
+/* =====================================================================
    RECETARIO
    ===================================================================== */
-function abrirRecetario(){ irA("recetario"); cargarPacientes(); pintarTipos(); }
+function abrirRecetario(){
+  if(!irA("recetario")) return;
+  if(rec.deGuardado||rec.deGuardadoResultado) recDeselegir();
+  rec.resultado=null; rec.docFecha=null; rec.docId=null; rec.deGuardado=false; rec.deGuardadoResultado=false;
+  $("rec-resultado").innerHTML=""; $("rec-error").textContent="";
+  $("p-recetario").classList.remove("solo-resultado"); cargarPacientes(); pintarTipos();
+}
 function pintarTipos(){
   var c=$("tipos-receta"); c.innerHTML="";
   TIPOS_RECETA.forEach(function(t){
@@ -1389,50 +2089,76 @@ async function filtrarPacientesRec(q){
   await cargarPacientes();
   var ul=$("lista-pacientes-rec"); ul.innerHTML="";
   if(q.trim().length<2) return;
+  if(sinResultados(ul,q)) return;
   pacientes.filter(function(p){return coincide(p,q);}).slice(0,12).forEach(function(p){
     var li=document.createElement("li"); li.innerHTML='<span>'+esc(nombreCompleto(p))+'</span><small>'+esc(p.status||"")+'</small>';
-    li.onclick=async function(){
-      rec.paciente=p; ul.innerHTML=""; $("busca-paciente-rec").value=nombreCompleto(p);
-      var m=await ultimasMedidas(p.id);
-      rec.info={firstName:p.first_name,lastName:p.last_name,age:edadDe(p.birth_date),sex:p.sex||"Masculino",weight:Number(m.weight??p.initial_weight??70)};
-      $("re-nombre").textContent=nombreCompleto(p); $("re-datos").textContent=rec.info.age+" años · "+rec.info.weight+" kg";
-      $("rec-elegido").classList.remove("oculto");
-    };
+    li.onclick=function(){ recElegirPaciente(p); };
     ul.appendChild(li);
   });
 }
-function recDeselegir(){ rec.paciente=null; rec.info=null; $("rec-elegido").classList.add("oculto"); $("busca-paciente-rec").value=""; $("lista-pacientes-rec").innerHTML=""; }
+recElegirPaciente.n=0;
+async function recElegirPaciente(p){
+  var token=++recElegirPaciente.n; cerrarCorregirNombre();
+  rec.paciente=p; $("lista-pacientes-rec").innerHTML=""; $("busca-paciente-rec").value=nombreCompleto(p);
+  var m=await ultimasMedidas(p.id);
+  if(token!==recElegirPaciente.n) return;
+  rec.info={firstName:p.first_name,lastName:p.last_name,age:edadDe(p.birth_date),sex:p.sex||"Femenino",weight:Number(m.weight??p.initial_weight??70)};
+  $("re-nombre").textContent=nombreCompleto(p); $("re-datos").textContent=rec.info.age+" años · "+rec.info.weight+" kg";
+  $("rec-elegido").classList.remove("oculto");
+}
+function recDeselegir(){ recElegirPaciente.n++; cerrarCorregirNombre(); rec.paciente=null; rec.info=null; $("rec-elegido").classList.add("oculto"); $("busca-paciente-rec").value=""; $("lista-pacientes-rec").innerHTML=""; }
 async function generarRecetas(){
   var conteos=TIPOS_RECETA.filter(function(t){return (rec.cantidades[t.value]||0)>0;}).map(function(t){return {type:t.value,count:rec.cantidades[t.value]};});
   if(!conteos.length) return;
   $("btn-recetas").disabled=true; $("rec-cargando").classList.remove("oculto"); $("rec-error").textContent=""; $("rec-resultado").innerHTML="";
+  var empRec=empresa;
   try{
     var cuerpo={ patientInfo:rec.info, mealTypes:conteos.map(function(c){return c.type;}), mealCounts:conteos, count:totalRecetas(),
       objective:$("rec-objetivo").value.trim(), dietType:chipsElegidos("chips-dieta-rec")[0]||"Normal",
       intolerances:chipsElegidos("chips-clinicas-rec"), pregnancyStage:"", hideCalories:$("rec-ocultar").checked, foodRestrictions:$("rec-restricciones").value.trim() };
     var r=await fetch("/api/generate-recipes",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(cuerpo)});
-    var data=await r.json();
+    var data; try{ data=await r.json(); }catch(e){ throw new Error("respuesta inválida del servidor (HTTP "+r.status+")"); }
     if(!r.ok||data.error) throw new Error(data.error||("HTTP "+r.status));
-    rec.resultado=data; pintarRecetas(data);
-    await guardarDocumento({type:"recipes", patientName:rec.paciente?nombreCompleto(rec.paciente):null, patientId:rec.paciente?rec.paciente.id:null,
-      input:Object.assign({selectedPatientId:rec.paciente?rec.paciente.id:null, patientData:rec.info||null}, cuerpo), output:data});
-  }catch(e){ console.error(e); $("rec-error").textContent="No se pudieron generar: "+e.message+". Probá de nuevo."; }
+    if(!Array.isArray(data.recipes)||!data.recipes.length) throw new Error("No vinieron recetas. Probá de nuevo.");
+    rec.resultado=data; rec.docId=null; rec.docFecha=null; rec.deGuardado=false;
+    rec.inputGuardado=Object.assign({selectedPatientId:rec.paciente?rec.paciente.id:null, patientData:rec.info||null}, cuerpo);
+    pintarRecetas(data);
+    rec.guardando = guardarDocumento({type:"recipes", patientName:rec.paciente?nombreCompleto(rec.paciente):null, patientId:rec.paciente?rec.paciente.id:null,
+      input:rec.inputGuardado, output:data, company:empRec});
+    rec.docId = await rec.guardando; rec.guardando=null;
+  }catch(e){ console.error(e); $("rec-error").className="aviso error"; $("rec-error").textContent="No se pudieron generar: "+errorLegible(e); }
   finally{ $("rec-cargando").classList.add("oculto"); $("btn-recetas").disabled=false; }
 }
 function pintarRecetas(d){
   var h='<div class="bloque-res cabecera-doc"><h2>'+esc(d.headerTitle||"Recetario")+'</h2><p class="bajada">'+esc(d.headerNote||"")+'</p></div>';
   (d.recipes||[]).forEach(function(r,i){
+    if(!r) return;
     h+='<div class="receta" id="rec-'+i+'"><button class="quitar no-imprimir" onclick="quitarReceta('+i+')">Quitar</button><h4>'+esc(r.title)+'</h4>'+
       '<div class="meta"><span>'+esc(r.prepTime||"")+'</span><span>'+esc(r.servings||"")+'</span><span>'+esc(r.difficulty||"")+'</span></div>'+
       '<p class="obj">'+esc(r.objective||"")+'</p><div class="dos"><div><b class="t">Ingredientes</b><ul>'+(r.ingredients||[]).map(function(x){return '<li>'+esc(x)+'</li>';}).join("")+'</ul></div>'+
       '<div><b class="t">Preparación</b><ol>'+(r.preparation||[]).map(function(x){return '<li>'+esc(x)+'</li>';}).join("")+'</ol></div></div>'+
       (r.nutritionalHighlight?'<p class="tip"><b>Aporte:</b> '+esc(r.nutritionalHighlight)+'</p>':'')+(r.tip?'<p class="tip">'+esc(r.tip)+'</p>':'')+'</div>';
   });
-  h=hoja("Recetario"+(rec.paciente?" · "+nombreCompleto(rec.paciente):""), h);
-  h+='<div class="acciones-res"><button class="btn" onclick="window.print()">Imprimir o guardar PDF</button><button class="btn suave" onclick="irA(\'inicio\')">Volver al inicio</button></div><p class="aviso ok no-imprimir" id="rec-guardado"></p>';
+  h='<div class="acciones-fijas no-imprimir"><div class="acciones-res"><button class="btn" onclick="window.print()">Imprimir o guardar PDF</button>'+
+     (rec.deGuardado ? '<button class="btn suave" onclick="abrirGuardados()">Volver a los guardados</button>' : '<button class="btn suave" onclick="irA(\'inicio\')">Volver al inicio</button>')+
+     '</div><p class="aviso ok" id="rec-guardado"></p></div>'+hoja("Recetario"+((rec.paciente&&rec.paciente.id)?" · "+nombreCompleto(rec.paciente):""), h, rec.deGuardado?rec.docFecha:null);
   $("rec-resultado").innerHTML=h;
 }
-function quitarReceta(i){ var el=$("rec-"+i); if(el) el.remove(); if(rec.resultado&&rec.resultado.recipes) rec.resultado.recipes[i]=null; }
+async function quitarReceta(i){
+  var el=$("rec-"+i); if(el) el.remove();
+  if(!rec.resultado||!Array.isArray(rec.resultado.recipes)) return;
+  rec.resultado.recipes[i]=null;
+  var resultadoActual=rec.resultado;
+  rec.cola=(rec.cola||Promise.resolve()).then(async function(){
+    if(rec.guardando){ try{ await rec.guardando; }catch(e){} }
+    if(rec.resultado!==resultadoActual) return; // ya se abrió otro recetario
+    if(!rec.docId) return; // no se pudo guardar: no hay nada que actualizar
+    var salida=Object.assign({}, rec.resultado, {recipes:rec.resultado.recipes.filter(Boolean)});
+    var id=await guardarDocumento({type:"recipes", patientName:(rec.paciente&&rec.paciente.id)?nombreCompleto(rec.paciente):null, patientId:rec.paciente?rec.paciente.id:null, docId:rec.docId, edicion:true,
+      input:rec.inputGuardado||{selectedPatientId:rec.paciente?rec.paciente.id:null, patientData:rec.info||null}, output:salida});
+    if(id) rec.docId=id;
+  }).catch(function(e){ console.error(e); });
+}
 
 /* =====================================================================
    NUEVA CONSULTA · guarda en sessions las mismas columnas que la app
@@ -1456,6 +2182,7 @@ async function filtrarPacientesCon(q){
   await cargarPacientes();
   var ul=$("lista-pacientes-con"); ul.innerHTML="";
   if(q.trim().length<2) return;
+  if(sinResultados(ul,q)) return;
   var hits=pacientes.filter(function(p){return coincide(p,q);}).slice(0,12);
   if(!hits.length){ ul.innerHTML='<li><span>Nadie con ese nombre en '+esc(empresa)+'</span></li>'; return; }
   hits.forEach(function(p){
@@ -1463,16 +2190,20 @@ async function filtrarPacientesCon(q){
     li.onclick=function(){ conElegir(p); }; ul.appendChild(li);
   });
 }
+conElegir.n=0;
 async function conElegir(p){
-  con.paciente=p; con.editandoId=null; $("lista-pacientes-con").innerHTML=""; $("busca-paciente-con").value=nombreCompleto(p);
+  var token=++conElegir.n; cerrarCorregirNombre();
+  con.paciente=p; con.editandoId=null; con.ultima=null; $("lista-pacientes-con").innerHTML=""; $("busca-paciente-con").value=nombreCompleto(p);
+  $("con-elegido").classList.add("oculto"); $("con-form").classList.add("oculto"); $("btn-ultima-consulta").classList.add("oculto");
   var r=await sb.from("sessions").select("*").eq("patient_id",p.id).order("session_date",{ascending:false}).order("created_at",{ascending:false}).limit(1);
+  if(token!==conElegir.n) return;
   con.ultima=(r.data&&r.data[0])||null;
   $("btn-ultima-consulta").classList.toggle("oculto", !(con.ultima&&con.ultima.id));
   $("con-editando").classList.add("oculto"); $("btn-guardar-consulta").textContent="Guardar consulta";
   var h=new Date(); $("c-fecha").value=h.getFullYear()+"-"+String(h.getMonth()+1).padStart(2,"0")+"-"+String(h.getDate()).padStart(2,"0");
   $("ce-nombre").textContent=nombreCompleto(p);
-  $("ce-datos").textContent = con.ultima
-    ? "Última consulta "+String(con.ultima.session_date||"").slice(0,10).split("-").reverse().join("/")+" · "+(con.ultima.weight!=null?con.ultima.weight+" kg":"")+(con.ultima.girth_waist!=null?" · cintura "+con.ultima.girth_waist+" cm":"")
+  $("ce-datos").textContent = r.error ? "No se pudo leer su última consulta: "+errorLegible(r.error)
+    : con.ultima ? "Última consulta "+fechaCorta(con.ultima.session_date)+(con.ultima.weight>0?" · "+con.ultima.weight+" kg":"")+(con.ultima.girth_waist>0?" · cintura "+con.ultima.girth_waist+" cm":"")
     : "Primera consulta registrada";
   $("con-elegido").classList.remove("oculto"); $("con-form").classList.remove("oculto"); $("con-listo").classList.add("oculto");
   $("c-peso").value=""; $("c-cintura").value=""; $("c-motivo").value=""; $("c-notas").value="";
@@ -1481,9 +2212,13 @@ async function conElegir(p){
   $("c-aviso").textContent=""; $("c-imc").textContent="";
   $("c-peso").focus();
 }
-function conDeselegir(){ con.paciente=null; con.ultima=null; con.editandoId=null; $("con-elegido").classList.add("oculto"); $("con-form").classList.add("oculto"); $("busca-paciente-con").value=""; $("lista-pacientes-con").innerHTML=""; cerrarCorregirNombre(); }
+function conDeselegir(){ conElegir.n++; con.paciente=null; con.ultima=null; con.editandoId=null; $("con-elegido").classList.add("oculto"); $("con-form").classList.add("oculto"); $("busca-paciente-con").value=""; $("lista-pacientes-con").innerHTML=""; cerrarCorregirNombre(); }
 function conOtra(){ conDeselegir(); $("con-listo").classList.add("oculto"); $("busca-paciente-con").focus(); }
-function fechaCorta(iso){ return String(iso||"").slice(0,10).split("-").reverse().join("/"); }
+function fechaCorta(iso){
+  var t=String(iso||""); if(!t) return "";
+  if(t.indexOf("T")!==-1){ var d=new Date(t); if(!isNaN(d)) return d.toLocaleDateString("es-AR",{day:"2-digit",month:"2-digit",year:"numeric"}); }
+  return t.slice(0,10).split("-").reverse().join("/");
+}
 /* carga una consulta guardada en el formulario para corregirla */
 function cargarConsultaEnFormulario(fila, id){
   con.editandoId=id;
@@ -1513,7 +2248,7 @@ async function guardarConsulta(){
   var faltan=Array.prototype.filter.call(document.querySelectorAll("#con-form [data-req]"), function(el){ return String(el.value).trim()===""; });
   if(faltan.length){ av.className="aviso error"; av.textContent="Completá los campos con asterisco. Si no tenés el dato, poné 0."; faltan[0].focus(); return; }
   if(!con.paciente){ av.className="aviso error"; av.textContent="Elegí a la paciente."; return; }
-  var btn=$("btn-guardar-consulta"); btn.disabled=true; av.textContent="Guardando…";
+  var btn=$("btn-guardar-consulta"); if(btn.disabled) return; btn.disabled=true; av.textContent="Guardando…";
   var cint=parseFloat($("c-cintura").value);
   var fila={
     patient_id: con.paciente.id, nutritionist_id: usuario.id, company: empresa,
@@ -1533,7 +2268,7 @@ async function guardarConsulta(){
   var editando=con.editandoId;
   var r = editando ? await sb.from("sessions").update(fila).eq("id",editando).select("id") : await sb.from("sessions").insert(fila);
   btn.disabled=false;
-  if(r.error){ av.className="aviso error"; av.textContent="No se pudo guardar: "+r.error.message; return; }
+  if(r.error){ av.className="aviso error"; av.textContent="No se pudo guardar: "+errorLegible(r.error); return; }
   if(editando&&(!r.data||!r.data.length)){ av.className="aviso error"; av.textContent="La app no permitió corregir esta consulta. Corregila desde la ficha de la paciente en la app."; return; }
   av.textContent="";
   var id=editando||null;
@@ -1547,6 +2282,7 @@ async function guardarConsulta(){
   $("con-editando").classList.add("oculto"); $("btn-guardar-consulta").textContent="Guardar consulta";
   $("con-form").classList.add("oculto");
   $("con-listo-titulo").textContent = editando ? "Consulta corregida" : "Consulta guardada";
+  $("btn-volver-ficha").classList.toggle("oculto", !(ficha.paciente&&ficha.paciente.id===con.paciente.id));
   $("con-listo-texto").textContent=nombreCompleto(con.paciente)+" · "+fila.weight+" kg · adherencia "+fila.adherence+"/5 · "+(editando?"corregida en su ficha.":"guardada en su ficha.");
   $("con-listo").classList.remove("oculto"); window.scrollTo(0,0);
 }
@@ -1562,7 +2298,7 @@ async function cargarListado(){
   var sig=new Date(y,m,1); var hastaTxt=sig.getFullYear()+"-"+String(sig.getMonth()+1).padStart(2,"0")+"-01";
   $("l-aviso").className="aviso"; $("l-aviso").textContent="Buscando…"; $("l-resultado").innerHTML="";
   var r=await sb.from("sessions").select("patient_id, session_date, patients(first_name, last_name)").eq("company",empresa).gte("session_date",desde).lt("session_date",hastaTxt).order("session_date",{ascending:true});
-  if(r.error){ $("l-aviso").className="aviso error"; $("l-aviso").textContent="No se pudo leer: "+r.error.message; return; }
+  if(r.error){ $("l-aviso").className="aviso error"; $("l-aviso").textContent="No se pudo leer: "+errorLegible(r.error); return; }
   var porPersona={};
   (r.data||[]).forEach(function(s){
     var n=s.patients?((s.patients.first_name||"")+" "+(s.patients.last_name||"")).trim():("Paciente "+String(s.patient_id).slice(0,6));

@@ -200,6 +200,12 @@
   .plato-leyenda li::before{content:"";width:16px;height:16px;border-radius:50%;flex:none;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
   .plato-leyenda li.veg::before{background:#3f7d54;} .plato-leyenda li.prot::before{background:#e8472a;} .plato-leyenda li.carb::before{background:#e2a83a;}
   .plato-leyenda b{font-family:var(--mono);font-size:1.5rem;min-width:3em;}
+  .hid-nums.vacio{display:none;} .editando .hid-nums.vacio{display:inline;}
+  .reco table td .quitar-item{margin-left:6px;}
+  .reco .agregar-item{margin:6px 0 14px;}
+  .reco .quitar-tarjeta{margin-top:-6px;}
+  .editando .reco [data-ruta="nota"]:empty{display:block;min-height:1.4em;}
+  .hid-nums .num{font-family:var(--mono);}
   .plato-bloque{break-inside:avoid;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-xl);padding:22px 28px 26px;margin:0 0 28px;}
   .plato-bloque h3{margin:0 0 16px;}
   .plato-leyenda li.agua{margin-top:4px;color:var(--muted);font-size:1.05rem;}
@@ -952,7 +958,7 @@ var RECOMENDACIONES = [
 function recoPorClave(k){ return RECOMENDACIONES.filter(function(r){ return r.clave===k; })[0]||null; }
 function htmlRecomendacion(r){
   var h='<div class="reco"><h4>'+esc(r.titulo)+'</h4><p class="bajada">'+esc(r.bajada)+'</p>';
-  r.bloques.forEach(function(b){
+  (r.bloques||[]).forEach(function(b){
     h+='<h5>'+esc(b.t)+'</h5>';
     if(b.tabla){
       h+='<table>'+b.tabla.map(function(f,i){
@@ -965,14 +971,60 @@ function htmlRecomendacion(r){
   if(r.nota) h+='<p class="nota">'+esc(r.nota)+'</p>';
   return h+'</div>';
 }
+/* la misma recomendación, pero editable dentro del plan: título, bajada, cada renglón, cada fila, la nota */
+function filaTabla(f, total){
+  return '<tr data-fila'+(total?' class="total"':'')+'><td><span data-texto data-vacio="Alimento o comida">'+esc(f[0]||"")+'</span></td><td><span data-texto data-vacio="Cantidad">'+esc(f[1]||"")+'</span>'+
+    '<button type="button" class="quitar-item solo-edicion" onclick="quitarFila(this)" aria-label="Sacar esta fila">×</button></td></tr>';
+}
+function htmlRecomendacionEditable(r, clave){
+  var h='<div class="reco" data-general="'+esc(clave)+'">'+edQuitarTarjeta()+edTexto("titulo", r.titulo, "h4", "", "Título")+edTexto("bajada", r.bajada, "p", "bajada", "Texto de apertura");
+  (r.bloques||[]).forEach(function(b){
+    h+='<div data-bloque'+(b.total?' data-total="1"':'')+'>'+edTexto("t", b.t, "h5", "", "Subtítulo");
+    if(b.tabla){
+      h+='<table data-tabla>'+b.tabla.map(function(f,i){ return filaTabla(f, b.total && i===b.tabla.length-1); }).join("")+'</table>'+
+         '<button type="button" class="agregar-item solo-edicion" onclick="agregarFila(this)">+ agregar fila</button>';
+    } else {
+      h+=edLista("lista", b.lista||[]);
+    }
+    h+='</div>';
+  });
+  h+=edTexto("nota", r.nota, "p", "nota", "Nota al pie (opcional)");
+  return h+'</div>';
+}
+function agregarFila(btn){
+  var tabla=btn.previousElementSibling; if(!tabla||tabla.tagName!=="TABLE") return;
+  var cuerpo=tabla.tBodies[0]||tabla, total=tabla.querySelector("tr.total"); // la fila de total sigue siendo la última
+  if(total) total.insertAdjacentHTML("beforebegin", filaTabla(["",""], false)); else cuerpo.insertAdjacentHTML("beforeend", filaTabla(["",""], false));
+  var fila = total ? total.previousElementSibling : cuerpo.lastElementChild;
+  fila.querySelectorAll("[data-texto]").forEach(activarEdicion); fila.querySelector("[data-texto]").focus();
+}
+function quitarFila(btn){ var tr=btn.closest("tr"); if(tr) tr.remove(); }
+/* lee una recomendación general editada desde la hoja */
+function leerRecomendacion(card){
+  function t(el){ return el ? String(el.innerText!=null?el.innerText:el.textContent).replace(/\s+/g," ").trim() : ""; }
+  var r={ titulo:t(card.querySelector('[data-ruta="titulo"]')), bajada:t(card.querySelector('[data-ruta="bajada"]')), nota:t(card.querySelector('[data-ruta="nota"]')), bloques:[] };
+  card.querySelectorAll("[data-bloque]").forEach(function(b){
+    var bloque={ t:t(b.querySelector('[data-ruta="t"]')) };
+    var tabla=b.querySelector("table[data-tabla]");
+    if(tabla){
+      bloque.tabla=Array.prototype.map.call(tabla.querySelectorAll("tr[data-fila]"), function(tr){ var c=tr.querySelectorAll("[data-texto]"); return [t(c[0]), t(c[1])]; }).filter(function(f){ return f[0]||f[1]; });
+      if(b.hasAttribute("data-total") && bloque.tabla.length) bloque.total=true;
+    } else {
+      var ul=b.querySelector("ul[data-lista]");
+      bloque.lista = ul ? Array.prototype.map.call(ul.querySelectorAll(":scope > li > [data-texto]"), t).filter(Boolean) : [];
+    }
+    if(bloque.t || (bloque.tabla&&bloque.tabla.length) || (bloque.lista&&bloque.lista.length)) r.bloques.push(bloque);
+  });
+  return r;
+}
 function textoRecomendacion(r){
   var partes=[r.bajada];
-  r.bloques.forEach(function(b){
-    var items = b.tabla ? b.tabla.map(function(f){ return f[0]+": "+f[1]; }) : b.lista;
-    partes.push(b.t+": "+items.join(" · ")+".");
+  (r.bloques||[]).forEach(function(b){
+    var items = b.tabla ? b.tabla.map(function(f){ return f[0]+": "+f[1]; }) : (b.lista||[]);
+    partes.push((b.t?b.t+": ":"")+items.join(" · ")+".");
   });
   if(r.nota) partes.push(r.nota);
-  return partes.join(" ");
+  return partes.filter(Boolean).join(" ");
 }
 function hoja(titulo, contenido, fecha){
   var hoy=(fecha?new Date(fecha):new Date()).toLocaleDateString("es-AR",{day:"2-digit",month:"2-digit",year:"numeric"});
@@ -1281,6 +1333,13 @@ function calcularMetricas(peso, talla, edad, sexo, actividad, etiquetas, etapa){
   return { idealWeight:+c.toFixed(3), pic:+w.toFixed(3), gmr:+h.toFixed(1), gmt:+v.toFixed(2), bmi:+d.toFixed(2), bmiCategory:f,
            proteinGPerKg:T, proteinGrams:N, calories:Math.round(y), calculationMethod:b, macros:z };
 }
+/* Regla de Rosana (7/10/2026): 30 ml por kg. Si hay obesidad (IMC 30 o más), 30 ml por kg de peso ideal corregido (PIC). */
+function aguaDe(info, m){
+  var usaPic = !!(m && m.bmi>=30 && m.pic>0);
+  var base = usaPic ? m.pic : (info&&info.weight>0 ? info.weight : 0);
+  var litros = base>0 ? Math.round(base*30/100)/10 : null;
+  return { litros:litros, vasos:litros?Math.round(litros*4):null, usaPic:usaPic, kg:base };
+}
 function platoAutomaticoDe(metricas){
   var cb = metricas&&metricas.macros&&metricas.macros.carbs ? metricas.macros.carbs : 55;
   return cb>=60 ? {veg:40,prot:25,carb:35} : {veg:50,prot:25,carb:25};
@@ -1302,7 +1361,9 @@ function recalcular(){
   $("m-cal").innerHTML=m.calories+' <small>kcal</small>';
   $("m-prot").innerHTML=m.proteinGrams+' <small>g · '+m.proteinGPerKg+' g/kg</small>';
   $("m-imc").innerHTML=m.bmi+' <small>'+esc(m.bmiCategory)+'</small>';
-  $("m-metodo").textContent=m.calculationMethod+" · peso ideal "+m.idealWeight.toFixed(1)+" kg · macros "+m.macros.carbs+"/"+m.macros.protein+"/"+m.macros.fats;
+  var agua=aguaDe(plan.info, m);
+  $("m-metodo").textContent=m.calculationMethod+" · peso ideal "+m.idealWeight.toFixed(1)+" kg · macros "+m.macros.carbs+"/"+m.macros.protein+"/"+m.macros.fats+
+    (agua.litros?" · agua "+String(agua.litros).replace(".",",")+" l ("+(agua.usaPic?"30 ml/kg sobre PIC "+m.pic.toFixed(1)+" kg":"30 ml/kg")+")":"");
   if(!plan.platoManual){ plan.plato=platoAutomaticoDe(m); pintarPlato(); }
 }
 
@@ -1459,8 +1520,9 @@ async function generarPlan(){
     try{ data = await r.json(); }catch(e){ throw new Error("respuesta inválida del servidor (HTTP "+r.status+")"); }
     if(!r.ok||data.error) throw new Error(data.error||("HTTP "+r.status));
     if(!Array.isArray(data.dailyPlan)||!data.dailyPlan.length) throw new Error("El plan vino sin comidas. Probá de nuevo.");
-    var litros=parseFloat((info.weight*35/1000).toFixed(1));
-    data.hydrationPlan=data.hydrationPlan||{}; data.hydrationPlan.targetLiters=litros; data.hydrationPlan.equivalentGlasses=Math.round(litros*4);
+    var agua=aguaDe(info, met);
+    data.hydrationPlan=data.hydrationPlan||{};
+    if(agua.litros){ data.hydrationPlan.targetLiters=agua.litros; data.hydrationPlan.equivalentGlasses=agua.vasos; data.hydrationPlan.base=agua.usaPic?"30 ml/kg sobre PIC":"30 ml/kg sobre peso actual"; }
     if(platoManual) data.healthyPlate={proteinsPct:plato.prot, carbsPct:plato.carb, fatsPct:0, vegetablesPct:plato.veg};
     // las recomendaciones generales viajan dentro del mismo campo que la app ya muestra; "general" marca cuáles son
     var generales=(pref.generalRecommendations||[]).map(recoPorClave).filter(Boolean);
@@ -1529,7 +1591,7 @@ function normalizarPlan(d){
   if(d.foodGroupsDetail!=null){ if(typeof d.foodGroupsDetail!=="object"||Array.isArray(d.foodGroupsDetail)) d.foodGroupsDetail={}; Object.keys(d.foodGroupsDetail).forEach(function(k){ d.foodGroupsDetail[k]=listaDe(d.foodGroupsDetail[k]).map(textoDe); }); }
   if(d.hydrationPlan!=null && (typeof d.hydrationPlan!=="object"||Array.isArray(d.hydrationPlan))) d.hydrationPlan={};
   if(d.healthyPlate!=null && (typeof d.healthyPlate!=="object"||Array.isArray(d.healthyPlate))) d.healthyPlate={};
-  if(d.recommendationsAndRecipes!=null) d.recommendationsAndRecipes = listaDe(d.recommendationsAndRecipes).map(function(r){ r=(r&&typeof r==="object")?r:{content:r}; var o={title:textoDe(r.title), content:textoDe(r.content)}; if(r.general) o.general=r.general; return o; });
+  if(d.recommendationsAndRecipes!=null) d.recommendationsAndRecipes = listaDe(d.recommendationsAndRecipes).map(function(r){ r=(r&&typeof r==="object")?r:{content:r}; var o={title:textoDe(r.title), content:textoDe(r.content)}; if(r.general) o.general=r.general; if(r.edit&&typeof r.edit==="object") o.edit=r.edit; return o; });
   if(d.substitutes!=null) d.substitutes = listaDe(d.substitutes).map(function(x){ x=(x&&typeof x==="object")?x:{category:x}; return {category:textoDe(x.category), options:listaDe(x.options).map(textoDe)}; });
   if(d.supplements!=null) d.supplements = listaDe(d.supplements).map(function(x){ x=(x&&typeof x==="object")?x:{name:x}; return {name:textoDe(x.name), dosage:textoDe(x.dosage), reason:textoDe(x.reason)}; });
   if(d.shoppingList!=null){ if(typeof d.shoppingList!=="object"||Array.isArray(d.shoppingList)) d.shoppingList={}; Object.keys(d.shoppingList).forEach(function(k){ d.shoppingList[k]=listaDe(d.shoppingList[k]).map(textoDe); }); }
@@ -1564,12 +1626,14 @@ function pintarPlan(d){
       return '<div class="grupo"><b>'+NOMBRES_GRUPOS[k]+'</b>'+edLista("foodGroupsDetail."+k, g[k]||[])+'</div>';}).join("")+'</div></div>';
   }
   if(d.hydrationPlan){ var hp=d.hydrationPlan;
-    h+='<div class="bloque-res"><h3>Hidratación'+(hp.targetLiters?' · '+String(hp.targetLiters).replace('.',',')+' litros'+(hp.equivalentGlasses?' · '+hp.equivalentGlasses+' vasos':''):'')+'</h3><ul class="lista-simple">'+
+    var litrosTxt=hp.targetLiters?String(hp.targetLiters).replace('.',','):"", vasosTxt=hp.equivalentGlasses?String(hp.equivalentGlasses):"";
+    h+='<div class="bloque-res"><h3>Hidratación<span class="hid-nums'+((litrosTxt||vasosTxt)?'':' vacio')+'"> · '+edTexto("hydrationPlan.targetLiters", litrosTxt, "span", "num", "litros")+' litros · '+edTexto("hydrationPlan.equivalentGlasses", vasosTxt, "span", "num", "vasos")+' vasos</span></h3><ul class="lista-simple">'+
       [["wakeupTip","Al despertar"],["workDayTip","Durante el día"],["nightTip","A la noche"]].map(function(par){
         return '<li class="hid">'+edTexto("hydrationPlan."+par[0], hp[par[0]], "span", "", par[1])+'</li>';}).join("")+'</ul></div>';
   }
-  var recomendaciones=(d.recommendationsAndRecipes||[]).filter(function(r){ return r && !r.general; });
-  var generales=(d.recommendationsAndRecipes||[]).filter(function(r){ return r && r.general; }).map(function(r){ return recoPorClave(r.general); }).filter(Boolean);
+  var recomendaciones=(d.recommendationsAndRecipes||[]).filter(function(r){ return r && (!r.general || !recoPorClave(r.general)); }); // una "general" que esta versión no conoce se muestra como texto propio, no se pierde
+  var generales=(d.recommendationsAndRecipes||[]).filter(function(r){ return r && r.general && recoPorClave(r.general); })
+    .map(function(r){ var base=recoPorClave(r.general); return {clave:r.general, reco: r.edit ? Object.assign({}, base, r.edit) : base}; });
   if(recomendaciones.length){
     h+='<div class="bloque-res"><h3>Recomendaciones y recetas</h3>'+recomendaciones.map(function(r){
       return '<div class="comida" data-reco>'+edQuitarTarjeta()+edTexto("title", r.title, "b", "", "Título")+edTexto("content", r.content, "p", "reco-txt", "Texto")+'</div>';}).join("")+'</div>';
@@ -1584,7 +1648,7 @@ function pintarPlan(d){
         '<button type="button" class="quitar-item solo-edicion" onclick="quitarItem(this)" aria-label="Sacar">×</button></li>';}).join("")+'</ul></div>';
   }
   if(generales.length){
-    h+='<div class="bloque-res"><h3>Recomendaciones generales</h3>'+generales.map(htmlRecomendacion).join("")+'</div>';
+    h+='<div class="bloque-res" id="generales"><h3>Recomendaciones generales</h3>'+generales.map(function(g){ return htmlRecomendacionEditable(g.reco, g.clave); }).join("")+'</div>';
   }
   if(d.shoppingList){ var sl=d.shoppingList;
     h+='<div class="bloque-res"><h3>Lista de compras</h3><div class="grupos">'+Object.keys(NOMBRES_COMPRAS).map(function(k){
@@ -1647,8 +1711,20 @@ function leerPlanEditado(base){
   if(d.sampleDayMenu) d.sampleDayMenu=tarjetas('[data-menu]', function(m){ return {meal:ruta(m,"meal"), dish:ruta(m,"dish")}; }).filter(function(m){ return m.meal||m.dish; });
   if(d.microHabits) d.microHabits=tarjetas('[data-habito]', function(m){ return {habit:ruta(m,"habit"), tip:ruta(m,"tip")}; }).filter(function(m){ return m.habit; });
   if(d.foodGroupsDetail) Object.keys(NOMBRES_GRUPOS).forEach(function(k){ d.foodGroupsDetail[k]=items(raiz,"foodGroupsDetail."+k); });
-  if(d.hydrationPlan) ["wakeupTip","workDayTip","nightTip"].forEach(function(k){ d.hydrationPlan[k]=ruta(raiz,"hydrationPlan."+k); });
-  var generales=(base.recommendationsAndRecipes||[]).filter(function(r){ return r&&r.general; });
+  if(d.hydrationPlan){
+    ["wakeupTip","workDayTip","nightTip"].forEach(function(k){ d.hydrationPlan[k]=ruta(raiz,"hydrationPlan."+k); });
+    var l=parseFloat(ruta(raiz,"hydrationPlan.targetLiters").replace(",",".")), v=parseInt(ruta(raiz,"hydrationPlan.equivalentGlasses"),10);
+    if(l>0){ d.hydrationPlan.targetLiters=Math.round(l*10)/10; d.hydrationPlan.equivalentGlasses = v>0 ? v : Math.round(l*4); if(base.hydrationPlan&&base.hydrationPlan.targetLiters!==d.hydrationPlan.targetLiters) d.hydrationPlan.base="ajustado a mano"; }
+    else if(!(l>0) && ruta(raiz,"hydrationPlan.targetLiters")===""){ delete d.hydrationPlan.targetLiters; delete d.hydrationPlan.equivalentGlasses; }
+  }
+  // las generales se leen de la hoja: si Rosana sacó una, no va; si cambió un texto, queda guardado en "edit" y el texto plano para la app se rearma
+  var generales=tarjetas('[data-general]', function(card){
+    var clave=card.getAttribute("data-general"), fijo=recoPorClave(clave); if(!fijo) return null;
+    var ed=leerRecomendacion(card);
+    var igual = JSON.stringify(ed)===JSON.stringify({titulo:fijo.titulo, bajada:fijo.bajada, nota:fijo.nota||"", bloques:fijo.bloques});
+    var completo = igual ? fijo : Object.assign({}, fijo, ed);
+    var o={title:completo.titulo, content:textoRecomendacion(completo), general:clave}; if(!igual) o.edit=ed; return o;
+  }).filter(Boolean);
   var propias=tarjetas('[data-reco]', function(r){ return {title:ruta(r,"title"), content:ruta(r,"content")}; }).filter(function(r){ return r.title||r.content; });
   d.recommendationsAndRecipes=propias.concat(generales);
   if(d.substitutes) d.substitutes=tarjetas('[data-sust]', function(x){ return {category:ruta(x,"category"), options:items(x,"options")}; }).filter(function(x){ return x.category||x.options.length; });
@@ -1666,7 +1742,7 @@ function agregarItemDespues(li){
   var nuevo=li.nextElementSibling.querySelector("[data-texto]"); activarEdicion(nuevo); nuevo.focus();
 }
 function quitarItem(btn){ var li=btn.closest("li"); if(li) li.remove(); }
-function quitarTarjeta(btn){ var t=btn.closest("[data-comida],[data-menu],[data-habito],[data-reco],[data-sust]"); if(t) t.remove(); }
+function quitarTarjeta(btn){ var t=btn.closest("[data-comida],[data-menu],[data-habito],[data-reco],[data-sust],[data-general]"); if(t) t.remove(); }
 function agregarComida(){
   var cont=$("comidas"); if(!cont) return;
   cont.insertAdjacentHTML("beforeend", htmlComida({type:"",title:"",items:[""],tip:""}));
@@ -1678,7 +1754,7 @@ document.addEventListener("keydown", function(e){
   var el=e.target; if(!el||!el.isContentEditable) return;
   if(!el.closest(".editando")) return;
   e.preventDefault();
-  if(el.hasAttribute("data-texto")){ var li=el.closest("li"); if(li) agregarItemDespues(li); }
+  if(el.hasAttribute("data-texto")){ var li=el.closest("li"); if(li) agregarItemDespues(li); else el.blur(); }
   else el.blur();
 });
 document.addEventListener("paste", function(e){

@@ -1,0 +1,1128 @@
+<!DOCTYPE html>
+<html lang="es"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>La app de NuPlan&trade; &middot; vista previa</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700;1,9..40,400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+ --bg:#fff6f3;--sup:#fff;--ink:#1a1a1a;--body:#3f3f46;--mut:#6b7280;
+ --line:#e5e7eb;--line2:#f0ddd7;--cor:#e8472a;--corl:#f47a62;--ac:#f6a29a;--cord:#c53a1e;
+ --ok:#2f7a4f;--okbg:#eef7f1;--warn:#b4530f;--warnbg:#fdf3e8;
+ --sans:'DM Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;
+ --mono:'Space Mono','SFMono-Regular',Consolas,monospace;
+ --r1:.375rem;--r2:.5rem;--r3:.75rem;--r4:1rem;--r5:1.5rem}
+html{-webkit-text-size-adjust:100%}
+body{font-family:var(--sans);background:#efe4e0;color:var(--ink);font-size:17px;line-height:1.6;
+ -webkit-font-smoothing:antialiased;min-height:100vh;display:flex;flex-direction:column;align-items:center}
+
+/* ---------- aviso de vista previa ---------- */
+.aviso{width:100%;background:var(--ink);color:#fff;padding:14px 20px}
+.aviso .in{max-width:900px;margin:0 auto;display:flex;gap:16px;align-items:flex-start}
+.aviso .pt{flex:0 0 auto;width:36px;height:36px;border-radius:50%;background:var(--cor);color:#fff;
+ display:grid;place-items:center;font-family:var(--mono);font-size:1.2rem;font-weight:700}
+.aviso .tx{min-width:0}
+.aviso .mas{display:none}
+.aviso .mas.ver{display:block}
+.aviso b{display:block;font-size:1.12rem;line-height:1.35}
+.aviso p{font-size:1.02rem;line-height:1.55;color:rgba(255,255,255,.82)}
+.aviso p:first-child{margin-top:6px}
+.aviso p+p{margin-top:7px}
+.aviso .avT{display:inline-block;background:none;border:1.5px solid rgba(255,255,255,.4);color:#fff;
+ border-radius:99px;padding:9px 16px;font:inherit;font-size:.98rem;cursor:pointer;margin-top:10px}
+.aviso .avT:active{transform:scale(.97)}
+
+/* ---------- barra de modos ---------- */
+.modos{width:100%;background:var(--sup);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:40}
+.modos .in{max-width:900px;margin:0 auto;display:flex;gap:0;padding:0 14px}
+.modos button{flex:1;background:none;border:none;border-bottom:3px solid transparent;padding:17px 8px 15px;
+ font:inherit;font-size:1.02rem;font-weight:500;color:var(--mut);cursor:pointer;transition:.18s;line-height:1.25}
+.modos button span{display:block;font-family:var(--mono);font-size:.88rem;letter-spacing:.08em;
+ text-transform:uppercase;opacity:.65;margin-bottom:3px}
+.modos button.on{color:var(--cord);border-bottom-color:var(--cor);font-weight:700}
+.modos button .bb{display:inline-block;min-width:22px;height:22px;border-radius:99px;background:var(--cor);
+ color:#fff;font-family:var(--mono);font-size:.9rem;font-weight:700;line-height:22px;margin-left:5px;padding:0 6px}
+
+/* ---------- telefono ---------- */
+.escena{width:100%;max-width:900px;padding:26px 16px 60px;flex:1}
+.fila{display:flex;gap:34px;align-items:flex-start;justify-content:center;flex-wrap:wrap}
+.tel{flex:0 0 auto;width:392px;max-width:100%;background:var(--bg);border:12px solid #141414;
+ border-radius:40px;overflow:hidden;box-shadow:0 26px 60px rgba(26,26,26,.22);position:relative;
+ display:flex;flex-direction:column;height:760px}
+.notch{height:26px;background:#141414;flex:0 0 auto;display:grid;place-items:center}
+.notch i{display:block;width:92px;height:5px;border-radius:99px;background:#3a3a3a}
+.scr{flex:1;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
+.scr::-webkit-scrollbar{width:0}
+.pant{display:none;padding:22px 20px 26px;min-height:100%}
+.pant.on{display:block}
+
+/* cabecera dentro de la app */
+.top{display:flex;align-items:center;gap:12px;margin-bottom:20px}
+.top .marca{font-family:var(--mono);font-size:.96rem;font-weight:700;letter-spacing:.06em;color:var(--cord)}
+.top .marca em{font-style:normal;color:var(--ink)}
+.top .quien{margin-left:auto;display:flex;align-items:center;gap:9px}
+.top .av{width:34px;height:34px;border-radius:50%;background:var(--ac);color:var(--ink);display:grid;
+ place-items:center;font-weight:700;font-size:1.05rem}
+.top .quien span{font-size:.98rem;color:var(--mut)}
+
+h1.ht{font-size:1.9rem;letter-spacing:-.03em;line-height:1.12;margin-bottom:8px;
+ overflow-wrap:anywhere;min-width:0}
+h2.ht{font-size:1.55rem;letter-spacing:-.025em;line-height:1.18;margin-bottom:9px;
+ overflow-wrap:anywhere;min-width:0}
+.top .marca{min-width:0;overflow-wrap:anywhere}
+.sub{font-size:1.05rem;color:var(--body);line-height:1.55;margin-bottom:20px}
+.ojo{font-family:var(--mono);font-size:.9rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+ color:var(--cord);margin-bottom:9px}
+
+/* tarjeta del dia de hoy */
+.hoy{background:var(--sup);border:1px solid var(--line2);border-radius:var(--r5);padding:24px 22px;margin-bottom:18px}
+.hoy .cab{display:flex;align-items:center;gap:13px;margin-bottom:17px;padding-bottom:15px;border-bottom:1px solid var(--line)}
+.hoy .nd{font-family:var(--mono);font-size:2.3rem;font-weight:700;color:var(--cor);line-height:1}
+.hoy .nl{font-family:var(--mono);font-size:.9rem;color:var(--mut);line-height:1.35}
+.hoy .nl b{display:block;color:var(--ink);font-size:1.02rem;font-family:var(--sans)}
+.hoy .le2{margin-left:auto;width:42px;height:42px;border-radius:12px;background:#fff2ee;color:var(--cord);
+ display:grid;place-items:center;font-size:1.3rem;font-weight:700}
+.hoy .acc{font-size:1.28rem;line-height:1.38;letter-spacing:-.015em;margin-bottom:6px}
+.hoy .fo2{font-size:1rem;color:var(--mut);margin-bottom:19px}
+.bt{display:flex;flex-direction:column;gap:9px}
+.bt button{display:flex;align-items:center;gap:12px;width:100%;background:var(--bg);border:1.5px solid var(--line2);
+ border-radius:var(--r3);padding:14px 16px;font:inherit;font-size:1.04rem;color:var(--ink);cursor:pointer;
+ text-align:left;transition:.16s}
+.bt button:hover{border-color:var(--cor)}
+.bt button.lleno{background:var(--cor);border-color:var(--cor);color:#fff;font-weight:700;
+ justify-content:center;font-size:1.2rem;padding:16px}
+.bt button .ic{flex:0 0 auto;width:26px;height:26px;display:grid;place-items:center;font-size:1.15rem}
+.bt button .mk{margin-left:auto;white-space:nowrap;font-family:var(--mono);font-size:.92rem;color:var(--ok);font-weight:700}
+.bt button.hecho{background:var(--okbg);border-color:#cfe6d8}
+
+/* barra de progreso */
+.prog{background:var(--sup);border:1px solid var(--line2);border-radius:var(--r4);padding:18px 20px;margin-bottom:18px}
+.prog .ln{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:11px}
+.prog .ln b{font-family:var(--mono);font-size:1.15rem;color:var(--cord)}
+.prog .ln span{font-size:.98rem;color:var(--mut)}
+.bar{height:9px;background:var(--line2);border-radius:99px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--cor);border-radius:99px;transition:width .4s}
+.cuatro{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:15px}
+.cuatro div{text-align:center;background:var(--bg);border-radius:var(--r2);padding:11px 4px}
+.cuatro b{display:block;font-family:var(--mono);font-size:1.1rem;color:var(--cord)}
+.cuatro span{font-size:.9rem;color:var(--mut);line-height:1.3;display:block}
+
+/* grilla de los 90 dias */
+.semg{margin-bottom:22px}
+.semt{display:flex;align-items:center;gap:11px;margin-bottom:11px}
+.semt .lt{width:32px;height:32px;border-radius:9px;background:var(--cor);color:#fff;display:grid;
+ place-items:center;font-weight:700;font-size:1.05rem;flex:0 0 auto}
+.semt b{font-size:1.1rem}
+.semt span{font-family:var(--mono);font-size:.9rem;color:var(--mut);margin-left:auto;flex:0 0 auto}
+.grd{display:grid;grid-template-columns:repeat(7,1fr);gap:7px}
+.grd button{min-height:44px;background:var(--sup);border:1.5px solid var(--line2);border-radius:var(--r2);
+ font-family:var(--mono);font-size:1rem;font-weight:700;color:var(--body);cursor:pointer;transition:.14s;
+ display:grid;place-items:center;position:relative}
+.grd button:hover{border-color:var(--cor);color:var(--cord)}
+.grd button.list{background:var(--okbg);border-color:#bcdcc8;color:var(--ok)}
+.grd button.es{background:var(--cor);border-color:var(--cor);color:#fff}
+.grd button.tiene:after{content:"";position:absolute;top:4px;right:4px;width:7px;height:7px;
+ border-radius:50%;background:var(--cord)}
+
+/* detalle de un dia (hoja) */
+.hoja{position:absolute;inset:0;background:var(--bg);z-index:30;display:none;flex-direction:column}
+.hoja.on{display:flex}
+.hoja .hc{display:flex;align-items:center;gap:12px;padding:16px 18px;background:var(--sup);
+ border-bottom:1px solid var(--line);flex:0 0 auto}
+.hoja .hc b{font-family:var(--mono);font-size:1.05rem;color:var(--cord)}
+.hoja .hc button{margin-left:auto;background:none;border:none;font:inherit;font-size:1.7rem;
+ color:var(--mut);cursor:pointer;line-height:1;width:44px;height:44px;display:grid;place-items:center;
+ border-radius:50%;margin-right:-8px}
+.hoja .hc button:hover{background:var(--bg);color:var(--ink)}
+.hoja .hb{flex:1;overflow-y:auto;padding:22px 20px 26px}
+
+/* herramientas */
+.her{display:flex;flex-direction:column;gap:10px}
+.her a,.her div.hx{display:flex;align-items:flex-start;gap:14px;background:var(--sup);
+ border:1px solid var(--line2);border-radius:var(--r3);padding:16px 17px;text-decoration:none;color:inherit;transition:.16s}
+.her a:hover{border-color:var(--cor)}
+.her .hn{flex:0 0 auto;width:32px;height:32px;border-radius:9px;background:#fff2ee;color:var(--cord);
+ display:grid;place-items:center;font-family:var(--mono);font-size:.98rem;font-weight:700}
+.her b{display:block;font-size:1.07rem;margin-bottom:3px;line-height:1.3}
+.her span{display:block;font-size:.98rem;color:var(--mut);line-height:1.45}
+.her .sm{font-family:var(--mono);font-size:.88rem;color:var(--ok);margin-top:5px}
+
+/* chat */
+.ch{display:flex;flex-direction:column;gap:12px;margin-bottom:18px}
+.bu{max-width:88%;padding:14px 16px;border-radius:var(--r4);font-size:1.04rem;line-height:1.52}
+.bu.ella{align-self:flex-end;background:var(--cor);color:#fff;border-bottom-right-radius:var(--r1)}
+.bu.ia{align-self:flex-start;background:var(--sup);border:1px solid var(--line2);border-bottom-left-radius:var(--r1)}
+.bu.ia .qq{display:block;font-family:var(--mono);font-size:.86rem;letter-spacing:.07em;text-transform:uppercase;
+ color:var(--cord);margin-bottom:6px}
+.campo{display:flex;gap:9px;align-items:center;background:var(--sup);border:1.5px solid var(--line2);
+ border-radius:99px;padding:5px 5px 5px 18px}
+.campo input{flex:1;border:none;background:none;font:inherit;font-size:1.02rem;outline:none;
+ min-width:0;height:44px;padding:0}
+.campo button{flex:0 0 auto;width:42px;height:42px;border-radius:50%;background:var(--cor);border:none;
+ color:#fff;font-size:1.2rem;cursor:pointer}
+
+/* listas de Rosana */
+.lst{display:flex;flex-direction:column;gap:10px}
+.cc{display:flex;align-items:center;gap:13px;background:var(--sup);border:1px solid var(--line2);
+ border-radius:var(--r3);padding:15px 16px;width:100%;text-align:left;font:inherit;cursor:pointer;transition:.16s}
+.cc:hover{border-color:var(--cor)}
+.cc .av2{flex:0 0 auto;width:40px;height:40px;border-radius:50%;background:var(--ac);color:var(--ink);
+ display:grid;place-items:center;font-weight:700;font-size:1.1rem}
+.cc .tx{flex:1;min-width:0}
+.cc b{display:block;font-size:1.07rem;margin-bottom:2px}
+.cc span{display:block;font-size:.97rem;color:var(--mut)}
+.cc .sem{flex:0 0 auto;font-family:var(--mono);font-size:.88rem;font-weight:700;padding:5px 10px;border-radius:99px}
+.sem.aldia{background:var(--okbg);color:var(--ok)}
+.sem.frenada{background:#fdeceb;color:var(--cord)}
+.sem.termino{background:#eef2ff;color:#4338ca}
+.tar{background:var(--sup);border:1px solid var(--line2);border-radius:var(--r3);padding:16px 17px}
+.tar+.tar{margin-top:10px}
+.tar .mt{display:flex;align-items:baseline;gap:9px;margin-bottom:7px}
+.tar .mt b{font-size:1.05rem}
+.tar .mt time{font-family:var(--mono);font-size:.88rem;color:var(--mut);margin-left:auto}
+.tar p{font-size:1.03rem;line-height:1.52;color:var(--body)}
+.tar .et{display:inline-block;font-family:var(--mono);font-size:.86rem;font-weight:700;padding:4px 9px;
+ border-radius:99px;background:var(--warnbg);color:var(--warn);margin-top:9px}
+.tar .et.urg{background:#fdeceb;color:var(--cord)}
+.tar.urg{border-color:var(--cor);border-left-width:4px}
+.pnt{width:9px;height:9px;border-radius:50%;background:var(--cor);flex:0 0 auto}
+
+/* editor de dias (Rosana) */
+.ed{background:var(--sup);border:1px solid var(--line2);border-radius:var(--r3);padding:15px 16px;margin-bottom:10px}
+.ed .eh{display:flex;align-items:center;gap:10px;margin-bottom:9px}
+.ed .eh b{font-family:var(--mono);font-size:.98rem;color:var(--cord)}
+.ed .eh span{font-size:.95rem;color:var(--mut);margin-left:auto}
+.ed textarea{width:100%;border:1.5px solid var(--line);border-radius:var(--r2);padding:12px 13px;
+ font:inherit;font-size:1.03rem;line-height:1.5;color:var(--ink);resize:vertical;background:var(--bg)}
+.ed textarea:focus{outline:none;border-color:var(--cor);background:var(--sup)}
+.ed.cambiado{border-color:var(--cor);border-left-width:4px}
+.ed .guard{font-family:var(--mono);font-size:.9rem;color:var(--ok);font-weight:700;margin-top:8px;display:none}
+.ed.cambiado .guard{display:block}
+.selsem{display:flex;gap:7px;overflow-x:auto;padding-bottom:10px;margin-bottom:16px;-webkit-overflow-scrolling:touch}
+.selsem::-webkit-scrollbar{height:0}
+.selsem button{flex:0 0 auto;background:var(--sup);border:1.5px solid var(--line2);border-radius:99px;
+ padding:9px 15px;font:inherit;font-family:var(--mono);font-size:.96rem;font-weight:700;color:var(--body);cursor:pointer}
+.selsem button.on{background:var(--cor);border-color:var(--cor);color:#fff}
+
+/* nav de abajo */
+nav{flex:0 0 auto;background:var(--sup);border-top:1px solid var(--line);display:flex;padding:7px 4px 9px}
+nav button{flex:1;background:none;border:none;cursor:pointer;padding:6px 2px;color:var(--mut);
+ font:inherit;display:flex;flex-direction:column;align-items:center;gap:3px;transition:.16s;min-width:0}
+nav button i{font-size:1.3rem;font-style:normal;line-height:1}
+nav button span{font-size:.92rem;line-height:1.15;text-align:center;max-width:100%;
+ white-space:normal;overflow-wrap:anywhere;hyphens:none}
+nav button.on{color:var(--cord);font-weight:700}
+
+/* panel lateral explicativo */
+.expl{flex:1 1 300px;min-width:280px;max-width:360px}
+.expl .bl{background:var(--sup);border:1px solid var(--line2);border-radius:var(--r4);padding:22px 22px;margin-bottom:14px}
+.expl .bl .k{font-family:var(--mono);font-size:.88rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+ color:var(--cord);margin-bottom:9px;display:block}
+.expl .bl h3{font-size:1.3rem;letter-spacing:-.02em;line-height:1.22;margin-bottom:9px}
+.expl .bl p{font-size:1.04rem;line-height:1.58;color:var(--body)}
+.expl .bl p+p{margin-top:9px}
+.expl .bl ul{list-style:none;margin-top:11px;display:flex;flex-direction:column;gap:9px}
+.expl .bl ul li{position:relative;padding-left:22px;font-size:1.03rem;line-height:1.5;
+ color:var(--body);min-width:0;overflow-wrap:anywhere}
+.expl .bl ul li:before{content:"";position:absolute;left:0;top:9px;width:9px;height:9px;
+ border-radius:50%;background:var(--ac)}
+.expl .bl.oscuro{background:var(--ink);border-color:var(--ink)}
+.expl .bl.oscuro h3{color:#fff}
+.expl .bl.oscuro p,.expl .bl.oscuro ul li{color:rgba(255,255,255,.85)}
+.expl .bl.oscuro .k{color:var(--ac)}
+
+/* boton flotante de correcciones */
+.flot{position:fixed;right:18px;bottom:18px;z-index:60;display:flex;flex-direction:column;gap:9px;align-items:flex-end}
+.flot button{background:var(--ink);color:#fff;border:none;border-radius:99px;padding:15px 22px;font:inherit;
+ font-size:1.08rem;font-weight:700;cursor:pointer;box-shadow:0 10px 30px rgba(26,26,26,.3);
+ display:flex;align-items:center;gap:10px}
+.flot button.cor{background:var(--cor)}
+.flot .n2{min-width:24px;height:24px;border-radius:99px;background:#fff;color:var(--cor);
+ font-family:var(--mono);font-size:.9rem;line-height:24px;padding:0 7px}
+
+/* hoja de correcciones */
+.sheet{position:fixed;inset:0;background:rgba(26,26,26,.55);z-index:70;display:none;
+ align-items:flex-end;justify-content:center;padding:0}
+.sheet.on{display:flex}
+.sheet .in2{background:var(--bg);width:100%;max-width:620px;max-height:88vh;border-radius:26px 26px 0 0;
+ display:flex;flex-direction:column;overflow:hidden}
+.sheet .sh{display:flex;align-items:center;gap:12px;padding:20px 22px 16px;background:var(--sup);
+ border-bottom:1px solid var(--line);flex:0 0 auto}
+.sheet .sh b{font-size:1.25rem}
+.sheet .sh button{margin-left:auto;background:none;border:none;font-size:1.75rem;color:var(--mut);
+ cursor:pointer;line-height:1;width:44px;height:44px;display:grid;place-items:center;
+ border-radius:50%;margin-right:-8px}
+.sheet .sh button:hover{background:var(--bg);color:var(--ink)}
+.sheet .sb{flex:1;overflow-y:auto;padding:20px 22px 26px}
+.sheet label{display:block;font-family:var(--mono);font-size:.92rem;font-weight:700;color:var(--cord);margin-bottom:8px}
+.sheet textarea,.sheet input{width:100%;border:2px solid var(--line2);border-radius:var(--r3);padding:14px 16px;
+ font:inherit;font-size:1.05rem;line-height:1.55;background:var(--sup);color:var(--ink);resize:vertical}
+.sheet textarea:focus,.sheet input:focus{outline:none;border-color:var(--cor)}
+.sheet .gb{background:var(--cor);color:#fff;border:none;border-radius:var(--r3);padding:17px;font:inherit;
+ font-size:1.2rem;font-weight:700;cursor:pointer;width:100%;margin-top:14px}
+.sheet .gb.sec{background:var(--sup);color:var(--ink);border:2px solid var(--line2);margin-top:9px}
+.cl{display:flex;flex-direction:column;gap:9px;margin-bottom:18px}
+.ci{display:flex;gap:12px;background:var(--sup);border:1px solid var(--line2);border-radius:var(--r3);padding:14px 15px}
+.ci .cd{flex:0 0 auto;font-family:var(--mono);font-size:.92rem;font-weight:700;color:var(--cord);
+ background:#fff2ee;border-radius:var(--r1);padding:4px 9px;height:fit-content}
+.ci .cq{flex:1;min-width:0}
+.ci .cq p{font-size:1.03rem;line-height:1.5;color:var(--body);word-break:break-word}
+.ci .cq em{display:block;font-style:normal;font-size:.94rem;color:var(--mut);margin-top:4px}
+.ci .cx{flex:0 0 auto;background:none;border:none;color:var(--mut);font-size:1.4rem;cursor:pointer;
+ line-height:1;width:40px;height:40px;display:grid;place-items:center;border-radius:50%;margin:-6px -6px 0 0}
+.ci .cx:hover{background:var(--bg);color:var(--cord)}
+.vac{text-align:center;padding:28px 16px;color:var(--mut);font-size:1.05rem;line-height:1.55}
+.est2{font-family:var(--mono);font-size:.98rem;color:var(--mut);margin-top:12px;text-align:center;min-height:1.4em}
+.est2.mal{color:var(--cord)}
+.okb{display:none;background:var(--okbg);border:1px solid #cfe6d8;border-radius:var(--r3);padding:20px;margin-top:14px}
+.okb.on{display:block}
+.okb b{display:block;color:var(--ok);font-size:1.15rem;margin-bottom:5px}
+.okb p{font-size:1.02rem;color:var(--body);line-height:1.55}
+
+.nn2{display:inline-flex;align-items:center;gap:7px;background:#fff2ee;border:1px solid var(--ac);
+ border-radius:99px;padding:7px 14px;font-size:.98rem;color:var(--cord);font-weight:500;margin-bottom:14px}
+.nomio{background:none;border:1.5px dashed var(--ac);border-radius:var(--r2);padding:11px 15px;font:inherit;
+ font-size:1rem;color:var(--cord);cursor:pointer;width:100%;margin-top:15px;transition:.16s;font-weight:500}
+.nomio:hover{background:#fff2ee;border-style:solid}
+.nomio.tiene{background:#fff2ee;border-style:solid;font-weight:700}
+
+footer{width:100%;max-width:900px;padding:30px 20px 46px;text-align:center}
+footer p{font-family:var(--mono);font-size:.95rem;color:var(--mut);line-height:1.7}
+
+
+/* chip del ejercicio del metodo */
+.chip{display:block;background:#fff2ee;border:1px solid var(--ac);border-radius:var(--r2);
+ padding:10px 13px;margin-bottom:13px;font-size:1rem;color:var(--cord);line-height:1.4}
+.chip b{display:block;font-family:var(--mono);font-size:.9rem;font-weight:700;letter-spacing:.06em;
+ text-transform:uppercase;color:var(--cord);opacity:.75;margin-bottom:3px}
+.grd button.ejx2{box-shadow:inset 0 0 0 2px var(--ac)}
+.grd button.es.ejx2{box-shadow:inset 0 0 0 2px #fff}
+ul.mini{list-style:none;margin:9px 0 0;display:flex;flex-direction:column;gap:8px}
+ul.mini li{position:relative;padding-left:20px;font-size:1.02rem;line-height:1.5;color:var(--body);
+ overflow-wrap:anywhere}
+ul.mini li:before{content:"";position:absolute;left:0;top:9px;width:7px;height:7px;
+ border-radius:50%;background:var(--ac)}
+.caja2{background:var(--sup);border:1px solid var(--line2);border-radius:var(--r3);
+ padding:16px 17px;margin-top:12px}
+.kick2{display:block;font-family:var(--mono);font-size:.9rem;font-weight:700;letter-spacing:.1em;
+ text-transform:uppercase;color:var(--cord);margin-bottom:10px}
+.cmp{background:var(--bg);border:1.5px dashed var(--line2);border-radius:var(--r2);
+ padding:12px 14px;font-size:1.02rem;color:var(--mut);line-height:1.45}
+.cmp+.cmp{margin-top:8px}
+
+/* ---------- movimiento ---------- */
+@keyframes entra{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+@keyframes sube{from{transform:translateY(100%)}to{transform:none}}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+.pant.on{animation:entra .26s cubic-bezier(.22,.8,.3,1) both}
+.hoja.on{animation:sube .3s cubic-bezier(.22,.8,.3,1) both}
+.sheet.on{animation:fade .18s both}
+.sheet.on .in2{animation:sube .3s cubic-bezier(.22,.8,.3,1) both}
+.modo.on{animation:fade .22s both}
+.ch .bu{animation:entra .3s cubic-bezier(.22,.8,.3,1) both}
+.ch .bu:nth-child(2){animation-delay:.05s}
+.ch .bu:nth-child(3){animation-delay:.1s}
+.ch .bu:nth-child(4){animation-delay:.15s}
+.ch .bu:nth-child(5){animation-delay:.2s}
+button,.cc,.her a{-webkit-tap-highlight-color:transparent}
+.bt button:active,.cc:active,.grd button:active,nav button:active,.opc button:active,
+.selsem button:active,.her a:active,.modos button:active,.flot button:active,.nomio:active{transform:scale(.975)}
+.bt button,.cc,.grd button,.her a,.nomio,.selsem button,.flot button{transition:transform .12s,border-color .16s,background .16s,color .16s}
+@media(prefers-reduced-motion:reduce){
+  *,*:before,*:after{animation-duration:.01ms!important;animation-iteration-count:1!important;
+   transition-duration:.01ms!important}
+}
+
+/* ---------- escritorio: el telefono queda fijo a la vista ---------- */
+@media(min-width:881px){
+  .escena{padding:18px 16px 56px}
+  .tel{position:sticky;top:88px;height:min(760px,calc(100vh - 200px));min-height:460px}
+}
+
+/* ---------- celular y tablet: se comporta como una app ---------- */
+@media(max-width:880px){
+  .escena{padding:16px 0 104px;max-width:560px}
+  .fila{gap:0;display:block}
+  .tel{border-width:0;border-radius:0;box-shadow:none;height:auto;
+   min-height:calc(100vh - 250px);width:100%;max-width:560px;margin:0 auto}
+  .notch{display:none}
+  .scr{overflow:visible}
+  .pant{padding:20px 18px 24px}
+  nav{position:fixed;left:50%;transform:translateX(-50%);bottom:0;width:100%;max-width:560px;
+   z-index:50;box-shadow:0 -6px 26px rgba(26,26,26,.12);
+   padding:8px 4px calc(10px + env(safe-area-inset-bottom))}
+  nav button:active{transform:scale(.94)}
+  .hoja{position:fixed;inset:0;z-index:80}
+  .hoja .hb{padding-bottom:calc(30px + env(safe-area-inset-bottom))}
+  .flot{bottom:calc(84px + env(safe-area-inset-bottom));right:14px}
+  .expl{max-width:560px;flex:none;width:100%;margin:24px auto 0;padding:0 18px}
+  .aviso .in{gap:13px}
+  .unico{padding:0 18px}
+}
+@media(max-width:880px){
+  body{background:var(--bg)}
+  .escena{padding:0 0 104px}
+}
+@media(max-width:430px){
+  .modos .in{padding:0 6px}
+  .modos button{font-size:1rem;padding:13px 4px 11px}
+  .modos button span{display:none}
+  .modos button.on{border-bottom-width:3px}
+  .grd{gap:6px}
+  .grd button{font-size:1.02rem}
+  h1.ht{font-size:1.75rem}
+  h2.ht{font-size:1.45rem}
+}
+@media(max-width:340px){
+  .pant{padding:18px 14px 22px}
+  .grd{gap:5px}
+}
+
+.unico{max-width:620px;margin:0 auto}
+.bl2{background:var(--sup);border:1px solid var(--line2);border-radius:var(--r4);padding:24px 22px}
+.bl2 label{display:block;font-family:var(--mono);font-size:.94rem;font-weight:700;color:var(--cord);margin-bottom:8px}
+.bl2 input{width:100%;border:2px solid var(--line2);border-radius:var(--r3);padding:14px 16px;font:inherit;font-size:1.05rem}
+.bl2 input:focus{outline:none;border-color:var(--cor)}
+.bl2 .gb{background:var(--cor);color:#fff;border:none;border-radius:var(--r3);padding:17px;font:inherit;
+ font-size:1.2rem;font-weight:700;cursor:pointer;width:100%;margin-top:14px}
+.bl2 .gb.sec2{background:var(--sup);color:var(--ink);border:2px solid var(--line2);margin-top:10px}
+.bl2 .gb.sec2:hover{border-color:var(--cor)}
+</style>
+</head><body>
+
+<div class="aviso"><div class="in">
+  <span class="pt">&#9655;</span>
+  <div class="tx">
+    <b>Rosana, esto es tu app andando.</b>
+    <div class="mas" id="avMas">
+      <p>Dos modos: lo que ve tu consultante y lo que ves vos. Arranca en el onboarding y sigue por los 90 d&iacute;as, con los 24 ejercicios de tus p&aacute;ginas repartidos d&iacute;a por d&iacute;a. Te lo dej&eacute; todo abierto &mdash; a ellas se les abre uno por d&iacute;a.</p>
+      <p>En cada d&iacute;a y cada pantalla hay un bot&oacute;n para anotar lo que cambiar&iacute;as. Cuando termines, me lo mand&aacute;s todo junto.</p>
+    </div>
+    <button class="avT" id="avT" aria-expanded="false">C&oacute;mo funciona esto</button>
+  </div>
+</div></div>
+
+<div class="modos"><div class="in">
+  <button data-m="c" class="on"><span>Modo</span>Consultante</button>
+  <button data-m="r"><span>Modo</span>Rosana</button>
+  <button data-m="x"><span>Lo que anot&eacute;</span>Correcciones<span class="bb" id="bb" style="display:none">0</span></button>
+</div></div>
+
+<div class="escena">
+  <div class="modo on" data-mm="c"><div class="fila">
+    <div class="tel"><div class="notch"><i></i></div>
+      <div class="scr" id="scrC">
+<section class="pant on" data-c="hoy">
+  <div class="top"><span class="marca">Nu<em>Plan</em></span>
+    <div class="quien"><span>Miriam</span><div class="av">M</div></div></div>
+  <div id="tarjHoy"></div>
+  <div class="prog">
+    <div class="ln"><b id="pgN">23 de 90</b><span id="pgQ">21 registros &middot; 9 fotos</span></div>
+    <div class="bar"><i id="pgB" style="width:25.5%"></i></div>
+    <div class="cuatro">
+      <div><b>N</b><span>Nutrir</span></div><div><b>U</b><span>Unir</span></div>
+      <div><b>P</b><span>Person.</span></div><div><b>L</b><span>Liberar</span></div>
+    </div>
+  </div>
+  <div class="her">
+    <div class="hx" style="cursor:pointer" onclick="irC('respuestas')">
+      <div class="hn">&#9633;</div><div><b>Mis respuestas</b><span>Los siete ejercicios del m&eacute;todo, con lo que fuiste contestando</span></div></div>
+    <div class="hx" style="cursor:pointer" onclick="irC('linea')">
+      <div class="hn">&#9201;</div><div><b>Mi l&iacute;nea de tiempo</b><span>Tus fotos, tus registros y tus respuestas, d&iacute;a por d&iacute;a</span></div></div>
+  </div>
+  <button class="nomio" data-nm="pantalla|Hoy|La pantalla de Hoy">Esto no es m&iacute;o &middot; anotar un cambio</button>
+</section>
+
+<section class="pant" data-c="camino">
+  <div class="top"><span class="marca">Nu<em>Plan</em></span>
+    <div class="quien"><span>Miriam</span><div class="av">M</div></div></div>
+  <h2 class="ht">El camino</h2>
+  <p class="sub">Noventa d&iacute;as, seis letras. Toc&aacute; cualquier d&iacute;a para ver qu&eacute; dice.</p>
+  <div class="nn2">&#9655; En la app de verdad solo ve hasta hoy</div>
+  <div class="semg">
+    <div class="semt"><span class="lt" style="background:var(--ink)">0</span>
+      <b>Antes de empezar</b><span>onboarding</span></div>
+    <div class="her" id="onbL"></div>
+  </div>
+  <div id="grilla"></div>
+  <button class="nomio" data-nm="pantalla|El camino|La grilla de los 90 d&iacute;as">Esto no es m&iacute;o &middot; anotar un cambio</button>
+</section>
+
+<section class="pant" data-c="registro">
+  <div class="top"><span class="marca">Nu<em>Plan</em></span>
+    <div class="quien"><span>Miriam</span><div class="av">M</div></div></div>
+  <h2 class="ht">Mi diario</h2>
+  <p class="sub">El diario de comida y emoci&oacute;n. Siempre disponible, todos los d&iacute;as, desde el d&iacute;a 4 hasta el 90.</p>
+  <div class="hoy" style="margin-bottom:14px">
+    <div class="cab"><span class="nd">4</span><span class="nl">comidas hoy<b>Martes 13</b></span>
+      <span class="le2">&#9679;</span></div>
+    <div class="bt">
+      <button><span class="ic">&#9634;</span>Desayuno &middot; 8:10<span class="mk">&#10003;</span></button>
+      <button><span class="ic">&#9634;</span>Almuerzo &middot; 13:40<span class="mk">&#10003;</span></button>
+      <button><span class="ic">&#9634;</span>Merienda &middot; 17:20<span class="mk">&#10003;</span></button>
+      <button><span class="ic">&#9634;</span>Cena &middot; 22:50<span class="mk">&#10003;</span></button>
+      <button class="lleno">Cargar otra comida</button>
+    </div>
+  </div>
+  <div class="tar"><div class="mt"><b>Lo que va a ver Rosana</b></div>
+    <p>Al final del d&iacute;a se le env&iacute;a tu diario completo: las horas, lo que comiste, qu&eacute; te llev&oacute; a comer cada vez y c&oacute;mo viene tu semana. Es el mismo mail que ya te llega hoy.</p></div>
+  <button class="nomio" data-nm="pantalla|Mi diario|El diario de comida y emoci&oacute;n">Esto no es m&iacute;o &middot; anotar un cambio</button>
+</section>
+
+<section class="pant" data-c="respuestas">
+  <div class="top"><span class="marca">Nu<em>Plan</em></span>
+    <div class="quien"><span>Miriam</span><div class="av">M</div></div></div>
+  <h2 class="ht">Mis respuestas</h2>
+  <p class="sub">Los siete ejercicios del m&eacute;todo. Cada uno se abre en la semana que te toca.</p>
+  <div class="nn2">&#9655; Ac&aacute; los ves todos abiertos</div>
+  <div class="her"><a href="#" onclick="return false"><div class="hn">01</div><div><b>Paso 1 &middot; NUTRIR</b><span>Video, cinco preguntas, escaneo de 4 dimensiones, diario, mapa de disparadores y acuerdo</span><span class="sm">Se abre el D&iacute;a 1</span></div></a><a href="#" onclick="return false"><div class="hn">02</div><div><b>La balanza</b><span>Los cuatro cuadros, cinco preguntas y tu paso chico</span><span class="sm">Se abre el D&iacute;a 10</span></div></a><a href="#" onclick="return false"><div class="hn">03</div><div><b>Paso 2 &middot; UNIR</b><span>Video, cinco preguntas, sem&aacute;foro del hambre, pausa de 90 segundos y rueda del equilibrio vital</span><span class="sm">Se abre el D&iacute;a 15</span></div></a><a href="#" onclick="return false"><div class="hn">04</div><div><b>Paso 3 &middot; PERSONALIZAR</b><span>Video, cinco preguntas, rueda de alimentaci&oacute;n, lista &laquo;s&iacute; quiero&raquo;, carta al plan y tu plan personalizado</span><span class="sm">Se abre el D&iacute;a 29</span></div></a><a href="#" onclick="return false"><div class="hn">05</div><div><b>Paso 4 &middot; LIBERAR</b><span>Video, cinco preguntas, protocolo de deslices, reescrib&iacute; la voz y carta al d&iacute;a que abandonaste</span><span class="sm">Se abre el D&iacute;a 43</span></div></a><a href="#" onclick="return false"><div class="hn">06</div><div><b>Paso 5 &middot; ACTIVAR</b><span>Video, cinco preguntas, tablero de evidencia, lista de pruebas y carta a tu yo que dudaba</span><span class="sm">Se abre el D&iacute;a 57</span></div></a><a href="#" onclick="return false"><div class="hn">07</div><div><b>Paso 6 &middot; NATURALIZAR</b><span>Video, cinco preguntas, manual de autonom&iacute;a, plan para semanas dif&iacute;ciles y carta final</span><span class="sm">Se abre el D&iacute;a 71</span></div></a><a href="#" onclick="return false"><div class="hn">08</div><div><b>El diario de comida y emoci&oacute;n</b><span>Siempre disponible, no se desbloquea ni se cierra</span><span class="sm">Se abre el Todos los d&iacute;as</span></div></a></div>
+  <button class="nomio" data-nm="pantalla|Mis respuestas|Las 8 herramientas y cu&aacute;ndo se abren">Esto no es m&iacute;o &middot; anotar un cambio</button>
+</section>
+
+<section class="pant" data-c="nuplan">
+  <div class="top"><span class="marca">Nu<em>Plan</em></span>
+    <div class="quien"><span>Miriam</span><div class="av">M</div></div></div>
+  <h2 class="ht">Pregunt&aacute;le a NuPlan</h2>
+  <p class="sub">Contesta con tu criterio. Mir&aacute; las seis situaciones y decime si hablar&iacute;a as&iacute;.</p>
+  <div class="selsem" id="selch"></div>
+  <div class="ch" id="chL"></div>
+  <div class="campo"><input type="text" placeholder="Escrib&iacute; tu pregunta&hellip;"><button>&#8593;</button></div>
+  <button class="nomio" data-nm="pantalla|Pregunt&aacute;le a NuPlan|C&oacute;mo contesta la IA">Esto no es m&iacute;o &middot; anotar un cambio</button>
+</section>
+
+<section class="pant" data-c="rosana">
+  <div class="top"><span class="marca">Nu<em>Plan</em></span>
+    <div class="quien"><span>Miriam</span><div class="av">M</div></div></div>
+  <h2 class="ht">Rosana</h2>
+  <p class="sub">Ac&aacute; le escribe directo. Vos contest&aacute;s desde tu panel.</p>
+  <div class="ch">
+    <div class="bu ia"><span class="qq">Rosana</span>Miriam, vi tu registro de ayer. Com&iacute;s a las 23:10 otra vez. &iquest;Qu&eacute; pas&oacute; ese d&iacute;a antes de las nueve de la noche?</div>
+    <div class="bu ella">Reuni&oacute;n hasta las 21:30 y despu&eacute;s no ten&iacute;a nada hecho en casa.</div>
+    <div class="bu ia"><span class="qq">Rosana</span>Eso es lo que vamos a mirar el jueves. No es que com&eacute;s de m&aacute;s: es que llegas sin nada resuelto. El paso chico de esta semana lo cambiamos.</div>
+  </div>
+  <div class="campo"><input type="text" placeholder="Escribirle a Rosana&hellip;"><button>&#8593;</button></div>
+  <div class="tar" style="margin-top:16px"><div class="mt"><b>Los check-in</b></div>
+    <p>Los d&iacute;as 14, 28, 42, 56, 70 y 84 la app le pide que te mande su semana. Te llega el aviso.</p></div>
+  <button class="nomio" data-nm="pantalla|Rosana|El soporte con ella y los check-in">Esto no es m&iacute;o &middot; anotar un cambio</button>
+</section>
+
+<section class="pant" data-c="linea">
+  <div class="top"><span class="marca">Nu<em>Plan</em></span>
+    <div class="quien"><span>Miriam</span><div class="av">M</div></div></div>
+  <h2 class="ht">Mi l&iacute;nea de tiempo</h2>
+  <p class="sub">Esto se llena solo. No tiene que cargar nada aparte.</p>
+  <div class="tar"><div class="mt"><b>D&iacute;a 5</b><time>foto</time></div>
+    <p>Su heladera abierta, tal cual estaba.</p></div>
+  <div class="tar"><div class="mt"><b>D&iacute;a 7</b><time>escrito</time></div>
+    <p>&laquo;Veo que como bien hasta las seis de la tarde y despu&eacute;s se me desarma todo.&raquo;</p></div>
+  <div class="tar"><div class="mt"><b>D&iacute;a 14</b><time>check-in</time></div>
+    <p>Primera semana enviada a Rosana.</p></div>
+  <div class="tar"><div class="mt"><b>D&iacute;a 21</b><time>escrito</time></div>
+    <p>&laquo;Lo que m&aacute;s me como es el cansancio de las ocho de la noche.&raquo;</p></div>
+  <div class="tar" style="border-style:dashed;opacity:.72"><div class="mt"><b>D&iacute;a 90</b><time>falta</time></div>
+    <p>Su respuesta del d&iacute;a 1 al lado de la del d&iacute;a 84, y su manual en limpio.</p></div>
+  <button class="nomio" data-nm="pantalla|Mi l&iacute;nea de tiempo|Lo que se llena solo">Esto no es m&iacute;o &middot; anotar un cambio</button>
+</section>
+
+        <div class="hoja" id="hojaDia"><div class="hc"><b id="hdT">D&iacute;a</b>
+          <button onclick="cerrarDia()">&times;</button></div>
+          <div class="hb" id="hdB"></div></div>
+      </div>
+      <nav id="navC">
+        <button data-ir="hoy" class="on"><i>&#9673;</i><span>Hoy</span></button>
+        <button data-ir="camino"><i>&#9636;</i><span>Camino</span></button>
+        <button data-ir="registro"><i>&#9998;</i><span>Diario</span></button>
+        <button data-ir="nuplan"><i>&#9670;</i><span>NuPlan</span></button>
+        <button data-ir="rosana"><i>&#9786;</i><span>Rosana</span></button>
+      </nav>
+    </div>
+    <div class="expl">
+<div class="bl oscuro">
+  <span class="k">Modo consultante</span>
+  <h3>Lo que ve Miriam todos los d&iacute;as</h3>
+  <p>Abre la app y ve un solo d&iacute;a: el de hoy. Una acci&oacute;n, tres botones, y listo. No ve los noventa d&iacute;as ni el programa entero.</p>
+  <p>Eso es a prop&oacute;sito: es la diferencia entre esto y un curso que se abandona en la semana dos.</p>
+</div>
+<div class="bl">
+  <span class="k">Solo para vos</span>
+  <h3>Ac&aacute; est&aacute; todo abierto</h3>
+  <p>En esta versi&oacute;n pod&eacute;s tocar cualquiera de los 90 d&iacute;as y leer qu&eacute; dice. Tus consultantes no: a ellas se les abre un d&iacute;a por d&iacute;a.</p>
+  <p>Lo abr&iacute; todo para que puedas revisarlo sin esperar tres meses.</p>
+</div>
+<div class="bl">
+  <span class="k">Las cinco pantallas</span>
+  <h3>Por d&oacute;nde se mueve</h3>
+  <ul>
+    <li><b>Hoy</b> &middot; la acci&oacute;n del d&iacute;a y los botones para registrar, marcar y subir la foto</li>
+    <li><b>El camino</b> &middot; los 90 d&iacute;as y en cu&aacute;l va</li>
+    <li><b>Mi diario</b> &middot; el diario de comida y emoci&oacute;n, siempre abierto</li>
+    <li><b>NuPlan</b> &middot; la IA que contesta con tu criterio</li>
+    <li><b>Rosana</b> &middot; los mensajes con vos y los seis check-in</li>
+  </ul>
+</div>
+<div class="bl">
+  <span class="k">De d&oacute;nde salen los 90 d&iacute;as</span>
+  <h3>De tus propias p&aacute;ginas</h3>
+  <p>Fui a tus seis pasos y a la balanza y saqu&eacute; los <b>24 ejercicios</b> que ya ten&eacute;s escritos. Cada uno cae en un d&iacute;a concreto, dentro de su letra.</p>
+  <p>Tambi&eacute;n entran los siete videos de teor&iacute;a y las cinco preguntas de cada paso, que son otras 35.</p>
+  <ul><li><b>P1 &middot; NUTRIR</b> &middot; 4 ejercicios</li><li><b>La balanza</b> &middot; 3 ejercicios</li><li><b>P2 &middot; UNIR</b> &middot; 3 ejercicios</li><li><b>P3 &middot; PERSONALIZAR</b> &middot; 5 ejercicios</li><li><b>P4 &middot; LIBERAR</b> &middot; 3 ejercicios</li><li><b>P5 &middot; ACTIVAR</b> &middot; 3 ejercicios</li><li><b>P6 &middot; NATURALIZAR</b> &middot; 3 ejercicios</li></ul>
+</div>
+<div class="bl">
+  <span class="k">Qu&eacute; necesito de vos</span>
+  <h3>Dec&iacute;me qu&eacute; no es tuyo</h3>
+  <p>El orden y las palabras de cada d&iacute;a los puse yo. Los ejercicios son tuyos, el reparto es propuesta m&iacute;a.</p>
+  <p>En cada d&iacute;a y en cada pantalla hay un bot&oacute;n para anotar un cambio. Toc&aacute;lo y escrib&iacute; como lo dir&iacute;as vos. Al final me mand&aacute;s todo junto de una sola vez.</p>
+</div>
+</div>
+  </div></div>
+
+  <div class="modo" data-mm="r"><div class="fila">
+    <div class="tel"><div class="notch"><i></i></div>
+      <div class="scr" id="scrR">
+<section class="pant on" data-r="consultantes">
+  <div class="top"><span class="marca">Nu<em>Plan</em> &middot; panel</span>
+    <div class="quien"><span>Rosana</span><div class="av" style="background:var(--cord)">R</div></div></div>
+  <h2 class="ht">Mis consultantes</h2>
+  <p class="sub">Ordenadas por la que m&aacute;s te necesita hoy.</p>
+  <div class="lst"><button class="cc" onclick="ficha(0)"><div class="av2">M</div><div class="tx"><b>Miriam Acu&ntilde;a</b><span>D&iacute;a 23 &middot; hoy, 8:40</span></div><span class="sem aldia">al d&iacute;a</span></button><button class="cc" onclick="ficha(1)"><div class="av2">C</div><div class="tx"><b>Carolina Vidal</b><span>D&iacute;a 47 &middot; ayer, 22:10</span></div><span class="sem aldia">al d&iacute;a</span></button><button class="cc" onclick="ficha(2)"><div class="av2">L</div><div class="tx"><b>Luc&iacute;a Ferrari</b><span>D&iacute;a 12 &middot; hace 4 d&iacute;as</span></div><span class="sem frenada">frenada</span></button><button class="cc" onclick="ficha(3)"><div class="av2">P</div><div class="tx"><b>Paula Ribas</b><span>D&iacute;a 68 &middot; hoy, 7:15</span></div><span class="sem aldia">al d&iacute;a</span></button><button class="cc" onclick="ficha(4)"><div class="av2">S</div><div class="tx"><b>Sandra Oliveri</b><span>D&iacute;a 90 &middot; hace 2 d&iacute;as</span></div><span class="sem termino">termin&oacute;</span></button></div>
+  <button class="nomio" data-nm="pantalla|Mis consultantes|La lista con sem&aacute;foro">Esto no es m&iacute;o &middot; anotar un cambio</button>
+</section>
+
+<section class="pant" data-r="mensajes">
+  <div class="top"><span class="marca">Nu<em>Plan</em> &middot; panel</span>
+    <div class="quien"><span>Rosana</span><div class="av" style="background:var(--cord)">R</div></div></div>
+  <h2 class="ht">Mensajes</h2>
+  <p class="sub">Lo que no le&iacute;ste, arriba. Contest&aacute;s desde ac&aacute;.</p>
+  <div class="tar"><div class="mt"><span class="pnt"></span><b>Miriam</b><time>hoy 9:12</time></div><p>Rosana, ped&iacute; delivery a las 11 de la noche otra vez. No s&eacute; qu&eacute; me pasa los jueves.</p></div><div class="tar"><div class="mt"><span class="pnt"></span><b>Luc&iacute;a</b><time>hace 4 d&iacute;as</time></div><p>Perd&oacute;n que desaparec&iacute;. Se me complic&oacute; todo en el trabajo y no eleg&iacute; el paso chico.</p></div><div class="tar"><div class="mt"><b>Paula</b><time>ayer 20:40</time></div><p>Termin&eacute; la tercera regla del manual. &iquest;Te la mando o la ves ac&aacute;?</p></div>
+  <button class="nomio" data-nm="pantalla|Mensajes|La bandeja de mensajes">Esto no es m&iacute;o &middot; anotar un cambio</button>
+</section>
+
+<section class="pant" data-r="derivo">
+  <div class="top"><span class="marca">Nu<em>Plan</em> &middot; panel</span>
+    <div class="quien"><span>Rosana</span><div class="av" style="background:var(--cord)">R</div></div></div>
+  <h2 class="ht">Lo que la IA deriv&oacute;</h2>
+  <p class="sub">Lo que la IA no contest&oacute; porque es cl&iacute;nico o delicado, con el motivo.</p>
+  <div class="tar"><div class="mt"><b>Carolina</b><time>hoy 10:02</time></div><p>&iquest;Puedo tomar el magnesio que me dio el traumat&oacute;logo junto con esto?</p><span class="et">Medicaci&oacute;n</span></div><div class="tar"><div class="mt"><b>Miriam</b><time>ayer 18:30</time></div><p>&iquest;Cu&aacute;ntas calor&iacute;as tiene mi plan? Insisti&oacute; dos veces.</p><span class="et">N&uacute;meros de dieta</span></div><div class="tar urg"><div class="mt"><b>Luc&iacute;a</b><time>hace 4 d&iacute;as</time></div><p>Siento que no puedo m&aacute;s con nada, ni con esto.</p><span class="et urg">Malestar fuerte &middot; aviso urgente enviado</span></div>
+  <button class="nomio" data-nm="pantalla|Lo que la IA deriv&oacute;|Las derivaciones y sus motivos">Esto no es m&iacute;o &middot; anotar un cambio</button>
+</section>
+
+<section class="pant" data-r="avisos">
+  <div class="top"><span class="marca">Nu<em>Plan</em> &middot; panel</span>
+    <div class="quien"><span>Rosana</span><div class="av" style="background:var(--cord)">R</div></div></div>
+  <h2 class="ht">Avisos</h2>
+  <p class="sub">Tambi&eacute;n te llegan por mail, al mismo que usan tus p&aacute;ginas.</p>
+  <div class="tar"><div class="mt"><b>&#9888; Luc&iacute;a Ferrari lleva 4 d&iacute;as sin entrar</b></div><p>Se fren&oacute; en el d&iacute;a 12, sin elegir su paso chico. Te conviene escribirle hoy.</p></div><div class="tar"><div class="mt"><b>&#10003; Miriam Acu&ntilde;a cerr&oacute; el Paso 2 &middot; UNIR</b></div><p>Ya ten&eacute;s su sem&aacute;foro del hambre y su rueda del equilibrio vital.</p></div><div class="tar"><div class="mt"><b>&#9200; Paula Ribas llega al check-in del d&iacute;a 70 el lunes</b></div><p>Es el d&iacute;a en que te muestra su tablero de evidencia.</p></div><div class="tar"><div class="mt"><b>&#9670; La IA deriv&oacute; 3 preguntas esta semana</b></div><p>Una urgente, de Luc&iacute;a. Las otras dos pueden esperar la sesi&oacute;n.</p></div>
+  <button class="nomio" data-nm="pantalla|Avisos|Qu&eacute; te avisa la app y cu&aacute;ndo">Esto no es m&iacute;o &middot; anotar un cambio</button>
+</section>
+
+<section class="pant" data-r="editor">
+  <div class="top"><span class="marca">Nu<em>Plan</em> &middot; panel</span>
+    <div class="quien"><span>Rosana</span><div class="av" style="background:var(--cord)">R</div></div></div>
+  <h2 class="ht">Los 90 d&iacute;as</h2>
+  <p class="sub">Toc&aacute; cualquier d&iacute;a y escrib&iacute; lo que dir&iacute;as vos. Se guarda solo.</p>
+  <div class="nn2">&#9655; Prob&aacute;lo: cambi&aacute; un d&iacute;a y and&aacute; a verlo en modo consultante</div>
+  <div class="selsem" id="selsem"></div>
+  <div id="editor"></div>
+  <button class="nomio" data-nm="pantalla|Los 90 d&iacute;as|El editor donde cambi&aacute;s el contenido">Esto no es m&iacute;o &middot; anotar un cambio</button>
+</section>
+
+        <div class="hoja" id="hojaFicha"><div class="hc"><b id="hfT">Ficha</b>
+          <button onclick="cerrarFicha()">&times;</button></div>
+          <div class="hb" id="hfB"></div></div>
+      </div>
+      <nav id="navR">
+        <button data-ir2="consultantes" class="on"><i>&#9786;</i><span>Fichas</span></button>
+        <button data-ir2="mensajes"><i>&#9993;</i><span>Buz&oacute;n</span></button>
+        <button data-ir2="derivo"><i>&#9670;</i><span>Deriv&oacute;</span></button>
+        <button data-ir2="avisos"><i>&#9888;</i><span>Avisos</span></button>
+        <button data-ir2="editor"><i>&#9636;</i><span>90 d&iacute;as</span></button>
+      </nav>
+    </div>
+    <div class="expl">
+<div class="bl oscuro">
+  <span class="k">Modo Rosana</span>
+  <h3>Tu panel</h3>
+  <p>El mismo sistema, otra puerta. Vos entr&aacute;s con tu clave y ves a todas tus consultantes; ellas solo se ven a s&iacute; mismas.</p>
+</div>
+<div class="bl">
+  <span class="k">Lo importante</span>
+  <h3>Los 90 d&iacute;as los cambi&aacute;s vos</h3>
+  <p>And&aacute; a <b>Los 90 d&iacute;as</b> en el men&uacute; de abajo. Toc&aacute; cualquier d&iacute;a, borr&aacute; lo que puse y escrib&iacute; lo tuyo.</p>
+  <p>No hay que tocar la app ni volver a programar nada: el texto de cada d&iacute;a es un dato, no c&oacute;digo. Lo cambi&aacute;s y queda.</p>
+  <p>Y a quien ya est&aacute; en el d&iacute;a 40 no se le mueve nada: sigue con la versi&oacute;n que arranc&oacute;.</p>
+</div>
+<div class="bl">
+  <span class="k">Las cinco pantallas</span>
+  <h3>Lo que vas a usar</h3>
+  <ul>
+    <li><b>Mis consultantes</b> &middot; todas con sem&aacute;foro, la que te necesita primero arriba</li>
+    <li><b>Mensajes</b> &middot; lo que te escriben, sin leer arriba</li>
+    <li><b>Deriv&oacute;</b> &middot; lo que la IA no contest&oacute; porque te corresponde a vos</li>
+    <li><b>Avisos</b> &middot; qui&eacute;n se fren&oacute;, qui&eacute;n termin&oacute; un paso, qui&eacute;n llega a un check-in</li>
+    <li><b>Los 90 d&iacute;as</b> &middot; el contenido, editable por vos</li>
+  </ul>
+</div>
+<div class="bl">
+  <span class="k">La IA</span>
+  <h3>Qu&eacute; sabe de cada una</h3>
+  <ul><li>En qu&eacute; d&iacute;a va y en qu&eacute; letra del m&eacute;todo est&aacute;</li><li>Qu&eacute; ejercicios ya complet&oacute; y cu&aacute;les todav&iacute;a no abri&oacute;</li><li>Lo que ella misma escribi&oacute; en cada ejercicio, textual</li><li>Su diario de comida y emoci&oacute;n de los &uacute;ltimos siete d&iacute;as</li><li>Su mapa de disparadores, su protocolo y su manual, cuando ya existen</li><li>Lo que Rosana le contest&oacute; en los check-in anteriores</li></ul>
+</div>
+<div class="bl">
+  <span class="k">La IA</span>
+  <h3>C&oacute;mo contesta</h3>
+  <ul><li>Siempre la devuelve a lo que ella misma escribi&oacute;, no a un consejo general</li><li>No inventa t&eacute;cnicas: usa la del m&eacute;todo que corresponde a la letra en la que est&aacute;</li><li>Si pregunta por un paso que todav&iacute;a no abri&oacute;, se lo dice y no se adelanta</li><li>Contesta corto y hablado, como lo dir&iacute;a Rosana en voz alta</li><li>Nunca felicita de m&aacute;s ni dramatiza un mal d&iacute;a</li></ul>
+</div>
+<div class="bl">
+  <span class="k">La barrera</span>
+  <h3>Lo que no hace nunca</h3>
+  <ul><li>Cualquier cosa cl&iacute;nica: s&iacute;ntomas, medicaci&oacute;n, patolog&iacute;as, estudios</li><li>Calor&iacute;as, peso, talles o cualquier n&uacute;mero de dieta</li><li>Cambiar su plan o sus porciones</li><li>Diagn&oacute;sticos de ning&uacute;n tipo, ni nutricionales ni psicol&oacute;gicos</li><li>Opinar sobre lo que le dijo otro profesional</li></ul>
+  <p>Y cuando aparece una se&ntilde;al de malestar fuerte o de trastorno alimentario, corta el tema, no da ning&uacute;n n&uacute;mero ni consejo, deja los tel&eacute;fonos del Centro de Asistencia al Suicida y te avisa a vos en el momento.</p>
+</div>
+</div>
+  </div></div>
+
+  <div class="modo" data-mm="x">
+<section class="unico">
+  <h1 class="ht" style="font-size:2.1rem">Mis correcciones</h1>
+  <p class="sub" style="font-size:1.12rem;max-width:620px">Todo lo que fuiste anotando mientras recorr&iacute;as la app. Revis&aacute;lo, borr&aacute; lo que no va, y mand&aacute;melo de una sola vez.</p>
+  <div class="cl" id="listaCorr"></div>
+  <div class="bl2">
+    <label for="mailR">Tu mail</label>
+    <input type="email" id="mailR" inputmode="email" placeholder="rosana@&hellip;">
+    <button class="gb" id="bEnv">Mandarle todo a Javo</button>
+    <button class="gb sec2" id="bOk">Revis&eacute; todo y est&aacute; bien as&iacute;</button>
+    <p class="est2" id="estR" role="status" aria-live="polite"></p>
+    <div class="okb" id="okR">
+      <b id="okRt">Listo, ya le lleg&oacute;.</b>
+      <p id="okRq">Con esto arma la versi&oacute;n final y te la deja andando para que le des acceso a tus consultantes.</p>
+    </div>
+  </div>
+</section>
+</div>
+</div>
+
+<footer><p>La app del M&eacute;todo NuPlan&trade; &middot; vista previa para Rosana<br>Tu Cl&iacute;nica Digital &middot; octubre 2026</p></footer>
+
+<div class="flot"><button class="cor" id="fl" style="display:none">
+  <span>Lo que anot&eacute;</span><span class="n2" id="n2">0</span></button></div>
+
+<div class="sheet" id="sheet"><div class="in2">
+  <div class="sh"><b id="shT">Anotar un cambio</b><button onclick="cerrarSheet()">&times;</button></div>
+  <div class="sb">
+    <p class="sub" id="shQ" style="font-size:1.03rem;margin-bottom:16px"></p>
+    <label for="shX">Decilo con tus palabras</label>
+    <textarea id="shX" rows="5" placeholder="Yo esto lo dir&iacute;a as&iacute;&hellip;"></textarea>
+    <button class="gb" onclick="guardarCorr()">Guardar</button>
+    <button class="gb sec" onclick="cerrarSheet()">Cancelar</button>
+  </div>
+</div></div>
+
+<script>
+var BASE = [{"d": 1, "s": 1, "l": "N", "le": "Nutrir", "fo": "Ver qu&eacute; com&eacute;s y qu&eacute; te lleva a comerlo", "a": "Mirar el video de teor&iacute;a de NUTRIR", "ej": "Paso 1 &middot; NUTRIR", "eq": "El video de teor&iacute;a, las cinco preguntas y el escaneo de tus cuatro dimensiones", "x": "", "xp": ""}, {"d": 2, "s": 1, "l": "N", "le": "Nutrir", "fo": "Ver qu&eacute; com&eacute;s y qu&eacute; te lleva a comerlo", "a": "Contestar las cinco preguntas de NUTRIR, sin corregirte", "ej": "", "eq": "", "x": "", "xp": ""}, {"d": 3, "s": 1, "l": "N", "le": "Nutrir", "fo": "Ver qu&eacute; com&eacute;s y qu&eacute; te lleva a comerlo", "a": "Cargar tus datos y hacer el quiz: el escaneo de tus cuatro dimensiones. Leer tu diagn&oacute;stico", "ej": "", "eq": "", "x": "Datos cl&iacute;nicos y quiz emocional", "xp": "P1 &middot; NUTRIR"}, {"d": 4, "s": 1, "l": "N", "le": "Nutrir", "fo": "Ver qu&eacute; com&eacute;s y qu&eacute; te lleva a comerlo", "a": "Primer d&iacute;a del diario de comida y emoci&oacute;n: anotar todo, sin cambiar nada", "ej": "", "eq": "", "x": "El diario de comida y emoci&oacute;n", "xp": "P1 &middot; NUTRIR"}, {"d": 5, "s": 1, "l": "N", "le": "Nutrir", "fo": "Ver qu&eacute; com&eacute;s y qu&eacute; te lleva a comerlo", "a": "Diario otra vez, y esta vez marcar qu&eacute; sentiste antes de cada comida", "ej": "", "eq": "", "x": "", "xp": ""}, {"d": 6, "s": 1, "l": "N", "le": "Nutrir", "fo": "Ver qu&eacute; com&eacute;s y qu&eacute; te lleva a comerlo", "a": "Sacarle una foto a tu heladera abierta, tal cual est&aacute;", "ej": "", "eq": "", "x": "", "xp": ""}, {"d": 7, "s": 1, "l": "N", "le": "Nutrir", "fo": "Ver qu&eacute; com&eacute;s y qu&eacute; te lleva a comerlo", "a": "Mirar tus cuatro d&iacute;as de diario y escribir una frase de lo que viste", "ej": "", "eq": "", "x": "", "xp": ""}, {"d": 8, "s": 2, "l": "N", "le": "Nutrir", "fo": "Nombrar tu patr&oacute;n y decidir que esto lo vas a hacer", "a": "Armar el mapa de tus disparadores: qu&eacute;, cu&aacute;ndo y d&oacute;nde", "ej": "La balanza", "eq": "El ejercicio de coaching para mirar las dos caras de la decisi&oacute;n", "x": "El mapa de tus disparadores", "xp": "P1 &middot; NUTRIR"}, {"d": 9, "s": 2, "l": "N", "le": "Nutrir", "fo": "Nombrar tu patr&oacute;n y decidir que esto lo vas a hacer", "a": "Escribir tu acuerdo con tu forma de comer", "ej": "", "eq": "", "x": "Acuerdo con tu forma de comer", "xp": "P1 &middot; NUTRIR"}, {"d": 10, "s": 2, "l": "N", "le": "Nutrir", "fo": "Nombrar tu patr&oacute;n y decidir que esto lo vas a hacer", "a": "Hacer la balanza: los cuatro cuadros, qu&eacute; gan&aacute;s y qu&eacute; pon&eacute;s", "ej": "", "eq": "", "x": "Los cuatro cuadros", "xp": "La balanza"}, {"d": 11, "s": 2, "l": "N", "le": "Nutrir", "fo": "Nombrar tu patr&oacute;n y decidir que esto lo vas a hacer", "a": "Ponerle n&uacute;mero a cada lado: cu&aacute;nto te importa y cu&aacute;nta seguridad ten&eacute;s", "ej": "", "eq": "", "x": "Cu&aacute;nto importa y cu&aacute;nta seguridad", "xp": "La balanza"}, {"d": 12, "s": 2, "l": "N", "le": "Nutrir", "fo": "Nombrar tu patr&oacute;n y decidir que esto lo vas a hacer", "a": "Elegir tu paso chico de la semana y ponerle d&iacute;a y hora", "ej": "", "eq": "", "x": "Un paso chico para esta semana", "xp": "La balanza"}, {"d": 13, "s": 2, "l": "N", "le": "Nutrir", "fo": "Nombrar tu patr&oacute;n y decidir que esto lo vas a hacer", "a": "Diario del d&iacute;a + marcar si diste el paso chico", "ej": "", "eq": "", "x": "", "xp": ""}, {"d": 14, "s": 2, "l": "N", "le": "Nutrir", "fo": "Nombrar tu patr&oacute;n y decidir que esto lo vas a hacer", "a": "Check-in con Rosana: mandarle tu primera quincena", "ej": "", "eq": "", "x": "", "xp": ""}, {"d": 15, "s": 3, "l": "U", "le": "Unir", "fo": "Separar el hambre f&iacute;sica de las otras hambres", "a": "Mirar el video de UNIR y contestar sus cinco preguntas", "ej": "Paso 2 &middot; UNIR", "eq": "El sem&aacute;foro del hambre, la pausa de 90 segundos y la rueda del equilibrio vital", "x": "", "xp": ""}, {"d": 16, "s": 3, "l": "U", "le": "Unir", "fo": "Separar el hambre f&iacute;sica de las otras hambres", "a": "Hacer el sem&aacute;foro del hambre con lo que ya registraste", "ej": "", "eq": "", "x": "El sem&aacute;foro del hambre", "xp": "P2 &middot; UNIR"}, {"d": 17, "s": 3, "l": "U", "le": "Unir", "fo": "Separar el hambre f&iacute;sica de las otras hambres", "a": "Probar la pausa de 90 segundos, una sola vez hoy", "ej": "", "eq": "", "x": "La pausa de 90 segundos", "xp": "P2 &middot; UNIR"}, {"d": 18, "s": 3, "l": "U", "le": "Unir", "fo": "Separar el hambre f&iacute;sica de las otras hambres", "a": "Diario + anotar en qu&eacute; momento del d&iacute;a te cuesta m&aacute;s", "ej": "", "eq": "", "x": "", "xp": ""}, {"d": 19, "s": 3, "l": "U", "le": "Unir", "fo": "Separar el hambre f&iacute;sica de las otras hambres", "a": "Completar tu rueda del equilibrio vital", "ej": "", "eq": "", "x": "Tu rueda del equilibrio vital", "xp": "P2 &middot; UNIR"}, {"d": 20, "s": 3, "l": "U", "le": "Unir", "fo": "Separar el hambre f&iacute;sica de las otras hambres", "a": "Mirar tus tres ejes m&aacute;s bajos y elegir uno", "ej": "", "eq": "", "x": "", "xp": ""}, {"d": 21, "s": 3, "l": "U", "le": "Unir", "fo": "Separar el hambre f&iacute;sica de las otras hambres", "a": "Hacer algo chiquito por ese eje, hoy", "ej": "", "eq": "", "x": "", "xp": ""}, {"d": 22, "s": 4, "l": "U", "le": "Unir", "fo": "Nombrar lo que com&eacute;s sin hambre", "a": "Diario + marcar cada vez que comiste sin hambre f&iacute;sica", "ej": "", "eq": "", "x": "", "xp": ""}, {"d": 23, "s": 4, "l": "U", "le": "Unir", "fo": "Nombrar lo que com&eacute;s sin hambre", "a": "Elegir una de esas veces y escribir qu&eacute; estaba pasando antes", "ej": "", "eq": "", "x": "", "xp": ""}, {"d": 24, "s": 4, "l": "U", "le": "Unir", "fo": "Nombrar lo que com&eacute;s sin hambre", "a": "Probar la pausa de 90 segundos dos veces hoy", "ej": "", "eq": "", "x": "", "xp": ""}, {"d": 25, "s": 4, "l": "U", "le": "Unir", "fo": "Nombrar lo que com&eacute;s sin hambre", "a": "Diario + anotar c&oacute;mo dormiste", "ej": "", "eq": "", "x": "", "xp": ""}, {"d": 26, "s": 4, "l": "U", "le": "Unir", "fo": "Nombrar lo que com&eacute;s sin hambre", "a": "Escribir qu&eacute; emoci&oacute;n te com&eacute;s m&aacute;s seguido", "ej": "", "eq": "", "x": "", "xp": ""}, {"d": 27, "s": 4, "l": "U", "le": "Unir", "fo": "Nombrar lo que com&eacute;s sin hambre", "a": "Volver a mirar tu sem&aacute;foro y ver si algo cambi&oacute;", "ej": "", "eq": "", "x": "", "xp": ""}, {"d": 28, "s": 4, "l": "U", "le": "Unir", "fo": "Nombrar lo que com&eacute;s sin hambre", "a": "Check-in con Rosana: contarle lo del sem&aacute;foro", "ej": "", "eq": "", "x": "", "xp": ""}, {"d": 29, "s": 5, "l": "P", "le": "Personalizar", "fo": "Armar tu plan, no el plan de nadie", "a": "Mirar el video de PERSONALIZAR y contestar sus cinco preguntas", "ej": "Paso 3 &middot; PERSONALIZAR", "eq": "La rueda de alimentaci&oacute;n, la lista &laquo;s&iacute; quiero&raquo; y tu plan personalizado", "x": "", "xp": ""}, {"d": 30, "s": 5, "l": "P", "le": "Personalizar", "fo": "Armar tu plan, no el plan de nadie", "a": "Completar tu rueda de alimentaci&oacute;n, los diez ejes", "ej": "", "eq": "", "x": "Tu rueda de alimentaci&oacute;n", "xp": "P3 &middot; PERSONALIZAR"}, {"d": 31, "s": 5, "l": "P", "le": "Personalizar", "fo": "Armar tu plan, no el plan de nadie", "a": "Armar tu lista &laquo;s&iacute; quiero&raquo;: lo que quer&eacute;s que est&eacute; s&iacute; o s&iacute;", "ej": "", "eq": "", "x": "La lista &laquo;s&iacute; quiero&raquo;", "xp": "P3 &middot; PERSONALIZAR"}, {"d": 32, "s": 5, "l": "P", "le": "Personalizar", "fo": "Armar tu plan, no el plan de nadie", "a": "Escribir tu carta al plan que abandonaste", "ej": "", "eq": "", "x": "Carta al plan que abandonaste", "xp": "P3 &middot; PERSONALIZAR"}, {"d": 33, "s": 5, "l": "P", "le": "Personalizar", "fo": "Armar tu plan, no el plan de nadie", "a": "Leer tu plan reci&eacute;n armado y marcar qu&eacute; no te cierra", "ej": "", "eq": "", "x": "Tu plan personalizado", "xp": "P3 &middot; PERSONALIZAR"}, {"d": 34, "s": 5, "l": "P", "le": "Personalizar", "fo": "Armar tu plan, no el plan de nadie", "a": "Cambiar una cosa del plan para que sea m&aacute;s tuyo", "ej": "", "eq": "", "x": "", "xp": ""}, {"d": 35, "s": 5, "l": "P", "le": "Personalizar", "fo": "Armar tu plan, no el plan de nadie", "a": "Primer d&iacute;a siguiendo el plan: diario normal", "ej": "", "eq": "", "x": "", "xp": ""}, {"d": 36, "s": 6, "l": "P", "le": "Personalizar", "fo": "Que el plan entre en tu semana real", "a": "Hacer el ejercicio &laquo;tu plan en tu semana real&raquo;", "ej": "", "eq": "", "x": "Tu plan en tu semana real", "xp": "P3 &middot; PERSONALIZAR"}, {"d": 37, "s": 6, "l": "P", "le": "Personalizar", "fo": "Que el plan entre en tu semana real", "a": "Mirar tu semana que viene y marcar los dos d&iacute;as m&aacute;s dif&iacute;ciles", "ej": "", "eq": "", "x": "", "xp": ""}, {"d": 38, "s": 6, "l": "P", "le": "Personalizar", "fo": "Que el plan entre en tu semana real", "a": "Decidir qu&eacute; vas a hacer esos dos d&iacute;as, por escrito", "ej": "", "eq": "", "x": "", "xp": ""}, {"d": 39, "s": 6, "l": "P", "le": "Personalizar", "fo": "Que el plan entre en tu semana real", "a": "Dejar algo listo la noche anterior, una sola cosa", "ej": "", "eq": "", "x": "", "xp": ""}, {"d": 40, "s": 6, "l": "P", "le": "Personalizar", "fo": "Que el plan entre en tu semana real", "a": "Foto de una comida del plan hecha por vos", "ej": "", "eq": "", "x": "", "xp": ""}, {"d": 41, "s": 6, "l": "P", "le": "Personalizar", "fo": "Que el plan entre en tu semana real", "a": "Anotar cu&aacute;nto tiempo real te llev&oacute; hoy", "ej": "", "eq": "", "x": "", "xp": ""}, {"d": 42, "s": 6, "l": "P", "le": "Personalizar", "fo": "Que el plan entre en tu semana real", "a": "Check-in con Rosana: ajustar el plan juntas", "ej": "", "eq": "", "x": "", "xp": ""}, {"d": 43, "s": 7, "l": "L", "le": "Liberar", "fo": "Que un desliz deje de arrastrarte al abandono", "a": "Mirar el video de LIBERAR y contestar sus cinco preguntas", "ej": "Paso 4 &middot; LIBERAR", "eq": "Tu protocolo de deslices, reescribir la voz y la carta al d&iacute;a que abandonaste", "x": "", "xp": ""}, {"d": 44, "s": 7, "l": "L", "le": "Liberar", "fo": "Que un desliz deje de arrastrarte al abandono", "a": "Armar tu protocolo de deslices: qu&eacute; hac&eacute;s los primeros diez minutos", "ej": "", "eq": "", "x": "Tu protocolo de deslices", "xp": "P4 &middot; LIBERAR"}, {"d": 45, "s": 7, "l": "L", "le": "Liberar", "fo": "Que un desliz deje de arrastrarte al abandono", "a": "Leer tu protocolo en voz alta", "ej": "", "eq": "", "x": "", "xp": ""}, {"d": 46, "s": 7, "l": "L", "le": "Liberar", "fo": "Que un desliz deje de arrastrarte al abandono", "a": "Hacer &laquo;reescrib&iacute; la voz&raquo;: c&oacute;mo te habl&aacute;s cuando algo no sale", "ej": "", "eq": "", "x": "Reescrib&iacute; la voz", "xp": "P4 &middot; LIBERAR"}, {"d": 47, "s": 7, "l": "L", "le": "Liberar", "fo": "Que un desliz deje de arrastrarte al abandono", "a": "Diario + anotar si apareci&oacute; alguno de los disparadores que mapeaste", "ej": "", "eq": "", "x": "", "xp": ""}, {"d": 48, "s": 7, "l": "L", "le": "Liberar", "fo": "Que un desliz deje de arrastrarte al abandono", "a": "Escribir tu carta al d&iacute;a que abandonaste", "ej": "", "eq": "", "x": "Carta al d&iacute;a que abandonaste", "xp": "P4 &middot; LIBERAR"}, {"d": 49, "s": 7, "l": "L", "le": "Liberar", "fo": "Que un desliz deje de arrastrarte al abandono", "a": "Releer tu acuerdo de la semana 2 y ver si sigue siendo tuyo", "ej": "", "eq": "", "x": "", "xp": ""}, {"d": 50, "s": 8, "l": "L", "le": "Liberar", "fo": "Usar el protocolo de verdad", "a": "Diario + si hubo desliz, usar el protocolo y anotarlo", "ej": "", "eq": "", "x": "", "xp": ""}, {"d": 51, "s": 8, "l": "L", "le": "Liberar", "fo": "Usar el protocolo de verdad", "a": "Escribir qu&eacute; pas&oacute; despu&eacute;s de usarlo", "ej": "", "eq": "", "x": "", "xp": ""}, {"d": 52, "s": 8, "l": "L", "le": "Liberar", "fo": "Usar el protocolo de verdad", "a": "Elegir un disparador de tu mapa y sacarlo del medio, f&iacute;sicamente", "ej": "", "eq": "", "x": "", "xp": ""}, {"d": 53, "s": 8, "l": "L", "le": "Liberar", "fo": "Usar el protocolo de verdad", "a": "Foto de ese cambio en tu casa", "ej": "", "eq": "", "x": "", "xp": ""}, {"d": 54, "s": 8, "l": "L", "le": "Liberar", "fo": "Usar el protocolo de verdad", "a": "Diario normal", "ej": "", "eq": "", "x": "", "xp": ""}, {"d": 55, "s": 8, "l": "L", "le": "Liberar", "fo": "Usar el protocolo de verdad", "a": "Anotar en qu&eacute; se diferencia esta semana de la semana 1", "ej": "", "eq": "", "x": "", "xp": ""}, {"d": 56, "s": 8, "l": "L", "le": "Liberar", "fo": "Usar el protocolo de verdad", "a": "Check-in con Rosana: c&oacute;mo te fue con el protocolo", "ej": "", "eq": "", "x": "", "xp": ""}, {"d": 57, "s": 9, "l": "A", "le": "Activar", "fo": "Responderle a la duda con datos", "a": "Mirar el video de ACTIVAR y contestar sus cinco preguntas", "ej": "Paso 5 &middot; ACTIVAR", "eq": "Tu tablero de evidencia, la lista de pruebas y la carta a tu yo que dudaba", "x": "", "xp": ""}, {"d": 58, "s": 9, "l": "A", "le": "Activar", "fo": "Responderle a la duda con datos", "a": "Armar tu tablero de evidencia: elegir tus tres indicadores", "ej": "", "eq": "", "x": "Tu tablero de evidencia", "xp": "P5 &middot; ACTIVAR"}, {"d": 59, "s": 9, "l": "A", "le": "Activar", "fo": "Responderle a la duda con datos", "a": "Empezar tu lista de pruebas: qu&eacute; pod&eacute;s se&ntilde;alar que antes no pasaba", "ej": "", "eq": "", "x": "La lista de pruebas", "xp": "P5 &middot; ACTIVAR"}, {"d": 60, "s": 9, "l": "A", "le": "Activar", "fo": "Responderle a la duda con datos", "a": "Mirar tus fotos del d&iacute;a 6 al d&iacute;a 53, una al lado de la otra", "ej": "", "eq": "", "x": "", "xp": ""}, {"d": 61, "s": 9, "l": "A", "le": "Activar", "fo": "Responderle a la duda con datos", "a": "Diario + comparar con tu diario del d&iacute;a 4", "ej": "", "eq": "", "x": "", "xp": ""}, {"d": 62, "s": 9, "l": "A", "le": "Activar", "fo": "Responderle a la duda con datos", "a": "Escribir tu carta a tu yo que dudaba", "ej": "", "eq": "", "x": "Carta a tu yo que dudaba", "xp": "P5 &middot; ACTIVAR"}, {"d": 63, "s": 9, "l": "A", "le": "Activar", "fo": "Responderle a la duda con datos", "a": "Leer tu informe de evidencia completo", "ej": "", "eq": "", "x": "", "xp": ""}, {"d": 64, "s": 10, "l": "A", "le": "Activar", "fo": "Sostener sin que te empujen", "a": "Hacer el d&iacute;a completo sin abrir la app hasta la noche", "ej": "", "eq": "", "x": "", "xp": ""}, {"d": 65, "s": 10, "l": "A", "le": "Activar", "fo": "Sostener sin que te empujen", "a": "Diario + anotar qu&eacute; hiciste sin pensarlo", "ej": "", "eq": "", "x": "", "xp": ""}, {"d": 66, "s": 10, "l": "A", "le": "Activar", "fo": "Sostener sin que te empujen", "a": "Elegir una cosa que ya no te cuesta y sumarla a tus pruebas", "ej": "", "eq": "", "x": "", "xp": ""}, {"d": 67, "s": 10, "l": "A", "le": "Activar", "fo": "Sostener sin que te empujen", "a": "Probar un d&iacute;a dif&iacute;cil a prop&oacute;sito: salida, reuni&oacute;n, lo que sea", "ej": "", "eq": "", "x": "", "xp": ""}, {"d": 68, "s": 10, "l": "A", "le": "Activar", "fo": "Sostener sin que te empujen", "a": "Anotar c&oacute;mo te fue en ese d&iacute;a", "ej": "", "eq": "", "x": "", "xp": ""}, {"d": 69, "s": 10, "l": "A", "le": "Activar", "fo": "Sostener sin que te empujen", "a": "Foto de ese momento", "ej": "", "eq": "", "x": "", "xp": ""}, {"d": 70, "s": 10, "l": "A", "le": "Activar", "fo": "Sostener sin que te empujen", "a": "Check-in con Rosana: mostrarle tu tablero", "ej": "", "eq": "", "x": "", "xp": ""}, {"d": 71, "s": 11, "l": "N", "le": "Naturalizar", "fo": "Escribir tus propias reglas", "a": "Mirar el video de NATURALIZAR y contestar sus cinco preguntas", "ej": "Paso 6 &middot; NATURALIZAR", "eq": "Tu manual de autonom&iacute;a, el plan para las semanas dif&iacute;ciles y tu carta final", "x": "", "xp": ""}, {"d": 72, "s": 11, "l": "N", "le": "Naturalizar", "fo": "Escribir tus propias reglas", "a": "Escribir las cinco reglas de tu manual de autonom&iacute;a", "ej": "", "eq": "", "x": "Tu manual de autonom&iacute;a", "xp": "P6 &middot; NATURALIZAR"}, {"d": 73, "s": 11, "l": "N", "le": "Naturalizar", "fo": "Escribir tus propias reglas", "a": "Armar tu plan para las semanas dif&iacute;ciles", "ej": "", "eq": "", "x": "El plan para las semanas dif&iacute;ciles", "xp": "P6 &middot; NATURALIZAR"}, {"d": 74, "s": 11, "l": "N", "le": "Naturalizar", "fo": "Escribir tus propias reglas", "a": "Anotar tus se&ntilde;ales de alarma: qu&eacute; pasa cuando te est&aacute;s yendo", "ej": "", "eq": "", "x": "", "xp": ""}, {"d": 75, "s": 11, "l": "N", "le": "Naturalizar", "fo": "Escribir tus propias reglas", "a": "Diario + anotar qu&eacute; regla us&aacute;s sin darte cuenta", "ej": "", "eq": "", "x": "", "xp": ""}, {"d": 76, "s": 11, "l": "N", "le": "Naturalizar", "fo": "Escribir tus propias reglas", "a": "Pulir tu manual: sacar lo que no es tuyo", "ej": "", "eq": "", "x": "", "xp": ""}, {"d": 77, "s": 11, "l": "N", "le": "Naturalizar", "fo": "Escribir tus propias reglas", "a": "Imprimirlo o ponerlo donde lo veas", "ej": "", "eq": "", "x": "", "xp": ""}, {"d": 78, "s": 12, "l": "N", "le": "Naturalizar", "fo": "Cerrar y quedarte parada sola", "a": "Diario normal, como cualquier d&iacute;a", "ej": "", "eq": "", "x": "", "xp": ""}, {"d": 79, "s": 12, "l": "N", "le": "Naturalizar", "fo": "Cerrar y quedarte parada sola", "a": "Mirar tu l&iacute;nea de tiempo completa", "ej": "", "eq": "", "x": "", "xp": ""}, {"d": 80, "s": 12, "l": "N", "le": "Naturalizar", "fo": "Cerrar y quedarte parada sola", "a": "Volver a leer lo que escribiste antes de empezar", "ej": "", "eq": "", "x": "", "xp": ""}, {"d": 81, "s": 12, "l": "N", "le": "Naturalizar", "fo": "Cerrar y quedarte parada sola", "a": "Escribir tu carta a tu yo del d&iacute;a 1", "ej": "", "eq": "", "x": "Carta a tu yo del d&iacute;a 1", "xp": "P6 &middot; NATURALIZAR"}, {"d": 82, "s": 12, "l": "N", "le": "Naturalizar", "fo": "Cerrar y quedarte parada sola", "a": "Anotar qu&eacute; te llev&aacute;s, en una frase", "ej": "", "eq": "", "x": "", "xp": ""}, {"d": 83, "s": 12, "l": "N", "le": "Naturalizar", "fo": "Cerrar y quedarte parada sola", "a": "Grabar un audio de un minuto para vos misma", "ej": "", "eq": "", "x": "", "xp": ""}, {"d": 84, "s": 12, "l": "N", "le": "Naturalizar", "fo": "Cerrar y quedarte parada sola", "a": "Check-in final con Rosana", "ej": "", "eq": "", "x": "", "xp": ""}, {"d": 85, "s": 13, "l": "+", "le": "Cierre", "fo": "Cerrar y quedarte parada sola", "a": "Tu carta de graduaci&oacute;n. Rosana te escribe. Aparece en la app y te queda guardada.", "ej": "", "eq": "", "x": "", "xp": ""}, {"d": 86, "s": 13, "l": "+", "le": "Cierre", "fo": "Cerrar y quedarte parada sola", "a": "Tu l&iacute;nea de tiempo. Las fotos, los diarios y tus respuestas de los 84 d&iacute;as, en una sola pantalla.", "ej": "", "eq": "", "x": "", "xp": ""}, {"d": 87, "s": 13, "l": "+", "le": "Cierre", "fo": "Cerrar y quedarte parada sola", "a": "El antes y el despu&eacute;s en tus palabras. Lo que escribiste antes de empezar, al lado de tu carta del d&iacute;a 81.", "ej": "", "eq": "", "x": "", "xp": ""}, {"d": 88, "s": 13, "l": "+", "le": "Cierre", "fo": "Cerrar y quedarte parada sola", "a": "Tu manual, en limpio. Tus cinco reglas maquetadas para imprimir.", "ej": "", "eq": "", "x": "", "xp": ""}, {"d": 89, "s": 13, "l": "+", "le": "Cierre", "fo": "Cerrar y quedarte parada sola", "a": "Qu&eacute; sigue. Eleg&iacute;s si segu&iacute;s sola, con seguimiento mensual o con un acompa&ntilde;amiento nuevo.", "ej": "", "eq": "", "x": "", "xp": ""}, {"d": 90, "s": 13, "l": "+", "le": "Cierre", "fo": "Cerrar y quedarte parada sola", "a": "El cierre. La app queda abierta para consultar, el diario sigue disponible, y Rosana recibe tu informe final.", "ej": "", "eq": "", "x": "", "xp": ""}];
+var ONB = [{"n": "01", "t": "Antes de empezar", "q": "Rosana te habla un minuto", "d": "Un video corto de ella. Qui&eacute;n es, por qu&eacute; arm&oacute; esto y qu&eacute; va a pasar en los pr&oacute;ximos 90 d&iacute;as.", "campos": []}, {"n": "02", "t": "Lo que vas a hacer ac&aacute;", "q": "Y lo que no", "d": "Una pantalla sola, para que quede claro desde el minuto cero.", "campos": [], "si": ["Vas a ver qu&eacute; com&eacute;s y qu&eacute; te lleva a comerlo", "Vas a armar un plan que entre en tu semana real", "Vas a salir con tu propio manual escrito por vos"], "no": ["Ac&aacute; no hay balanza ni se mide peso", "No se cuentan calor&iacute;as ni se miden porciones", "No hay comidas prohibidas ni listas de lo que no pod&eacute;s"]}, {"n": "03", "t": "Qui&eacute;n sos", "q": "Lo b&aacute;sico, una sola vez", "d": "Lo que la app necesita para hablarte por tu nombre y para que Rosana sepa con qui&eacute;n est&aacute;.", "campos": ["Tu nombre", "Tu mail", "Tu edad", "A qu&eacute; te ded&iacute;c&aacute;s", "C&oacute;mo es un d&iacute;a tuyo, en tres renglones"]}, {"n": "04", "t": "Tu salud hoy", "q": "Lo que Rosana necesita saber", "d": "Todo opcional menos lo &uacute;ltimo. Lo que cargues ac&aacute; entra directo al escaneo del d&iacute;a 3.", "campos": ["Estudios recientes, si ten&eacute;s (si no, dejalo en blanco)", "Medicaci&oacute;n o suplementos que est&eacute;s tomando", "Algo que te hayan dicho antes sobre tu alimentaci&oacute;n", "Algo que Rosana tenga que saber s&iacute; o s&iacute;"]}, {"n": "05", "t": "Por qu&eacute; est&aacute;s ac&aacute;", "q": "Esto se vuelve a leer el d&iacute;a 87", "d": "Las dos preguntas que m&aacute;s pesan despu&eacute;s. Se guardan y no se vuelven a tocar hasta el final.", "campos": ["&iquest;Qu&eacute; te trajo hasta ac&aacute;?", "&iquest;Qu&eacute; quer&eacute;s poder hacer dentro de 90 d&iacute;as que hoy no pod&eacute;s?"]}, {"n": "06", "t": "C&oacute;mo funciona", "q": "El acuerdo, en cuatro l&iacute;neas", "d": "Lo que se espera de ella y lo que puede esperar. Lo acepta con un bot&oacute;n y arranca el d&iacute;a 1.", "campos": [], "reglas": ["Un d&iacute;a por vez. Se abre uno nuevo cada d&iacute;a, no pod&eacute;s adelantarte", "Si falt&aacute;s un d&iacute;a, no empez&aacute;s de cero: segu&iacute;s donde estabas", "El diario est&aacute; siempre abierto, todos los d&iacute;as, pase lo que pase", "Cada dos semanas le mand&aacute;s tu resumen a Rosana y ella te contesta"]}];
+var CHATS = [{"k": "Usa lo que ella misma escribi&oacute;", "dia": "D&iacute;a 17", "m": [["ella", "No entiendo para qu&eacute; sirve la pausa de 90 segundos. Me parece una pavada."], ["ia", "Ayer en tu sem&aacute;foro marcaste tres comidas en rojo, las tres despu&eacute;s de las ocho de la noche. La pausa no sirve para aguantar: sirve para que en esos tres momentos puedas ver qu&eacute; te llev&oacute; hasta ah&iacute;. Noventa segundos es lo que tarda en bajar el pico. Prob&aacute;la hoy una sola vez, en ese horario, y anot&aacute; qu&eacute; estabas sintiendo antes."]]}, {"k": "No da n&uacute;meros, ni aunque insista", "dia": "D&iacute;a 31", "m": [["ella", "&iquest;Cu&aacute;ntas calor&iacute;as tiene el plan que me armaron?"], ["ia", "Con n&uacute;meros de ese tipo no trabajo, y Rosana tampoco: el m&eacute;todo no mide calor&iacute;as ni kilos. Lo que s&iacute; pod&eacute;s mirar hoy es tu lista &laquo;s&iacute; quiero&raquo;, que armaste reci&eacute;n. Si hay algo del plan que no est&aacute; en esa lista, eso es lo que hay que cambiar."], ["ella", "Ya s&eacute;, pero decime un n&uacute;mero aproximado."], ["ia", "No te lo voy a dar, y no es por no ayudarte. El d&iacute;a que empez&aacute;s a mirar un n&uacute;mero, dejas de mirar lo &uacute;nico que te sirve, que es a qu&eacute; hora com&eacute;s y con qu&eacute; ganas. Si igual quer&eacute;s hablarlo, se lo dejo anotado a Rosana para la sesi&oacute;n."]]}, {"k": "Deriva lo cl&iacute;nico en el momento", "dia": "D&iacute;a 22", "m": [["ella", "El traumat&oacute;logo me dio un magnesio, &iquest;lo puedo tomar con esto?"], ["ia", "Esto lo vemos con Rosana: medicaci&oacute;n y suplementos los contesta ella. Le dej&eacute; tu pregunta anotada y le lleg&oacute; el aviso ahora. Mientras tanto no cambies nada de lo que ven&iacute;as tomando."]]}, {"k": "No se adelanta a un paso que no abri&oacute;", "dia": "D&iacute;a 20", "m": [["ella", "&iquest;Cu&aacute;ndo me arman el plan de comidas?"], ["ia", "El plan se arma en la semana 5, cuando entr&aacute;s en PERSONALIZAR. Falta poco, pero no te lo adelanto: el plan sale de tu rueda de alimentaci&oacute;n y de lo que viste estas cuatro semanas. Si te lo doy ahora es el plan de cualquiera, no el tuyo."]]}, {"k": "Cuando quiere abandonar", "dia": "D&iacute;a 50", "m": [["ella", "Me re mand&eacute; una cagada el fin de semana. Creo que no es para m&iacute; esto."], ["ia", "El d&iacute;a 10 escribiste en tu balanza que lo que gan&aacute;s es &laquo;llegar a las ocho de la noche con ganas de algo m&aacute;s que el sill&oacute;n&raquo;. Eso no se borra por un fin de semana. Est&aacute;s en LIBERAR, que es justo esta semana: and&aacute; a tu protocolo de deslices, el que escribiste el d&iacute;a 44, y hac&eacute; los primeros diez minutos que vos misma pusiste ah&iacute;. Despu&eacute;s cont&aacute;me qu&eacute; pas&oacute;."]]}, {"k": "Se&ntilde;al de malestar fuerte", "dia": "D&iacute;a 38", "urg": 1, "m": [["ella", "Siento que no puedo m&aacute;s con nada, ni con esto."], ["ia", "Gracias por decirlo ac&aacute;. Esto no lo sigo yo: le avis&eacute; a Rosana reci&eacute;n y te va a escribir. Si en este momento la est&aacute;s pasando muy mal, pod&eacute;s llamar al Centro de Asistencia al Suicida: <b>135</b> gratis desde CABA y provincia de Buenos Aires, o <b>(011) 5275-1135</b> y <b>0800-345-1435</b> desde el resto del pa&iacute;s. No hace falta que hoy hagas nada del d&iacute;a 38."]]}];
+var HOOK = "https://services.leadconnectorhq.com/hooks/s44QfsRYPnToRlrDgJbo/webhook-trigger/f61d5d97-2ada-4d37-a282-d27af06e1a86";
+var K_ED = "nuplan_app_edit", K_CO = "nuplan_app_corr";
+var EDIT = {}, CORR = [], HOYD = 23;
+try{ EDIT = JSON.parse(localStorage.getItem(K_ED)) || {} }catch(e){ EDIT = {} }
+try{ CORR = JSON.parse(localStorage.getItem(K_CO)) || [] }catch(e){ CORR = [] }
+function gEd(){ try{ localStorage.setItem(K_ED, JSON.stringify(EDIT)) }catch(e){} }
+function gCo(){ try{ localStorage.setItem(K_CO, JSON.stringify(CORR)) }catch(e){} }
+function esc(s){ return String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;") }
+function dia(d){ return BASE[d-1] }
+function txt(d){ return (EDIT[d]!=null && EDIT[d]!=="") ? EDIT[d] : dia(d).a }
+function cambiado(d){ return EDIT[d]!=null && EDIT[d]!=="" && EDIT[d]!==dia(d).a }
+
+/* ---------- aviso plegable en celular ---------- */
+(function(){
+  var t = document.getElementById('avT'), m = document.getElementById('avMas');
+  if(!t || !m) return;
+  t.onclick = function(){
+    var ab = m.className.indexOf('ver') > -1;
+    m.className = 'mas' + (ab ? '' : ' ver');
+    t.setAttribute('aria-expanded', ab ? 'false' : 'true');
+    t.innerHTML = ab ? 'Cómo funciona esto' : 'Entendido, cerrar';
+  };
+})();
+
+/* ---------- modos ---------- */
+document.querySelectorAll('.modos button').forEach(function(b){
+  b.onclick = function(){
+    var m = b.getAttribute('data-m');
+    document.querySelectorAll('.modos button').forEach(function(x){ x.className = x===b?'on':'' });
+    document.querySelectorAll('.modo').forEach(function(s){ s.className = 'modo' + (s.getAttribute('data-mm')===m?' on':'') });
+    if(m==='x') pintarCorr();
+    window.scrollTo({top:0,behavior:'smooth'});
+  };
+});
+document.querySelectorAll('.modo').forEach(function(s){ if(!s.className.includes('on')) s.style.display='none' });
+var st = document.createElement('style');
+st.textContent = '.modo{display:none}.modo.on{display:block}';
+document.head.appendChild(st);
+document.querySelectorAll('.modo').forEach(function(s){ s.style.display='' });
+
+/* ---------- navegacion consultante ---------- */
+function irC(c){
+  document.querySelectorAll('#scrC .pant').forEach(function(s){
+    s.className = 'pant' + (s.getAttribute('data-c')===c?' on':'') });
+  document.querySelectorAll('#navC button').forEach(function(b){
+    b.className = b.getAttribute('data-ir')===c?'on':'' });
+  document.getElementById('scrC').scrollTop = 0;
+}
+document.querySelectorAll('#navC button').forEach(function(b){
+  b.onclick = function(){ irC(b.getAttribute('data-ir')) } });
+
+function irR(c){
+  document.querySelectorAll('#scrR .pant').forEach(function(s){
+    s.className = 'pant' + (s.getAttribute('data-r')===c?' on':'') });
+  document.querySelectorAll('#navR button').forEach(function(b){
+    b.className = b.getAttribute('data-ir2')===c?'on':'' });
+  document.getElementById('scrR').scrollTop = 0;
+}
+document.querySelectorAll('#navR button').forEach(function(b){
+  b.onclick = function(){ irR(b.getAttribute('data-ir2')) } });
+
+/* ---------- tarjeta de hoy ---------- */
+function pintarHoy(){
+  var x = dia(HOYD), h = document.getElementById('tarjHoy');
+  var ej = x.ej ? '<div class="tar" style="margin-top:15px;background:#fff2ee;border-color:var(--ac)">' +
+    '<div class="mt"><b>Hoy se te abre: ' + x.ej + '</b></div><p>' + x.eq + '</p></div>' : '';
+  h.innerHTML =
+   '<div class="hoy"><div class="cab"><span class="nd">' + x.d + '</span>' +
+   '<span class="nl">de 90<b>Semana ' + x.s + ' &middot; ' + x.le + '</b></span>' +
+   '<span class="le2">' + x.l + '</span></div>' +
+   (x.x ? '<p class="chip"><b>' + x.xp + '</b>' + x.x + '</p>' : '') +
+   '<p class="acc">' + txt(x.d) + '</p>' +
+   '<p class="fo2">' + x.fo + '</p>' +
+   '<div class="bt">' +
+     '<button class="lleno">Marcar el d&iacute;a como hecho</button>' +
+     '<button><span class="ic">&#9998;</span>Registrar una comida<span class="mk">4 hoy</span></button>' +
+     '<button><span class="ic">&#9634;</span>Subir una foto</button>' +
+     '<button><span class="ic">&#9670;</span>Pregunt&aacute;rselo a NuPlan</button>' +
+   '</div>' + ej + '</div>';
+}
+
+/* ---------- grilla de 90 ---------- */
+function pintarGrilla(){
+  var g = document.getElementById('grilla'), h = '', i, s, d;
+  for(s=1;s<=12;s++){
+    var w = dia((s-1)*7+1);
+    h += '<div class="semg"><div class="semt"><span class="lt">' + w.l + '</span>' +
+         '<b>Semana ' + s + ' &middot; ' + w.le + '</b>' +
+         '<span>' + ((s-1)*7+1) + '&ndash;' + (s*7) + '</span></div><div class="grd">';
+    for(i=0;i<7;i++){ d = (s-1)*7+1+i;
+      h += '<button onclick="abrirDia(' + d + ')" class="' +
+           (d<HOYD?'list':(d===HOYD?'es':'')) + (cambiado(d)?' tiene':'') +
+           (dia(d).x?' ejx2':'') + '">' + d + '</button>' }
+    h += '</div></div>';
+  }
+  h += '<div class="semg"><div class="semt"><span class="lt">+</span><b>El cierre</b>' +
+       '<span>85&ndash;90</span></div><div class="grd">';
+  for(d=85;d<=90;d++){ h += '<button onclick="abrirDia(' + d + ')" class="' + (cambiado(d)?'tiene':'') + '">' + d + '</button>' }
+  h += '</div></div>';
+  g.innerHTML = h;
+}
+
+/* ---------- onboarding ---------- */
+function pintarOnb(){
+  var h = '';
+  ONB.forEach(function(o, i){
+    h += '<a href="#" onclick="abrirOnb(' + i + ');return false"><div class="hn">' + o.n + '</div>' +
+         '<div><b>' + o.t + '</b><span>' + o.q + '</span></div></a>';
+  });
+  document.getElementById('onbL').innerHTML = h;
+}
+function abrirOnb(i){
+  var o = ONB[i], h = '<p class="ojo">Antes de empezar &middot; ' + o.n + ' de 06</p>' +
+    '<h2 class="ht">' + o.t + '</h2><p class="sub">' + o.d + '</p>';
+  if(o.si){
+    h += '<div class="tar" style="border-left:4px solid var(--ok)"><div class="mt"><b>Lo que s&iacute;</b></div><ul class="mini">';
+    o.si.forEach(function(x){ h += '<li>' + x + '</li>' }); h += '</ul></div>';
+    h += '<div class="tar" style="border-left:4px solid var(--cor)"><div class="mt"><b>Lo que no</b></div><ul class="mini">';
+    o.no.forEach(function(x){ h += '<li>' + x + '</li>' }); h += '</ul></div>';
+  }
+  if(o.campos && o.campos.length){
+    h += '<div class="caja2"><span class="kick2">Lo que completa ac&aacute;</span>';
+    o.campos.forEach(function(c){ h += '<div class="cmp">' + c + '</div>' });
+    h += '</div>';
+  }
+  if(o.reglas){
+    h += '<div class="caja2"><span class="kick2">El acuerdo</span><ul class="mini">';
+    o.reglas.forEach(function(x){ h += '<li>' + x + '</li>' }); h += '</ul></div>';
+  }
+  h += '<div class="bt" style="margin-top:15px"><button class="lleno">' +
+       (i===ONB.length-1?'Entendido, empezar el d&iacute;a 1':'Siguiente') + '</button></div>';
+  h += '<button class="nomio' + (tiene('onb', o.n)?' tiene':'') + '" onclick="sheet(\'onb\',\'' + o.n +
+       '\',\'Onboarding ' + o.n + ' &middot; ' + o.t + '\')">' +
+       (tiene('onb', o.n)?'Ya anotaste un cambio &middot; verlo':'Esto no es m&iacute;o &middot; anotar un cambio') + '</button>';
+  document.getElementById('hdT').innerHTML = 'Antes de empezar &middot; ' + o.n;
+  document.getElementById('hdB').innerHTML = h;
+  document.getElementById('hojaDia').className = 'hoja on';
+}
+
+/* ---------- las seis conversaciones ---------- */
+var CHV = 0;
+function pintarSelCh(){
+  var h = '';
+  CHATS.forEach(function(c, i){ h += '<button onclick="verCh(' + i + ')" class="' +
+    (CHV===i?'on':'') + '">' + c.dia + '</button>' });
+  document.getElementById('selch').innerHTML = h;
+}
+function verCh(i){ CHV = i; pintarSelCh(); pintarCh() }
+function pintarCh(){
+  var c = CHATS[CHV], h = '<div class="tar" style="margin-bottom:14px;' +
+    (c.urg?'border-color:var(--cor);border-left-width:4px':'background:#fff2ee;border-color:var(--ac)') +
+    '"><div class="mt"><b>' + c.k + '</b></div><p>Situaci&oacute;n del ' + c.dia.toLowerCase() + '.</p></div>';
+  c.m.forEach(function(m){
+    h += m[0]==='ella' ? '<div class="bu ella">' + m[1] + '</div>'
+       : '<div class="bu ia"><span class="qq">NuPlan</span>' + m[1] + '</div>';
+  });
+  document.getElementById('chL').innerHTML = h;
+}
+
+/* ---------- hoja de un dia ---------- */
+function abrirDia(d){
+  var x = dia(d);
+  document.getElementById('hdT').innerHTML = 'D&iacute;a ' + d + ' &middot; ' + x.le;
+  var ej = x.ej ? '<div class="tar" style="background:#fff2ee;border-color:var(--ac);margin-bottom:14px">' +
+    '<div class="mt"><b>Se abre: ' + x.ej + '</b></div><p>' + x.eq + '</p></div>' : '';
+  document.getElementById('hdB').innerHTML =
+    '<p class="ojo">Semana ' + (x.s>12?'de cierre':x.s) + ' &middot; ' + x.le + '</p>' +
+    (x.x ? '<p class="chip"><b>' + x.xp + '</b>' + x.x + '</p>' : '') +
+    '<h2 class="ht">' + txt(d) + '</h2>' +
+    '<p class="sub">' + x.fo + '</p>' + ej +
+    '<div class="bt"><button class="lleno">Marcar como hecho</button>' +
+    '<button><span class="ic">&#9998;</span>Registrar una comida</button>' +
+    '<button><span class="ic">&#9634;</span>Subir una foto</button></div>' +
+    '<button class="nomio' + (cambiado(d)?' tiene':'') + '" onclick="sheet(\'dia\',' + d +
+      ',\'D&iacute;a ' + d + '\')">' + (cambiado(d)?'Ya anotaste un cambio &middot; verlo':'Esto no es m&iacute;o &middot; anotar un cambio') + '</button>';
+  document.getElementById('hojaDia').className = 'hoja on';
+}
+function cerrarDia(){ document.getElementById('hojaDia').className = 'hoja' }
+
+/* ---------- ficha de una consultante ---------- */
+var CONS = [{"n": "Miriam Acu&ntilde;a", "d": 23, "est": "al dia", "ult": "hoy, 8:40", "reg": 21, "fotos": 9, "nota": "Viene prendida. Hizo el escaneo el d&iacute;a 3 y no fall&oacute; ning&uacute;n diario desde entonces.", "hecho": "Escaneo de 4 dimensiones, mapa de disparadores, acuerdo, balanza, sem&aacute;foro del hambre y rueda del equilibrio vital"}, {"n": "Carolina Vidal", "d": 47, "est": "al dia", "ult": "ayer, 22:10", "reg": 44, "fotos": 18, "nota": "Pas&oacute; PERSONALIZAR completo. Le cost&oacute; meter el plan en la semana real los primeros d&iacute;as.", "hecho": "Todo NUTRIR y UNIR, rueda de alimentaci&oacute;n, lista &laquo;s&iacute; quiero&raquo;, su plan y el protocolo de deslices"}, {"n": "Luc&iacute;a Ferrari", "d": 12, "est": "frenada", "ult": "hace 4 d&iacute;as", "reg": 8, "fotos": 2, "nota": "Se fren&oacute; en el d&iacute;a 12, justo despu&eacute;s de la balanza. No eligi&oacute; su paso chico.", "hecho": "Escaneo, cuatro d&iacute;as de diario, mapa de disparadores y los cuatro cuadros de la balanza"}, {"n": "Paula Ribas", "d": 68, "est": "al dia", "ult": "hoy, 7:15", "reg": 66, "fotos": 31, "nota": "La m&aacute;s constante. Su tablero de evidencia tiene los tres indicadores cargados.", "hecho": "Las cinco letras hasta ACTIVAR, con el tablero de evidencia y la lista de pruebas al d&iacute;a"}, {"n": "Sandra Oliveri", "d": 90, "est": "termino", "ult": "hace 2 d&iacute;as", "reg": 87, "fotos": 40, "nota": "Termin&oacute;. Su manual de autonom&iacute;a tiene las cinco reglas. Eligi&oacute; seguimiento mensual.", "hecho": "Los 21 ejercicios del m&eacute;todo, de NUTRIR a NATURALIZAR"}];
+function ficha(i){
+  var c = CONS[i];
+  document.getElementById('hfT').innerHTML = c.n;
+  document.getElementById('hfB').innerHTML =
+    '<p class="ojo">D&iacute;a ' + c.d + ' de 90</p><h2 class="ht">' + c.n + '</h2>' +
+    '<p class="sub">&Uacute;ltima vez que entr&oacute;: ' + c.ult + '</p>' +
+    '<div class="prog"><div class="ln"><b>' + c.d + ' de 90</b><span>' + c.reg + ' registros &middot; ' + c.fotos + ' fotos</span></div>' +
+    '<div class="bar"><i style="width:' + Math.round(c.d/90*100) + '%"></i></div></div>' +
+    '<div class="tar"><div class="mt"><b>Lo que ves de ella</b></div><p>' + c.nota + '</p></div>' +
+    '<div class="tar"><div class="mt"><b>Su registro de ayer</b></div>' +
+    '<p>4 comidas &middot; &uacute;ltima a las 23:10 &middot; dos veces marc&oacute; &laquo;com&iacute; sin hambre&raquo;</p></div>' +
+    '<div class="tar"><div class="mt"><b>Sus respuestas</b></div>' +
+    '<p>Escaneo de 4 dimensiones, balanza, sem&aacute;foro del hambre y rueda del equilibrio: completos. Los ve&iacute;s enteros ac&aacute;.</p></div>' +
+    '<div class="bt" style="margin-top:15px"><button class="lleno">Escribirle</button>' +
+    '<button><span class="ic">&#9200;</span>Agendarle un check-in</button></div>';
+  document.getElementById('hojaFicha').className = 'hoja on';
+}
+function cerrarFicha(){ document.getElementById('hojaFicha').className = 'hoja' }
+
+/* ---------- editor de los 90 dias ---------- */
+var SEMV = 1;
+function pintarSel(){
+  var h = '', s;
+  for(s=1;s<=12;s++) h += '<button onclick="verSem(' + s + ')" class="' + (SEMV===s?'on':'') + '">Sem ' + s + '</button>';
+  h += '<button onclick="verSem(13)" class="' + (SEMV===13?'on':'') + '">Cierre</button>';
+  document.getElementById('selsem').innerHTML = h;
+}
+function verSem(s){ SEMV = s; pintarSel(); pintarEditor() }
+function pintarEditor(){
+  var h = '', d, de, ha;
+  if(SEMV===13){ de = 85; ha = 90 } else { de = (SEMV-1)*7+1; ha = SEMV*7 }
+  var w = dia(de);
+  h += '<div class="tar" style="margin-bottom:14px;background:#fff2ee;border-color:var(--ac)">' +
+       '<div class="mt"><b>' + (SEMV===13?'El cierre':'Semana ' + SEMV + ' &middot; ' + w.le) + '</b></div>' +
+       '<p>' + w.fo + '</p></div>';
+  for(d=de;d<=ha;d++){
+    h += '<div class="ed' + (cambiado(d)?' cambiado':'') + '" id="ed' + d + '">' +
+         '<div class="eh"><b>D&iacute;a ' + d + '</b><span>' + (cambiado(d)?'cambiado por vos':'como lo escribi&oacute; Javo') + '</span></div>' +
+         '<textarea rows="3" data-d="' + d + '">' + esc(txt(d)).replace(/&amp;(\w+|#\d+);/g,'&$1;') + '</textarea>' +
+         '<p class="guard">&#10003; Guardado. Tus consultantes ven esto.</p></div>';
+  }
+  document.getElementById('editor').innerHTML = h;
+  document.querySelectorAll('#editor textarea').forEach(function(t){
+    t.oninput = function(){
+      var d = +t.getAttribute('data-d');
+      if(t.value.trim()==='' || t.value===dia(d).a){ delete EDIT[d] } else { EDIT[d] = t.value }
+      gEd();
+      document.getElementById('ed'+d).className = 'ed' + (cambiado(d)?' cambiado':'');
+      document.querySelector('#ed'+d+' .eh span').innerHTML = cambiado(d)?'cambiado por vos':'como lo escribi&oacute; Javo';
+      pintarHoy(); pintarGrilla();
+    };
+  });
+}
+
+/* ---------- correcciones ---------- */
+var SH = null;
+function sheet(tipo, ref, titulo, q){
+  SH = {tipo:tipo, ref:ref, titulo:titulo};
+  document.getElementById('shT').innerHTML = titulo;
+  document.getElementById('shQ').innerHTML = tipo==='dia'
+    ? 'Hoy dice: <b>&laquo;' + txt(ref) + '&raquo;</b>'
+    : (q || 'Dec&iacute;me qu&eacute; cambiar&iacute;as de esta pantalla.');
+  var ya = CORR.filter(function(c){ return c.tipo===tipo && String(c.ref)===String(ref) })[0];
+  document.getElementById('shX').value = ya ? ya.d : '';
+  document.getElementById('sheet').className = 'sheet on';
+  setTimeout(function(){ document.getElementById('shX').focus() }, 120);
+}
+function cerrarSheet(){ document.getElementById('sheet').className = 'sheet'; SH = null }
+function guardarCorr(){
+  if(!SH) return;
+  var v = document.getElementById('shX').value.trim();
+  CORR = CORR.filter(function(c){ return !(c.tipo===SH.tipo && String(c.ref)===String(SH.ref)) });
+  if(v) CORR.push({tipo:SH.tipo, ref:SH.ref, t:SH.titulo, d:v});
+  var ORD = {onb:0, dia:1, pantalla:2};
+  CORR.sort(function(a,b){
+    var x = (ORD[a.tipo]||3) - (ORD[b.tipo]||3);
+    if(x) return x;
+    return a.tipo==='dia' ? a.ref-b.ref : String(a.ref).localeCompare(String(b.ref)) });
+  gCo(); badge();
+  if(SH.tipo==='dia'){ var d = SH.ref; cerrarSheet(); abrirDia(d) }
+  else if(SH.tipo==='onb'){ var k = SH.ref, j = 0;
+    ONB.forEach(function(o, i){ if(o.n===k) j = i }); cerrarSheet(); abrirOnb(j) }
+  else { cerrarSheet(); marcarBotones() }
+  pintarCorr();
+}
+function tiene(tipo, ref){ return CORR.some(function(c){ return c.tipo===tipo && String(c.ref)===String(ref) }) }
+function marcarBotones(){
+  document.querySelectorAll('[data-nm]').forEach(function(b){
+    var p = b.getAttribute('data-nm').split('|');
+    var yes = tiene(p[0], p[1]);
+    b.className = 'nomio' + (yes?' tiene':'');
+    b.textContent = yes ? 'Ya anotaste un cambio \u00b7 verlo' : 'Esto no es m\u00edo \u00b7 anotar un cambio';
+  });
+}
+document.querySelectorAll('[data-nm]').forEach(function(b){
+  var p = b.getAttribute('data-nm').split('|');
+  b.onclick = function(){ sheet(p[0], p[1], p[1], 'Esta pantalla: ' + p[2] + '.') };
+});
+function badge(){
+  var n = CORR.length;
+  document.getElementById('bb').style.display = n?'inline-block':'none';
+  document.getElementById('bb').textContent = n;
+  document.getElementById('fl').style.display = n?'flex':'none';
+  document.getElementById('n2').textContent = n;
+}
+document.getElementById('fl').onclick = function(){
+  document.querySelector('.modos button[data-m="x"]').click();
+};
+function pintarCorr(){
+  var h = '', l = document.getElementById('listaCorr');
+  if(!CORR.length){
+    l.innerHTML = '<div class="vac">Todav&iacute;a no anotaste nada.<br>Record&eacute; la app y toc&aacute; <b>&laquo;esto no es m&iacute;o&raquo;</b> donde algo no suene a vos.</div>';
+    return;
+  }
+  CORR.forEach(function(c, i){
+    h += '<div class="ci"><span class="cd">' +
+         (c.tipo==='dia'?('D&iacute;a ' + c.ref):(c.tipo==='onb'?('Onb ' + c.ref):'Pantalla')) + '</span>' +
+         '<div class="cq"><p>' + esc(c.d) + '</p>' +
+         (c.tipo==='dia' ? '<em>Dec&iacute;a: ' + txt(c.ref) + '</em>' : '<em>' + c.t + '</em>') + '</div>' +
+         '<button class="cx" onclick="borrar(' + i + ')" aria-label="Borrar">&times;</button></div>';
+  });
+  l.innerHTML = h;
+}
+function borrar(i){ CORR.splice(i,1); gCo(); badge(); pintarCorr(); marcarBotones() }
+
+/* ---------- envio ---------- */
+function cuerpoHTML(fecha, aprueba){
+  var H = ['<div style="font-family:\'DM Sans\',Helvetica,Arial,sans-serif;color:#1a1a1a;background:#fff6f3;padding:26px 18px;line-height:1.6"><div style="max-width:620px;margin:0 auto;background:#fff;border:1px solid #f6d9d1;border-radius:16px;padding:30px">',
+  '<p style="margin:0 0 6px;font-size:14px;letter-spacing:2px;text-transform:uppercase;color:#c53a1e;font-weight:700">M&eacute;todo NuPlan</p>',
+  '<h1 style="margin:0 0 6px;font-size:26px;line-height:1.2">' +
+    (aprueba ? 'Revis&oacute; la app' : 'Correcciones de la app') + '</h1>',
+  '<p style="margin:0 0 24px;padding-bottom:16px;border-bottom:2px solid #e8472a;font-size:16px;color:#4b5563">Rosana Rold&aacute;n &middot; ' + fecha + '</p>'];
+  if(aprueba) H.push('<div style="margin:0 0 16px;padding:16px 18px;background:#eef7f1;border-left:4px solid #2f7a4f;border-radius:0 10px 10px 0">' +
+    '<p style="margin:0;font-size:17px;font-weight:700;color:#2f7a4f">La recorri&oacute; entera y est&aacute; de acuerdo.</p>' +
+    '<p style="margin:5px 0 0;font-size:16px;color:#4b5563">' +
+    (CORR.length || Object.keys(EDIT).some(function(k){return cambiado(+k)})
+      ? 'Con los cambios que deja m&aacute;s abajo.' : 'Sin cambios.') + '</p></div>');
+  var oo = CORR.filter(function(c){ return c.tipo==='onb' });
+  var dd = CORR.filter(function(c){ return c.tipo==='dia' });
+  var pp = CORR.filter(function(c){ return c.tipo==='pantalla' });
+  var ed = Object.keys(EDIT).filter(function(k){ return cambiado(+k) });
+  function bloque(t, arr, fn){
+    if(!arr.length) return;
+    H.push('<p style="margin:22px 0 10px;font-size:14px;letter-spacing:1.5px;text-transform:uppercase;color:#c53a1e;font-weight:700">' + t + '</p>');
+    arr.forEach(fn);
+  }
+  bloque('El onboarding (' + oo.length + ')', oo, function(c){
+    H.push('<div style="margin:0 0 10px;padding:14px 16px;background:#fff6f3;border-left:4px solid #1a1a1a;border-radius:0 10px 10px 0">' +
+      '<p style="margin:0 0 5px;font-size:14px;color:#6b7280">' + c.t + '</p>' +
+      '<p style="margin:0;font-size:16px;white-space:pre-wrap">' + esc(c.d) + '</p></div>') });
+  bloque('Los d&iacute;as (' + dd.length + ')', dd, function(c){
+    H.push('<div style="margin:0 0 10px;padding:14px 16px;background:#fff6f3;border-left:4px solid #e8472a;border-radius:0 10px 10px 0">' +
+      '<p style="margin:0 0 5px;font-size:14px;color:#6b7280">D&iacute;a ' + c.ref + ' &middot; dec&iacute;a: ' + txt(c.ref) + '</p>' +
+      '<p style="margin:0;font-size:16px;white-space:pre-wrap">' + esc(c.d) + '</p></div>') });
+  bloque('Las pantallas (' + pp.length + ')', pp, function(c){
+    H.push('<div style="margin:0 0 10px;padding:14px 16px;background:#fff6f3;border-left:4px solid #f6a29a;border-radius:0 10px 10px 0">' +
+      '<p style="margin:0 0 5px;font-size:14px;color:#6b7280">' + c.t + '</p>' +
+      '<p style="margin:0;font-size:16px;white-space:pre-wrap">' + esc(c.d) + '</p></div>') });
+  bloque('Reescribi&oacute; directo en el editor (' + ed.length + ')', ed, function(k){
+    H.push('<div style="margin:0 0 10px;padding:14px 16px;background:#eef7f1;border-left:4px solid #2f7a4f;border-radius:0 10px 10px 0">' +
+      '<p style="margin:0 0 5px;font-size:14px;color:#6b7280">D&iacute;a ' + k + ' &middot; antes: ' + dia(+k).a + '</p>' +
+      '<p style="margin:0;font-size:16px;white-space:pre-wrap">' + esc(EDIT[k]) + '</p></div>') });
+  H.push('<p style="margin:28px 0 0;padding-top:16px;border-top:1px solid #e5e7eb;font-size:14px;color:#9ca3af">Enviado desde la vista previa de la app &middot; NuPlan&trade;</p></div></div>');
+  return H.join('');
+}
+function cuerpoTexto(fecha, aprueba){
+  var L = [aprueba?'Reviso la app y esta bien':'Correcciones de la app', 'Rosana Roldan - ' + fecha, ''];
+  if(aprueba) L.push('La recorrio entera y esta de acuerdo.', '');
+  CORR.forEach(function(c){
+    L.push((c.tipo==='dia' ? ('Dia ' + c.ref)
+      : (c.tipo==='onb' ? ('Onboarding ' + c.ref) : ('Pantalla: ' + c.t))) + ' -> ' + c.d) });
+  Object.keys(EDIT).forEach(function(k){
+    if(cambiado(+k)) L.push('Reescribio dia ' + k + ' -> ' + EDIT[k]) });
+  return L.join('\n');
+}
+function enviar(aprueba){
+  var m = document.getElementById('mailR').value.trim();
+  var b = document.getElementById(aprueba?'bOk':'bEnv'), e = document.getElementById('estR');
+  var rot = b.textContent;
+  function est(t, mal){ e.textContent = t; e.className = 'est2' + (mal?' mal':'') }
+  if(m.indexOf('@')<1 || m.indexOf('.')<0){ est('Escrib\u00ed tu mail arriba.',1); document.getElementById('mailR').focus(); return }
+  var hayEd = Object.keys(EDIT).some(function(k){ return cambiado(+k) });
+  if(!aprueba && !CORR.length && !hayEd){
+    est('No anotaste nada. Si est\u00e1 todo bien, us\u00e1 el bot\u00f3n de abajo.',1); return }
+  var h = new Date(), p = function(n){ return (n<10?'0':'')+n };
+  var fecha = p(h.getDate()) + '/' + p(h.getMonth()+1) + '/' + h.getFullYear();
+  b.disabled = true; b.textContent = 'Enviando\u2026';
+  est(aprueba?'Avisando que la revisaste\u2026':'Mandando tus correcciones\u2026');
+  var sinNada = aprueba && !CORR.length && !hayEd;
+  var c = { paso: sinNada ? 'Revis\u00f3 la app y est\u00e1 bien' : 'Correcciones de la app',
+            nombre:'Rosana Rold\u00e1n', email:m, fecha:fecha,
+            mensaje:cuerpoTexto(fecha, aprueba), mensaje_html:cuerpoHTML(fecha, aprueba),
+            paso_slug:'app-correcciones' };
+  function bien(){
+    document.getElementById('okRt').innerHTML = sinNada
+      ? 'Listo, le avisaste a Javo.' : 'Listo, ya le lleg\u00f3.';
+    document.getElementById('okRq').innerHTML = sinNada
+      ? 'Dijiste que est\u00e1 bien as\u00ed. Con eso arranca la versi\u00f3n final y te la deja andando para que le des acceso a tus consultantes.'
+      : 'Con esto arma la versi\u00f3n final y te la deja andando para que le des acceso a tus consultantes.';
+    document.getElementById('okR').className = 'okb on';
+    b.disabled = false; b.textContent = 'Volver a enviar'; est('Enviado el ' + fecha + '.');
+    document.getElementById('okR').scrollIntoView({behavior:'smooth',block:'center'}) }
+  function mal(){ b.disabled = false; b.textContent = rot;
+    est('No pudimos enviarlo. Mandale una captura por WhatsApp.',1) }
+  var ct = window.AbortController ? new AbortController() : null;
+  var to = ct && setTimeout(function(){ ct.abort() }, 25000);
+  fetch(HOOK, {method:'POST', headers:{'Content-Type':'application/json'},
+    body:JSON.stringify(c), signal: ct?ct.signal:undefined})
+   .then(function(r){ clearTimeout(to); r.ok?bien():mal() })
+   .catch(function(){ clearTimeout(to);
+     fetch(HOOK, {method:'POST', mode:'no-cors', headers:{'Content-Type':'text/plain;charset=UTF-8'},
+       body:JSON.stringify(c)}).then(bien).catch(mal) });
+}
+document.getElementById('bEnv').onclick = function(){ enviar(false) };
+document.getElementById('bOk').onclick  = function(){ enviar(true) };
+
+/* ---------- arranque ---------- */
+pintarHoy(); pintarGrilla(); pintarSel(); pintarEditor(); pintarOnb(); pintarSelCh(); pintarCh();
+badge(); marcarBotones(); pintarCorr();
+</script>
+</body></html>

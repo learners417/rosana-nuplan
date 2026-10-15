@@ -1,0 +1,1173 @@
+<!DOCTYPE html>
+<html lang="es"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#fff6f3">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="NuPlan">
+<meta name="robots" content="noindex,nofollow">
+<title>Mi plan &middot; NuPlan&trade;</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700;1,9..40,400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+ --bg:#fff6f3;--sup:#fff;--ink:#1a1a1a;--body:#3f3f46;--mut:#6b7280;
+ --line:#e5e7eb;--line2:#f0ddd7;--cor:#e8472a;--corl:#f47a62;--ac:#f6a29a;--cord:#c53a1e;
+ --ok:#2f7a4f;--okbg:#eef7f1;--warn:#b4530f;--warnbg:#fdf3e8;
+ --sans:'DM Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;
+ --mono:'Space Mono','SFMono-Regular',Consolas,monospace;
+ --r1:.375rem;--r2:.5rem;--r3:.75rem;--r4:1rem;--r5:1.5rem;
+ --nav:calc(68px + env(safe-area-inset-bottom))}
+html{-webkit-text-size-adjust:100%;background:var(--bg)}
+body{font-family:var(--sans);background:var(--bg);color:var(--ink);font-size:17px;line-height:1.6;
+ -webkit-font-smoothing:antialiased;min-height:100vh;-webkit-tap-highlight-color:transparent}
+.app{max-width:560px;margin:0 auto;min-height:100vh;display:flex;flex-direction:column}
+.scr{flex:1;padding:18px 18px calc(var(--nav) + 26px)}
+.pant{display:none;animation:entra .26s cubic-bezier(.22,.8,.3,1) both}
+.pant.on{display:block}
+@keyframes entra{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+@keyframes sube{from{transform:translateY(100%)}to{transform:none}}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+
+.top{display:flex;align-items:center;gap:12px;margin-bottom:20px;padding-top:6px}
+.marca{font-family:var(--mono);font-size:1rem;font-weight:700;letter-spacing:.06em;color:var(--cord)}
+.marca em{font-style:normal;color:var(--ink)}
+.quien{margin-left:auto;display:flex;align-items:center;gap:9px}
+.quien span{font-size:.98rem;color:var(--mut)}
+.av{width:36px;height:36px;border-radius:50%;background:var(--ac);color:var(--ink);display:grid;
+ place-items:center;font-weight:700;font-size:1.05rem;flex:0 0 auto}
+
+h1{font-size:1.9rem;letter-spacing:-.03em;line-height:1.14;margin-bottom:9px;overflow-wrap:anywhere}
+h2{font-size:1.55rem;letter-spacing:-.025em;line-height:1.2;margin-bottom:9px;overflow-wrap:anywhere}
+h3{font-size:1.25rem;letter-spacing:-.02em;line-height:1.25;margin-bottom:8px}
+.sub{font-size:1.06rem;color:var(--body);line-height:1.58;margin-bottom:20px}
+.ojo{font-family:var(--mono);font-size:.92rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+ color:var(--cord);margin-bottom:9px}
+
+.card{background:var(--sup);border:1px solid var(--line2);border-radius:var(--r5);padding:24px 22px;margin-bottom:16px}
+.card.chico{border-radius:var(--r3);padding:16px 17px}
+.cab{display:flex;align-items:center;gap:13px;margin-bottom:17px;padding-bottom:15px;border-bottom:1px solid var(--line)}
+.nd{font-family:var(--mono);font-size:2.4rem;font-weight:700;color:var(--cor);line-height:1}
+.nl{font-family:var(--mono);font-size:.92rem;color:var(--mut);line-height:1.35}
+.nl b{display:block;color:var(--ink);font-size:1.04rem;font-family:var(--sans)}
+.le2{margin-left:auto;width:44px;height:44px;border-radius:12px;background:#fff2ee;color:var(--cord);
+ display:grid;place-items:center;font-size:1.35rem;font-weight:700}
+.acc{font-size:1.3rem;line-height:1.38;letter-spacing:-.015em;margin-bottom:6px}
+.fo2{font-size:1.02rem;color:var(--mut);margin-bottom:19px}
+.chip{display:block;background:#fff2ee;border:1px solid var(--ac);border-radius:var(--r2);
+ padding:11px 14px;margin-bottom:14px;font-size:1.02rem;color:var(--cord);line-height:1.42}
+.chip b{display:block;font-family:var(--mono);font-size:.92rem;font-weight:700;letter-spacing:.06em;
+ text-transform:uppercase;opacity:.78;margin-bottom:3px}
+
+.bt{display:flex;flex-direction:column;gap:10px}
+.bt button,.bt a{display:flex;align-items:center;gap:12px;width:100%;background:var(--bg);
+ border:1.5px solid var(--line2);border-radius:var(--r3);padding:15px 16px;font:inherit;font-size:1.06rem;
+ color:var(--ink);cursor:pointer;text-align:left;transition:transform .12s,border-color .16s,background .16s;
+ text-decoration:none;min-height:54px}
+.bt button:active,.bt a:active{transform:scale(.975)}
+.bt button:hover,.bt a:hover{border-color:var(--cor)}
+.bt .lleno{background:var(--cor);border-color:var(--cor);color:#fff;font-weight:700;
+ justify-content:center;font-size:1.2rem;padding:17px}
+.bt .ic{flex:0 0 auto;width:26px;display:grid;place-items:center;font-size:1.2rem}
+.bt .mk{margin-left:auto;font-family:var(--mono);font-size:.95rem;color:var(--ok);font-weight:700;white-space:nowrap}
+.bt .hecho{background:var(--okbg);border-color:#cfe6d8}
+.bt .lleno.hecho{background:var(--ok);border-color:var(--ok);color:#fff}
+
+.prog{background:var(--sup);border:1px solid var(--line2);border-radius:var(--r4);padding:19px 20px;margin-bottom:16px}
+.ln{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:11px}
+.ln b{font-family:var(--mono);font-size:1.18rem;color:var(--cord)}
+.ln span{font-size:1rem;color:var(--mut)}
+.bar{height:10px;background:var(--line2);border-radius:99px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--cor);border-radius:99px;transition:width .5s}
+.seis{display:grid;grid-template-columns:repeat(6,1fr);gap:7px;margin-top:15px}
+.seis div{text-align:center;background:var(--bg);border-radius:var(--r2);padding:10px 2px}
+.seis div.ya{background:#fff2ee}
+.seis b{display:block;font-family:var(--mono);font-size:1.12rem;color:var(--mut)}
+.seis div.ya b{color:var(--cord)}
+
+.semg{margin-bottom:22px}
+.semt{display:flex;align-items:center;gap:11px;margin-bottom:11px}
+.semt .lt{width:34px;height:34px;border-radius:9px;background:var(--cord);color:#fff;display:grid;
+ place-items:center;font-weight:700;font-size:1.12rem;flex:0 0 auto;margin-left:0}
+.semt b{font-size:1.1rem}
+.semt span{font-family:var(--mono);font-size:.95rem;color:var(--mut);margin-left:auto;flex:0 0 auto}
+.grd{display:grid;grid-template-columns:repeat(7,1fr);gap:7px}
+.grd button{min-height:44px;background:var(--sup);border:1.5px solid var(--line2);border-radius:var(--r2);
+ font-family:var(--mono);font-size:1.04rem;font-weight:700;color:var(--body);cursor:pointer;
+ display:grid;place-items:center;position:relative;transition:transform .12s,border-color .16s}
+.grd button:active{transform:scale(.94)}
+.grd button.list{background:var(--okbg);border-color:#bcdcc8;color:var(--ok)}
+.grd button.es{background:var(--cord);border-color:var(--cord);color:#fff}
+.grd button.cerrado{opacity:.38;cursor:not-allowed}
+.grd button.ejx{box-shadow:inset 0 0 0 2px var(--ac)}
+.grd button.es.ejx{box-shadow:inset 0 0 0 2px #fff}
+
+.hoja{position:fixed;inset:0;background:var(--bg);z-index:80;display:none;flex-direction:column;
+ animation:sube .3s cubic-bezier(.22,.8,.3,1) both}
+.hoja.on{display:flex}
+.hc{display:flex;align-items:center;gap:12px;padding:14px 16px;background:var(--sup);
+ border-bottom:1px solid var(--line);flex:0 0 auto;padding-top:calc(14px + env(safe-area-inset-top))}
+.hc b{font-family:var(--mono);font-size:1.06rem;color:var(--cord)}
+.hc button{margin-left:auto;background:none;border:none;font:inherit;font-size:1.7rem;color:var(--mut);
+ cursor:pointer;line-height:1;width:44px;height:44px;display:grid;place-items:center;border-radius:50%;margin-right:-6px}
+.hb{flex:1;overflow-y:auto;padding:22px 18px calc(30px + env(safe-area-inset-bottom));max-width:560px;
+ width:100%;margin:0 auto}
+
+.lst{display:flex;flex-direction:column;gap:10px}
+.it{display:flex;align-items:flex-start;gap:14px;background:var(--sup);border:1px solid var(--line2);
+ border-radius:var(--r3);padding:16px 17px;text-decoration:none;color:inherit;
+ transition:transform .12s,border-color .16s;width:100%;text-align:left;font:inherit;cursor:pointer}
+.it:active{transform:scale(.985)}
+.it:hover{border-color:var(--cor)}
+.it.cerrado{opacity:.5;cursor:default}
+.it.cerrado:hover{border-color:var(--line2)}
+.hn{flex:0 0 auto;width:34px;height:34px;border-radius:9px;background:#fff2ee;color:var(--cord);
+ display:grid;place-items:center;font-family:var(--mono);font-size:1rem;font-weight:700}
+.it b{display:block;font-size:1.08rem;margin-bottom:3px;line-height:1.3}
+.it span{display:block;font-size:1rem;color:var(--mut);line-height:1.45}
+.it .sm{font-family:var(--mono);font-size:.94rem;color:var(--ok);margin-top:5px}
+.it .sm.cerr{color:var(--mut)}
+
+.ch{display:flex;flex-direction:column;gap:12px;margin-bottom:16px}
+.bu{max-width:88%;padding:14px 16px;border-radius:var(--r4);font-size:1.05rem;line-height:1.54;
+ animation:entra .3s cubic-bezier(.22,.8,.3,1) both;white-space:pre-wrap;overflow-wrap:anywhere}
+.bu.yo{align-self:flex-end;background:var(--cor);color:#fff;border-bottom-right-radius:var(--r1)}
+.bu.ia{align-self:flex-start;background:var(--sup);border:1px solid var(--line2);border-bottom-left-radius:var(--r1)}
+.bu .qq{display:block;font-family:var(--mono);font-size:.9rem;letter-spacing:.07em;text-transform:uppercase;
+ color:var(--cord);margin-bottom:6px}
+.bu.pensando{color:var(--mut);font-style:italic}
+.campo{display:flex;gap:9px;align-items:center;background:var(--sup);border:1.5px solid var(--line2);
+ border-radius:99px;padding:5px 5px 5px 18px;position:sticky;bottom:0}
+.campo input{flex:1;border:none;background:none;font:inherit;font-size:1.04rem;outline:none;min-width:0;height:46px}
+.campo button{flex:0 0 auto;width:46px;height:46px;border-radius:50%;background:var(--cord);border:none;
+ color:#fff;font-size:1.3rem;font-weight:700;cursor:pointer}
+.campo button:disabled{opacity:.45}
+
+label{display:block;font-family:var(--mono);font-size:.96rem;font-weight:700;color:var(--cord);margin-bottom:8px}
+input[type=text],input[type=email],input[type=time],input[type=number],textarea,select{
+ width:100%;border:2px solid var(--line2);border-radius:var(--r3);padding:14px 16px;font:inherit;
+ font-size:1.06rem;line-height:1.5;background:var(--sup);color:var(--ink);resize:vertical;min-height:52px}
+input:focus,textarea:focus,select:focus{outline:none;border-color:var(--cor)}
+.campoG{margin-bottom:16px}
+.pill{display:flex;flex-wrap:wrap;gap:8px}
+.pill button{background:var(--sup);border:1.5px solid var(--line2);border-radius:99px;padding:12px 17px;
+ font:inherit;font-size:1.03rem;color:var(--body);cursor:pointer;min-height:46px;transition:transform .12s}
+.pill button:active{transform:scale(.96)}
+.pill button.on{background:var(--cor);border-color:var(--cor);color:#fff;font-weight:700}
+
+nav{position:fixed;left:50%;transform:translateX(-50%);bottom:0;width:100%;max-width:560px;z-index:50;
+ background:var(--sup);border-top:1px solid var(--line);display:flex;padding:8px 4px calc(10px + env(safe-area-inset-bottom));
+ box-shadow:0 -6px 26px rgba(26,26,26,.1)}
+nav button{flex:1;background:none;border:none;cursor:pointer;padding:6px 2px;color:var(--mut);font:inherit;
+ display:flex;flex-direction:column;align-items:center;gap:3px;min-width:0;transition:transform .12s}
+nav button:active{transform:scale(.94)}
+nav button i{font-size:1.35rem;font-style:normal;line-height:1}
+nav button span{font-size:.92rem;line-height:1.15;text-align:center;max-width:100%;
+ white-space:normal;overflow-wrap:anywhere}
+nav button.on{color:var(--cord);font-weight:700}
+nav .pt{position:absolute;top:4px;right:calc(50% - 22px);width:8px;height:8px;border-radius:50%;background:var(--cor)}
+
+.aviso{background:var(--warnbg);border:1px solid #f3d9b8;border-radius:var(--r3);padding:15px 16px;
+ margin-bottom:16px;font-size:1.02rem;line-height:1.5;color:#7c3d0b}
+.aviso b{display:block;margin-bottom:3px;color:var(--warn)}
+.okb{background:var(--okbg);border:1px solid #cfe6d8;border-radius:var(--r3);padding:15px 16px;
+ margin-bottom:16px;font-size:1.02rem;line-height:1.5;color:var(--body)}
+.okb b{display:block;color:var(--ok);margin-bottom:3px}
+.est{font-family:var(--mono);font-size:1rem;color:var(--mut);margin-top:12px;min-height:1.4em;text-align:center}
+.est.mal{color:var(--cord)}
+.est.bien{color:var(--ok)}
+
+.fotos{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}
+.fotos figure{position:relative;aspect-ratio:1;border-radius:var(--r2);overflow:hidden;background:var(--line2)}
+.fotos img{width:100%;height:100%;object-fit:cover;display:block}
+.fotos figcaption{position:absolute;left:0;bottom:0;right:0;background:rgba(26,26,26,.72);color:#fff;
+ font-family:var(--mono);font-size:.9rem;padding:4px 6px;text-align:center}
+
+.com{background:var(--sup);border:1px solid var(--line2);border-radius:var(--r3);padding:14px 16px;margin-bottom:9px}
+.com .ch2{display:flex;align-items:baseline;gap:10px;margin-bottom:5px}
+.com .ch2 b{font-family:var(--mono);font-size:1.02rem;color:var(--cord)}
+.com .ch2 span{font-size:.98rem;color:var(--mut);margin-left:auto}
+.com .ch2 button{width:40px;height:40px;display:grid;place-items:center;border-radius:50%;
+ margin:-6px -8px 0 0}
+.com p{font-size:1.04rem;line-height:1.5;color:var(--body);overflow-wrap:anywhere}
+.com .et{display:inline-block;font-family:var(--mono);font-size:.92rem;background:var(--bg);
+ border-radius:99px;padding:4px 10px;margin-top:7px;color:var(--mut)}
+.vac{text-align:center;padding:30px 16px;color:var(--mut);font-size:1.05rem;line-height:1.55}
+
+.tl{position:relative;padding-left:26px}
+.tl:before{content:"";position:absolute;left:7px;top:6px;bottom:6px;width:2px;background:var(--line2)}
+.tl .ev{position:relative;margin-bottom:14px}
+.tl .ev:before{content:"";position:absolute;left:-23px;top:7px;width:12px;height:12px;border-radius:50%;
+ background:var(--cor);border:2px solid var(--bg)}
+.tl .ev time{display:block;font-family:var(--mono);font-size:.96rem;color:var(--cord);margin-bottom:3px}
+.tl .ev p{font-size:1.04rem;line-height:1.5;color:var(--body)}
+
+.splash{min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:28px 20px;
+ max-width:520px;margin:0 auto}
+.splash a{display:inline-block;padding:12px 8px;min-height:44px}
+.splash .logo{font-family:var(--mono);font-size:1.4rem;font-weight:700;letter-spacing:.08em;
+ color:var(--cord);margin-bottom:26px}
+.splash .logo em{font-style:normal;color:var(--ink)}
+.splash h1{font-size:2.1rem;margin-bottom:12px}
+.pasoN{font-family:var(--mono);font-size:.96rem;color:var(--mut);margin-bottom:10px}
+.barra2{height:5px;background:var(--line2);border-radius:99px;overflow:hidden;margin-bottom:22px}
+.barra2 i{display:block;height:100%;background:var(--cor);transition:width .35s}
+ul.mini{list-style:none;display:flex;flex-direction:column;gap:9px;margin-top:10px}
+ul.mini li{position:relative;padding-left:22px;font-size:1.04rem;line-height:1.5;color:var(--body);
+ overflow-wrap:anywhere}
+ul.mini li:before{content:"";position:absolute;left:0;top:9px;width:8px;height:8px;border-radius:50%;background:var(--ac)}
+ul.mini.si li:before{background:var(--ok)}
+ul.mini.no li:before{background:var(--cor)}
+.dosb{display:flex;gap:10px;margin-top:18px}
+.dosb button{flex:1}
+.btn2{background:var(--sup);border:2px solid var(--line2);border-radius:var(--r3);padding:16px;font:inherit;
+ font-size:1.08rem;font-weight:700;color:var(--ink);cursor:pointer;min-height:56px;transition:transform .12s}
+.btn2:active{transform:scale(.97)}
+.btn1{background:var(--cor);border:none;border-radius:var(--r3);padding:16px;font:inherit;font-size:1.2rem;
+ font-weight:700;color:#fff;cursor:pointer;width:100%;min-height:58px;transition:transform .12s}
+.btn1:active{transform:scale(.98)}
+.btn1:disabled{opacity:.45}
+
+.cinta{position:sticky;top:0;z-index:40;background:var(--ink);color:#fff;display:flex;
+ align-items:center;gap:8px;padding:11px 14px;flex-wrap:wrap}
+.cinta span{font-family:var(--mono);font-size:.96rem;font-weight:700;letter-spacing:.07em;
+ text-transform:uppercase;color:var(--ac);margin-right:auto}
+.cinta button{background:transparent;border:1.5px solid rgba(255,255,255,.45);color:#fff;
+ border-radius:99px;padding:8px 14px;font:inherit;font-size:.98rem;cursor:pointer;min-height:40px}
+.cinta button:active{transform:scale(.96)}
+.cinta button.sal{border-color:transparent;text-decoration:underline;padding:8px 6px}
+.nomio{background:none;border:1.5px dashed var(--ac);border-radius:var(--r3);padding:14px 16px;font:inherit;
+ font-size:1.04rem;color:var(--cord);cursor:pointer;width:100%;margin-top:18px;font-weight:500;min-height:52px}
+.nomio.tiene{background:#fff2ee;border-style:solid;font-weight:700}
+.nomio:active{transform:scale(.985)}
+nav .bb{position:absolute;top:2px;right:calc(50% - 20px);min-width:19px;height:19px;border-radius:99px;
+ background:var(--cor);color:#fff;font-family:var(--mono);font-size:.84rem;line-height:19px;padding:0 5px;
+ display:block}
+nav .bb:empty{display:none}
+.grd button.futuro{opacity:.85}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;
+ transition-duration:.01ms!important}}
+@media(max-width:340px){.scr{padding:16px 14px calc(var(--nav) + 22px)}.grd{gap:5px}h1{font-size:1.7rem}}
+</style>
+</head><body>
+
+<div class="splash" id="splash">
+  <p class="logo">Nu<em>Plan</em>&trade;</p>
+  <h1>Bienvenida.</h1>
+  <p class="sub">Esto es tu acompa&ntilde;amiento de 90 d&iacute;as con Rosana. Se abre un d&iacute;a por vez y queda guardado en este tel&eacute;fono.</p>
+  <div class="campoG">
+    <label for="iNom">&iquest;C&oacute;mo te llam&aacute;s?</label>
+    <input type="text" id="iNom" autocomplete="name" placeholder="Tu nombre y apellido">
+  </div>
+  <div class="campoG">
+    <label for="iMail">Tu mail</label>
+    <input type="email" id="iMail" inputmode="email" autocomplete="email" placeholder="tunombre@mail.com">
+  </div>
+  <div class="aviso">
+    <b>Un solo tel&eacute;fono</b>
+    Abrila siempre desde ac&aacute; y guardala en tu pantalla de inicio. Lo que carg&aacute;s cada d&iacute;a le llega a Rosana por mail, as&iacute; que tu recorrido tambi&eacute;n queda del lado de ella.
+  </div>
+  <button class="btn1" id="bEmpezar">Empezar</button>
+  <p class="est" id="estSplash"></p>
+  <p style="text-align:center;margin-top:20px"><a href="#" id="aRos"
+     style="color:var(--mut);font-size:1rem;text-decoration:underline">&iquest;Sos Rosana? Entr&aacute; ac&aacute;</a></p>
+</div>
+
+
+<div class="splash" id="onbo" style="display:none">
+  <p class="pasoN" id="onbN">Paso 1 de 6</p>
+  <div class="barra2"><i id="onbB" style="width:16%"></i></div>
+  <div id="onbC"></div>
+  <div class="dosb" id="onbBt"></div>
+  <p class="est" id="estOnb"></p>
+</div>
+
+
+<div class="app" id="app" style="display:none">
+  <div class="cinta" id="cintaR" style="display:none">
+    <span>Modo Rosana</span>
+    <button onclick="verComoElla()" id="bVerC">Ver como ella</button>
+    <button onclick="volverPanel()" id="bVolver">Volver al panel</button>
+    <button onclick="salirRosana()" class="sal">Salir</button>
+  </div>
+  <div class="scr" id="scr">
+
+  <section class="pant on" data-p="hoy">
+    <div class="top"><span class="marca">Nu<em>Plan</em></span>
+      <div class="quien"><span id="nom1"></span><div class="av" id="av1"></div></div></div>
+    <div id="tHoy"></div>
+    <div class="prog">
+      <div class="ln"><b id="pgN"></b><span id="pgQ"></span></div>
+      <div class="bar"><i id="pgB"></i></div>
+      <div class="seis" id="pgS"></div>
+    </div>
+    <div class="lst">
+      <button class="it" onclick="ir('linea')"><div class="hn">&#9201;</div>
+        <div><b>Mi l&iacute;nea de tiempo</b><span>Todo lo que fuiste cargando, d&iacute;a por d&iacute;a</span></div></button>
+    </div>
+  </section>
+
+  <section class="pant" data-p="camino">
+    <div class="top"><span class="marca">Nu<em>Plan</em></span>
+      <div class="quien"><span id="nom2"></span><div class="av" id="av2"></div></div></div>
+    <h2>El camino</h2>
+    <p class="sub">Noventa d&iacute;as, seis letras. Se abre uno por d&iacute;a.</p>
+    <div id="grilla"></div>
+  </section>
+
+  <section class="pant" data-p="diario">
+    <div class="top"><span class="marca">Nu<em>Plan</em></span>
+      <div class="quien"><span id="nom3"></span><div class="av" id="av3"></div></div></div>
+    <h2>Mi diario</h2>
+    <p class="sub">Lo que comiste y qu&eacute; te llev&oacute; a comerlo. Todos los d&iacute;as, pase lo que pase.</p>
+    <div class="card chico" style="margin-bottom:14px">
+      <div class="ln" style="margin-bottom:0"><b id="dFecha"></b><span id="dCant"></span></div>
+    </div>
+    <div id="dLista"></div>
+    <div class="bt" style="margin-top:14px">
+      <button class="lleno" onclick="abrirComida()">Cargar una comida</button>
+      <button id="bEnvDia" onclick="enviarDia()"><span class="ic">&#9993;</span>Mandarle mi d&iacute;a a Rosana<span class="mk" id="mkEnv"></span></button>
+    </div>
+    <p class="est" id="estDia"></p>
+  </section>
+
+  <section class="pant" data-p="herr">
+    <div class="top"><span class="marca">Nu<em>Plan</em></span>
+      <div class="quien"><span id="nom4"></span><div class="av" id="av4"></div></div></div>
+    <h2>Mis ejercicios</h2>
+    <p class="sub">Cada uno se abre el d&iacute;a que te toca. Lo que contest&aacute;s le llega a Rosana.</p>
+    <div class="lst" id="herrL"></div>
+  </section>
+
+  <section class="pant" data-p="nuplan">
+    <div class="top"><span class="marca">Nu<em>Plan</em></span>
+      <div class="quien"><span id="nom5"></span><div class="av" id="av5"></div></div></div>
+    <h2>Pregunt&aacute;le a NuPlan</h2>
+    <p class="sub">Contesta con el criterio de Rosana. Lo cl&iacute;nico y los n&uacute;meros los ve ella.</p>
+    <div class="ch" id="chL"></div>
+    <div class="campo">
+      <input type="text" id="iChat" placeholder="Escrib&iacute; tu pregunta&hellip;" autocomplete="off">
+      <button id="bChat" aria-label="Enviar">&#8593;</button>
+    </div>
+  </section>
+
+  <section class="pant" data-p="rosana">
+    <div class="top"><span class="marca">Nu<em>Plan</em></span>
+      <div class="quien"><span id="nom6"></span><div class="av" id="av6"></div></div></div>
+    <h2>Rosana</h2>
+    <p class="sub">Tu nutricionista. Escribile cuando lo necesites.</p>
+    <div id="ckAviso"></div>
+    <div class="bt">
+      <a class="lleno" id="aWsp" target="_blank" rel="noopener">Escribirle por WhatsApp</a>
+      <button onclick="mandarCheckin()"><span class="ic">&#9993;</span>Mandarle c&oacute;mo vengo</button>
+    </div>
+    <p class="est" id="estCk"></p>
+    <div class="card chico" style="margin-top:16px">
+      <h3>Los check-in</h3>
+      <p class="sub" style="margin-bottom:0">Los d&iacute;as 14, 28, 42, 56, 70 y 84 la app te avisa que le mandes tu resumen. Ella lo recibe y te contesta.</p>
+    </div>
+  </section>
+
+  <section class="pant" data-p="linea">
+    <div class="top"><span class="marca">Nu<em>Plan</em></span>
+      <div class="quien"><span id="nom7"></span><div class="av" id="av7"></div></div></div>
+    <h2>Mi l&iacute;nea de tiempo</h2>
+    <p class="sub">Esto se llena solo.</p>
+    <div id="lnL"></div>
+  </section>
+
+  <section class="pant" data-p="programa">
+    <div class="top"><span class="marca">Nu<em>Plan</em> &middot; panel</span></div>
+    <h2>El programa</h2>
+    <p class="sub">Los 90 d&iacute;as. Toc&aacute; cualquiera para leerlo y anotar lo que cambiar&iacute;as.</p>
+    <div id="grilla2"></div>
+  </section>
+
+  <section class="pant" data-p="ia">
+    <div class="top"><span class="marca">Nu<em>Plan</em> &middot; panel</span></div>
+    <h2>La IA</h2>
+    <p class="sub">Con qu&eacute; criterio contesta, y d&oacute;nde se detiene.</p>
+    <div id="iaL"></div>
+  </section>
+
+  <section class="pant" data-p="mails">
+    <div class="top"><span class="marca">Nu<em>Plan</em> &middot; panel</span></div>
+    <h2>Lo que te llega</h2>
+    <p class="sub">A la misma casilla donde recib&iacute;s las respuestas del m&eacute;todo.</p>
+    <div class="aviso"><b>Por ahora, as&iacute; las segu&iacute;s</b>La pantalla con todas tus consultantes
+      necesita base de datos. Mientras tanto, cada cosa que cargan te llega por mail con su nombre y su d&iacute;a en el asunto.</div>
+    <div id="mailsL"></div>
+  </section>
+
+  <section class="pant" data-p="cambios">
+    <div class="top"><span class="marca">Nu<em>Plan</em> &middot; panel</span></div>
+    <h2>Mis cambios</h2>
+    <p class="sub">Todo lo que anotaste. Revis&aacute;lo y mandalo de una sola vez.</p>
+    <div id="corrL"></div>
+    <div class="bt" style="margin-top:16px">
+      <button class="lleno" onclick="mandarCorr()">Mandarle mis cambios a Javo</button>
+      <button onclick="aprobarTodo()"><span class="ic">&#10003;</span>Revis&eacute; todo y est&aacute; bien as&iacute;</button>
+    </div>
+    <p class="est" id="estCorr"></p>
+  </section>
+
+  </div>
+  <nav id="navR" style="display:none">
+    <button data-irr="programa" class="on"><i>&#9636;</i><span>Programa</span></button>
+    <button data-irr="herr"><i>&#9671;</i><span>Pasos</span></button>
+    <button data-irr="ia"><i>&#9670;</i><span>La IA</span></button>
+    <button data-irr="mails"><i>&#9993;</i><span>Mails</span></button>
+    <button data-irr="cambios"><i>&#9998;</i><span>Cambios</span><span class="bb" id="nCorr"></span></button>
+  </nav>
+  <nav id="navC">
+    <button data-ir="hoy" class="on"><i>&#9673;</i><span>Hoy</span></button>
+    <button data-ir="camino"><i>&#9636;</i><span>Camino</span></button>
+    <button data-ir="diario"><i>&#9998;</i><span>Diario</span></button>
+    <button data-ir="herr"><i>&#9671;</i><span>Pasos</span></button>
+    <button data-ir="nuplan"><i>&#9670;</i><span>NuPlan</span></button>
+    <button data-ir="rosana"><i>&#9786;</i><span>Rosana</span></button>
+  </nav>
+</div>
+
+<div class="hoja" id="hoja">
+  <div class="hc"><b id="hjT"></b><button onclick="cerrarHoja()" aria-label="Cerrar">&times;</button></div>
+  <div class="hb" id="hjB"></div>
+</div>
+
+<script>
+var BASE = [{"d": 1, "s": 1, "l": "N", "le": "Nutrir", "fo": "Ver qu&eacute; com&eacute;s y qu&eacute; te lleva a comerlo", "a": "Mirar el video de teor&iacute;a de NUTRIR", "ej": "Paso 1 &middot; NUTRIR", "x": "", "xp": "", "u": "https://metodo.nuplan.com.ar/n", "un": "Paso 1 &middot; NUTRIR"}, {"d": 2, "s": 1, "l": "N", "le": "Nutrir", "fo": "Ver qu&eacute; com&eacute;s y qu&eacute; te lleva a comerlo", "a": "Contestar las cinco preguntas de NUTRIR, sin corregirte", "ej": "", "x": "", "xp": "", "u": "https://metodo.nuplan.com.ar/n", "un": "Paso 1 &middot; NUTRIR"}, {"d": 3, "s": 1, "l": "N", "le": "Nutrir", "fo": "Ver qu&eacute; com&eacute;s y qu&eacute; te lleva a comerlo", "a": "Cargar tus datos y hacer el quiz: el escaneo de tus cuatro dimensiones. Leer tu diagn&oacute;stico", "ej": "", "x": "Datos cl&iacute;nicos y quiz emocional", "xp": "P1 &middot; NUTRIR", "u": "https://metodo.nuplan.com.ar/n", "un": "Paso 1 &middot; NUTRIR"}, {"d": 4, "s": 1, "l": "N", "le": "Nutrir", "fo": "Ver qu&eacute; com&eacute;s y qu&eacute; te lleva a comerlo", "a": "Primer d&iacute;a del diario de comida y emoci&oacute;n: anotar todo, sin cambiar nada", "ej": "", "x": "El diario de comida y emoci&oacute;n", "xp": "P1 &middot; NUTRIR", "u": "https://metodo.nuplan.com.ar/n", "un": "Paso 1 &middot; NUTRIR"}, {"d": 5, "s": 1, "l": "N", "le": "Nutrir", "fo": "Ver qu&eacute; com&eacute;s y qu&eacute; te lleva a comerlo", "a": "Diario otra vez, y esta vez marcar qu&eacute; sentiste antes de cada comida", "ej": "", "x": "", "xp": "", "u": "", "un": ""}, {"d": 6, "s": 1, "l": "N", "le": "Nutrir", "fo": "Ver qu&eacute; com&eacute;s y qu&eacute; te lleva a comerlo", "a": "Sacarle una foto a tu heladera abierta, tal cual est&aacute;", "ej": "", "x": "", "xp": "", "u": "", "un": ""}, {"d": 7, "s": 1, "l": "N", "le": "Nutrir", "fo": "Ver qu&eacute; com&eacute;s y qu&eacute; te lleva a comerlo", "a": "Mirar tus cuatro d&iacute;as de diario y escribir una frase de lo que viste", "ej": "", "x": "", "xp": "", "u": "", "un": ""}, {"d": 8, "s": 2, "l": "N", "le": "Nutrir", "fo": "Nombrar tu patr&oacute;n y decidir que esto lo vas a hacer", "a": "Armar el mapa de tus disparadores: qu&eacute;, cu&aacute;ndo y d&oacute;nde", "ej": "La balanza", "x": "El mapa de tus disparadores", "xp": "P1 &middot; NUTRIR", "u": "https://metodo.nuplan.com.ar/n", "un": "Paso 1 &middot; NUTRIR"}, {"d": 9, "s": 2, "l": "N", "le": "Nutrir", "fo": "Nombrar tu patr&oacute;n y decidir que esto lo vas a hacer", "a": "Escribir tu acuerdo con tu forma de comer", "ej": "", "x": "Acuerdo con tu forma de comer", "xp": "P1 &middot; NUTRIR", "u": "https://metodo.nuplan.com.ar/n", "un": "Paso 1 &middot; NUTRIR"}, {"d": 10, "s": 2, "l": "N", "le": "Nutrir", "fo": "Nombrar tu patr&oacute;n y decidir que esto lo vas a hacer", "a": "Hacer la balanza: los cuatro cuadros, qu&eacute; gan&aacute;s y qu&eacute; pon&eacute;s", "ej": "", "x": "Los cuatro cuadros", "xp": "La balanza", "u": "https://metodo.nuplan.com.ar/balanza", "un": "La balanza"}, {"d": 11, "s": 2, "l": "N", "le": "Nutrir", "fo": "Nombrar tu patr&oacute;n y decidir que esto lo vas a hacer", "a": "Ponerle n&uacute;mero a cada lado: cu&aacute;nto te importa y cu&aacute;nta seguridad ten&eacute;s", "ej": "", "x": "Cu&aacute;nto importa y cu&aacute;nta seguridad", "xp": "La balanza", "u": "https://metodo.nuplan.com.ar/balanza", "un": "La balanza"}, {"d": 12, "s": 2, "l": "N", "le": "Nutrir", "fo": "Nombrar tu patr&oacute;n y decidir que esto lo vas a hacer", "a": "Elegir tu paso chico de la semana y ponerle d&iacute;a y hora", "ej": "", "x": "Un paso chico para esta semana", "xp": "La balanza", "u": "https://metodo.nuplan.com.ar/balanza", "un": "La balanza"}, {"d": 13, "s": 2, "l": "N", "le": "Nutrir", "fo": "Nombrar tu patr&oacute;n y decidir que esto lo vas a hacer", "a": "Diario del d&iacute;a + marcar si diste el paso chico", "ej": "", "x": "", "xp": "", "u": "", "un": ""}, {"d": 14, "s": 2, "l": "N", "le": "Nutrir", "fo": "Nombrar tu patr&oacute;n y decidir que esto lo vas a hacer", "a": "Check-in con Rosana: mandarle tu primera quincena", "ej": "", "x": "", "xp": "", "u": "", "un": ""}, {"d": 15, "s": 3, "l": "U", "le": "Unir", "fo": "Separar el hambre f&iacute;sica de las otras hambres", "a": "Mirar el video de UNIR y contestar sus cinco preguntas", "ej": "Paso 2 &middot; UNIR", "x": "", "xp": "", "u": "https://metodo.nuplan.com.ar/u", "un": "Paso 2 &middot; UNIR"}, {"d": 16, "s": 3, "l": "U", "le": "Unir", "fo": "Separar el hambre f&iacute;sica de las otras hambres", "a": "Hacer el sem&aacute;foro del hambre con lo que ya registraste", "ej": "", "x": "El sem&aacute;foro del hambre", "xp": "P2 &middot; UNIR", "u": "https://metodo.nuplan.com.ar/u", "un": "Paso 2 &middot; UNIR"}, {"d": 17, "s": 3, "l": "U", "le": "Unir", "fo": "Separar el hambre f&iacute;sica de las otras hambres", "a": "Probar la pausa de 90 segundos, una sola vez hoy", "ej": "", "x": "La pausa de 90 segundos", "xp": "P2 &middot; UNIR", "u": "https://metodo.nuplan.com.ar/u", "un": "Paso 2 &middot; UNIR"}, {"d": 18, "s": 3, "l": "U", "le": "Unir", "fo": "Separar el hambre f&iacute;sica de las otras hambres", "a": "Diario + anotar en qu&eacute; momento del d&iacute;a te cuesta m&aacute;s", "ej": "", "x": "", "xp": "", "u": "", "un": ""}, {"d": 19, "s": 3, "l": "U", "le": "Unir", "fo": "Separar el hambre f&iacute;sica de las otras hambres", "a": "Completar tu rueda del equilibrio vital", "ej": "", "x": "Tu rueda del equilibrio vital", "xp": "P2 &middot; UNIR", "u": "https://metodo.nuplan.com.ar/u", "un": "Paso 2 &middot; UNIR"}, {"d": 20, "s": 3, "l": "U", "le": "Unir", "fo": "Separar el hambre f&iacute;sica de las otras hambres", "a": "Mirar tus tres ejes m&aacute;s bajos y elegir uno", "ej": "", "x": "", "xp": "", "u": "", "un": ""}, {"d": 21, "s": 3, "l": "U", "le": "Unir", "fo": "Separar el hambre f&iacute;sica de las otras hambres", "a": "Hacer algo chiquito por ese eje, hoy", "ej": "", "x": "", "xp": "", "u": "", "un": ""}, {"d": 22, "s": 4, "l": "U", "le": "Unir", "fo": "Nombrar lo que com&eacute;s sin hambre", "a": "Diario + marcar cada vez que comiste sin hambre f&iacute;sica", "ej": "", "x": "", "xp": "", "u": "", "un": ""}, {"d": 23, "s": 4, "l": "U", "le": "Unir", "fo": "Nombrar lo que com&eacute;s sin hambre", "a": "Elegir una de esas veces y escribir qu&eacute; estaba pasando antes", "ej": "", "x": "", "xp": "", "u": "", "un": ""}, {"d": 24, "s": 4, "l": "U", "le": "Unir", "fo": "Nombrar lo que com&eacute;s sin hambre", "a": "Probar la pausa de 90 segundos dos veces hoy", "ej": "", "x": "", "xp": "", "u": "", "un": ""}, {"d": 25, "s": 4, "l": "U", "le": "Unir", "fo": "Nombrar lo que com&eacute;s sin hambre", "a": "Diario + anotar c&oacute;mo dormiste", "ej": "", "x": "", "xp": "", "u": "", "un": ""}, {"d": 26, "s": 4, "l": "U", "le": "Unir", "fo": "Nombrar lo que com&eacute;s sin hambre", "a": "Escribir qu&eacute; emoci&oacute;n te com&eacute;s m&aacute;s seguido", "ej": "", "x": "", "xp": "", "u": "", "un": ""}, {"d": 27, "s": 4, "l": "U", "le": "Unir", "fo": "Nombrar lo que com&eacute;s sin hambre", "a": "Volver a mirar tu sem&aacute;foro y ver si algo cambi&oacute;", "ej": "", "x": "", "xp": "", "u": "", "un": ""}, {"d": 28, "s": 4, "l": "U", "le": "Unir", "fo": "Nombrar lo que com&eacute;s sin hambre", "a": "Check-in con Rosana: contarle lo del sem&aacute;foro", "ej": "", "x": "", "xp": "", "u": "", "un": ""}, {"d": 29, "s": 5, "l": "P", "le": "Personalizar", "fo": "Armar tu plan, no el plan de nadie", "a": "Mirar el video de PERSONALIZAR y contestar sus cinco preguntas", "ej": "Paso 3 &middot; PERSONALIZAR", "x": "", "xp": "", "u": "https://metodo.nuplan.com.ar/p", "un": "Paso 3 &middot; PERSONALIZAR"}, {"d": 30, "s": 5, "l": "P", "le": "Personalizar", "fo": "Armar tu plan, no el plan de nadie", "a": "Completar tu rueda de alimentaci&oacute;n, los diez ejes", "ej": "", "x": "Tu rueda de alimentaci&oacute;n", "xp": "P3 &middot; PERSONALIZAR", "u": "https://metodo.nuplan.com.ar/p", "un": "Paso 3 &middot; PERSONALIZAR"}, {"d": 31, "s": 5, "l": "P", "le": "Personalizar", "fo": "Armar tu plan, no el plan de nadie", "a": "Armar tu lista &laquo;s&iacute; quiero&raquo;: lo que quer&eacute;s que est&eacute; s&iacute; o s&iacute;", "ej": "", "x": "La lista &laquo;s&iacute; quiero&raquo;", "xp": "P3 &middot; PERSONALIZAR", "u": "https://metodo.nuplan.com.ar/p", "un": "Paso 3 &middot; PERSONALIZAR"}, {"d": 32, "s": 5, "l": "P", "le": "Personalizar", "fo": "Armar tu plan, no el plan de nadie", "a": "Escribir tu carta al plan que abandonaste", "ej": "", "x": "Carta al plan que abandonaste", "xp": "P3 &middot; PERSONALIZAR", "u": "https://metodo.nuplan.com.ar/p", "un": "Paso 3 &middot; PERSONALIZAR"}, {"d": 33, "s": 5, "l": "P", "le": "Personalizar", "fo": "Armar tu plan, no el plan de nadie", "a": "Leer tu plan reci&eacute;n armado y marcar qu&eacute; no te cierra", "ej": "", "x": "Tu plan personalizado", "xp": "P3 &middot; PERSONALIZAR", "u": "https://metodo.nuplan.com.ar/p", "un": "Paso 3 &middot; PERSONALIZAR"}, {"d": 34, "s": 5, "l": "P", "le": "Personalizar", "fo": "Armar tu plan, no el plan de nadie", "a": "Cambiar una cosa del plan para que sea m&aacute;s tuyo", "ej": "", "x": "", "xp": "", "u": "", "un": ""}, {"d": 35, "s": 5, "l": "P", "le": "Personalizar", "fo": "Armar tu plan, no el plan de nadie", "a": "Primer d&iacute;a siguiendo el plan: diario normal", "ej": "", "x": "", "xp": "", "u": "", "un": ""}, {"d": 36, "s": 6, "l": "P", "le": "Personalizar", "fo": "Que el plan entre en tu semana real", "a": "Hacer el ejercicio &laquo;tu plan en tu semana real&raquo;", "ej": "", "x": "Tu plan en tu semana real", "xp": "P3 &middot; PERSONALIZAR", "u": "https://metodo.nuplan.com.ar/p", "un": "Paso 3 &middot; PERSONALIZAR"}, {"d": 37, "s": 6, "l": "P", "le": "Personalizar", "fo": "Que el plan entre en tu semana real", "a": "Mirar tu semana que viene y marcar los dos d&iacute;as m&aacute;s dif&iacute;ciles", "ej": "", "x": "", "xp": "", "u": "", "un": ""}, {"d": 38, "s": 6, "l": "P", "le": "Personalizar", "fo": "Que el plan entre en tu semana real", "a": "Decidir qu&eacute; vas a hacer esos dos d&iacute;as, por escrito", "ej": "", "x": "", "xp": "", "u": "", "un": ""}, {"d": 39, "s": 6, "l": "P", "le": "Personalizar", "fo": "Que el plan entre en tu semana real", "a": "Dejar algo listo la noche anterior, una sola cosa", "ej": "", "x": "", "xp": "", "u": "", "un": ""}, {"d": 40, "s": 6, "l": "P", "le": "Personalizar", "fo": "Que el plan entre en tu semana real", "a": "Foto de una comida del plan hecha por vos", "ej": "", "x": "", "xp": "", "u": "", "un": ""}, {"d": 41, "s": 6, "l": "P", "le": "Personalizar", "fo": "Que el plan entre en tu semana real", "a": "Anotar cu&aacute;nto tiempo real te llev&oacute; hoy", "ej": "", "x": "", "xp": "", "u": "", "un": ""}, {"d": 42, "s": 6, "l": "P", "le": "Personalizar", "fo": "Que el plan entre en tu semana real", "a": "Check-in con Rosana: ajustar el plan juntas", "ej": "", "x": "", "xp": "", "u": "", "un": ""}, {"d": 43, "s": 7, "l": "L", "le": "Liberar", "fo": "Que un desliz deje de arrastrarte al abandono", "a": "Mirar el video de LIBERAR y contestar sus cinco preguntas", "ej": "Paso 4 &middot; LIBERAR", "x": "", "xp": "", "u": "https://metodo.nuplan.com.ar/l", "un": "Paso 4 &middot; LIBERAR"}, {"d": 44, "s": 7, "l": "L", "le": "Liberar", "fo": "Que un desliz deje de arrastrarte al abandono", "a": "Armar tu protocolo de deslices: qu&eacute; hac&eacute;s los primeros diez minutos", "ej": "", "x": "Tu protocolo de deslices", "xp": "P4 &middot; LIBERAR", "u": "https://metodo.nuplan.com.ar/l", "un": "Paso 4 &middot; LIBERAR"}, {"d": 45, "s": 7, "l": "L", "le": "Liberar", "fo": "Que un desliz deje de arrastrarte al abandono", "a": "Leer tu protocolo en voz alta", "ej": "", "x": "", "xp": "", "u": "", "un": ""}, {"d": 46, "s": 7, "l": "L", "le": "Liberar", "fo": "Que un desliz deje de arrastrarte al abandono", "a": "Hacer &laquo;reescrib&iacute; la voz&raquo;: c&oacute;mo te habl&aacute;s cuando algo no sale", "ej": "", "x": "Reescrib&iacute; la voz", "xp": "P4 &middot; LIBERAR", "u": "https://metodo.nuplan.com.ar/l", "un": "Paso 4 &middot; LIBERAR"}, {"d": 47, "s": 7, "l": "L", "le": "Liberar", "fo": "Que un desliz deje de arrastrarte al abandono", "a": "Diario + anotar si apareci&oacute; alguno de los disparadores que mapeaste", "ej": "", "x": "", "xp": "", "u": "", "un": ""}, {"d": 48, "s": 7, "l": "L", "le": "Liberar", "fo": "Que un desliz deje de arrastrarte al abandono", "a": "Escribir tu carta al d&iacute;a que abandonaste", "ej": "", "x": "Carta al d&iacute;a que abandonaste", "xp": "P4 &middot; LIBERAR", "u": "https://metodo.nuplan.com.ar/l", "un": "Paso 4 &middot; LIBERAR"}, {"d": 49, "s": 7, "l": "L", "le": "Liberar", "fo": "Que un desliz deje de arrastrarte al abandono", "a": "Releer tu acuerdo de la semana 2 y ver si sigue siendo tuyo", "ej": "", "x": "", "xp": "", "u": "", "un": ""}, {"d": 50, "s": 8, "l": "L", "le": "Liberar", "fo": "Usar el protocolo de verdad", "a": "Diario + si hubo desliz, usar el protocolo y anotarlo", "ej": "", "x": "", "xp": "", "u": "", "un": ""}, {"d": 51, "s": 8, "l": "L", "le": "Liberar", "fo": "Usar el protocolo de verdad", "a": "Escribir qu&eacute; pas&oacute; despu&eacute;s de usarlo", "ej": "", "x": "", "xp": "", "u": "", "un": ""}, {"d": 52, "s": 8, "l": "L", "le": "Liberar", "fo": "Usar el protocolo de verdad", "a": "Elegir un disparador de tu mapa y sacarlo del medio, f&iacute;sicamente", "ej": "", "x": "", "xp": "", "u": "", "un": ""}, {"d": 53, "s": 8, "l": "L", "le": "Liberar", "fo": "Usar el protocolo de verdad", "a": "Foto de ese cambio en tu casa", "ej": "", "x": "", "xp": "", "u": "", "un": ""}, {"d": 54, "s": 8, "l": "L", "le": "Liberar", "fo": "Usar el protocolo de verdad", "a": "Diario normal", "ej": "", "x": "", "xp": "", "u": "", "un": ""}, {"d": 55, "s": 8, "l": "L", "le": "Liberar", "fo": "Usar el protocolo de verdad", "a": "Anotar en qu&eacute; se diferencia esta semana de la semana 1", "ej": "", "x": "", "xp": "", "u": "", "un": ""}, {"d": 56, "s": 8, "l": "L", "le": "Liberar", "fo": "Usar el protocolo de verdad", "a": "Check-in con Rosana: c&oacute;mo te fue con el protocolo", "ej": "", "x": "", "xp": "", "u": "", "un": ""}, {"d": 57, "s": 9, "l": "A", "le": "Activar", "fo": "Responderle a la duda con datos", "a": "Mirar el video de ACTIVAR y contestar sus cinco preguntas", "ej": "Paso 5 &middot; ACTIVAR", "x": "", "xp": "", "u": "https://metodo.nuplan.com.ar/a", "un": "Paso 5 &middot; ACTIVAR"}, {"d": 58, "s": 9, "l": "A", "le": "Activar", "fo": "Responderle a la duda con datos", "a": "Armar tu tablero de evidencia: elegir tus tres indicadores", "ej": "", "x": "Tu tablero de evidencia", "xp": "P5 &middot; ACTIVAR", "u": "https://metodo.nuplan.com.ar/a", "un": "Paso 5 &middot; ACTIVAR"}, {"d": 59, "s": 9, "l": "A", "le": "Activar", "fo": "Responderle a la duda con datos", "a": "Empezar tu lista de pruebas: qu&eacute; pod&eacute;s se&ntilde;alar que antes no pasaba", "ej": "", "x": "La lista de pruebas", "xp": "P5 &middot; ACTIVAR", "u": "https://metodo.nuplan.com.ar/a", "un": "Paso 5 &middot; ACTIVAR"}, {"d": 60, "s": 9, "l": "A", "le": "Activar", "fo": "Responderle a la duda con datos", "a": "Mirar tus fotos del d&iacute;a 6 al d&iacute;a 53, una al lado de la otra", "ej": "", "x": "", "xp": "", "u": "", "un": ""}, {"d": 61, "s": 9, "l": "A", "le": "Activar", "fo": "Responderle a la duda con datos", "a": "Diario + comparar con tu diario del d&iacute;a 4", "ej": "", "x": "", "xp": "", "u": "", "un": ""}, {"d": 62, "s": 9, "l": "A", "le": "Activar", "fo": "Responderle a la duda con datos", "a": "Escribir tu carta a tu yo que dudaba", "ej": "", "x": "Carta a tu yo que dudaba", "xp": "P5 &middot; ACTIVAR", "u": "https://metodo.nuplan.com.ar/a", "un": "Paso 5 &middot; ACTIVAR"}, {"d": 63, "s": 9, "l": "A", "le": "Activar", "fo": "Responderle a la duda con datos", "a": "Leer tu informe de evidencia completo", "ej": "", "x": "", "xp": "", "u": "", "un": ""}, {"d": 64, "s": 10, "l": "A", "le": "Activar", "fo": "Sostener sin que te empujen", "a": "Hacer el d&iacute;a completo sin abrir la app hasta la noche", "ej": "", "x": "", "xp": "", "u": "", "un": ""}, {"d": 65, "s": 10, "l": "A", "le": "Activar", "fo": "Sostener sin que te empujen", "a": "Diario + anotar qu&eacute; hiciste sin pensarlo", "ej": "", "x": "", "xp": "", "u": "", "un": ""}, {"d": 66, "s": 10, "l": "A", "le": "Activar", "fo": "Sostener sin que te empujen", "a": "Elegir una cosa que ya no te cuesta y sumarla a tus pruebas", "ej": "", "x": "", "xp": "", "u": "", "un": ""}, {"d": 67, "s": 10, "l": "A", "le": "Activar", "fo": "Sostener sin que te empujen", "a": "Probar un d&iacute;a dif&iacute;cil a prop&oacute;sito: salida, reuni&oacute;n, lo que sea", "ej": "", "x": "", "xp": "", "u": "", "un": ""}, {"d": 68, "s": 10, "l": "A", "le": "Activar", "fo": "Sostener sin que te empujen", "a": "Anotar c&oacute;mo te fue en ese d&iacute;a", "ej": "", "x": "", "xp": "", "u": "", "un": ""}, {"d": 69, "s": 10, "l": "A", "le": "Activar", "fo": "Sostener sin que te empujen", "a": "Foto de ese momento", "ej": "", "x": "", "xp": "", "u": "", "un": ""}, {"d": 70, "s": 10, "l": "A", "le": "Activar", "fo": "Sostener sin que te empujen", "a": "Check-in con Rosana: mostrarle tu tablero", "ej": "", "x": "", "xp": "", "u": "", "un": ""}, {"d": 71, "s": 11, "l": "N", "le": "Naturalizar", "fo": "Escribir tus propias reglas", "a": "Mirar el video de NATURALIZAR y contestar sus cinco preguntas", "ej": "Paso 6 &middot; NATURALIZAR", "x": "", "xp": "", "u": "https://metodo.nuplan.com.ar/n-3944", "un": "Paso 6 &middot; NATURALIZAR"}, {"d": 72, "s": 11, "l": "N", "le": "Naturalizar", "fo": "Escribir tus propias reglas", "a": "Escribir las cinco reglas de tu manual de autonom&iacute;a", "ej": "", "x": "Tu manual de autonom&iacute;a", "xp": "P6 &middot; NATURALIZAR", "u": "https://metodo.nuplan.com.ar/n-3944", "un": "Paso 6 &middot; NATURALIZAR"}, {"d": 73, "s": 11, "l": "N", "le": "Naturalizar", "fo": "Escribir tus propias reglas", "a": "Armar tu plan para las semanas dif&iacute;ciles", "ej": "", "x": "El plan para las semanas dif&iacute;ciles", "xp": "P6 &middot; NATURALIZAR", "u": "https://metodo.nuplan.com.ar/n-3944", "un": "Paso 6 &middot; NATURALIZAR"}, {"d": 74, "s": 11, "l": "N", "le": "Naturalizar", "fo": "Escribir tus propias reglas", "a": "Anotar tus se&ntilde;ales de alarma: qu&eacute; pasa cuando te est&aacute;s yendo", "ej": "", "x": "", "xp": "", "u": "", "un": ""}, {"d": 75, "s": 11, "l": "N", "le": "Naturalizar", "fo": "Escribir tus propias reglas", "a": "Diario + anotar qu&eacute; regla us&aacute;s sin darte cuenta", "ej": "", "x": "", "xp": "", "u": "", "un": ""}, {"d": 76, "s": 11, "l": "N", "le": "Naturalizar", "fo": "Escribir tus propias reglas", "a": "Pulir tu manual: sacar lo que no es tuyo", "ej": "", "x": "", "xp": "", "u": "", "un": ""}, {"d": 77, "s": 11, "l": "N", "le": "Naturalizar", "fo": "Escribir tus propias reglas", "a": "Imprimirlo o ponerlo donde lo veas", "ej": "", "x": "", "xp": "", "u": "", "un": ""}, {"d": 78, "s": 12, "l": "N", "le": "Naturalizar", "fo": "Cerrar y quedarte parada sola", "a": "Diario normal, como cualquier d&iacute;a", "ej": "", "x": "", "xp": "", "u": "", "un": ""}, {"d": 79, "s": 12, "l": "N", "le": "Naturalizar", "fo": "Cerrar y quedarte parada sola", "a": "Mirar tu l&iacute;nea de tiempo completa", "ej": "", "x": "", "xp": "", "u": "", "un": ""}, {"d": 80, "s": 12, "l": "N", "le": "Naturalizar", "fo": "Cerrar y quedarte parada sola", "a": "Volver a leer lo que escribiste antes de empezar", "ej": "", "x": "", "xp": "", "u": "", "un": ""}, {"d": 81, "s": 12, "l": "N", "le": "Naturalizar", "fo": "Cerrar y quedarte parada sola", "a": "Escribir tu carta a tu yo del d&iacute;a 1", "ej": "", "x": "Carta a tu yo del d&iacute;a 1", "xp": "P6 &middot; NATURALIZAR", "u": "https://metodo.nuplan.com.ar/n-3944", "un": "Paso 6 &middot; NATURALIZAR"}, {"d": 82, "s": 12, "l": "N", "le": "Naturalizar", "fo": "Cerrar y quedarte parada sola", "a": "Anotar qu&eacute; te llev&aacute;s, en una frase", "ej": "", "x": "", "xp": "", "u": "", "un": ""}, {"d": 83, "s": 12, "l": "N", "le": "Naturalizar", "fo": "Cerrar y quedarte parada sola", "a": "Grabar un audio de un minuto para vos misma", "ej": "", "x": "", "xp": "", "u": "", "un": ""}, {"d": 84, "s": 12, "l": "N", "le": "Naturalizar", "fo": "Cerrar y quedarte parada sola", "a": "Check-in final con Rosana", "ej": "", "x": "", "xp": "", "u": "", "un": ""}, {"d": 85, "s": 13, "l": "+", "le": "Cierre", "fo": "Cerrar y quedarte parada sola", "a": "Tu carta de graduaci&oacute;n. Rosana te escribe. Aparece en la app y te queda guardada.", "ej": "", "x": "", "xp": "", "u": "", "un": ""}, {"d": 86, "s": 13, "l": "+", "le": "Cierre", "fo": "Cerrar y quedarte parada sola", "a": "Tu l&iacute;nea de tiempo. Las fotos, los diarios y tus respuestas de los 84 d&iacute;as, en una sola pantalla.", "ej": "", "x": "", "xp": "", "u": "", "un": ""}, {"d": 87, "s": 13, "l": "+", "le": "Cierre", "fo": "Cerrar y quedarte parada sola", "a": "El antes y el despu&eacute;s en tus palabras. Lo que escribiste antes de empezar, al lado de tu carta del d&iacute;a 81.", "ej": "", "x": "", "xp": "", "u": "", "un": ""}, {"d": 88, "s": 13, "l": "+", "le": "Cierre", "fo": "Cerrar y quedarte parada sola", "a": "Tu manual, en limpio. Tus cinco reglas maquetadas para imprimir.", "ej": "", "x": "", "xp": "", "u": "", "un": ""}, {"d": 89, "s": 13, "l": "+", "le": "Cierre", "fo": "Cerrar y quedarte parada sola", "a": "Qu&eacute; sigue. Eleg&iacute;s si segu&iacute;s sola, con seguimiento mensual o con un acompa&ntilde;amiento nuevo.", "ej": "", "x": "", "xp": "", "u": "", "un": ""}, {"d": 90, "s": 13, "l": "+", "le": "Cierre", "fo": "Cerrar y quedarte parada sola", "a": "El cierre. La app queda abierta para consultar, el diario sigue disponible, y Rosana recibe tu informe final.", "ej": "", "x": "", "xp": "", "u": "", "un": ""}];
+var ONB  = [{"n": "01", "t": "Antes de empezar", "q": "Rosana te habla un minuto", "d": "Un video corto de ella. Qui&eacute;n es, por qu&eacute; arm&oacute; esto y qu&eacute; va a pasar en los pr&oacute;ximos 90 d&iacute;as.", "campos": []}, {"n": "02", "t": "Lo que vas a hacer ac&aacute;", "q": "Y lo que no", "d": "Una pantalla sola, para que quede claro desde el minuto cero.", "campos": [], "si": ["Vas a ver qu&eacute; com&eacute;s y qu&eacute; te lleva a comerlo", "Vas a armar un plan que entre en tu semana real", "Vas a salir con tu propio manual escrito por vos"], "no": ["Ac&aacute; no hay balanza ni se mide peso", "No se cuentan calor&iacute;as ni se miden porciones", "No hay comidas prohibidas ni listas de lo que no pod&eacute;s"]}, {"n": "03", "t": "Qui&eacute;n sos", "q": "Lo b&aacute;sico, una sola vez", "d": "Lo que la app necesita para hablarte por tu nombre y para que Rosana sepa con qui&eacute;n est&aacute;.", "campos": ["Tu nombre", "Tu mail", "Tu edad", "A qu&eacute; te ded&iacute;c&aacute;s", "C&oacute;mo es un d&iacute;a tuyo, en tres renglones"]}, {"n": "04", "t": "Tu salud hoy", "q": "Lo que Rosana necesita saber", "d": "Todo opcional menos lo &uacute;ltimo. Lo que cargues ac&aacute; entra directo al escaneo del d&iacute;a 3.", "campos": ["Estudios recientes, si ten&eacute;s (si no, dejalo en blanco)", "Medicaci&oacute;n o suplementos que est&eacute;s tomando", "Algo que te hayan dicho antes sobre tu alimentaci&oacute;n", "Algo que Rosana tenga que saber s&iacute; o s&iacute;"]}, {"n": "05", "t": "Por qu&eacute; est&aacute;s ac&aacute;", "q": "Esto se vuelve a leer el d&iacute;a 87", "d": "Las dos preguntas que m&aacute;s pesan despu&eacute;s. Se guardan y no se vuelven a tocar hasta el final.", "campos": ["&iquest;Qu&eacute; te trajo hasta ac&aacute;?", "&iquest;Qu&eacute; quer&eacute;s poder hacer dentro de 90 d&iacute;as que hoy no pod&eacute;s?"]}, {"n": "06", "t": "C&oacute;mo funciona", "q": "El acuerdo, en cuatro l&iacute;neas", "d": "Lo que se espera de ella y lo que puede esperar. Lo acepta con un bot&oacute;n y arranca el d&iacute;a 1.", "campos": [], "reglas": ["Un d&iacute;a por vez. Se abre uno nuevo cada d&iacute;a, no pod&eacute;s adelantarte", "Si falt&aacute;s un d&iacute;a, no empez&aacute;s de cero: segu&iacute;s donde estabas", "El diario est&aacute; siempre abierto, todos los d&iacute;as, pase lo que pase", "Cada dos semanas le mand&aacute;s tu resumen a Rosana y ella te contesta"]}];
+var HERR = [{"t": "Paso 1 &middot; NUTRIR", "d": 1, "q": "Video, cinco preguntas, el escaneo de tus 4 dimensiones, el diario, el mapa de disparadores y tu acuerdo", "u": "https://metodo.nuplan.com.ar/n"}, {"t": "El diario de comida y emoci&oacute;n", "d": 4, "q": "Ac&aacute; adentro, en la pesta&ntilde;a Diario. Todos los d&iacute;as, hasta el 90", "u": ""}, {"t": "La balanza", "d": 10, "q": "Los cuatro cuadros, cinco preguntas y tu paso chico", "u": "https://metodo.nuplan.com.ar/balanza"}, {"t": "Paso 2 &middot; UNIR", "d": 15, "q": "Video, cinco preguntas, el sem&aacute;foro del hambre, la pausa de 90 segundos y tu rueda del equilibrio vital", "u": "https://metodo.nuplan.com.ar/u"}, {"t": "Paso 3 &middot; PERSONALIZAR", "d": 29, "q": "Video, cinco preguntas, tu rueda de alimentaci&oacute;n, la lista &laquo;s&iacute; quiero&raquo;, la carta al plan y tu plan personalizado", "u": "https://metodo.nuplan.com.ar/p"}, {"t": "Paso 4 &middot; LIBERAR", "d": 43, "q": "Video, cinco preguntas, tu protocolo de deslices, reescribir la voz y la carta al d&iacute;a que abandonaste", "u": "https://metodo.nuplan.com.ar/l"}, {"t": "Paso 5 &middot; ACTIVAR", "d": 57, "q": "Video, cinco preguntas, tu tablero de evidencia, la lista de pruebas y la carta a tu yo que dudaba", "u": "https://metodo.nuplan.com.ar/a"}, {"t": "Paso 6 &middot; NATURALIZAR", "d": 71, "q": "Video, cinco preguntas, tu manual de autonom&iacute;a, el plan para las semanas dif&iacute;ciles y tu carta final", "u": "https://metodo.nuplan.com.ar/n-3944"}];
+var IA   = {"sabe": ["En qu&eacute; d&iacute;a va y en qu&eacute; letra del m&eacute;todo est&aacute;", "Qu&eacute; ejercicios ya complet&oacute; y cu&aacute;les todav&iacute;a no abri&oacute;", "Lo que ella misma escribi&oacute; en cada ejercicio, textual", "Su diario de comida y emoci&oacute;n de los &uacute;ltimos siete d&iacute;as", "Su mapa de disparadores, su protocolo y su manual, cuando ya existen", "Lo que Rosana le contest&oacute; en los check-in anteriores"], "como": ["Siempre la devuelve a lo que ella misma escribi&oacute;, no a un consejo general", "No inventa t&eacute;cnicas: usa la del m&eacute;todo que corresponde a la letra en la que est&aacute;", "Si pregunta por un paso que todav&iacute;a no abri&oacute;, se lo dice y no se adelanta", "Contesta corto y hablado, como lo dir&iacute;a Rosana en voz alta", "Nunca felicita de m&aacute;s ni dramatiza un mal d&iacute;a"], "no": ["Cualquier cosa cl&iacute;nica: s&iacute;ntomas, medicaci&oacute;n, patolog&iacute;as, estudios", "Calor&iacute;as, peso, talles o cualquier n&uacute;mero de dieta", "Cambiar su plan o sus porciones", "Diagn&oacute;sticos de ning&uacute;n tipo, ni nutricionales ni psicol&oacute;gicos", "Opinar sobre lo que le dijo otro profesional"], "deriva": ["Cualquier pregunta cl&iacute;nica &rarr; <b>&laquo;esto lo vemos con Rosana&raquo;</b> y le llega el aviso en el momento", "Se&ntilde;ales de malestar fuerte o de da&ntilde;o &rarr; mensaje de contenci&oacute;n, los tel&eacute;fonos de ayuda, y aviso urgente a Rosana", "Se&ntilde;ales de trastorno alimentario &rarr; corta el tema, no da ning&uacute;n n&uacute;mero ni consejo, y avisa", "Pedido de cambiar el plan &rarr; lo anota y se lo deja a Rosana para la pr&oacute;xima sesi&oacute;n"]};
+var MAILS= [{"a": "Cuando arranca", "t": "Arranc&oacute; el programa", "q": "Todo lo que complet&oacute; en el onboarding: qui&eacute;n es, su salud, y por qu&eacute; est&aacute; ac&aacute;."}, {"a": "Todos los d&iacute;as", "t": "Diario &middot; d&iacute;a N", "q": "Su d&iacute;a hora por hora: qu&eacute; comi&oacute;, a qu&eacute; hora y qu&eacute; la llev&oacute; a comer cada vez. M&aacute;s si marc&oacute; el d&iacute;a como hecho y lo que escribi&oacute;."}, {"a": "D&iacute;as 14, 28, 42, 56, 70 y 84", "t": "Check-in &middot; d&iacute;a N", "q": "C&oacute;mo viene: en qu&eacute; d&iacute;a va, cu&aacute;ntos d&iacute;as marc&oacute;, cu&aacute;ntos diarios carg&oacute;, cu&aacute;ntas fotos subi&oacute; y sus &uacute;ltimas notas."}, {"a": "Cuando hace falta", "t": "La IA deriv&oacute; una pregunta", "q": "Lo que te pregunt&oacute; a vos sin saberlo: algo cl&iacute;nico, un pedido de cambiar el plan, o una se&ntilde;al que la IA no sigue sola. Con lo que le contest&oacute; mientras tanto."}];
+
+/* ============ CONFIGURACION ============ */
+var CFG = {
+  hook: "https://services.leadconnectorhq.com/hooks/s44QfsRYPnToRlrDgJbo/webhook-trigger/f61d5d97-2ada-4d37-a282-d27af06e1a86",
+  whatsapp: "5491162306557",
+  chat: "/api/np-chat",
+  links: {
+    "Paso 1 &middot; NUTRIR": "https://metodo.nuplan.com.ar/n",
+    "La balanza": "https://metodo.nuplan.com.ar/balanza",
+    "Paso 2 &middot; UNIR": "https://metodo.nuplan.com.ar/u",
+    "Paso 3 &middot; PERSONALIZAR": "https://metodo.nuplan.com.ar/p",
+    "Paso 4 &middot; LIBERAR": "https://metodo.nuplan.com.ar/l",
+    "Paso 5 &middot; ACTIVAR": "https://metodo.nuplan.com.ar/a",
+    "Paso 6 &middot; NATURALIZAR": "https://metodo.nuplan.com.ar/n-3944"
+  }
+};
+/* Cuando Rosana confirme todo, poné esto en false y vuelve el candado diario. */
+var DIAS_ABIERTOS = true;
+/* La clave con la que entra Rosana. Cambiala si querés. */
+var CLAVE_ROSANA = "rosana90";
+var CLAVE = "nuplan_mi_plan_v1";
+var S = { nombre:"", email:"", inicio:"", onb:{}, hechos:{}, diario:{}, fotos:[],
+          notas:{}, enviados:{}, checkins:{}, chat:[], rosana:false, corr:[] };
+try { var g = localStorage.getItem(CLAVE); if (g) S = Object.assign(S, JSON.parse(g)); } catch(e){}
+function guardar(){
+  try { localStorage.setItem(CLAVE, JSON.stringify(S)); return true; }
+  catch(e){
+    /* si se lleno el espacio, soltamos las fotos mas viejas y reintentamos */
+    while (S.fotos.length > 4) {
+      S.fotos.shift();
+      try { localStorage.setItem(CLAVE, JSON.stringify(S)); return true; } catch(e2){}
+    }
+    return false;
+  }
+}
+function esc(x){ return String(x==null?"":x).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;") }
+/* Para la versión de texto del mail: deja las tildes como tildes, no como código. */
+function llano(x){
+  var d = document.createElement("textarea");
+  d.innerHTML = String(x==null?"":x);
+  return d.value;
+}
+function p2(n){ return (n<10?"0":"")+n }
+function hoyISO(d){ d = d||new Date(); return d.getFullYear()+"-"+p2(d.getMonth()+1)+"-"+p2(d.getDate()) }
+function fechaLinda(iso){
+  var p = String(iso).split("-"), d = new Date(+p[0], +p[1]-1, +p[2]);
+  var DD=["domingo","lunes","martes","miércoles","jueves","viernes","sábado"];
+  var MM=["enero","febrero","marzo","abril","mayo","junio","julio","agosto","septiembre","octubre","noviembre","diciembre"];
+  return DD[d.getDay()]+" "+d.getDate()+" de "+MM[d.getMonth()];
+}
+function diaActual(){
+  if(!S.inicio) return 1;
+  var a = String(S.inicio).split("-"), i = new Date(+a[0], +a[1]-1, +a[2]);
+  var h = new Date(); h = new Date(h.getFullYear(), h.getMonth(), h.getDate());
+  var n = Math.floor((h - i)/86400000) + 1;
+  return n < 1 ? 1 : (n > 90 ? 90 : n);
+}
+function dia(n){ return BASE[n-1] }
+var CHECKS = [14,28,42,56,70,84];
+
+/* ============ ARRANQUE ============ */
+function mostrar(cual){
+  document.getElementById("splash").style.display = cual==="splash" ? "flex" : "none";
+  document.getElementById("onbo").style.display   = cual==="onbo"   ? "flex" : "none";
+  document.getElementById("app").style.display    = cual==="app"    ? "flex" : "none";
+  window.scrollTo(0,0);
+}
+document.getElementById("aRos").onclick = function(e){
+  e.preventDefault();
+  var k = prompt("Clave de Rosana:");
+  if(k === null) return;
+  if(String(k).trim().toLowerCase() !== CLAVE_ROSANA){
+    var es = document.getElementById("estSplash");
+    es.textContent = "Esa clave no es."; es.className = "est mal"; return;
+  }
+  S.rosana = true; S.nombre = S.nombre || "Rosana Rold\u00e1n";
+  S.email = S.email || ""; S.inicio = S.inicio || hoyISO();
+  guardar(); mostrar("app"); arrancarApp();
+};
+document.getElementById("bEmpezar").onclick = function(){
+  var n = document.getElementById("iNom").value.trim();
+  var m = document.getElementById("iMail").value.trim();
+  var e = document.getElementById("estSplash");
+  if(n.length < 2){ e.textContent = "Escribí tu nombre."; e.className="est mal";
+    document.getElementById("iNom").focus(); return }
+  if(m.indexOf("@")<1 || m.indexOf(".")<0){ e.textContent = "Revisá tu mail."; e.className="est mal";
+    document.getElementById("iMail").focus(); return }
+  S.nombre = n; S.email = m; S.inicio = S.inicio || hoyISO();
+  guardar(); ONB_I = 0; pintarOnb(); mostrar("onbo");
+};
+
+/* ============ ONBOARDING ============ */
+var ONB_I = 0;
+function pintarOnb(){
+  var o = ONB[ONB_I];
+  document.getElementById("onbN").textContent = "Paso " + (ONB_I+1) + " de " + ONB.length;
+  document.getElementById("onbB").style.width = Math.round((ONB_I+1)/ONB.length*100) + "%";
+  var h = '<h1>' + o.t + '</h1><p class="sub">' + o.d + '</p>';
+  if(o.si){
+    h += '<h3>Lo que sí</h3><ul class="mini si">';
+    o.si.forEach(function(x){ h += '<li>' + x + '</li>' });
+    h += '</ul><h3 style="margin-top:18px">Lo que no</h3><ul class="mini no">';
+    o.no.forEach(function(x){ h += '<li>' + x + '</li>' });
+    h += '</ul>';
+  }
+  if(o.reglas){
+    h += '<ul class="mini">';
+    o.reglas.forEach(function(x){ h += '<li>' + x + '</li>' });
+    h += '</ul>';
+  }
+  (o.campos||[]).forEach(function(c, j){
+    var k = "o" + ONB_I + "_" + j, v = S.onb[k] || "";
+    var largo = c.length > 42 || /renglones|qué te trajo|querés poder|saber/i.test(c);
+    h += '<div class="campoG"><label for="'+k+'">' + c + '</label>' +
+         (largo ? '<textarea id="'+k+'" rows="3">'+esc(v)+'</textarea>'
+                : '<input type="text" id="'+k+'" value="'+esc(v)+'">') + '</div>';
+  });
+  document.getElementById("onbC").innerHTML = h;
+  var bt = ONB_I === 0
+    ? '<button class="btn1" onclick="onbSig()">Siguiente</button>'
+    : '<button class="btn2" onclick="onbAtras()">Atrás</button>' +
+      '<button class="btn1" onclick="onbSig()">' + (ONB_I===ONB.length-1 ? "Empezar el día 1" : "Siguiente") + '</button>';
+  document.getElementById("onbBt").innerHTML = bt;
+  document.getElementById("estOnb").textContent = "";
+  window.scrollTo(0,0);
+}
+function onbGuardar(){
+  (ONB[ONB_I].campos||[]).forEach(function(c, j){
+    var el = document.getElementById("o"+ONB_I+"_"+j);
+    if(el) S.onb["o"+ONB_I+"_"+j] = el.value;
+  });
+  guardar();
+}
+function onbAtras(){ onbGuardar(); ONB_I--; pintarOnb() }
+function onbSig(){
+  onbGuardar();
+  var o = ONB[ONB_I];
+  /* el paso 5 (por que estas aca) es el unico obligatorio */
+  if(o.n === "05"){
+    var v1 = (S.onb["o"+ONB_I+"_0"]||"").trim();
+    if(v1.length < 4){ var e = document.getElementById("estOnb");
+      e.textContent = "Esto lo vas a releer el día 87. Escribí algo, aunque sea corto.";
+      e.className = "est mal"; return }
+  }
+  if(ONB_I < ONB.length-1){ ONB_I++; pintarOnb(); return }
+  S.onb.listo = true; guardar();
+  mandarOnb();
+  mostrar("app"); arrancarApp();
+}
+
+/* ============ CORREO A ROSANA ============ */
+function mailHTML(titulo, bloques){
+  var H = ['<div style="font-family:\'DM Sans\',Helvetica,Arial,sans-serif;color:#1a1a1a;background:#fff6f3;padding:26px 18px;line-height:1.6"><div style="max-width:620px;margin:0 auto;background:#fff;border:1px solid #f6d9d1;border-radius:16px;padding:30px">',
+  '<p style="margin:0 0 6px;font-size:14px;letter-spacing:2px;text-transform:uppercase;color:#c53a1e;font-weight:700">M&eacute;todo NuPlan</p>',
+  '<h1 style="margin:0 0 6px;font-size:26px;line-height:1.2">' + titulo + '</h1>',
+  '<p style="margin:0 0 24px;padding-bottom:16px;border-bottom:2px solid #e8472a;font-size:16px;color:#4b5563">' +
+    esc(S.nombre) + ' &middot; día ' + diaActual() + ' de 90 &middot; ' + fechaLinda(hoyISO()) + '</p>'];
+  bloques.forEach(function(b){
+    H.push('<p style="margin:22px 0 10px;font-size:14px;letter-spacing:1.5px;text-transform:uppercase;color:#c53a1e;font-weight:700">' + b.t + '</p>');
+    b.l.forEach(function(x){
+      H.push('<div style="margin:0 0 9px;padding:13px 15px;background:#fff6f3;border-left:4px solid #e8472a;border-radius:0 10px 10px 0">' +
+        (x.k ? '<p style="margin:0 0 4px;font-size:14px;color:#6b7280">' + x.k + '</p>' : '') +
+        '<p style="margin:0;font-size:16px;white-space:pre-wrap">' + esc(x.v) + '</p></div>');
+    });
+  });
+  H.push('<p style="margin:28px 0 0;padding-top:16px;border-top:1px solid #e5e7eb;font-size:14px;color:#9ca3af">Enviado desde la app de ' + esc(S.nombre) + ' &middot; NuPlan&trade;</p></div></div>');
+  return H.join("");
+}
+function mailTexto(titulo, bloques){
+  var L = [llano(titulo), S.nombre + " - dia " + diaActual() + " de 90 - " + hoyISO(), ""];
+  bloques.forEach(function(b){
+    L.push("== " + llano(b.t) + " ==");
+    b.l.forEach(function(x){ L.push((x.k ? llano(x.k) + ": " : "") + llano(x.v)) });
+    L.push("");
+  });
+  return L.join("\n");
+}
+function mandar(paso, titulo, bloques, cb){
+  var c = { paso: paso, nombre: S.nombre || "Sin nombre", email: S.email,
+            fecha: hoyISO(), mensaje: mailTexto(titulo, bloques),
+            mensaje_html: mailHTML(titulo, bloques), paso_slug: "mi-plan" };
+  var ct = window.AbortController ? new AbortController() : null;
+  var to = ct && setTimeout(function(){ ct.abort() }, 25000);
+  fetch(CFG.hook, { method:"POST", headers:{"Content-Type":"application/json"},
+    body: JSON.stringify(c), signal: ct?ct.signal:undefined })
+   .then(function(r){ clearTimeout(to); cb(!!r.ok) })
+   .catch(function(){ clearTimeout(to);
+     fetch(CFG.hook, { method:"POST", mode:"no-cors",
+       headers:{"Content-Type":"text/plain;charset=UTF-8"}, body: JSON.stringify(c) })
+      .then(function(){ cb(true) }).catch(function(){ cb(false) }) });
+}
+function mandarOnb(){
+  var l = [];
+  ONB.forEach(function(o, i){
+    (o.campos||[]).forEach(function(c, j){
+      var v = (S.onb["o"+i+"_"+j]||"").trim();
+      if(v) l.push({ k: c, v: v });
+    });
+  });
+  if(!l.length) return;
+  mandar("Arrancó el programa", "Arrancó su programa",
+    [{ t:"Lo que completó antes de empezar", l:l }], function(){});
+}
+
+/* ============ APP ============ */
+function ir(p){
+  document.querySelectorAll("#scr .pant").forEach(function(s){
+    s.className = "pant" + (s.getAttribute("data-p")===p ? " on" : "") });
+  document.querySelectorAll("#nav button").forEach(function(b){
+    b.className = b.getAttribute("data-ir")===p ? "on" : "" });
+  window.scrollTo(0,0);
+  if(p==="diario") pintarDiario();
+  if(p==="linea") pintarLinea();
+  if(p==="herr") pintarHerr();
+  if(p==="rosana") pintarRosana();
+  if(p==="nuplan") setTimeout(function(){ var c=document.getElementById("chL");
+    if(c) c.scrollIntoView({block:"end"}) }, 60);
+}
+document.querySelectorAll("#nav button").forEach(function(b){
+  b.onclick = function(){ ir(b.getAttribute("data-ir")) } });
+
+function arrancarApp(){
+  var ini = (S.nombre||"?").trim().charAt(0).toUpperCase();
+  for(var i=1;i<=7;i++){
+    var a = document.getElementById("nom"+i), b = document.getElementById("av"+i);
+    if(a) a.textContent = (S.nombre||"").split(" ")[0];
+    if(b) b.textContent = ini;
+  }
+  document.getElementById("aWsp").href = "https://wa.me/" + CFG.whatsapp +
+    "?text=" + encodeURIComponent("Hola Rosana, soy " + S.nombre + ". Voy por el día " + diaActual() + ".");
+  pintarHoy(); pintarGrilla(); pintarChat(); marcarNav(); pintarModo();
+  if(esRosana()){ irR("programa") }
+}
+function marcarNav(){
+  if(esRosana()) return;
+  var d = diaActual(), f = hoyISO();
+  var faltaDiario = !(S.diario[f] && S.diario[f].length);
+  var faltaCk = CHECKS.indexOf(d) > -1 && !S.checkins[d];
+  document.querySelectorAll("#nav button").forEach(function(b){
+    var v = b.getAttribute("data-ir"), vie = b.querySelector(".pt");
+    var hay = (v==="diario" && faltaDiario) || (v==="rosana" && faltaCk);
+    if(hay && !vie){ var s=document.createElement("span"); s.className="pt"; b.style.position="relative"; b.appendChild(s) }
+    if(!hay && vie) vie.remove();
+  });
+}
+
+function pintarHoy(){
+  var d = diaActual(), x = dia(d), f = hoyISO();
+  var hecho = !!S.hechos[d];
+  var nCom = (S.diario[f]||[]).length;
+  var ej = x.x ? '<p class="chip"><b>' + x.xp + '</b>' + x.x + '</p>' : "";
+  document.getElementById("tHoy").innerHTML =
+    '<div class="card"><div class="cab"><span class="nd">' + d + '</span>' +
+    '<span class="nl">de 90<b>' + (x.s>12 ? "Cierre" : "Semana " + x.s + " &middot; " + x.le) + '</b></span>' +
+    '<span class="le2">' + x.l + '</span></div>' + ej +
+    '<p class="acc">' + x.a + '</p><p class="fo2">' + x.fo + '</p>' +
+    '<div class="bt">' +
+      '<button class="lleno' + (hecho?" hecho":"") + '" onclick="marcarHecho()">' +
+        (hecho ? "&#10003; Día hecho" : "Marcar el día como hecho") + '</button>' +
+      (x.u ? '<a href="' + x.u + '" target="_blank" rel="noopener"><span class="ic">&#9671;</span>Abrir ' + x.un + '</a>' : "") +
+      '<button onclick="ir(\'diario\')"><span class="ic">&#9998;</span>Cargar una comida' +
+        (nCom ? '<span class="mk">' + nCom + ' hoy</span>' : "") + '</button>' +
+      '<button onclick="pedirFoto()"><span class="ic">&#9634;</span>Subir una foto</button>' +
+      '<button onclick="ir(\'nuplan\')"><span class="ic">&#9670;</span>Preguntárselo a NuPlan</button>' +
+    '</div></div>';
+  var done = Object.keys(S.hechos).length;
+  document.getElementById("pgN").textContent = d + " de 90";
+  document.getElementById("pgQ").textContent = done + " días hechos · " + S.fotos.length + " fotos";
+  document.getElementById("pgB").style.width = Math.round(d/90*100) + "%";
+  var LE = [["N","Nutrir",1],["U","Unir",3],["P","Person.",5],["L","Liberar",7],["A","Activar",9],["N","Natural.",11]];
+  document.getElementById("pgS").innerHTML = LE.map(function(l){
+    return '<div class="' + (x.s >= l[2] ? "ya" : "") + '"><b>' + l[0] + '</b></div>' }).join("");
+  marcarNav();
+}
+function marcarHecho(){
+  var d = diaActual();
+  if(S.hechos[d]) delete S.hechos[d]; else S.hechos[d] = hoyISO();
+  guardar(); pintarHoy(); pintarGrilla();
+}
+
+function pintarGrilla(){
+  var hoy = diaActual(), h = "", s, i, d;
+  for(s=1;s<=12;s++){
+    var w = dia((s-1)*7+1);
+    h += '<div class="semg"><div class="semt"><span class="lt">' + w.l + '</span>' +
+         '<b>Semana ' + s + ' &middot; ' + w.le + '</b><span>' + ((s-1)*7+1) + '&ndash;' + (s*7) + '</span></div><div class="grd">';
+    for(i=0;i<7;i++){ d=(s-1)*7+1+i; h += celda(d, hoy) }
+    h += '</div></div>';
+  }
+  h += '<div class="semg"><div class="semt"><span class="lt">+</span><b>El cierre</b><span>85&ndash;90</span></div><div class="grd">';
+  for(d=85;d<=90;d++) h += celda(d, hoy);
+  h += '</div></div>';
+  var g1 = document.getElementById("grilla"), g2 = document.getElementById("grilla2");
+  if(g1) g1.innerHTML = h;
+  if(g2) g2.innerHTML = h;
+}
+function celda(d, hoy){
+  var ab = DIAS_ABIERTOS || d <= hoy, cl = [];
+  if(!ab) cl.push("cerrado");
+  else if(d === hoy) cl.push("es");
+  else if(S.hechos[d]) cl.push("list");
+  else if(DIAS_ABIERTOS && d > hoy) cl.push("futuro");
+  if(dia(d).x) cl.push("ejx");
+  return '<button class="' + cl.join(" ") + '"' + (ab ? ' onclick="abrirDia(' + d + ')"' : ' disabled aria-label="Se abre el día ' + d + '"') + '>' + d + '</button>';
+}
+function abrirDia(d){
+  var x = dia(d), hecho = !!S.hechos[d], nota = S.notas[d] || "";
+  document.getElementById("hjT").innerHTML = "Día " + d + " &middot; " + x.le;
+  document.getElementById("hjB").innerHTML =
+    '<p class="ojo">' + (x.s>12 ? "El cierre" : "Semana " + x.s + " &middot; " + x.le) + '</p>' +
+    (x.x ? '<p class="chip"><b>' + x.xp + '</b>' + x.x + '</p>' : "") +
+    '<h2>' + x.a + '</h2><p class="sub">' + x.fo + '</p>' +
+    '<div class="bt">' +
+      '<button class="lleno' + (hecho?" hecho":"") + '" onclick="togDia(' + d + ')">' +
+        (hecho ? "&#10003; Hecho" : "Marcar como hecho") + '</button>' +
+      (x.u ? '<a href="' + x.u + '" target="_blank" rel="noopener"><span class="ic">&#9671;</span>Abrir ' + x.un + '</a>' : "") +
+    '</div>' +
+    (esRosana()
+      ? '<button class="nomio" data-nm="Día ' + d + '">Esto no es mío · anotar un cambio</button>'
+      : '<div class="campoG" style="margin-top:20px"><label for="nt' + d + '">Tu nota de este día</label>' +
+        '<textarea id="nt' + d + '" rows="3" placeholder="Lo que quieras dejar anotado…">' + esc(nota) + '</textarea></div>');
+  if(esRosana()) enganchar();
+  var t = document.getElementById("nt"+d);
+  if(t) t.oninput = function(){ S.notas[d] = t.value; guardar() };
+  document.getElementById("hoja").className = "hoja on";
+}
+function togDia(d){
+  if(S.hechos[d]) delete S.hechos[d]; else S.hechos[d] = hoyISO();
+  guardar(); abrirDia(d); pintarHoy(); pintarGrilla();
+}
+function cerrarHoja(){ document.getElementById("hoja").className = "hoja" }
+
+
+/* ============ DIARIO ============ */
+var HAMBRES = ["Tenía hambre de verdad","Fue la hora, no el hambre","Me ganó el cansancio",
+               "Estaba nerviosa o acelerada","Estaba aburrida","Otra cosa"];
+function pintarDiario(){
+  var f = hoyISO(), l = S.diario[f] || [];
+  document.getElementById("dFecha").textContent = fechaLinda(f);
+  document.getElementById("dCant").textContent = l.length === 0 ? "sin cargar" :
+    (l.length + (l.length===1 ? " comida" : " comidas"));
+  document.getElementById("dLista").innerHTML = l.length ? l.map(function(c, i){
+    return '<div class="com"><div class="ch2"><b>' + esc(c.hora) + '</b><span>' +
+      '<button onclick="borrarComida(' + i + ')" style="background:none;border:none;color:var(--mut);' +
+      'font-size:1.2rem;cursor:pointer;padding:0 4px" aria-label="Borrar">&times;</button></span></div>' +
+      '<p>' + esc(c.que) + '</p>' +
+      (c.hambre ? '<span class="et">' + esc(c.hambre) + '</span>' : "") +
+      (c.nota ? '<p style="margin-top:7px;color:var(--mut)">' + esc(c.nota) + '</p>' : "") + '</div>';
+  }).join("") : '<div class="vac">Todavía no cargaste nada hoy.<br>Anotá lo que comiste, sin cambiar nada.</div>';
+  var env = !!S.enviados[f];
+  document.getElementById("mkEnv").textContent = env ? "✓ enviado" : "";
+  document.getElementById("bEnvDia").className = env ? "hecho" : "";
+  document.getElementById("estDia").textContent = "";
+  marcarNav();
+}
+function abrirComida(){
+  var h = new Date();
+  document.getElementById("hjT").innerHTML = "Cargar una comida";
+  document.getElementById("hjB").innerHTML =
+    '<h2>&iquest;Qu&eacute; comiste?</h2><p class="sub">Tal cual fue. Acá no se corrige nada.</p>' +
+    '<div class="campoG"><label for="cHora">A qué hora</label>' +
+    '<input type="time" id="cHora" value="' + p2(h.getHours()) + ':' + p2(h.getMinutes()) + '"></div>' +
+    '<div class="campoG"><label for="cQue">Qué comiste</label>' +
+    '<textarea id="cQue" rows="3" placeholder="Un café con leche y dos tostadas…"></textarea></div>' +
+    '<div class="campoG"><label>&iquest;Qué te llevó a comer?</label>' +
+    '<div class="pill" id="cHam">' + HAMBRES.map(function(x, i){
+      return '<button type="button" data-h="' + esc(x) + '">' + x + '</button>' }).join("") + '</div></div>' +
+    '<div class="campoG"><label for="cNota">Algo más, si querés</label>' +
+    '<textarea id="cNota" rows="2" placeholder="Dónde estabas, con quién, cómo te sentiste…"></textarea></div>' +
+    '<button class="btn1" onclick="guardarComida()">Guardar esta comida</button>' +
+    '<p class="est" id="estCom"></p>';
+  var sel = "";
+  document.querySelectorAll("#cHam button").forEach(function(b){
+    b.onclick = function(){
+      sel = (sel === b.getAttribute("data-h")) ? "" : b.getAttribute("data-h");
+      document.querySelectorAll("#cHam button").forEach(function(x){
+        x.className = x.getAttribute("data-h") === sel ? "on" : "" });
+      window.__ham = sel;
+    };
+  });
+  window.__ham = "";
+  document.getElementById("hoja").className = "hoja on";
+  setTimeout(function(){ document.getElementById("cQue").focus() }, 180);
+}
+function guardarComida(){
+  var q = document.getElementById("cQue").value.trim();
+  var e = document.getElementById("estCom");
+  if(!q){ e.textContent = "Escribí qué comiste."; e.className = "est mal";
+    document.getElementById("cQue").focus(); return }
+  var f = hoyISO();
+  S.diario[f] = S.diario[f] || [];
+  S.diario[f].push({ hora: document.getElementById("cHora").value || "",
+    que: q, hambre: window.__ham || "", nota: document.getElementById("cNota").value.trim() });
+  S.diario[f].sort(function(a,b){ return String(a.hora).localeCompare(String(b.hora)) });
+  guardar(); cerrarHoja(); pintarDiario(); pintarHoy();
+}
+function borrarComida(i){
+  var f = hoyISO();
+  if(S.diario[f]){ S.diario[f].splice(i,1); guardar(); pintarDiario(); pintarHoy() }
+}
+function enviarDia(){
+  var f = hoyISO(), l = S.diario[f] || [], e = document.getElementById("estDia");
+  if(!l.length){ e.textContent = "Cargá al menos una comida."; e.className = "est mal"; return }
+  var b = document.getElementById("bEnvDia");
+  b.disabled = true; e.textContent = "Mandando…"; e.className = "est";
+  var lineas = l.map(function(c){
+    return { k: c.hora + (c.hambre ? " · " + c.hambre : ""),
+             v: c.que + (c.nota ? "\n" + c.nota : "") } });
+  var extra = [];
+  if(S.hechos[diaActual()]) extra.push({ k:"La acción del día", v:"Hecha" });
+  if(S.notas[diaActual()]) extra.push({ k:"Su nota de hoy", v:S.notas[diaActual()] });
+  var bl = [{ t:"Su día, hora por hora", l:lineas }];
+  if(extra.length) bl.push({ t:"Además", l:extra });
+  mandar("Diario · día " + diaActual(), "Su diario de hoy", bl, function(ok){
+    b.disabled = false;
+    if(ok){ S.enviados[f] = true; guardar(); pintarDiario();
+      e.textContent = "Listo, le llegó a Rosana."; e.className = "est bien" }
+    else { e.textContent = "No pudimos enviarlo. Probá de nuevo en un rato."; e.className = "est mal" }
+  });
+}
+
+/* ============ FOTOS ============ */
+function pedirFoto(){
+  var i = document.createElement("input");
+  i.type = "file"; i.accept = "image/*"; i.capture = "environment";
+  i.onchange = function(){
+    var f = i.files && i.files[0];
+    if(!f) return;
+    var r = new FileReader();
+    r.onload = function(){
+      var img = new Image();
+      img.onload = function(){
+        var M = 560, w = img.width, h = img.height;
+        if(w > h && w > M){ h = Math.round(h*M/w); w = M }
+        else if(h >= w && h > M){ w = Math.round(w*M/h); h = M }
+        var c = document.createElement("canvas");
+        c.width = w; c.height = h;
+        c.getContext("2d").drawImage(img, 0, 0, w, h);
+        S.fotos.push({ d: diaActual(), f: hoyISO(), src: c.toDataURL("image/jpeg", 0.55) });
+        var ok = guardar();
+        pintarHoy();
+        alert(ok ? "Foto guardada en tu línea de tiempo."
+                 : "Guardamos la foto, pero el teléfono está sin espacio y borramos las más viejas.");
+      };
+      img.src = r.result;
+    };
+    r.readAsDataURL(f);
+  };
+  i.click();
+}
+
+/* ============ EJERCICIOS ============ */
+function pintarHerr(){
+  var hoy = diaActual();
+  document.getElementById("herrL").innerHTML = HERR.map(function(x, i){
+    var llego = hoy >= x.d, ab = DIAS_ABIERTOS || llego, u = x.u;
+    var etq = llego ? "Abierto desde el día " + x.d
+            : (DIAS_ABIERTOS ? "Le toca el día " + x.d : "Se abre el día " + x.d);
+    var cuerpo = '<div class="hn">' + p2(i+1) + '</div><div><b>' + x.t + '</b>' +
+      '<span>' + x.q + '</span><span class="sm' + (llego?"":" cerr") + '">' + etq + '</span></div>';
+    if(ab && u) return '<a class="it" href="' + u + '" target="_blank" rel="noopener">' + cuerpo + '</a>';
+    if(ab && x.t.indexOf("diario") > -1) return '<button class="it" onclick="ir(\'diario\')">' + cuerpo + '</button>';
+    return '<div class="it' + (ab?"":" cerrado") + '">' + cuerpo + '</div>';
+  }).join("") + (esRosana()
+    ? '<button class="nomio" data-nm="Los ejercicios y sus d\u00edas">Esto no es m\u00edo \u00b7 anotar un cambio</button>'
+    : "");
+  if(esRosana()) enganchar();
+}
+
+/* ============ ROSANA Y CHECK-IN ============ */
+function pintarRosana(){
+  var d = diaActual(), toca = CHECKS.indexOf(d) > -1 && !S.checkins[d];
+  var prox = CHECKS.filter(function(c){ return c > d })[0];
+  document.getElementById("ckAviso").innerHTML = toca
+    ? '<div class="aviso"><b>Hoy toca check-in</b>Es el día ' + d + '. Mandale cómo venís y ella te contesta.</div>'
+    : (prox ? '<div class="okb"><b>Próximo check-in: día ' + prox + '</b>Faltan ' + (prox-d) + ' días.</div>' : "");
+  document.getElementById("estCk").textContent = "";
+  marcarNav();
+}
+function mandarCheckin(){
+  var d = diaActual(), e = document.getElementById("estCk");
+  e.textContent = "Mandando…"; e.className = "est";
+  var dias = Object.keys(S.hechos).length;
+  var reg = Object.keys(S.diario).filter(function(k){ return (S.diario[k]||[]).length }).length;
+  var ult = Object.keys(S.notas).map(Number).sort(function(a,b){ return b-a }).slice(0,3);
+  var bl = [{ t:"Cómo viene", l:[
+      { k:"Día", v: d + " de 90" },
+      { k:"Días marcados como hechos", v: String(dias) },
+      { k:"Días con diario cargado", v: String(reg) },
+      { k:"Fotos subidas", v: String(S.fotos.length) }
+    ]}];
+  if(ult.length) bl.push({ t:"Sus últimas notas", l: ult.map(function(n){
+    return { k:"Día " + n, v: S.notas[n] } }) });
+  mandar("Check-in · día " + d, "Su check-in", bl, function(ok){
+    if(ok){ S.checkins[d] = true; guardar(); pintarRosana();
+      e.textContent = "Listo, le llegó a Rosana."; e.className = "est bien" }
+    else { e.textContent = "No pudimos enviarlo. Probá de nuevo en un rato."; e.className = "est mal" }
+  });
+}
+
+/* ============ LINEA DE TIEMPO ============ */
+function pintarLinea(){
+  var ev = [];
+  Object.keys(S.notas).forEach(function(d){
+    if((S.notas[d]||"").trim()) ev.push({ d:+d, t:"escrito", v:S.notas[d] }) });
+  S.fotos.forEach(function(f){ ev.push({ d:f.d, t:"foto", src:f.src }) });
+  Object.keys(S.diario).forEach(function(f){
+    var l = S.diario[f] || [];
+    if(l.length) ev.push({ d: diaDeFecha(f), t:"diario", v: l.length + " comidas", f:f });
+  });
+  Object.keys(S.checkins).forEach(function(d){ ev.push({ d:+d, t:"check-in", v:"Le mandó su resumen a Rosana" }) });
+  var q = (S.onb["o4_0"]||"").trim();
+  if(q) ev.push({ d:0, t:"antes de empezar", v:q });
+  ev.sort(function(a,b){ return a.d - b.d });
+  var h = ev.length ? '<div class="tl">' + ev.map(function(e){
+    var cab = (e.d===0 ? "Antes de empezar" : "Día " + e.d) + " · " + e.t;
+    if(e.t==="foto") return '<div class="ev"><time>' + cab + '</time>' +
+      '<img src="' + e.src + '" alt="" style="width:100%;max-width:220px;border-radius:12px;display:block;margin-top:5px"></div>';
+    return '<div class="ev"><time>' + cab + '</time><p>' + esc(e.v) + '</p></div>';
+  }).join("") + '</div>' : '<div class="vac">Acá van a aparecer tus fotos, tus notas y tus días.<br>Empezá cargando el de hoy.</div>';
+  document.getElementById("lnL").innerHTML = h;
+}
+function diaDeFecha(f){
+  if(!S.inicio) return 1;
+  var a = String(S.inicio).split("-"), i = new Date(+a[0], +a[1]-1, +a[2]);
+  var b = String(f).split("-"), x = new Date(+b[0], +b[1]-1, +b[2]);
+  return Math.floor((x-i)/86400000) + 1;
+}
+
+/* ============ CHAT CON LA IA ============ */
+function pintarChat(){
+  var c = document.getElementById("chL");
+  if(!S.chat.length){
+    c.innerHTML = '<div class="bu ia"><span class="qq">NuPlan</span>Hola ' +
+      esc((S.nombre||"").split(" ")[0]) + '. Preguntáme lo que quieras del método, de un ejercicio o de cómo seguir cuando no tenés ganas. Lo clínico y los números los ve Rosana.</div>';
+    return;
+  }
+  c.innerHTML = S.chat.map(function(m){
+    return m.q === "yo" ? '<div class="bu yo">' + esc(m.d) + '</div>'
+      : '<div class="bu ia"><span class="qq">NuPlan</span>' + esc(m.d) + '</div>' }).join("");
+}
+function enviarChat(){
+  var i = document.getElementById("iChat"), b = document.getElementById("bChat");
+  var t = i.value.trim();
+  if(!t) return;
+  S.chat.push({ q:"yo", d:t }); guardar(); i.value = ""; pintarChat();
+  var c = document.getElementById("chL");
+  var sp = document.createElement("div");
+  sp.className = "bu ia pensando"; sp.textContent = "Pensando…";
+  c.appendChild(sp); sp.scrollIntoView({ block:"end", behavior:"smooth" });
+  b.disabled = true;
+  var d = diaActual(), x = dia(d);
+  var hechos = HERR.filter(function(h){ return d >= h.d }).map(function(h){ return h.t.replace(/&[a-z]+;/g," ") });
+  var ult = Object.keys(S.diario).sort().slice(-3).map(function(f){
+    return f + ": " + (S.diario[f]||[]).map(function(x2){
+      return x2.hora + " " + x2.que + (x2.hambre ? " (" + x2.hambre + ")" : "") }).join(" | ") });
+  var ct = window.AbortController ? new AbortController() : null;
+  var to = ct && setTimeout(function(){ ct.abort() }, 120000);
+  fetch(CFG.chat, { method:"POST", headers:{"Content-Type":"application/json"},
+    signal: ct?ct.signal:undefined,
+    body: JSON.stringify({
+      pregunta: t, nombre: S.nombre, dia: d, letra: x.le, foco: x.fo,
+      accion_de_hoy: x.a, ejercicios_abiertos: hechos, diario_reciente: ult,
+      por_que_esta_aca: S.onb["o4_0"] || "", historial: S.chat.slice(-6)
+    })
+  }).then(function(r){ return r.json() })
+    .then(function(j){
+      clearTimeout(to); sp.remove(); b.disabled = false;
+      var txt = (j && (j.respuesta || j.error)) || "No pude contestarte ahora. Probá en un rato.";
+      S.chat.push({ q:"ia", d: txt }); guardar(); pintarChat();
+      document.getElementById("chL").lastChild.scrollIntoView({ block:"end", behavior:"smooth" });
+      if(j && j.avisar_a_rosana) avisarDerivacion(t, txt);
+    })
+    .catch(function(){
+      clearTimeout(to); sp.remove(); b.disabled = false;
+      S.chat.push({ q:"ia", d:"No pude contestarte ahora. Si es urgente, escribile a Rosana por WhatsApp." });
+      guardar(); pintarChat();
+    });
+}
+function avisarDerivacion(preg, resp){
+  mandar("La IA derivó una pregunta", "Una pregunta para vos",
+    [{ t:"Lo que preguntó", l:[{ k:"Día " + diaActual(), v: preg }] },
+     { t:"Lo que le contestó la IA", l:[{ v: resp }] }], function(){});
+}
+document.getElementById("bChat").onclick = enviarChat;
+document.getElementById("iChat").addEventListener("keydown", function(e){
+  if(e.key === "Enter"){ e.preventDefault(); enviarChat() } });
+
+/* ============ INICIO ============ */
+if(S.rosana){ /* Rosana no necesita onboarding */ S.onb.listo = true }
+if(S.nombre && S.email && S.onb.listo){ mostrar("app"); arrancarApp(); }
+else if(S.nombre && S.email){ ONB_I = 0; pintarOnb(); mostrar("onbo"); }
+else { mostrar("splash"); }
+
+
+/* ============ MODO ROSANA ============ */
+function esRosana(){ return !!S.rosana }
+function pintarModo(){
+  var r = esRosana();
+  document.getElementById("navC").style.display = r ? "none" : "flex";
+  document.getElementById("navR").style.display = r ? "flex" : "none";
+  document.getElementById("cintaR").style.display = r ? "flex" : "none";
+  document.querySelectorAll('[data-solo="c"]').forEach(function(e){ e.style.display = r ? "none" : "" });
+  document.querySelectorAll('[data-solo="r"]').forEach(function(e){ e.style.display = r ? "" : "none" });
+  if(r){ document.getElementById("nCorr").textContent = S.corr.length || ""; }
+}
+function salirRosana(){
+  if(!confirm("Vas a salir del modo Rosana. Lo que anotaste queda guardado.")) return;
+  S.rosana = false; guardar(); location.reload();
+}
+function verComoElla(){
+  document.getElementById("cintaR").style.display = "flex";
+  document.getElementById("navC").style.display = "flex";
+  document.getElementById("navR").style.display = "none";
+  ir("hoy");
+}
+function volverPanel(){ document.getElementById("navC").style.display="none";
+  document.getElementById("navR").style.display="flex"; irR("programa") }
+
+function irR(p){
+  document.querySelectorAll("#scr .pant").forEach(function(s){
+    s.className = "pant" + (s.getAttribute("data-p")===p ? " on" : "") });
+  document.querySelectorAll("#navR button").forEach(function(b){
+    b.className = b.getAttribute("data-irr")===p ? "on" : "" });
+  window.scrollTo(0,0);
+  if(p==="programa") pintarGrilla();
+  if(p==="herr")     pintarHerr();
+  if(p==="ia")       pintarIA();
+  if(p==="mails")    pintarMails();
+  if(p==="cambios")  pintarCorr();
+}
+document.querySelectorAll("#navR button").forEach(function(b){
+  b.onclick = function(){ irR(b.getAttribute("data-irr")) } });
+
+/* --- la IA, en palabras --- */
+function pintarIA(){
+  function ul(xs, cl){ return '<ul class="mini' + (cl?" "+cl:"") + '">' +
+    xs.map(function(x){ return "<li>" + x + "</li>" }).join("") + "</ul>" }
+  document.getElementById("iaL").innerHTML =
+    '<div class="card chico"><h3>Qu&eacute; sabe de cada una</h3>' + ul(IA.sabe) + '</div>' +
+    '<div class="card chico"><h3>C&oacute;mo contesta</h3>' + ul(IA.como) + '</div>' +
+    '<div class="card chico"><h3>Lo que no hace nunca</h3>' + ul(IA.no, "no") + '</div>' +
+    '<div class="card chico"><h3>Cu&aacute;ndo te la pasa a vos</h3>' + ul(IA.deriva) + '</div>' +
+    '<button class="nomio" data-nm="La IA">Esto no es m&iacute;o &middot; anotar un cambio</button>';
+  enganchar();
+}
+/* --- los mails que recibe --- */
+function pintarMails(){
+  document.getElementById("mailsL").innerHTML = MAILS.map(function(m){
+    return '<div class="card chico"><div class="ch2" style="display:flex;align-items:baseline;gap:10px;margin-bottom:6px">' +
+      '<b style="font-family:var(--mono);font-size:1rem;color:var(--cord)">' + m.a + '</b></div>' +
+      '<h3 style="margin-bottom:5px">' + m.t + '</h3>' +
+      '<p style="font-size:1.03rem;line-height:1.5;color:var(--body)">' + m.q + '</p></div>';
+  }).join("") + '<button class="nomio" data-nm="Lo que te llega por mail">Esto no es m&iacute;o &middot; anotar un cambio</button>';
+  enganchar();
+}
+
+/* --- anotar cambios --- */
+var SHR = null;
+function anotar(ref, pista){
+  SHR = ref;
+  var ya = S.corr.filter(function(c){ return c.ref === ref })[0];
+  document.getElementById("hjT").innerHTML = "Anotar un cambio";
+  document.getElementById("hjB").innerHTML =
+    '<h2>' + ref + '</h2><p class="sub">' + (pista || "Decíme qué cambiarías, con tus palabras.") + '</p>' +
+    '<div class="campoG"><label for="txC">Yo esto lo diría así</label>' +
+    '<textarea id="txC" rows="5">' + esc(ya ? ya.d : "") + '</textarea></div>' +
+    '<button class="btn1" onclick="guardarCorr()">Guardar</button>' +
+    '<button class="btn2" style="width:100%;margin-top:10px" onclick="cerrarHoja()">Cancelar</button>';
+  document.getElementById("hoja").className = "hoja on";
+  setTimeout(function(){ document.getElementById("txC").focus() }, 160);
+}
+function guardarCorr(){
+  var v = document.getElementById("txC").value.trim();
+  S.corr = S.corr.filter(function(c){ return c.ref !== SHR });
+  if(v) S.corr.push({ ref: SHR, d: v });
+  guardar(); cerrarHoja(); pintarModo(); enganchar();
+  if(document.querySelector('[data-p="cambios"].on')) pintarCorr();
+}
+function tieneCorr(ref){ return S.corr.some(function(c){ return c.ref === ref }) }
+function enganchar(){
+  document.querySelectorAll("[data-nm]").forEach(function(b){
+    var ref = b.getAttribute("data-nm"), hay = tieneCorr(ref);
+    b.className = "nomio" + (hay ? " tiene" : "");
+    b.textContent = hay ? "Ya anotaste un cambio · verlo" : "Esto no es mío · anotar un cambio";
+    b.onclick = function(){ anotar(ref) };
+  });
+}
+function pintarCorr(){
+  var l = document.getElementById("corrL");
+  l.innerHTML = S.corr.length ? S.corr.map(function(c, i){
+    return '<div class="card chico" style="border-left:4px solid var(--cor)">' +
+      '<p style="font-family:var(--mono);font-size:.98rem;color:var(--cord);margin-bottom:5px">' + esc(c.ref) + '</p>' +
+      '<p style="font-size:1.04rem;line-height:1.5;color:var(--body);overflow-wrap:anywhere">' + esc(c.d) + '</p>' +
+      '<button onclick="borrarCorr(' + i + ')" style="background:none;border:none;color:var(--mut);' +
+      'font-size:1rem;cursor:pointer;margin-top:8px;text-decoration:underline;padding:0">Borrar</button></div>';
+  }).join("") : '<div class="vac">Todavía no anotaste nada.<br>Recordé el programa y tocá <b>&laquo;esto no es mío&raquo;</b> donde algo no suene a vos.</div>';
+  document.getElementById("estCorr").textContent = "";
+}
+function borrarCorr(i){ S.corr.splice(i,1); guardar(); pintarCorr(); pintarModo(); enganchar() }
+function mandarCorr(){
+  var e = document.getElementById("estCorr");
+  if(!S.corr.length){ e.textContent = "No anotaste nada todavía."; e.className = "est mal"; return }
+  e.textContent = "Mandando…"; e.className = "est";
+  mandar("Correcciones de Rosana", "Lo que Rosana cambiaría",
+    [{ t:"Sus cambios (" + S.corr.length + ")", l: S.corr.map(function(c){
+        return { k: c.ref, v: c.d } }) }],
+    function(ok){
+      if(ok){ e.textContent = "Listo, le llegó a Javo."; e.className = "est bien" }
+      else { e.textContent = "No pudimos enviarlo. Mandale una captura por WhatsApp."; e.className = "est mal" }
+    });
+}
+function aprobarTodo(){
+  var e = document.getElementById("estCorr");
+  e.textContent = "Avisando…"; e.className = "est";
+  var bl = [{ t:"Revisó el programa", l:[{ v:"Lo recorrió entero y está de acuerdo." +
+    (S.corr.length ? " Con los cambios que deja más abajo." : " Sin cambios.") }] }];
+  if(S.corr.length) bl.push({ t:"Sus cambios (" + S.corr.length + ")",
+    l: S.corr.map(function(c){ return { k:c.ref, v:c.d } }) });
+  mandar(S.corr.length ? "Correcciones de Rosana" : "Rosana revisó y está todo bien",
+    "Rosana revisó el programa", bl, function(ok){
+      if(ok){ e.textContent = "Listo, le avisaste a Javo."; e.className = "est bien" }
+      else { e.textContent = "No pudimos enviarlo. Mandale una captura por WhatsApp."; e.className = "est mal" }
+    });
+}
+
+</script>
+</body></html>

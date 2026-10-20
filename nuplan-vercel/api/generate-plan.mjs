@@ -10,7 +10,7 @@ import {
 } from "./_patologias.mjs";
 
 const ESQUEMA = `{
-  "planObjective": "string — 2 o 3 frases, objetivo del plan para este paciente",
+  "planObjective": "string — 2 o 3 frases, objetivo del plan para este paciente. Empezá nombrando el objetivo principal que marcó la profesional (preferences.objectives), con sus palabras, y después qué va a lograr el plan",
   "dailyPlan": [
     {
       "type": "string — etiqueta corta en mayúsculas: DESAYUNO, MEDIA MAÑANA, ALMUERZO, COLACIÓN POST ENTRENAMIENTO, MERIENDA, CENA",

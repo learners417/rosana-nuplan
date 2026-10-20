@@ -890,7 +890,7 @@ var RECOMENDACIONES = [
         ["Cena · 2 rebanadas de pan integral","4 g"],
         ["Total del día","31 g"]
       ], total:true },
-      { t:"Cómo sumarla sin que te hinche", lista:[
+      { t:"Tips y recomendaciones", lista:[
         "De a poco: una porción nueva por semana. Si la subís de golpe, te hincha.",
         "Con más agua. La fibra sin agua hace el efecto contrario.",
         "La fruta, con cáscara. Ahí está la mitad de la fibra.",
@@ -956,6 +956,12 @@ var RECOMENDACIONES = [
   }
 ];
 function recoPorClave(k){ return RECOMENDACIONES.filter(function(r){ return r.clave===k; })[0]||null; }
+/* subtítulos que Rosana pidió cambiar: los planes guardados con el texto viejo lo muestran con el nuevo */
+var SUBTITULOS_VIEJOS={"Cómo sumarla sin que te hinche":"Tips y recomendaciones"};
+function tituloNuevo(ed){
+  if(ed && Array.isArray(ed.bloques)) ed.bloques.forEach(function(b){ if(b && SUBTITULOS_VIEJOS[b.t]) b.t=SUBTITULOS_VIEJOS[b.t]; });
+  return ed;
+}
 function htmlRecomendacion(r){
   var h='<div class="reco"><h4>'+esc(r.titulo)+'</h4><p class="bajada">'+esc(r.bajada)+'</p>';
   (r.bloques||[]).forEach(function(b){
@@ -1046,6 +1052,7 @@ function $(id){ return document.getElementById(id); }
 /* errores técnicos → frase que Rosana entienda */
 function errorLegible(e){
   var m=String((e&&e.message)||e||"");
+  if(/credit balance|billing|insufficient_quota|exceeded your current quota/i.test(m)) return "La cuenta de inteligencia artificial se quedó sin crédito. Avisale a Javo: hasta que se cargue, no se pueden armar planes ni recetas.";
   if(/Failed to fetch|NetworkError|Load failed|network/i.test(m)) return "Sin conexión. Revisá internet y probá de nuevo.";
   if(/JWT|expired|not authenticated|401/i.test(m)) return "Se venció la sesión. Tocá Salir y volvé a entrar.";
   if(/not valid JSON|Unexpected token|respuesta inválida|HTTP \d{3}|timeout/i.test(m)) return "El servidor no respondió bien. Esperá un minuto y probá de nuevo.";
@@ -1376,11 +1383,31 @@ function arco(cx,cy,r,desde,hasta){
   var grande=(hasta-desde)>180?1:0;
   return "M"+cx+","+cy+" L"+x1.toFixed(1)+","+y1.toFixed(1)+" A"+r+","+r+" 0 "+grande+",1 "+x2.toFixed(1)+","+y2.toFixed(1)+" Z";
 }
-/* el plato del plan: lo que eligió en el paso 4, o lo que vino guardado en el plan */
+/* el plato del plan: lo que viene guardado en platePortions (o, en planes de antes del 20/10/26, adentro de healthyPlate), o lo elegido en el paso 4 */
+function platoValido(o){ return !!(o && typeof o==="object" && +o.vegetablesPct>0 && +o.proteinsPct>0 && +o.carbsPct>0); }
+function platoDe(o){ return {veg:Math.round(+o.vegetablesPct), prot:Math.round(+o.proteinsPct), carb:Math.round(+o.carbsPct)}; }
 function platoDelPlan(d){
-  var hp=d&&d.healthyPlate;
-  if(hp&&hp.vegetablesPct!=null&&hp.proteinsPct!=null&&hp.carbsPct!=null) return {veg:Math.round(hp.vegetablesPct), prot:Math.round(hp.proteinsPct), carb:Math.round(hp.carbsPct)};
+  if(d && platoValido(d.platePortions)) return platoDe(d.platePortions);
+  if(d && d.healthyPlate && d.healthyPlate.vegetablesPct!=null && platoValido(d.healthyPlate)) return platoDe(d.healthyPlate);
   return plan.plato||{veg:50,prot:25,carb:25};
+}
+/* la app muestra healthyPlate como "Distribución de macronutrientes" (proteína / carbos / grasas): van los macros del cálculo */
+function macrosDe(m, previo){
+  var mc=m&&m.macros;
+  if(mc && +mc.protein>0 && +mc.carbs>0 && +mc.fats>0) return {proteinsPct:Math.round(+mc.protein), carbsPct:Math.round(+mc.carbs), fatsPct:Math.round(+mc.fats)};
+  var p=(previo&&typeof previo==="object"&&previo.vegetablesPct==null)?previo:{};
+  if(+p.proteinsPct>0 && +p.carbsPct>0 && +p.fatsPct>0) return {proteinsPct:Math.round(+p.proteinsPct), carbsPct:Math.round(+p.carbsPct), fatsPct:Math.round(+p.fatsPct)};
+  return {proteinsPct:15, carbsPct:55, fatsPct:30};
+}
+/* planes guardados antes del 20/10/26: el plato a mano viajaba adentro de healthyPlate con grasas 0, y la app lo mostraba como "Grasas 0%". Se separa en platePortions. */
+function repararPlato(d, met){
+  if(!d || typeof d!=="object") return d;
+  var hp=d.healthyPlate;
+  if(hp && typeof hp==="object" && hp.vegetablesPct!=null){
+    if(!platoValido(d.platePortions) && platoValido(hp)) d.platePortions={vegetablesPct:Math.round(+hp.vegetablesPct), proteinsPct:Math.round(+hp.proteinsPct), carbsPct:Math.round(+hp.carbsPct), manual:true};
+    d.healthyPlate=macrosDe(met, null);
+  }
+  return d;
 }
 /* dibujo del plato para la hoja del plan (pantalla e impresión) */
 function svgPlato(p){
@@ -1507,7 +1534,7 @@ async function generarPlan(){
   if(ocupado()) return;
   plan.pref=preferenciasActuales();
   // se congela todo lo que el plan necesita: si Rosana cambia de paciente mientras la IA trabaja, el plan igual se guarda en la ficha correcta
-  var pac=plan.paciente, info=plan.info, met=plan.metricas, pref=plan.pref, plato=plan.plato, platoManual=plan.platoManual, docId=plan.docId, token=++plan.gen, emp=empresa, usr=usuario, ses=sesionN;
+  var pac=plan.paciente, info=plan.info, met=plan.metricas, pref=plan.pref, plato=plan.plato||platoAutomaticoDe(plan.metricas), platoManual=plan.platoManual, docId=plan.docId, token=++plan.gen, emp=empresa, usr=usuario, ses=sesionN;
   plan.generando=true;
   irPaso(5);
   $("plan-cargando").classList.remove("oculto"); $("plan-error").textContent=""; $("plan-resultado").innerHTML="";
@@ -1523,7 +1550,10 @@ async function generarPlan(){
     var agua=aguaDe(info, met);
     data.hydrationPlan=data.hydrationPlan||{};
     if(agua.litros){ data.hydrationPlan.targetLiters=agua.litros; data.hydrationPlan.equivalentGlasses=agua.vasos; data.hydrationPlan.base=agua.usaPic?"30 ml/kg sobre PIC":"30 ml/kg sobre peso actual"; }
-    if(platoManual) data.healthyPlate={proteinsPct:plato.prot, carbsPct:plato.carb, fatsPct:0, vegetablesPct:plato.veg};
+    // la app lee healthyPlate como "Distribución de macronutrientes" (proteína / carbos / grasas): siempre van los macros del cálculo, nunca el plato
+    data.healthyPlate=macrosDe(met, data.healthyPlate);
+    // el plato (vegetales / proteína / carbohidrato) viaja aparte: el que Rosana definió a mano en el paso 4, o el automático
+    data.platePortions={vegetablesPct:plato.veg, proteinsPct:plato.prot, carbsPct:plato.carb, manual:!!platoManual};
     // las recomendaciones generales viajan dentro del mismo campo que la app ya muestra; "general" marca cuáles son
     var generales=(pref.generalRecommendations||[]).map(recoPorClave).filter(Boolean);
     if(generales.length){
@@ -1591,7 +1621,8 @@ function normalizarPlan(d){
   if(d.foodGroupsDetail!=null){ if(typeof d.foodGroupsDetail!=="object"||Array.isArray(d.foodGroupsDetail)) d.foodGroupsDetail={}; Object.keys(d.foodGroupsDetail).forEach(function(k){ d.foodGroupsDetail[k]=listaDe(d.foodGroupsDetail[k]).map(textoDe); }); }
   if(d.hydrationPlan!=null && (typeof d.hydrationPlan!=="object"||Array.isArray(d.hydrationPlan))) d.hydrationPlan={};
   if(d.healthyPlate!=null && (typeof d.healthyPlate!=="object"||Array.isArray(d.healthyPlate))) d.healthyPlate={};
-  if(d.recommendationsAndRecipes!=null) d.recommendationsAndRecipes = listaDe(d.recommendationsAndRecipes).map(function(r){ r=(r&&typeof r==="object")?r:{content:r}; var o={title:textoDe(r.title), content:textoDe(r.content)}; if(r.general) o.general=r.general; if(r.edit&&typeof r.edit==="object") o.edit=r.edit; return o; });
+  if(d.platePortions!=null){ if(platoValido(d.platePortions)){ var pp=platoDe(d.platePortions); d.platePortions={vegetablesPct:pp.veg, proteinsPct:pp.prot, carbsPct:pp.carb, manual:!!d.platePortions.manual}; } else delete d.platePortions; }
+  if(d.recommendationsAndRecipes!=null) d.recommendationsAndRecipes = listaDe(d.recommendationsAndRecipes).map(function(r){ r=(r&&typeof r==="object")?r:{content:r}; var o={title:textoDe(r.title), content:textoDe(r.content)}; if(r.general) o.general=r.general; if(r.edit&&typeof r.edit==="object") o.edit=tituloNuevo(r.edit); return o; });
   if(d.substitutes!=null) d.substitutes = listaDe(d.substitutes).map(function(x){ x=(x&&typeof x==="object")?x:{category:x}; return {category:textoDe(x.category), options:listaDe(x.options).map(textoDe)}; });
   if(d.supplements!=null) d.supplements = listaDe(d.supplements).map(function(x){ x=(x&&typeof x==="object")?x:{name:x}; return {name:textoDe(x.name), dosage:textoDe(x.dosage), reason:textoDe(x.reason)}; });
   if(d.shoppingList!=null){ if(typeof d.shoppingList!=="object"||Array.isArray(d.shoppingList)) d.shoppingList={}; Object.keys(d.shoppingList).forEach(function(k){ d.shoppingList[k]=listaDe(d.shoppingList[k]).map(textoDe); }); }
@@ -2092,9 +2123,10 @@ async function abrirPlanGuardado(id){
   plan.metricas = inp.metrics || null;
   plan.pref = Object.assign({dietType:"Normal", intolerances:[], generalRecommendations:[], hideCalories:false}, inp.preferences||{});
   if(!Array.isArray(plan.pref.intolerances)) plan.pref.intolerances=[];
-  plan.platoManual=false; plan.plato = platoAutomaticoDe(plan.metricas); plan.plato = platoDelPlan(d.output||{});
   plan.gen++; // si había un plan armándose, se guarda aparte y avisa; no pisa este
-  plan.resultado=normalizarPlan(d.output||{}); plan.docId=d.id; plan.deGuardado=true; plan.docFecha=d.created_at;
+  plan.resultado=repararPlato(normalizarPlan(d.output||{}), plan.metricas); plan.docId=d.id; plan.deGuardado=true; plan.docFecha=d.created_at;
+  plan.plato = platoAutomaticoDe(plan.metricas); plan.plato = platoDelPlan(plan.resultado); // un plan hecho desde la app no trae plato: se calcula con su regla
+  plan.platoManual = !!(plan.resultado.platePortions && plan.resultado.platePortions.manual);
   $("pasos-plan").classList.add("oculto");
   $("plan-5-kicker").textContent="Plan guardado · "+fechaCorta(d.created_at)+(d.title?" · "+d.title:"");
   $("plan-error").textContent=""; $("plan-cargando").classList.add("oculto");

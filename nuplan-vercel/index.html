@@ -6,6 +6,39 @@
     <title>NuPlan</title>
     <script type="module" crossorigin src="/assets/index-44c90506.js"></script>
     <link rel="stylesheet" crossorigin href="/assets/index-BS7hifpF.css" />
+    <!-- PDF del plan más junto (pedido de Rosana, 21/10/26). Solo cambia la impresión: la pantalla queda igual. -->
+    <style media="print">
+      @page { margin: 10mm; }
+      #generated-plan-view { width: auto !important; max-width: none !important; }
+      #generated-plan-view, #generated-plan-view * { animation: none !important; transition: none !important; }
+      #generated-plan-view .shadow-sm { box-shadow: none !important; }
+      /* las secciones largas pueden seguir en la página siguiente; lo chico no se corta */
+      #generated-plan-view .break-inside-avoid, #generated-plan-view .rounded-2xl { break-inside: auto !important; }
+      #generated-plan-view .rounded-2xl.p-5 { break-inside: avoid !important; }
+      #generated-plan-view .space-y-4 > .rounded-xl { break-inside: auto !important; } /* cada comida puede seguir en la hoja siguiente; sus renglones no se cortan */
+      #generated-plan-view .rounded-xl, #generated-plan-view .rounded-lg, #generated-plan-view li { break-inside: avoid; }
+      #generated-plan-view h4 { break-after: avoid; }
+      /* menos aire entre bloques */
+      #generated-plan-view .space-y-6 > :not(:last-child) { margin-bottom: 12px !important; }
+      #generated-plan-view .space-y-6 > :not(:first-child) { margin-top: 0 !important; }
+      #generated-plan-view .space-y-4 > :not(:first-child) { margin-top: 8px !important; }
+      #generated-plan-view .p-6 { padding: 16px !important; }
+      #generated-plan-view .p-5 { padding: 14px !important; }
+      #generated-plan-view .p-4 { padding: 12px !important; }
+      #generated-plan-view .mt-4 { margin-top: 10px !important; }
+      /* el plato al lado de la distribución de macros, siempre en la misma hoja */
+      #generated-plan-view .md\:flex-row { flex-direction: row !important; break-inside: avoid !important; }
+      /* dos columnas cuando hay dos bloques; uno solo va a todo el ancho */
+      #generated-plan-view .md\:grid-cols-2 { grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)) !important; gap: 12px !important; }
+      /* grupos de alimentos y lista de compras: un bloque debajo del otro, con los alimentos uno al lado del otro */
+      #generated-plan-view .print\:grid-cols-2 { display: block !important; }
+      #generated-plan-view .print\:grid-cols-2 > * { margin-bottom: 8px; }
+      #generated-plan-view .print\:grid-cols-2 > div > ul { display: flex !important; flex-wrap: wrap; gap: 3px 14px; }
+      #generated-plan-view .print\:grid-cols-2 > div > ul > li { margin: 0 !important; gap: 4px !important; }
+      /* ideas de menú: renglones más finos */
+      #generated-plan-view ul.space-y-2 > li.p-2 { padding: 4px 8px !important; }
+      #generated-plan-view ul.space-y-2:has(> li.p-2) > li:not(:first-child) { margin-top: 4px !important; }
+    </style>
   </head>
   <body>
     <div id="root"></div>

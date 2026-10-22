@@ -1,0 +1,295 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#fff6f3">
+<title>Menú de Palabras · NuPlan™</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700;800&family=Space+Mono:wght@400;700&display=swap">
+<style>
+/* Ejercicio de la Lic. Rosana Roldán. Sin login: se guarda en el teléfono y se manda a Rosana por WhatsApp. */
+:root{
+  --bg:#fff6f3; --surface:#ffffff; --fg:#1a1a1a; --muted:#6b7280; --line:#e5e7eb;
+  --plate:#ffffff; --rim:#f6d3cb; --ink:#1a1a1a; --ink-fg:#ffffff;
+  --accent:#e8472a; --accent-dark:#c53a1e; --accent-soft:#fde9e4; --warn:#c53a1e;
+  --display:"DM Sans",system-ui,-apple-system,"Segoe UI",sans-serif; --body:"DM Sans",system-ui,-apple-system,"Segoe UI",sans-serif; --mono:"Space Mono",ui-monospace,monospace;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html,body{margin:0;background:var(--bg)}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:18px;line-height:1.55;-webkit-font-smoothing:antialiased}
+.wrap{max-width:760px;margin:0 auto;padding-block:calc(22px + env(safe-area-inset-top,0px)) calc(64px + env(safe-area-inset-bottom,0px));padding-left:max(18px,env(safe-area-inset-left,0px));padding-right:max(18px,env(safe-area-inset-right,0px));display:flex;flex-direction:column;gap:22px}
+h1{font-family:var(--display);font-weight:800;font-size:clamp(2rem,7vw,2.6rem);line-height:1.1;margin:0;text-wrap:balance}
+h2{font-family:var(--display);font-weight:800;font-size:1.4rem;line-height:1.2;margin:0 0 4px;text-wrap:balance}
+p{margin:0;max-width:65ch}
+.lede{color:var(--muted)}
+.eyebrow{font-family:var(--mono);font-size:.8rem;letter-spacing:.08em;text-transform:uppercase;color:var(--accent-dark)}
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.steps button{font:inherit;font-size:.9rem;padding:10px 4px;border:1.5px solid var(--line);background:var(--surface);color:var(--muted);border-radius:.75rem;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px}
+.steps button b{font-family:var(--mono);font-weight:700;font-size:1.1rem;color:var(--fg)}
+.steps button[aria-current="step"]{border-color:var(--accent);background:var(--accent-soft);color:var(--fg)}
+button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px solid #f6a29a;outline-offset:2px}
+.panel{display:flex;flex-direction:column;gap:16px}
+.banner{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;padding:14px 16px;border:1.5px dashed #f6a29a;border-radius:1rem;font-size:1rem;color:var(--fg);background:var(--surface)}
+.table{position:relative;display:flex;align-items:center;justify-content:center;gap:clamp(6px,2vw,18px)}
+.cutlery{flex:0 0 auto;width:clamp(16px,4.5vw,32px);height:clamp(190px,58vw,400px);color:#f6a29a}
+.plate{position:relative;width:min(100%,460px);aspect-ratio:1;max-width:100%;border-radius:50%;background:var(--plate);border:clamp(10px,3vw,18px) solid var(--rim);box-shadow:0 10px 30px -18px rgba(197,58,30,.45)}
+.inner{position:absolute;inset:12%;border-radius:50%;border:clamp(5px,1.4vw,9px) solid var(--accent-soft);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;padding:9% 8%;overflow:hidden}
+.tag{font-family:var(--body);font-weight:600;line-height:1.2;text-align:center;font-size:clamp(.78rem,2.7vw,1rem);padding:4px 8px;border-radius:.5rem;max-width:100%;overflow-wrap:break-word}
+.tag.amable{background:var(--accent-soft);border:1.5px solid #f6a29a;color:var(--fg)}
+.tag.dura{background:var(--ink);color:var(--ink-fg);position:absolute;transform:translate(-50%,-50%);width:max-content;max-width:40%;box-shadow:0 2px 8px rgb(0 0 0 / .18)}
+.empty-plate{color:var(--muted);font-size:.95rem;text-align:center}
+.add{display:flex;flex-direction:column;gap:10px;background:var(--surface);border:1.5px solid var(--line);border-radius:1rem;padding:16px}
+.add textarea,.field textarea{font:500 1.05rem var(--body);width:100%;border:1.5px solid var(--line);border-radius:.75rem;padding:12px;background:#fff;color:var(--fg);resize:vertical;min-height:56px}
+.add textarea:focus,.field textarea:focus{border-color:var(--accent);outline:none;box-shadow:0 0 0 3px var(--accent-soft)}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.btn{font:700 1rem var(--body);padding:12px 18px;border-radius:999px;border:1.5px solid var(--line);background:var(--surface);color:var(--fg);cursor:pointer}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+.btn.ink{background:var(--ink);border-color:var(--ink);color:var(--ink-fg)}
+.btn.wa{background:var(--accent-dark);border-color:var(--accent-dark);color:#fff;width:100%;padding:16px;font-size:1.1rem;border-radius:.875rem}
+.btn.ghost{border-color:transparent;background:transparent;color:var(--muted);text-decoration:underline;padding-inline:4px;font-weight:500}
+.list{display:flex;flex-direction:column;gap:8px;margin:0;padding:0;list-style:none}
+.list li{display:flex;gap:10px;align-items:center;justify-content:space-between;background:var(--surface);border:1.5px solid var(--line);border-radius:.75rem;padding:10px 12px}
+.list .txt{font-size:1.02rem;font-weight:500;min-width:0;overflow-wrap:anywhere}
+.chip{font-family:var(--mono);font-size:.75rem;text-transform:uppercase;letter-spacing:.06em;padding:5px 10px;border-radius:999px;white-space:nowrap;border:1.5px solid var(--line);background:transparent;color:var(--muted);cursor:pointer}
+.chip.dura{background:var(--ink);color:var(--ink-fg);border-color:var(--ink)}
+.chip.amable{background:var(--accent-soft);color:var(--accent-dark);border-color:#f6a29a}
+.x{border:0;background:none;color:var(--muted);cursor:pointer;font-size:1.4rem;padding:2px 8px}
+.balance{display:flex;flex-direction:column;gap:8px;background:var(--surface);border:1.5px solid var(--line);border-radius:1rem;padding:16px}
+.bar{display:flex;height:18px;border-radius:999px;overflow:hidden;border:1.5px solid var(--line)}
+.bar span{display:block;height:100%}
+.legend{display:flex;justify-content:space-between;font-family:var(--mono);font-size:.9rem;color:var(--muted)}
+.field{display:flex;flex-direction:column;gap:6px}
+.field label{font-weight:700}
+.field small{color:var(--muted);font-size:.95rem}
+.reform{display:flex;flex-direction:column;gap:8px;background:var(--surface);border:1.5px solid var(--line);border-radius:1rem;padding:14px}
+.from{background:var(--ink);color:var(--ink-fg);padding:6px 10px;border-radius:.5rem;align-self:flex-start;text-decoration:line-through;text-decoration-thickness:1px;max-width:100%;overflow-wrap:anywhere;font-weight:600}
+.tips{display:flex;flex-direction:column;gap:8px;margin:0;padding-left:1.1em;color:var(--fg);font-size:1rem}
+.tips li::marker{color:var(--accent)}
+.keep label{display:flex;gap:10px;align-items:flex-start;cursor:pointer}
+.keep input{margin-top:6px;accent-color:var(--accent);width:20px;height:20px;flex:none}
+.note{font-size:.95rem;color:var(--muted);border-top:1.5px solid var(--line);padding-top:14px}
+.nav{display:flex;justify-content:space-between;gap:8px}
+.firma{font-family:var(--mono);font-size:.8rem;color:var(--muted);text-align:center}
+@media (prefers-reduced-motion:no-preference){.tag{transition:opacity .25s}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header style="display:flex;flex-direction:column;gap:8px">
+    <span class="eyebrow">NuPlan™ · Lic. Rosana Roldán · diálogo interno</span>
+    <h1>Menú de Palabras</h1>
+    <p class="lede">Lo que te decís también te alimenta. Anotá tus mensajes de todos los días, mirá qué hay en tu plato y elegí con qué te querés quedar.</p>
+  </header>
+
+  <nav class="steps" aria-label="Pasos">
+    <button id="s1" data-step="1"><b>1</b>Anotá</button>
+    <button id="s2" data-step="2"><b>2</b>Observá</button>
+    <button id="s3" data-step="3"><b>3</b>Reformulá</button>
+    <button id="s4" data-step="4"><b>4</b>Elegí</button>
+  </nav>
+
+  <div id="exampleBanner" class="banner" hidden>
+    <span>Estás viendo un ejemplo para que te des una idea.</span>
+    <button class="btn primary" id="startOwn">Empezar mi plato</button>
+  </div>
+
+  <div class="table" aria-label="Tu plato">
+    <svg class="cutlery" viewBox="0 0 30 400" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round" aria-hidden="true"><path d="M5 10v110M15 10v110M25 10v110M5 120q10 30 20 0M15 140v250"/></svg>
+    <div class="plate" id="plate"><div class="inner" id="inner"></div></div>
+    <svg class="cutlery" viewBox="0 0 30 400" fill="none" stroke="currentColor" stroke-width="5" stroke-linejoin="round" aria-hidden="true"><path d="M8 390V30q0-20 14-22v190l-14 20"/></svg>
+  </div>
+
+  <section class="panel" id="p1">
+    <div>
+      <h2>1. Anotá los mensajes que solés decirte</h2>
+      <p class="lede">Escribilos tal como suenan en tu cabeza, sin corregirlos. Los duros van al borde del plato, en negro. Los amables, adentro.</p>
+    </div>
+    <form class="add" id="addForm">
+      <textarea id="newMsg" placeholder="Ej: “Otra vez lo mismo, nunca aprendés”" aria-label="Mensaje"></textarea>
+      <div class="row">
+        <button type="submit" class="btn ink" data-type="dura">Es duro</button>
+        <button type="submit" class="btn primary" data-type="amable">Es amable</button>
+      </div>
+    </form>
+    <ul class="list" id="list"></ul>
+  </section>
+
+  <section class="panel" id="p2" hidden>
+    <div>
+      <h2>2. Observá tu plato</h2>
+      <p class="lede">Miralo un momento como si fuera la comida que te servís cada día.</p>
+    </div>
+    <div class="balance">
+      <div class="bar" id="bar"></div>
+      <div class="legend"><span id="lgDura"></span><span id="lgAmable"></span></div>
+    </div>
+    <div class="field"><label for="q1">¿Qué color predomina?</label><textarea id="q1"></textarea></div>
+    <div class="field"><label for="q2">¿Cómo te sentís al ver este plato?</label><textarea id="q2"></textarea></div>
+    <div class="field"><label for="q3">¿En qué momentos aparecen más los mensajes duros?</label><small>Situaciones, horarios, lugares, personas.</small><textarea id="q3"></textarea></div>
+    <div class="field"><label for="q4">¿Le dirías alguna de estas frases a alguien que querés?</label><textarea id="q4"></textarea></div>
+  </section>
+
+  <section class="panel" id="p3" hidden>
+    <div>
+      <h2>3. Reformulá los mensajes duros</h2>
+      <p class="lede">No se trata de mentirte ni de forzar algo positivo. Buscá una frase verdadera que te ayude en lugar de lastimarte.</p>
+    </div>
+    <ul class="tips">
+      <li>Imaginate que se lo estás diciendo a una amiga que está pasando por lo mismo.</li>
+      <li>Cambiá el juicio por un hecho: qué pasó, sin etiquetas.</li>
+      <li>Sumá un “y” en lugar de un “pero”: lo difícil y lo que podés hacer.</li>
+      <li>Si el mensaje es sobre tu cuerpo, probá hablar de lo que tu cuerpo hace por vos.</li>
+    </ul>
+    <div class="panel" id="reformList"></div>
+  </section>
+
+  <section class="panel" id="p4" hidden>
+    <div>
+      <h2>4. Elegí tu nuevo menú</h2>
+      <p class="lede">Marcá los mensajes que querés servirte de ahora en adelante. El plato de arriba muestra solo lo que elegiste.</p>
+    </div>
+    <div class="panel keep" id="keepList"></div>
+    <div class="field"><label for="q5">¿Qué mensaje vas a practicar esta semana y cuándo?</label><textarea id="q5"></textarea></div>
+    <button class="btn wa" id="waBtn" type="button">Mandárselo a Rosana</button>
+    <div class="row"><button class="btn" id="copyBtn" type="button">Copiar mi menú</button><span id="copyMsg" class="lede" style="font-size:.95rem"></span></div>
+    <p class="note">Si algunos de estos mensajes, sobre todo los del cuerpo o la comida, te pesan mucho o aparecen todo el tiempo, vale la pena trabajarlos con una psicóloga o profesional de confianza.</p>
+  </section>
+
+  <div class="nav">
+    <button class="btn" id="prev">Anterior</button>
+    <button class="btn primary" id="next">Siguiente</button>
+  </div>
+  <div class="row" style="justify-content:center"><button class="btn ghost" id="reset">Borrar todo y empezar de nuevo</button></div>
+  <p class="firma">Lo que escribís queda guardado en este teléfono.</p>
+</div>
+
+<script>
+const KEY='menu-de-palabras-v2';
+const EXAMPLE=[
+ {t:'A ver si hoy sos capaz de hacer las cosas bien',y:'dura'},
+ {t:'Estás gorda',y:'dura'},
+ {t:'Qué mal te queda eso',y:'dura'},
+ {t:'Sos mucho más que un número en la balanza',y:'amable'},
+ {t:'Te merecés lo mejor',y:'amable'},
+ {t:'Dale, aunque ayer no te salió, hoy te va a salir',y:'amable'}
+];
+let uid=1;
+const mk=(t,y)=>({id:uid++,t,y,r:'',keep:y==='amable',keepR:true});
+let S={example:true,step:1,msgs:EXAMPLE.map(m=>mk(m.t,m.y)),notes:{}};
+try{const s=JSON.parse(localStorage.getItem(KEY));if(s&&s.msgs){S=s;uid=Math.max(0,...S.msgs.map(m=>m.id))+1}}catch(e){}
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}};
+const $=id=>document.getElementById(id);
+const esc=s=>s.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+function plateItems(){
+  if(S.step<4) return S.msgs.map(m=>({t:m.t,y:m.y}));
+  const out=[];
+  S.msgs.forEach(m=>{
+    if(m.y==='amable'&&m.keep) out.push({t:m.t,y:'amable'});
+    if(m.y==='dura'&&m.r.trim()&&m.keepR) out.push({t:m.r.trim(),y:'amable'});
+  });
+  return out;
+}
+function renderPlate(){
+  const plate=$('plate'),inner=$('inner');
+  plate.querySelectorAll('.tag.dura').forEach(n=>n.remove());
+  const items=plateItems();
+  const kind=items.filter(i=>i.y==='amable'),hard=items.filter(i=>i.y==='dura');
+  inner.innerHTML=kind.length?kind.map(i=>`<div class="tag amable">${esc(i.t)}</div>`).join(''):`<div class="empty-plate">${S.step===4?'Marcá abajo los mensajes que elegís':'Los mensajes amables van acá'}</div>`;
+  const n=hard.length;
+  hard.forEach((h,i)=>{
+    const a=(-90+ (360/Math.max(n,1))*i + (n===2?40:0))*Math.PI/180;
+    const el=document.createElement('div');
+    el.className='tag dura';el.textContent=h.t;
+    el.style.left=(50+42*Math.cos(a))+'%';el.style.top=(50+42*Math.sin(a))+'%';
+    plate.appendChild(el);
+  });
+}
+function renderList(){
+  $('list').innerHTML=S.msgs.map(m=>`<li><span class="txt">${esc(m.t)}</span><span class="row" style="flex-wrap:nowrap"><button class="chip ${m.y}" data-flip="${m.id}" title="Cambiar">${m.y}</button><button class="x" data-del="${m.id}" aria-label="Borrar">×</button></span></li>`).join('');
+}
+function renderBalance(){
+  const d=S.msgs.filter(m=>m.y==='dura').length,a=S.msgs.length-d,t=Math.max(S.msgs.length,1);
+  $('bar').innerHTML=`<span style="width:${d/t*100}%;background:var(--ink)"></span><span style="width:${a/t*100}%;background:var(--accent-soft)"></span>`;
+  $('lgDura').textContent=`Duros: ${d}`;$('lgAmable').textContent=`Amables: ${a}`;
+}
+function renderReform(){
+  const hard=S.msgs.filter(m=>m.y==='dura');
+  $('reformList').innerHTML=hard.length?hard.map(m=>`<div class="reform"><span class="from">${esc(m.t)}</span><div class="field"><label for="r${m.id}">Lo cambio por…</label><textarea id="r${m.id}" data-r="${m.id}">${esc(m.r)}</textarea></div></div>`).join(''):'<p class="lede">No anotaste mensajes duros. Podés volver al paso 1 si aparece alguno.</p>';
+}
+function renderKeep(){
+  const rows=[];
+  S.msgs.forEach(m=>{
+    if(m.y==='amable') rows.push(`<label><input type="checkbox" id="k${m.id}" data-k="${m.id}" ${m.keep?'checked':''}><span class="tag amable" style="text-align:left">${esc(m.t)}</span></label>`);
+    if(m.y==='dura'&&m.r.trim()) rows.push(`<label><input type="checkbox" id="kr${m.id}" data-kr="${m.id}" ${m.keepR?'checked':''}><span class="tag amable" style="text-align:left">${esc(m.r.trim())}</span></label>`);
+  });
+  $('keepList').innerHTML=rows.join('')||'<p class="lede">Todavía no hay mensajes amables para elegir. Agregalos en el paso 1 o reformulá en el paso 3.</p>';
+}
+function render(){
+  $('exampleBanner').hidden=!S.example;
+  [1,2,3,4].forEach(i=>{$('p'+i).hidden=S.step!==i;$('s'+i).toggleAttribute('aria-current',S.step===i);if(S.step===i)$('s'+i).setAttribute('aria-current','step')});
+  $('prev').style.visibility=S.step>1?'visible':'hidden';
+  $('next').hidden=S.step===4;
+  ['q1','q2','q3','q4','q5'].forEach(q=>{if(document.activeElement!==$(q))$(q).value=S.notes[q]||''});
+  renderPlate();renderList();renderBalance();
+  if(S.step===3)renderReform();
+  if(S.step===4)renderKeep();
+  save();
+}
+document.querySelectorAll('.steps button').forEach(b=>b.onclick=()=>{S.step=+b.dataset.step;render()});
+$('prev').onclick=()=>{S.step=Math.max(1,S.step-1);render()};
+$('next').onclick=()=>{S.step=Math.min(4,S.step+1);render();window.scrollTo({top:0,behavior:'smooth'})};
+let pending='dura';
+document.querySelectorAll('#addForm button').forEach(b=>b.onclick=()=>pending=b.dataset.type);
+$('addForm').onsubmit=e=>{e.preventDefault();const v=$('newMsg').value.trim();if(!v)return;
+  if(S.example){S.msgs=[];S.example=false;S.notes={}}
+  S.msgs.push(mk(v,pending));$('newMsg').value='';render();$('newMsg').focus()};
+$('list').onclick=e=>{const f=e.target.dataset.flip,d=e.target.dataset.del;
+  if(f){const m=S.msgs.find(x=>x.id==f);m.y=m.y==='dura'?'amable':'dura';m.keep=m.y==='amable';render()}
+  if(d){S.msgs=S.msgs.filter(x=>x.id!=d);render()}};
+$('startOwn').onclick=()=>{S={example:false,step:1,msgs:[],notes:{}};render();$('newMsg').focus()};
+$('reset').onclick=e=>{if(e.target.dataset.armed){S={example:false,step:1,msgs:[],notes:{}};render();e.target.textContent='Borrar todo y empezar de nuevo';delete e.target.dataset.armed}else{e.target.dataset.armed=1;e.target.textContent='¿Seguro? Tocá de nuevo para borrar'}};
+document.addEventListener('input',e=>{
+  const t=e.target;
+  if(/^q\d$/.test(t.id)){S.notes[t.id]=t.value;save()}
+  if(t.dataset.r){S.msgs.find(x=>x.id==t.dataset.r).r=t.value;save()}
+});
+document.addEventListener('change',e=>{
+  const t=e.target;
+  if(t.dataset.k){S.msgs.find(x=>x.id==t.dataset.k).keep=t.checked;renderPlate();save()}
+  if(t.dataset.kr){S.msgs.find(x=>x.id==t.dataset.kr).keepR=t.checked;renderPlate();save()}
+});
+$('copyBtn').onclick=()=>{
+  const items=plateItems().map(i=>'• '+i.t).join('\n');
+  const txt='Mi nuevo menú de palabras\n\n'+(items||'(vacío)')+(S.notes.q5?'\n\nEsta semana practico: '+S.notes.q5:'');
+  const done=()=>$('copyMsg').textContent='Copiado';
+  try{navigator.clipboard.writeText(txt).then(done,()=>{$('copyMsg').textContent='No se pudo copiar. Seleccioná el texto de los mensajes.'})}catch(err){$('copyMsg').textContent='No se pudo copiar.'}
+};
+const PARAMS=new URLSearchParams(location.search);
+const WA=(PARAMS.get('wa')||'5491151426830').replace(/\D/g,''); // WhatsApp de Rosana (se puede cambiar con ?wa=)
+const NOMBRE=(PARAMS.get('nombre')||'').trim().slice(0,40);
+function textoParaRosana(){
+  const duros=S.msgs.filter(m=>m.y==='dura'), amables=S.msgs.filter(m=>m.y==='amable');
+  const q={q1:'¿Qué color predomina?',q2:'¿Cómo me siento al ver el plato?',q3:'¿Cuándo aparecen más los duros?',q4:'¿Se lo diría a alguien que quiero?'};
+  let t='*Menú de Palabras'+(NOMBRE?' · '+NOMBRE:'')+'*\n\n';
+  if(duros.length) t+='*Mensajes duros*\n'+duros.map(m=>'• '+m.t+(m.r.trim()?'\n   → lo cambio por: '+m.r.trim():'')).join('\n')+'\n\n';
+  if(amables.length) t+='*Mensajes amables*\n'+amables.map(m=>'• '+m.t).join('\n')+'\n\n';
+  const obs=Object.keys(q).filter(k=>(S.notes[k]||'').trim());
+  if(obs.length) t+='*Lo que observé*\n'+obs.map(k=>q[k]+'\n'+S.notes[k].trim()).join('\n\n')+'\n\n';
+  const menu=plateItems().map(i=>'• '+i.t);
+  if(menu.length) t+='*Mi nuevo menú*\n'+menu.join('\n')+'\n\n';
+  if((S.notes.q5||'').trim()) t+='*Esta semana practico*\n'+S.notes.q5.trim();
+  return t.trim();
+}
+$('waBtn').onclick=()=>{
+  if(S.example||!S.msgs.length){$('copyMsg').textContent='Primero anotá tus propios mensajes en el paso 1.';return}
+  window.location.href=(WA?'https://wa.me/'+WA:'https://wa.me/')+'?text='+encodeURIComponent(textoParaRosana());
+};
+render();
+</script>
+</body>
+</html>

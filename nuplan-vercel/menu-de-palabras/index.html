@@ -1,0 +1,441 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#fff6f3">
+<title>Menú de Palabras · NuPlan™</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700;0,800;1,500&family=Space+Mono:wght@400;700&display=swap">
+<style>
+/* Menú de Palabras · ejercicio de la Lic. Rosana Roldán. Una sola columna; el plato es el centro y cambia con cada paso.
+   Sin login: se guarda en el teléfono y se manda a Rosana por WhatsApp. */
+:root{
+  --bg:#fff6f3; --surface:#ffffff; --fg:#1a1a1a; --muted:#6b7280; --line:#e5e7eb;
+  --coral:#e8472a; --coral-light:#f47a62; --accent:#f6a29a; --coral-dark:#c53a1e; --tinte:#fde9e4; --tinte-2:#fff0ec;
+  --ink:#2a2523; --ink-fg:#fff6f3; --rim:#f6d3cb;
+  --sans:"DM Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif; --mono:"Space Mono",ui-monospace,Menlo,monospace;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html,body{margin:0;background:var(--bg)}
+body{color:var(--fg);font-family:var(--sans);font-size:18px;line-height:1.55;-webkit-font-smoothing:antialiased}
+.wrap{max-width:720px;margin:0 auto;padding-block:calc(20px + env(safe-area-inset-top,0px)) calc(56px + env(safe-area-inset-bottom,0px));padding-left:max(18px,env(safe-area-inset-left,0px));padding-right:max(18px,env(safe-area-inset-right,0px));display:flex;flex-direction:column;gap:22px}
+.eyebrow{font-family:var(--mono);font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;color:var(--coral-dark)}
+h1{font-weight:800;font-size:clamp(2.1rem,7.5vw,2.8rem);line-height:1.05;margin:4px 0 6px;letter-spacing:-.01em}
+h2{font-weight:800;font-size:1.45rem;line-height:1.2;margin:0;text-wrap:balance}
+p{margin:0;max-width:62ch}
+.lede{color:var(--muted)}
+.voz{font-style:italic;font-weight:500}
+
+/* pasos */
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.steps button{font:inherit;font-size:.88rem;padding:10px 4px;border:1.5px solid var(--line);background:var(--surface);color:var(--muted);border-radius:.875rem;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:1px;transition:background .2s,border-color .2s}
+.steps button b{font-family:var(--mono);font-size:1.05rem;color:var(--fg)}
+.steps button[aria-current="step"]{border-color:var(--coral);background:var(--tinte);color:var(--fg)}
+.steps button.hecho b::after{content:" ✓";color:var(--coral)}
+button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+
+/* tarjetas y controles */
+.card{background:var(--surface);border:1.5px solid var(--line);border-radius:1.25rem;padding:20px}
+.card.suave{background:var(--tinte-2);border-color:var(--rim)}
+.panel{display:flex;flex-direction:column;gap:16px}
+.btn{font:700 1rem var(--sans);padding:13px 20px;border-radius:999px;border:1.5px solid var(--line);background:var(--surface);color:var(--fg);cursor:pointer}
+.btn.prim{background:var(--coral);border-color:var(--coral);color:#fff}
+.btn.ink{background:var(--ink);border-color:var(--ink);color:var(--ink-fg)}
+.btn.grande{width:100%;padding:17px;font-size:1.1rem;border-radius:1rem}
+.btn.wa{background:var(--coral-dark);border-color:var(--coral-dark);color:#fff}
+.btn.link{border:0;background:none;color:var(--muted);text-decoration:underline;padding:6px 4px;font-weight:500}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+textarea,input[type=text]{font:500 1.05rem var(--sans);width:100%;border:1.5px solid var(--line);border-radius:.875rem;padding:13px 14px;background:#fff;color:var(--fg);resize:vertical}
+textarea{min-height:64px}
+textarea:focus,input[type=text]:focus{border-color:var(--coral);outline:none;box-shadow:0 0 0 3px var(--tinte)}
+.field{display:flex;flex-direction:column;gap:6px}
+.field label{font-weight:700}
+.field small{color:var(--muted);font-size:.95rem}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{font:600 .95rem var(--sans);padding:9px 14px;border-radius:999px;border:1.5px solid var(--line);background:#fff;color:var(--fg);cursor:pointer}
+.chip.on{background:var(--tinte);border-color:var(--accent);color:var(--coral-dark)}
+
+/* plato */
+.mesa{position:relative;display:flex;align-items:center;justify-content:center;gap:clamp(6px,2vw,18px)}
+.cubierto{flex:0 0 auto;width:clamp(16px,4.5vw,30px);height:clamp(190px,58vw,380px);color:var(--accent)}
+.plato{position:relative;width:min(100%,440px);aspect-ratio:1;border-radius:50%;background:#fff;border:clamp(10px,3vw,18px) solid var(--rim);box-shadow:0 14px 34px -22px rgba(197,58,30,.55)}
+.centro{position:absolute;inset:12%;border-radius:50%;border:clamp(5px,1.4vw,9px) solid var(--tinte);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;padding:9% 8%;overflow:hidden}
+.tag{font-weight:600;line-height:1.2;text-align:center;font-size:clamp(.8rem,2.7vw,1rem);padding:5px 9px;border-radius:.6rem;max-width:100%;overflow-wrap:break-word;transition:opacity .5s,transform .5s}
+.tag.amable{background:var(--tinte);border:1.5px solid var(--accent);color:var(--fg)}
+.tag.si{background:#fff;border:1.5px dashed var(--coral);color:var(--coral-dark)}
+.tag.dura{position:absolute;transform:translate(-50%,-50%);width:max-content;max-width:40%;background:var(--ink);color:var(--ink-fg);box-shadow:0 3px 10px rgb(0 0 0 / .18)}
+.tag.dura.tachada{opacity:.35;text-decoration:line-through}
+.vacio{color:var(--muted);font-size:.98rem;text-align:center}
+.balanza{display:flex;flex-direction:column;gap:8px}
+.barra{display:flex;height:18px;border-radius:999px;overflow:hidden;border:1.5px solid var(--line);background:#fff}
+.barra span{display:block;height:100%;transition:width .5s}
+.leyenda{display:flex;justify-content:space-between;font-family:var(--mono);font-size:.9rem;color:var(--muted)}
+
+/* listas */
+.lista{display:flex;flex-direction:column;gap:8px;margin:0;padding:0;list-style:none}
+.lista li{display:flex;gap:10px;align-items:center;justify-content:space-between;background:var(--surface);border:1.5px solid var(--line);border-radius:.875rem;padding:11px 12px}
+.lista .txt{min-width:0;overflow-wrap:anywhere}
+.lista .ctx{display:block;font-size:.85rem;color:var(--muted);font-style:normal}
+.tipo{font-family:var(--mono);font-size:.8rem;text-transform:uppercase;letter-spacing:.06em;padding:5px 9px;border-radius:999px;white-space:nowrap;border:1.5px solid var(--line);background:#fff;color:var(--muted);cursor:pointer}
+.tipo.dura{background:var(--ink);color:var(--ink-fg);border-color:var(--ink)}
+.tipo.amable{background:var(--tinte);color:var(--coral-dark);border-color:var(--accent)}
+.x{border:0;background:none;color:var(--muted);cursor:pointer;font-size:1.4rem;padding:2px 8px;line-height:1}
+.reform{display:flex;flex-direction:column;gap:10px}
+.desde{background:var(--ink);color:var(--ink-fg);padding:7px 11px;border-radius:.6rem;align-self:flex-start;font-weight:600;max-width:100%;overflow-wrap:anywhere}
+.flecha{font-family:var(--mono);color:var(--coral);font-size:.9rem}
+details{border-top:1.5px solid var(--line);padding-top:12px}
+summary{cursor:pointer;font-weight:700;color:var(--coral-dark)}
+details ul{margin:10px 0 0;padding-left:1.1em;display:flex;flex-direction:column;gap:8px}
+details li::marker{color:var(--coral)}
+.elige label{display:flex;gap:12px;align-items:flex-start;cursor:pointer;padding:6px 0}
+.elige input{margin-top:5px;accent-color:var(--coral);width:21px;height:21px;flex:none}
+.frase{font-size:clamp(1.35rem,5vw,1.8rem);font-weight:800;line-height:1.25;color:var(--coral-dark);text-wrap:balance}
+.nota{font-size:.95rem;color:var(--muted);border-top:1.5px solid var(--line);padding-top:14px}
+.nav{display:flex;justify-content:space-between;gap:10px}
+.pie{font-family:var(--mono);font-size:.78rem;color:var(--muted);text-align:center}
+.aviso{font-size:.95rem;color:var(--coral-dark);min-height:1.2em}
+@media (prefers-reduced-motion:reduce){.tag,.barra span,.steps button{transition:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="eyebrow">NuPlan™ · Lic. Rosana Roldán</div>
+    <h1>Menú de Palabras</h1>
+    <p class="lede">Lo que te decís también te alimenta. Todos los días te servís frases, y algunas pesan más que cualquier comida.</p>
+  </header>
+
+  <!-- ANTES DE EMPEZAR -->
+  <section class="panel" id="inicio">
+    <div class="card suave panel">
+      <h2>Antes de empezar</h2>
+      <p>Esto no es para hacerlo bien. Es para escucharte un rato, con la misma paciencia con la que escucharías a alguien que querés.</p>
+      <p>No hay respuestas correctas, nada es obligatorio y lo podés dejar por la mitad. Lo que escribas queda en tu teléfono, y al final decidís si se lo mandás a Rosana.</p>
+      <p class="lede">Te lleva unos diez minutos.</p>
+    </div>
+    <div class="mesa" aria-hidden="true">
+      <svg class="cubierto" viewBox="0 0 30 400" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round"><path d="M5 10v110M15 10v110M25 10v110M5 120q10 30 20 0M15 140v250"/></svg>
+      <div class="plato"><div class="centro"><p class="vacio">Tu plato todavía está vacío.</p></div></div>
+      <svg class="cubierto" viewBox="0 0 30 400" fill="none" stroke="currentColor" stroke-width="5" stroke-linejoin="round"><path d="M8 390V30q0-20 14-22v190l-14 20"/></svg>
+    </div>
+    <button class="btn prim grande" id="empezar" type="button">Empezar</button>
+  </section>
+
+  <!-- EL EJERCICIO -->
+  <section class="panel" id="ejercicio" hidden>
+    <nav class="steps" aria-label="Pasos">
+      <button id="s1" data-step="1" type="button"><b>1</b>Escuchá</button>
+      <button id="s2" data-step="2" type="button"><b>2</b>Mirá</button>
+      <button id="s3" data-step="3" type="button"><b>3</b>Cambiá</button>
+      <button id="s4" data-step="4" type="button"><b>4</b>Elegí</button>
+    </nav>
+
+    <div class="mesa" aria-label="Tu plato">
+      <svg class="cubierto" viewBox="0 0 30 400" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round" aria-hidden="true"><path d="M5 10v110M15 10v110M25 10v110M5 120q10 30 20 0M15 140v250"/></svg>
+      <div class="plato" id="plato"><div class="centro" id="centro"></div></div>
+      <svg class="cubierto" viewBox="0 0 30 400" fill="none" stroke="currentColor" stroke-width="5" stroke-linejoin="round" aria-hidden="true"><path d="M8 390V30q0-20 14-22v190l-14 20"/></svg>
+    </div>
+
+    <!-- 1 -->
+    <div class="panel" id="p1">
+      <div>
+        <h2>1. Escuchá lo que te decís</h2>
+        <p class="lede">Pensá en la última vez que algo no salió como querías. ¿Qué te dijiste por dentro? Escribilo tal cual sonó, sin corregirlo. Las frases que pesan van al borde del plato. Las que te cuidan, al centro.</p>
+      </div>
+      <div class="card panel">
+        <div class="field">
+          <label>¿En qué momento apareció? <small>Si te ayuda a recordar</small></label>
+          <div class="chips" id="momentos"></div>
+        </div>
+        <div class="field">
+          <label for="nueva">La frase, como sonó</label>
+          <textarea id="nueva" placeholder="Ej: «otra vez lo arruinaste»"></textarea>
+        </div>
+        <div class="row">
+          <button class="btn ink" data-tipo="dura" type="button">Me pesa</button>
+          <button class="btn prim" data-tipo="amable" type="button">Me cuida</button>
+        </div>
+        <p class="aviso" id="aviso1"></p>
+      </div>
+      <ul class="lista" id="lista"></ul>
+      <p class="lede" id="pista1"></p>
+    </div>
+
+    <!-- 2 -->
+    <div class="panel" id="p2" hidden>
+      <div>
+        <h2>2. Mirá tu plato</h2>
+        <p class="lede">Miralo un momento como si fuera la comida que te servís todos los días. No hace falta cambiar nada todavía, solo mirar.</p>
+      </div>
+      <div class="card balanza">
+        <div class="barra" id="barra"></div>
+        <div class="leyenda"><span id="lgDura"></span><span id="lgAmable"></span></div>
+      </div>
+      <div class="field"><label for="q1">¿Qué ves cuando lo mirás?</label><textarea id="q1"></textarea></div>
+      <div class="field"><label for="q2">¿Cómo te sentís al ver este plato?</label><textarea id="q2"></textarea></div>
+      <div class="field"><label for="q3">¿En qué momentos aparecen más las frases que pesan?</label><small>Situaciones, horarios, lugares, personas.</small><textarea id="q3"></textarea></div>
+      <div class="field"><label for="q4">¿Le dirías alguna de estas frases a alguien que querés?</label><textarea id="q4"></textarea></div>
+      <div class="field"><label for="q6">Esa voz, ¿es tuya o la aprendiste de alguien?</label><small>Podés no contestar. A veces alcanza con hacerse la pregunta.</small><textarea id="q6"></textarea></div>
+    </div>
+
+    <!-- 3 -->
+    <div class="panel" id="p3" hidden>
+      <div>
+        <h2>3. Cambiá el tono, no la verdad</h2>
+        <p class="lede">No se trata de mentirte ni de forzar algo lindo. Se trata de decirte lo mismo que pasó, pero como te lo diría alguien que te quiere bien.</p>
+      </div>
+      <div class="panel" id="reformas"></div>
+      <details>
+        <summary>Si no te sale, probá así</summary>
+        <ul>
+          <li>Imaginate que se lo decís a una amiga que está pasando por lo mismo.</li>
+          <li>Cambiá el juicio por un hecho: qué pasó, sin etiquetas.</li>
+          <li>Usá «y» en lugar de «pero»: lo difícil y lo que podés hacer.</li>
+          <li>Si la frase es sobre tu cuerpo, probá hablar de lo que tu cuerpo hace por vos.</li>
+        </ul>
+      </details>
+    </div>
+
+    <!-- 4 -->
+    <div class="panel" id="p4" hidden>
+      <div>
+        <h2>4. Elegí tu menú de esta semana</h2>
+        <p class="lede">Antes de elegir, sumá al plato lo que sí hiciste. Las cosas chicas también cuentan, y a veces son las que más cuentan.</p>
+      </div>
+      <div class="card panel">
+        <label for="si" style="font-weight:700">Algo que sí hiciste esta semana</label>
+        <div class="chips" id="ejemplosSi"></div>
+        <div class="row" style="flex-wrap:nowrap">
+          <input type="text" id="si" placeholder="Ej: anoté lo que comí aunque no me gustó">
+          <button class="btn prim" id="sumarSi" type="button">Sumar</button>
+        </div>
+        <ul class="lista" id="listaSi"></ul>
+      </div>
+      <div class="card panel">
+        <p style="font-weight:700">Marcá las frases que querés servirte de ahora en adelante</p>
+        <p class="lede" style="margin-top:-8px">El plato de arriba muestra solo lo que elegís.</p>
+        <div class="elige" id="elegir"></div>
+      </div>
+      <div class="card panel" id="cajaFrase" hidden>
+        <p style="font-weight:700">Tu frase para esta semana</p>
+        <div class="chips" id="opcionesFrase"></div>
+        <p class="frase" id="frase"></p>
+        <div class="field"><label for="q5">¿Cuándo te la vas a decir?</label><small>Un momento concreto: antes de comer, cuando te mirás al espejo, al acostarte.</small><textarea id="q5"></textarea></div>
+      </div>
+      <button class="btn wa grande" id="mandar" type="button">Mandárselo a Rosana</button>
+      <p class="aviso" id="aviso4"></p>
+      <p class="nota">Si algunas de estas frases te pesan mucho o aparecen todo el tiempo, contáselo a Rosana. No hace falta cargarlas sola.</p>
+    </div>
+
+    <div class="nav">
+      <button class="btn" id="prev" type="button">Anterior</button>
+      <button class="btn prim" id="next" type="button">Siguiente</button>
+    </div>
+    <div class="row" style="justify-content:center"><button class="btn link" id="reset" type="button">Borrar todo y empezar de nuevo</button></div>
+  </section>
+
+  <p class="pie">Lo que escribís queda guardado en este teléfono.</p>
+</div>
+
+<script>
+(function(){
+"use strict";
+var KEY="nuplan-menu-palabras-v3";
+var P=new URLSearchParams(location.search);
+var WA=(P.get("wa")||"5491151426830").replace(/\D/g,"");   // WhatsApp de Rosana (se puede cambiar con ?wa=)
+var NOMBRE=(P.get("nombre")||"").trim().slice(0,40);
+var MOMENTOS=["Cuando comí más de lo que quería","Cuando no cumplí lo que me propuse","Cuando me miré al espejo","Cuando me comparé con otra","Cuando alguien me dijo qué hacer","Al terminar el día"];
+var EJ_SI=["Tomé agua","Anoté lo que comí","Me senté a comer tranquila","Pedí ayuda","Volví a empezar después de un mal día"];
+var ARRANQUES=["Fue un día difícil y aun así…","Estoy aprendiendo a…","Lo que sí hice fue…","Me merezco…"];
+
+var uid=1;
+function vacio(){ return {empezo:false,step:1,msgs:[],si:[],notes:{},frase:null}; }
+var S=vacio();
+try{ var g=JSON.parse(localStorage.getItem(KEY)); if(g&&Array.isArray(g.msgs)){ S=Object.assign(vacio(),g); uid=Math.max(0,...S.msgs.map(function(m){return m.id;}),...S.si.map(function(m){return m.id;}))+1; } }catch(e){}
+var momento="";
+function guardar(){ try{ localStorage.setItem(KEY,JSON.stringify(S)); }catch(e){} }
+function $(id){ return document.getElementById(id); }
+function esc(s){ return String(s==null?"":s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];}); }
+function mk(t,y,ctx){ return {id:uid++,t:t,y:y,ctx:ctx||"",r:"",keep:y==="amable",keepR:true}; }
+
+/* lo que va en el plato según el paso */
+function delPlato(){
+  if(S.step<4){
+    var out=S.msgs.map(function(m){ return {t:m.t,y:m.y,tachada:S.step===3&&m.y==="dura"&&!!m.r.trim()}; });
+    if(S.step===3) S.msgs.forEach(function(m){ if(m.y==="dura"&&m.r.trim()) out.push({t:m.r.trim(),y:"amable"}); });
+    return out;
+  }
+  var o=[];
+  S.si.forEach(function(x){ if(x.keep!==false) o.push({t:x.t,y:"si"}); });
+  S.msgs.forEach(function(m){
+    if(m.y==="amable"&&m.keep) o.push({t:m.t,y:"amable"});
+    if(m.y==="dura"&&m.r.trim()&&m.keepR) o.push({t:m.r.trim(),y:"amable"});
+  });
+  return o;
+}
+function pintarPlato(){
+  var plato=$("plato"), centro=$("centro");
+  plato.querySelectorAll(".tag.dura").forEach(function(n){ n.remove(); });
+  var items=delPlato();
+  var dentro=items.filter(function(i){ return i.y!=="dura"; }), borde=items.filter(function(i){ return i.y==="dura"; });
+  centro.innerHTML = dentro.length
+    ? dentro.map(function(i){ return '<div class="tag '+(i.y==="si"?"si":"amable")+'">'+esc(i.t)+'</div>'; }).join("")
+    : '<p class="vacio">'+(S.step===4?"Marcá abajo lo que querés servirte":S.msgs.length?"Las frases que te cuidan van acá":"Tu plato todavía está vacío")+'</p>';
+  var n=borde.length;
+  borde.forEach(function(h,i){
+    var a=(-90+(360/Math.max(n,1))*i+(n===2?40:0))*Math.PI/180;
+    var el=document.createElement("div");
+    el.className="tag dura"+(h.tachada?" tachada":""); el.textContent=h.t;
+    el.style.left=(50+42*Math.cos(a))+"%"; el.style.top=(50+42*Math.sin(a))+"%";
+    plato.appendChild(el);
+  });
+}
+function pintarLista(){
+  $("lista").innerHTML=S.msgs.map(function(m){
+    return '<li><span class="txt voz">«'+esc(m.t)+'»'+(m.ctx?'<span class="ctx">'+esc(m.ctx)+'</span>':'')+'</span><span class="row" style="flex-wrap:nowrap">'+
+      '<button class="tipo '+m.y+'" data-flip="'+m.id+'" type="button" title="Cambiar">'+(m.y==="dura"?"me pesa":"me cuida")+'</button>'+
+      '<button class="x" data-del="'+m.id+'" type="button" aria-label="Sacar">×</button></span></li>';
+  }).join("");
+  var d=S.msgs.filter(function(m){return m.y==="dura";}).length;
+  $("pista1").textContent = !S.msgs.length ? "" : S.msgs.length<3 ? "Si aparece otra, sumala. Con dos o tres alcanza." : d===0 ? "Si hay alguna que pese, también va." : "Cuando quieras, seguí.";
+}
+function pintarBalanza(){
+  var d=S.msgs.filter(function(m){return m.y==="dura";}).length, a=S.msgs.length-d, t=Math.max(S.msgs.length,1);
+  $("barra").innerHTML='<span style="width:'+(d/t*100)+'%;background:var(--ink)"></span><span style="width:'+(a/t*100)+'%;background:var(--accent)"></span>';
+  $("lgDura").textContent="Me pesan: "+d; $("lgAmable").textContent="Me cuidan: "+a;
+}
+function pintarReformas(){
+  var duras=S.msgs.filter(function(m){return m.y==="dura";});
+  $("reformas").innerHTML = duras.length ? duras.map(function(m){
+    return '<div class="card reform"><span class="desde voz">«'+esc(m.t)+'»</span><span class="flecha">↓ lo cambio por</span>'+
+      '<textarea id="r'+m.id+'" data-r="'+m.id+'" placeholder="¿Qué te diría alguien que te quiere bien?">'+esc(m.r)+'</textarea>'+
+      '<div class="chips">'+ARRANQUES.map(function(a){ return '<button class="chip" type="button" data-arranque="'+m.id+'">'+esc(a)+'</button>'; }).join("")+'</div></div>';
+  }).join("") : '<p class="lede">No anotaste frases que pesen. Si aparece alguna, podés volver al paso 1.</p>';
+}
+function pintarElegir(){
+  $("listaSi").innerHTML=S.si.map(function(x){ return '<li><span class="txt">'+esc(x.t)+'</span><button class="x" data-delsi="'+x.id+'" type="button" aria-label="Sacar">×</button></li>'; }).join("");
+  $("ejemplosSi").innerHTML=EJ_SI.map(function(e){ return '<button class="chip" type="button" data-ejsi="'+esc(e)+'">'+esc(e)+'</button>'; }).join("");
+  var rows=[];
+  S.msgs.forEach(function(m){
+    if(m.y==="amable") rows.push('<label><input type="checkbox" data-k="'+m.id+'" '+(m.keep?"checked":"")+'><span class="tag amable">'+esc(m.t)+'</span></label>');
+    if(m.y==="dura"&&m.r.trim()) rows.push('<label><input type="checkbox" data-kr="'+m.id+'" '+(m.keepR?"checked":"")+'><span class="tag amable">'+esc(m.r.trim())+'</span></label>');
+  });
+  $("elegir").innerHTML=rows.join("")||'<p class="lede">Todavía no hay frases que te cuiden para elegir. Podés sumarlas en el paso 1 o cambiar alguna en el paso 3.</p>';
+  pintarFrase();
+}
+function opcionesFrase(){
+  return delPlato().filter(function(i){ return i.y==="amable"; }).map(function(i){ return i.t; });
+}
+function pintarFrase(){
+  var ops=opcionesFrase();
+  $("cajaFrase").hidden=!ops.length;
+  if(S.frase && ops.indexOf(S.frase)===-1) S.frase=null;
+  if(!S.frase && ops.length) S.frase=ops[0];
+  $("opcionesFrase").innerHTML = ops.length>1 ? ops.map(function(t,i){ return '<button class="chip'+(t===S.frase?" on":"")+'" type="button" data-frase="'+i+'">'+esc(t)+'</button>'; }).join("") : "";
+  $("frase").textContent = S.frase ? "«"+S.frase+"»" : "";
+}
+function pintar(){
+  $("inicio").hidden=S.empezo; $("ejercicio").hidden=!S.empezo;
+  [1,2,3,4].forEach(function(i){
+    $("p"+i).hidden=S.step!==i;
+    var b=$("s"+i); if(S.step===i) b.setAttribute("aria-current","step"); else b.removeAttribute("aria-current");
+  });
+  $("s1").classList.toggle("hecho", S.msgs.length>0);
+  $("s2").classList.toggle("hecho", ["q1","q2","q3","q4","q6"].some(function(q){ return (S.notes[q]||"").trim(); }));
+  $("s3").classList.toggle("hecho", S.msgs.some(function(m){ return m.y==="dura"&&m.r.trim(); }));
+  $("prev").style.visibility=S.step>1?"visible":"hidden";
+  $("next").hidden=S.step===4;
+  ["q1","q2","q3","q4","q5","q6"].forEach(function(q){ if(document.activeElement!==$(q)) $(q).value=S.notes[q]||""; });
+  pintarPlato(); pintarLista(); pintarBalanza();
+  if(S.step===3) pintarReformas();
+  if(S.step===4) pintarElegir();
+  guardar();
+}
+function irA(n){ S.step=Math.min(4,Math.max(1,n)); pintar(); window.scrollTo({top:0,behavior:"smooth"}); }
+
+/* inicio */
+$("empezar").onclick=function(){ S.empezo=true; S.step=1; pintar(); window.scrollTo({top:0}); setTimeout(function(){ $("nueva").focus(); },250); };
+document.querySelectorAll(".steps button").forEach(function(b){ b.onclick=function(){ irA(+b.dataset.step); }; });
+$("prev").onclick=function(){ irA(S.step-1); };
+$("next").onclick=function(){ irA(S.step+1); };
+
+/* paso 1 */
+$("momentos").innerHTML=MOMENTOS.map(function(m){ return '<button class="chip" type="button">'+esc(m)+'</button>'; }).join("");
+$("momentos").addEventListener("click",function(e){ var b=e.target.closest(".chip"); if(!b) return;
+  var on=!b.classList.contains("on"); $("momentos").querySelectorAll(".chip").forEach(function(c){ c.classList.remove("on"); });
+  if(on){ b.classList.add("on"); momento=b.textContent; } else momento=""; });
+document.querySelectorAll("#p1 [data-tipo]").forEach(function(b){ b.onclick=function(){
+  var v=$("nueva").value.trim().replace(/^[«"“]+|[»"”]+$/g,"").trim();
+  if(!v){ $("aviso1").textContent="Escribí la frase primero."; $("nueva").focus(); return; }
+  $("aviso1").textContent="";
+  S.msgs.push(mk(v.slice(0,160),b.dataset.tipo,momento)); $("nueva").value="";
+  momento=""; $("momentos").querySelectorAll(".chip").forEach(function(c){ c.classList.remove("on"); });
+  pintar(); $("nueva").focus();
+}; });
+$("lista").addEventListener("click",function(e){
+  var f=e.target.closest("[data-flip]"), d=e.target.closest("[data-del]");
+  if(f){ var m=S.msgs.find(function(x){return x.id==f.dataset.flip;}); m.y=m.y==="dura"?"amable":"dura"; m.keep=m.y==="amable"; pintar(); }
+  if(d){ S.msgs=S.msgs.filter(function(x){return x.id!=d.dataset.del;}); pintar(); }
+});
+
+/* paso 3 */
+$("reformas").addEventListener("click",function(e){
+  var b=e.target.closest("[data-arranque]"); if(!b) return;
+  var ta=$("r"+b.dataset.arranque), base=b.textContent.replace(/…/g,"").trim();
+  var m=S.msgs.find(function(x){return x.id==b.dataset.arranque;});
+  ta.value = ta.value.trim() ? ta.value.trim()+" "+base+" " : base+" ";
+  m.r=ta.value; guardar(); pintarPlato(); ta.focus(); ta.setSelectionRange(ta.value.length,ta.value.length);
+});
+
+/* paso 4 */
+function sumarSi(t){ t=(t||"").trim(); if(!t) return; S.si.push({id:uid++,t:t.slice(0,120),keep:true}); $("si").value=""; pintar(); }
+$("sumarSi").onclick=function(){ sumarSi($("si").value); };
+$("si").addEventListener("keydown",function(e){ if(e.key==="Enter"){ e.preventDefault(); sumarSi($("si").value); } });
+$("ejemplosSi").addEventListener("click",function(e){ var b=e.target.closest("[data-ejsi]"); if(b) sumarSi(b.dataset.ejsi); });
+$("listaSi").addEventListener("click",function(e){ var b=e.target.closest("[data-delsi]"); if(!b) return; S.si=S.si.filter(function(x){return x.id!=b.dataset.delsi;}); pintar(); });
+$("opcionesFrase").addEventListener("click",function(e){ var b=e.target.closest("[data-frase]"); if(!b) return; S.frase=opcionesFrase()[+b.dataset.frase]; pintarFrase(); guardar(); });
+document.addEventListener("change",function(e){
+  var t=e.target;
+  if(t.dataset.k){ S.msgs.find(function(x){return x.id==t.dataset.k;}).keep=t.checked; pintarPlato(); pintarFrase(); guardar(); }
+  if(t.dataset.kr){ S.msgs.find(function(x){return x.id==t.dataset.kr;}).keepR=t.checked; pintarPlato(); pintarFrase(); guardar(); }
+});
+document.addEventListener("input",function(e){
+  var t=e.target;
+  if(/^q\d$/.test(t.id)){ S.notes[t.id]=t.value; guardar(); }
+  if(t.dataset.r){ S.msgs.find(function(x){return x.id==t.dataset.r;}).r=t.value; guardar(); pintarPlato(); }
+});
+
+/* para Rosana */
+function texto(){
+  var duras=S.msgs.filter(function(m){return m.y==="dura";}), amables=S.msgs.filter(function(m){return m.y==="amable";});
+  var Q={q1:"Qué veo en mi plato",q2:"Cómo me siento al verlo",q3:"Cuándo aparecen las frases que pesan",q4:"Si se las diría a alguien que quiero",q6:"De quién es esa voz"};
+  var t="*Menú de Palabras"+(NOMBRE?" · "+NOMBRE:"")+"*\n\n";
+  if(duras.length) t+="*Frases que me pesan*\n"+duras.map(function(m){ return "• «"+m.t+"»"+(m.ctx?" ("+m.ctx.toLowerCase()+")":"")+(m.r.trim()?"\n   → la cambio por: "+m.r.trim():""); }).join("\n")+"\n\n";
+  if(amables.length) t+="*Frases que me cuidan*\n"+amables.map(function(m){ return "• «"+m.t+"»"; }).join("\n")+"\n\n";
+  var obs=Object.keys(Q).filter(function(k){ return (S.notes[k]||"").trim(); });
+  if(obs.length) t+="*Lo que vi*\n"+obs.map(function(k){ return Q[k]+": "+S.notes[k].trim(); }).join("\n")+"\n\n";
+  if(S.si.length) t+="*Lo que sí hice esta semana*\n"+S.si.map(function(x){ return "• "+x.t; }).join("\n")+"\n\n";
+  if(S.frase) t+="*Mi frase para esta semana*\n«"+S.frase+"»"+((S.notes.q5||"").trim()?"\nMe la digo: "+S.notes.q5.trim():"")+"\n";
+  return t.replace(/[ \t]{2,}/g," ").trim();
+}
+$("mandar").onclick=function(){
+  if(!S.msgs.length&&!S.si.length){ $("aviso4").textContent="Todavía no hay nada para mandar. Empezá por el paso 1."; return; }
+  $("aviso4").textContent="";
+  window.location.href="https://wa.me/"+WA+"?text="+encodeURIComponent(texto());
+};
+$("reset").onclick=function(e){
+  var b=e.currentTarget;
+  if(b.dataset.armed){ S=vacio(); delete b.dataset.armed; b.textContent="Borrar todo y empezar de nuevo"; pintar(); window.scrollTo({top:0}); }
+  else { b.dataset.armed="1"; b.textContent="¿Seguro? Tocá de nuevo para borrar"; setTimeout(function(){ if(b.dataset.armed){ delete b.dataset.armed; b.textContent="Borrar todo y empezar de nuevo"; } },4000); }
+};
+window.__menu={texto:texto};
+pintar();
+})();
+</script>
+</body>
+</html>

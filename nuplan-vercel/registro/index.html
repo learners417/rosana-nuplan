@@ -1,0 +1,240 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#fff6f3">
+<title>Mi registro · NuPlan™</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700;800&family=Space+Mono:wght@400;700&display=swap">
+<style>
+  /* Registro diario de comidas para consultantes de NuPlan. Sin login: se guarda en el teléfono y se manda a Rosana por WhatsApp. */
+  :root{
+    --bg:#fff6f3; --surface:#fff; --text:#1a1a1a; --muted:#6b7280; --border:#e5e7eb;
+    --coral:#e8472a; --coral-light:#f47a62; --accent:#f6a29a; --coral-dark:#c53a1e; --tinte:#fde9e4; --ok:#15803d;
+    --sans:"DM Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif; --mono:"Space Mono",ui-monospace,Menlo,monospace;
+    color-scheme:light;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;background:var(--bg);color:var(--text);font-family:var(--sans);font-size:18px;line-height:1.5;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:560px;margin:0 auto;padding:calc(18px + env(safe-area-inset-top,0px)) max(18px,env(safe-area-inset-right,0px)) calc(120px + env(safe-area-inset-bottom,0px)) max(18px,env(safe-area-inset-left,0px))}
+  .marca{font-family:var(--mono);font-size:14px;letter-spacing:.08em;text-transform:uppercase;color:var(--coral-dark)}
+  h1{font-size:32px;line-height:1.1;margin:6px 0 4px;font-weight:800}
+  .fecha{font-size:19px;color:var(--muted);margin:0 0 18px}
+  .caja{background:var(--surface);border:1.5px solid var(--border);border-radius:1rem;padding:18px;margin:0 0 14px}
+  .bienvenida p{margin:0 0 10px}
+  .bienvenida p:last-child{margin:0}
+  label{display:block;font-weight:700;font-size:18px;margin:0 0 8px}
+  .ayuda{font-weight:400;color:var(--muted);font-size:16px}
+  input[type=text],input[type=time],textarea{width:100%;font:500 19px var(--sans);color:var(--text);background:#fff;border:1.5px solid var(--border);border-radius:.75rem;padding:13px 14px;outline:none}
+  input:focus,textarea:focus{border-color:var(--coral);box-shadow:0 0 0 3px var(--tinte)}
+  textarea{min-height:92px;resize:vertical}
+  .campo{margin:0 0 18px}
+  .chips{display:flex;flex-wrap:wrap;gap:8px}
+  .chip{border:1.5px solid var(--border);background:#fff;color:var(--text);border-radius:999px;padding:11px 15px;font:600 17px var(--sans);cursor:pointer}
+  .chip.on{background:var(--coral);border-color:var(--coral);color:#fff}
+  .btn{display:block;width:100%;border:0;border-radius:.875rem;padding:17px 18px;font:800 19px var(--sans);cursor:pointer;text-align:center;text-decoration:none}
+  .btn.prim{background:var(--coral);color:#fff}
+  .btn.sec{background:#fff;color:var(--text);border:1.5px solid var(--border)}
+  .btn.wa{background:var(--coral-dark);color:#fff}
+  .btn:focus-visible,.chip:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+  .fila-btn{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .comida{display:grid;grid-template-columns:78px 1fr;gap:12px;padding:14px 0;border-top:1.5px solid var(--border)}
+  .comida:first-child{border-top:0;padding-top:0}
+  .hora{font-family:var(--mono);font-weight:700;color:var(--coral-dark);font-size:18px;padding-top:2px}
+  .que{font-size:19px;font-weight:600}
+  .por{color:var(--muted);font-size:17px;margin-top:2px}
+  .acc{display:flex;gap:14px;margin-top:6px}
+  .link{background:none;border:0;padding:4px 0;font:600 16px var(--sans);color:var(--coral-dark);text-decoration:underline;cursor:pointer}
+  .vacio{color:var(--muted);margin:0}
+  .estado{font-family:var(--mono);font-size:15px;color:var(--ok);margin:10px 0 0;text-align:center}
+  .estado.aviso{color:var(--coral-dark)}
+  .fija{position:fixed;left:0;right:0;bottom:0;background:linear-gradient(to top,var(--bg) 70%,rgba(255,246,243,0));padding:16px max(18px,env(safe-area-inset-right,0px)) calc(16px + env(safe-area-inset-bottom,0px)) max(18px,env(safe-area-inset-left,0px))}
+  .fija .in{max-width:560px;margin:0 auto}
+  h2{font-size:22px;margin:0 0 12px}
+  .dias{list-style:none;padding:0;margin:0}
+  .dias li{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:12px 0;border-top:1.5px solid var(--border);font-size:18px}
+  .dias li:first-child{border-top:0}
+  .oculto{display:none!important}
+  .pie{color:var(--muted);font-size:16px;text-align:center;margin-top:20px}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <div class="marca">NuPlan™ · Lic. Rosana Roldán</div>
+  <h1 id="titulo">Mi registro del día</h1>
+  <p class="fecha" id="fecha"></p>
+
+  <!-- primera vez -->
+  <section class="caja bienvenida oculto" id="v-nombre">
+    <p><b>Un minuto por comida.</b> Anotás la hora, qué comiste y qué te llevó a comer. Al final del día se lo mandás a Rosana por WhatsApp con un botón.</p>
+    <p>Todo queda guardado en este teléfono: podés cerrar y volver cuando quieras.</p>
+    <div class="campo" style="margin-top:16px">
+      <label for="in-nombre">¿Cómo te llamás?</label>
+      <input type="text" id="in-nombre" autocomplete="given-name" placeholder="Tu nombre">
+    </div>
+    <button class="btn prim" id="b-nombre" type="button">Empezar</button>
+  </section>
+
+  <!-- el día -->
+  <section id="v-dia" class="oculto">
+    <div class="caja">
+      <h2>Lo que comiste hoy</h2>
+      <div id="lista"></div>
+    </div>
+
+    <div class="caja oculto" id="form">
+      <h2 id="form-titulo">Anotar una comida</h2>
+      <div class="campo">
+        <label for="in-hora">¿A qué hora?</label>
+        <input type="time" id="in-hora">
+      </div>
+      <div class="campo">
+        <label for="in-que">¿Qué comiste? <span class="ayuda">Como te salga</span></label>
+        <textarea id="in-que" placeholder="Ej: milanesa con ensalada y una manzana"></textarea>
+      </div>
+      <div class="campo">
+        <label>¿Qué te llevó a comer? <span class="ayuda">Podés marcar más de una</span></label>
+        <div class="chips" id="chips"></div>
+      </div>
+      <div class="campo">
+        <label for="in-nota">¿Algo más? <span class="ayuda">Opcional, una o dos palabras</span></label>
+        <input type="text" id="in-nota" placeholder="Ej: en la oficina, con mi hija">
+      </div>
+      <div class="fila-btn">
+        <button class="btn sec" id="b-cancelar" type="button">Cancelar</button>
+        <button class="btn prim" id="b-guardar" type="button">Guardar</button>
+      </div>
+    </div>
+
+    <div class="caja oculto" id="caja-extra">
+      <label for="in-extra">¿Algo que quieras contarle a Rosana de hoy? <span class="ayuda">Opcional</span></label>
+      <textarea id="in-extra" placeholder="Cómo te sentiste, qué te costó, qué te salió bien"></textarea>
+    </div>
+
+    <div class="caja oculto" id="caja-dias">
+      <h2>Días anteriores</h2>
+      <ul class="dias" id="dias"></ul>
+    </div>
+    <p class="pie">Si querés mandarle una foto de algún plato, mandásela directo por WhatsApp.</p>
+  </section>
+</main>
+
+<div class="fija oculto" id="barra">
+  <div class="in">
+    <div class="fila-btn" id="botones">
+      <button class="btn sec" id="b-agregar" type="button">+ Anotar comida</button>
+      <button class="btn wa" id="b-enviar" type="button">Mandar a Rosana</button>
+    </div>
+    <p class="estado oculto" id="estado"></p>
+  </div>
+</div>
+
+<script>
+(function(){
+  "use strict";
+  var MOTIVOS = ["Tenía hambre","Con calma, tranquila","Fue la hora, no el hambre","Me ganó el cansancio","Estaba nerviosa o acelerada","Estaba aburrida","Otra"];
+  var CLAVE = "nuplan-registro-v1";
+  var params = new URLSearchParams(location.search);
+  var WA = (params.get("wa")||"5491151426830").replace(/\D/g,""); // WhatsApp de Rosana (se puede cambiar con ?wa=)
+  var hoy = claveDia(new Date());
+  var datos = leer();
+  if(params.get("nombre") && !datos.nombre){ datos.nombre = params.get("nombre").trim().slice(0,40); guardar(); }
+  var editando = null; // índice de la comida que se está editando
+  var $ = function(id){ return document.getElementById(id); };
+
+  function claveDia(d){ return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0"); }
+  function fechaLarga(k){ var p=k.split("-"); var d=new Date(+p[0],+p[1]-1,+p[2]); var t=d.toLocaleDateString("es-AR",{weekday:"long",day:"numeric",month:"long"}); return t.charAt(0).toUpperCase()+t.slice(1); }
+  function fechaCorta(k){ var p=k.split("-"); return p[2]+"/"+p[1]; }
+  function leer(){ try{ var d=JSON.parse(localStorage.getItem(CLAVE)||"{}"); if(!d||typeof d!=="object") d={}; d.dias=d.dias&&typeof d.dias==="object"?d.dias:{}; return d; }catch(e){ return {dias:{}}; } }
+  function guardar(){ try{ localStorage.setItem(CLAVE, JSON.stringify(datos)); return true; }catch(e){ avisar("No se pudo guardar en este teléfono. Mandale el registro a Rosana antes de cerrar.", true); return false; } }
+  function dia(k){ if(!datos.dias[k]) datos.dias[k]={comidas:[],extra:"",enviado:null}; return datos.dias[k]; }
+  function esc(s){ return String(s==null?"":s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];}); }
+  function horaAhora(){ var d=new Date(); return String(d.getHours()).padStart(2,"0")+":"+String(d.getMinutes()).padStart(2,"0"); }
+  function avisar(t, mal){ var e=$("estado"); e.textContent=t; e.className="estado"+(mal?" aviso":""); clearTimeout(avisar.t); avisar.t=setTimeout(function(){ e.className="estado oculto"; }, 5000); }
+
+  function pintar(){
+    $("fecha").textContent = fechaLarga(hoy);
+    if(!datos.nombre){ $("v-nombre").classList.remove("oculto"); $("v-dia").classList.add("oculto"); $("barra").classList.add("oculto"); $("titulo").textContent="Mi registro del día"; return; }
+    $("titulo").textContent = "Hola, "+datos.nombre;
+    $("v-nombre").classList.add("oculto"); $("v-dia").classList.remove("oculto"); $("barra").classList.remove("oculto");
+    var d = dia(hoy);
+    var c = d.comidas.slice().map(function(x,i){ return {x:x,i:i}; }).sort(function(a,b){ return a.x.hora.localeCompare(b.x.hora); });
+    $("lista").innerHTML = c.length ? c.map(function(o){ var x=o.x;
+      var por = (x.motivos||[]).join(" · ") + (x.nota ? ((x.motivos&&x.motivos.length)?" · ":"")+x.nota : "");
+      return '<div class="comida"><div class="hora">'+esc(x.hora)+'</div><div><div class="que">'+esc(x.que)+'</div>'+(por?'<div class="por">'+esc(por)+'</div>':'')+
+        '<div class="acc"><button class="link" data-editar="'+o.i+'" type="button">Corregir</button><button class="link" data-borrar="'+o.i+'" type="button">Borrar</button></div></div></div>';
+    }).join("") : '<p class="vacio">Todavía no anotaste nada hoy. Tocá <b>+ Anotar comida</b>.</p>';
+    $("caja-extra").classList.toggle("oculto", !c.length);
+    if(document.activeElement!==$("in-extra")) $("in-extra").value = d.extra||"";
+    $("b-enviar").textContent = d.enviado ? "Mandar de nuevo" : "Mandar a Rosana";
+    var anteriores = Object.keys(datos.dias).filter(function(k){ return k!==hoy && datos.dias[k].comidas.length; }).sort().reverse().slice(0,14);
+    $("caja-dias").classList.toggle("oculto", !anteriores.length);
+    $("dias").innerHTML = anteriores.map(function(k){ var x=datos.dias[k];
+      return '<li><span>'+esc(fechaLarga(k))+' · '+x.comidas.length+' comida'+(x.comidas.length===1?'':'s')+(x.enviado?' · enviado':'')+'</span><button class="link" data-reenviar="'+k+'" type="button">Mandar</button></li>'; }).join("");
+  }
+
+  function abrirForm(i){
+    editando = (i==null) ? null : i;
+    var x = editando==null ? {hora:horaAhora(),que:"",motivos:[],nota:""} : dia(hoy).comidas[editando];
+    $("form-titulo").textContent = editando==null ? "Anotar una comida" : "Corregir la comida";
+    $("in-hora").value = x.hora; $("in-que").value = x.que; $("in-nota").value = x.nota||"";
+    $("chips").innerHTML = MOTIVOS.map(function(m){ return '<button type="button" class="chip'+((x.motivos||[]).indexOf(m)!==-1?' on':'')+'" aria-pressed="'+((x.motivos||[]).indexOf(m)!==-1)+'">'+esc(m)+'</button>'; }).join("");
+    $("form").classList.remove("oculto"); $("botones").classList.add("oculto");
+    $("form").scrollIntoView({behavior:"smooth", block:"start"});
+    setTimeout(function(){ $("in-que").focus(); }, 300);
+  }
+  function cerrarForm(){ $("form").classList.add("oculto"); $("botones").classList.remove("oculto"); editando=null; }
+
+  $("b-nombre").onclick = function(){ var n=$("in-nombre").value.trim(); if(!n){ $("in-nombre").focus(); return; } datos.nombre=n.slice(0,40); guardar(); pintar(); };
+  $("in-nombre").addEventListener("keydown", function(e){ if(e.key==="Enter") $("b-nombre").click(); });
+  $("b-agregar").onclick = function(){ abrirForm(null); };
+  $("b-cancelar").onclick = cerrarForm;
+  $("chips").addEventListener("click", function(e){ var b=e.target.closest(".chip"); if(!b) return; b.classList.toggle("on"); b.setAttribute("aria-pressed", b.classList.contains("on")); });
+  $("b-guardar").onclick = function(){
+    var que=$("in-que").value.trim();
+    if(!que){ $("in-que").focus(); $("in-que").placeholder="Escribí qué comiste"; return; }
+    var x = { hora: $("in-hora").value || horaAhora(), que: que.slice(0,500),
+      motivos: Array.prototype.filter.call($("chips").children, function(b){ return b.classList.contains("on"); }).map(function(b){ return b.textContent; }),
+      nota: $("in-nota").value.trim().slice(0,120) };
+    var d=dia(hoy);
+    if(editando==null) d.comidas.push(x); else d.comidas[editando]=x;
+    guardar(); cerrarForm(); pintar(); avisar("Guardado");
+  };
+  $("lista").addEventListener("click", function(e){
+    var b=e.target.closest("[data-editar],[data-borrar]"); if(!b) return;
+    if(b.hasAttribute("data-editar")) return abrirForm(+b.getAttribute("data-editar"));
+    var i=+b.getAttribute("data-borrar"), d=dia(hoy);
+    if(b.dataset.seguro!=="1"){ b.dataset.seguro="1"; b.textContent="¿Seguro? Tocá de nuevo"; setTimeout(function(){ if(b.isConnected){ b.dataset.seguro=""; b.textContent="Borrar"; } }, 4000); return; }
+    d.comidas.splice(i,1); guardar(); pintar();
+  });
+  $("in-extra").addEventListener("input", function(){ dia(hoy).extra=$("in-extra").value.slice(0,1000); guardar(); });
+
+  function texto(k){
+    var d=datos.dias[k];
+    var c=d.comidas.slice().sort(function(a,b){ return a.hora.localeCompare(b.hora); });
+    var t="*Registro de "+datos.nombre+"* · "+fechaLarga(k)+"\n\n";
+    t+=c.map(function(x){ var por=(x.motivos||[]).join(", ")+(x.nota?((x.motivos&&x.motivos.length)?" · ":"")+x.nota:"");
+      return "🕒 "+x.hora+" · "+x.que+(por?"\n   → "+por:""); }).join("\n\n");
+    if(d.extra&&d.extra.trim()) t+="\n\n📝 "+d.extra.trim();
+    return t;
+  }
+  function enviar(k){
+    var d=datos.dias[k];
+    if(!d||!d.comidas.length){ avisar("Anotá al menos una comida antes de mandar.", true); return; }
+    var url=(WA?"https://wa.me/"+WA:"https://wa.me/")+"?text="+encodeURIComponent(texto(k));
+    d.enviado=new Date().toISOString(); guardar(); pintar();
+    window.location.href=url;
+  }
+  $("b-enviar").onclick = function(){ enviar(hoy); };
+  $("dias").addEventListener("click", function(e){ var b=e.target.closest("[data-reenviar]"); if(b) enviar(b.getAttribute("data-reenviar")); });
+
+  // si queda abierta de un día para otro, arranca el día nuevo sola
+  document.addEventListener("visibilitychange", function(){ if(document.visibilityState==="visible"){ var k=claveDia(new Date()); if(k!==hoy){ hoy=k; cerrarForm(); pintar(); } } });
+  window.__registro = { texto:texto, datos:function(){ return datos; } };
+  pintar();
+})();
+</script>
+</body>
+</html>

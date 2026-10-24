@@ -69,16 +69,23 @@ const VOZ =
   "que no tiene que ver con su proceso con Rosana: decí que de eso no te ocupás y volvé a " +
   "su día. Una línea y seguís, sin enojarte y sin explicaciones largas.\n\n" +
   "LOS EJERCICIOS DEL MÉTODO, con el día en que le toca cada uno:\n" +
-  "D\u00eda 3 \u2014 Datos clínicos y quiz emocional (P1 · NUTRIR)\n" +
-  "D\u00eda 4 \u2014 El diario de comida y emoción (P1 · NUTRIR)\n" +
-  "D\u00eda 8 \u2014 El mapa de tus disparadores (P1 · NUTRIR)\n" +
+  "D\u00eda 1 \u2014 Tu heladera, hoy (foto, P1 · NUTRIR)\n" +
+  "D\u00eda 2 \u2014 Las cinco preguntas de NUTRIR\n" +
+  "D\u00eda 3 \u2014 Datos clínicos y quiz emocional: el escaneo de sus 4 dimensiones (P1 · NUTRIR)\n" +
+  "D\u00eda 4 \u2014 El diario de comida y emoción (todos los días)\n" +
+  "D\u00eda 6 \u2014 Lo que estuviste alimentando (P1 · NUTRIR)\n" +
+  "D\u00eda 7 \u2014 Su primera semana en una frase (P1 · NUTRIR)\n" +
+  "D\u00eda 8 \u2014 El mapa de tus disparadores: qué, cuándo y dónde (P1 · NUTRIR)\n" +
   "D\u00eda 9 \u2014 Acuerdo con tu forma de comer (P1 · NUTRIR)\n" +
-  "D\u00eda 10 \u2014 Los cuatro cuadros (La balanza)\n" +
-  "D\u00eda 11 \u2014 Cuánto importa y cuánta seguridad (La balanza)\n" +
-  "D\u00eda 12 \u2014 Un paso chico para esta semana (La balanza)\n" +
+  "D\u00eda 10 \u2014 Su objetivo, con importancia y confianza del 0 al 10\n" +
+  "D\u00eda 11 \u2014 La balanza: ventajas y desventajas del cambio\n" +
+  "D\u00eda 12 \u2014 Su paso chico de la semana, con día y hora\n" +
+  "D\u00eda 15 \u2014 Las cinco preguntas de UNIR (P2 · UNIR)\n" +
   "D\u00eda 16 \u2014 El semáforo del hambre (P2 · UNIR)\n" +
-  "D\u00eda 17 \u2014 La pausa de 90 segundos (P2 · UNIR)\n" +
-  "D\u00eda 19 \u2014 Tu rueda del equilibrio vital (P2 · UNIR)\n" +
+  "D\u00eda 17 \u2014 La pausa de 90 segundos con respiración; se puede usar cualquier día desde el 17 (P2 · UNIR)\n" +
+  "D\u00eda 19 \u2014 Su rueda de la alimentación, diez ejes (P2 · UNIR)\n" +
+  "D\u00eda 22 \u2014 Automonitoreo (P2 · UNIR)\n" +
+  "D\u00eda 24 \u2014 Aliados y saboteadores (P2 · UNIR)\n" +
   "D\u00eda 30 \u2014 Tu rueda de alimentación (P3 · PERSONALIZAR)\n" +
   "D\u00eda 31 \u2014 La lista «sí quiero» (P3 · PERSONALIZAR)\n" +
   "D\u00eda 32 \u2014 Carta al plan que abandonaste (P3 · PERSONALIZAR)\n" +
@@ -123,6 +130,9 @@ function construirPrompt(d) {
   }
   const abiertos = lista(d.ejercicios_abiertos);
   if (abiertos) partes.push("", "EJERCICIOS QUE YA TIENE ABIERTOS", abiertos);
+
+  const ejercicios = lista(d.sus_ejercicios, 8);
+  if (ejercicios) partes.push("", "LO QUE ELLA ESCRIBIÓ EN SUS EJERCICIOS", ejercicios);
 
   const diario = lista(d.diario_reciente, 3);
   if (diario) partes.push("", "SU DIARIO DE LOS ÚLTIMOS DÍAS", diario);

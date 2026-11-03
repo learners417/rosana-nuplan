@@ -42,12 +42,12 @@
   .salir{background:none;border:none;color:var(--muted);cursor:pointer;font-size:.95rem;padding:8px;white-space:nowrap;}
   .salir:hover{color:var(--coral);}
   @media(max-width:640px){
-    .topbar .row{height:auto;min-height:60px;padding:8px 0;flex-wrap:wrap;}
-    .topbar .der{gap:6px;} .empresa-sel{max-width:150px;padding:8px 12px;} .salir{padding:6px;font-size:.9rem;}
+    .topbar .row{height:auto;min-height:60px;padding:8px var(--pad);flex-wrap:wrap;}
+    .topbar .der{gap:6px;flex-wrap:wrap;row-gap:2px;} .empresa-sel{max-width:150px;padding:8px 12px;} .salir{padding:6px;font-size:.9rem;}
   }
 
   /* ---------- pantallas ---------- */
-  .pantalla{padding:48px 0 96px;animation:aparecer .25s ease;}
+  .pantalla{padding:48px var(--pad) 96px;animation:aparecer .25s ease;}
   @keyframes aparecer{from{opacity:0;}to{opacity:1;}}
   .kicker{font-family:var(--mono);font-size:.9rem;color:var(--coral);display:block;margin-bottom:12px;}
   h1{font-size:clamp(30px,4.6vw,44px);font-weight:700;letter-spacing:-.03em;line-height:1.08;margin:0 0 12px;}
@@ -185,6 +185,43 @@
   .doc-fila b{font-size:1.15rem;}
   .doc-fila small{display:block;color:var(--muted);margin-top:4px;font-size:.95rem;}
   .doc-fila .botonera{display:flex;gap:8px;flex-wrap:wrap;}
+  .bib-ej h3{font-size:1.4rem;margin:0 0 8px;}
+  .bib-ej .kicker{margin-bottom:8px;font-size:.95rem;}
+  .bib-que{color:var(--muted);margin:0 0 16px;font-size:1.05rem;line-height:1.6;}
+  .bib-msj{background:var(--bg);border-left:4px solid var(--coral);border-radius:0 var(--r-lg) var(--r-lg) 0;padding:14px 16px;margin:0 0 16px;
+    white-space:pre-wrap;overflow-wrap:anywhere;font-size:1.05rem;line-height:1.55;}
+  .bib-ej .botonera{display:flex;gap:10px;flex-wrap:wrap;}
+  .bib-ej .btn{min-height:46px;text-decoration:none;}
+  .bib-ej .aviso{font-size:.95rem;color:var(--coral-dark);}
+  .bib-elegida{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;background:#fff2ee;
+    border:2px solid var(--accent);border-radius:var(--r-xl);padding:14px 18px;margin-top:14px;}
+  .bib-elegida b{display:block;font-size:1.05rem;}
+  .bib-elegida small{display:block;color:var(--muted);font-size:.95rem;margin-top:2px;}
+  .bib-elegida .btn{min-height:46px;}
+  /* Programa de 90 días (Turno 3) */
+  .prog-item{display:flex;flex-direction:column;align-items:flex-start;gap:6px;width:100%;text-align:left;background:var(--surface);
+    border:1px solid var(--line);border-radius:var(--r-xl);padding:20px 22px;margin-bottom:12px;cursor:pointer;color:var(--ink);min-height:44px;}
+  .prog-item:hover{border-color:var(--accent);}
+  .prog-item b{font-size:1.15rem;}
+  .prog-mail{color:var(--muted);font-size:.95rem;overflow-wrap:anywhere;}
+  .prog-dia{font-family:var(--mono);font-size:.92rem;color:var(--coral-dark);}
+  .prog-cifras{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px;}
+  .prog-cifras span{background:var(--bg);border-radius:999px;padding:6px 12px;font-size:.92rem;}
+  .prog-est{font-size:.95rem;color:var(--muted);margin:12px 0 0;min-height:1.4em;}
+  .prog-sec{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-2xl);padding:26px;margin-bottom:18px;}
+  .prog-sec h3{margin:0 0 12px;}
+  .prog-par{background:var(--bg);border-left:4px solid var(--coral);border-radius:0 var(--r-lg) var(--r-lg) 0;padding:12px 15px;margin:0 0 10px;}
+  .prog-par small{display:block;font-family:var(--mono);font-size:.9rem;color:var(--coral-dark);margin-bottom:4px;}
+  .prog-par p{margin:0;white-space:pre-wrap;overflow-wrap:anywhere;}
+  .prog-dia-t{font-family:var(--mono);font-size:.92rem;color:var(--coral-dark);margin:18px 0 8px;}
+  .prog-dia-t:first-of-type{margin-top:0;}
+  .prog-fotos{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px;}
+  .prog-fotos figure{margin:0;background:var(--bg);border-radius:var(--r-lg);overflow:hidden;}
+  .prog-fotos img{width:100%;aspect-ratio:1;object-fit:cover;display:block;background:#f0ddd7;}
+  .prog-fotos figcaption{font-family:var(--mono);font-size:.9rem;color:var(--coral-dark);padding:6px 8px;}
+  .prog-vacio{color:var(--muted);margin:0;}
+  @media(max-width:640px){ .prog-sec{padding:20px 18px;} .prog-item{padding:18px;} }
+  #p-biblioteca .kicker,#p-biblioteca .sub,#p-biblioteca .resultados li small{font-size:.95rem;}
   .enlace{background:none;border:none;color:var(--coral-dark);font:inherit;font-weight:700;cursor:pointer;padding:0;text-decoration:underline;}
   .solo-imprimir{display:none;}
   #aviso-flotante{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(20px);opacity:0;pointer-events:none;z-index:50;background:var(--ink);color:#fff;padding:14px 22px;border-radius:999px;font-size:1rem;max-width:min(92vw,640px);text-align:center;transition:all .25s;box-shadow:0 8px 30px rgba(0,0,0,.18);}
@@ -331,7 +368,7 @@
     .editando .tip[data-ruta]:empty,.editando li.hid:has(> [data-ruta]:empty),.editando .grupo:has(> ul[data-lista]:empty),.editando li:has(> [data-texto]:empty){display:none !important;}
     [data-ruta],[data-texto]{outline:none !important;}
     [data-ruta]:empty::before,[data-texto]:empty::before{content:none !important;}
-    #p-login>*,#p-inicio>*,#p-consulta>*{display:none !important;}
+    #p-login>*,#p-inicio>*,#p-consulta>*,#p-biblioteca>*{display:none !important;}
     #p-planes>:not(#plan-5),#p-recetario>:not(#rec-resultado),#p-listado>:not(#l-resultado),#p-recomendaciones>:not(#reco-resultado),#p-ficha>:not(#ficha-cuerpo),#p-alta>*,#p-guardados>*{display:none !important;}
     .pantalla{padding:0;animation:none;}
     .wrap{max-width:none;padding:0;}
@@ -369,7 +406,7 @@
       <button class="salir" onclick="irA('inicio')">Inicio</button>
       <a class="salir" href="/" style="text-decoration:none;">App anterior</a>
       <select class="empresa-sel" id="empresa" onchange="cambiarEmpresa(this.value)"></select>
-      <button class="salir" onclick="salir()">Salir</button>
+      <button class="salir" onclick="salir()" title="Cierra la sesión en NuPlan y en la app anterior">Cerrar sesión</button>
     </div>
   </div>
 </div>
@@ -432,6 +469,67 @@
       <h3>Planes guardados</h3>
       <p>Abrir, imprimir o corregir planes ya hechos.</p>
     </button>
+    <button class="tarjeta" onclick="abrirBiblioteca()">
+      <span class="n">07</span>
+      <h3>Biblioteca de ejercicios</h3>
+      <p>Para mandarle a quien quieras, con su link. Lo que hace te llega al mail.</p>
+    </button>
+    <button class="tarjeta" onclick="abrirPrograma()">
+      <span class="n">08</span>
+      <h3>Programa de 90 días</h3>
+      <p>Tus consultantes: en qué día va cada una y todo lo que carga.</p>
+    </button>
+  </div>
+</section>
+
+<!-- ============ BIBLIOTECA DE EJERCICIOS ============ -->
+<section class="pantalla wrap oculto" id="p-biblioteca">
+  <span class="kicker">Biblioteca de ejercicios</span>
+  <h2>Ejercicios para mandar</h2>
+  <p class="bajada">Cada uno tiene su link. Lo copiás o lo mandás por WhatsApp. Cuando la persona lo termina y lo manda, te llega a tu mail.</p>
+  <div class="caja">
+    <span class="sub" style="margin-top:0;">¿Para quién? Es opcional: el nombre va en el saludo y en el ejercicio</span>
+    <div class="buscador">
+      <input type="text" id="bib-quien" placeholder="Nombre o paciente…" autocomplete="off" oninput="filtrarPacientesBib(this.value)">
+      <ul class="resultados" id="lista-pacientes-bib"></ul>
+    </div>
+    <div class="bib-elegida oculto" id="bib-elegida">
+      <div><b id="bib-elegida-nombre"></b><small id="bib-elegida-txt"></small></div>
+      <button type="button" class="btn chico suave" onclick="bibDeselegir()">Cambiar</button>
+    </div>
+  </div>
+  <div id="bib-lista"></div>
+  <div class="nav-pasos">
+    <button class="btn suave" onclick="irA('inicio')">Volver al inicio</button>
+  </div>
+</section>
+
+<!-- ============ PROGRAMA DE 90 DÍAS ============ -->
+<section class="pantalla wrap oculto" id="p-programa">
+  <span class="kicker">Programa de 90 días</span>
+  <h2>Tus consultantes</h2>
+  <p class="bajada">Cada una entra a su app con su mail. Acá ves en qué día va y todo lo que carga: diario, ejercicios, notas y fotos.</p>
+  <div class="caja">
+    <div class="buscador">
+      <input type="text" id="prog-busca" placeholder="Buscar por nombre o mail…" autocomplete="off" oninput="pintarPrograma()">
+    </div>
+    <p class="prog-est" id="prog-est"></p>
+  </div>
+  <div id="prog-lista"></div>
+  <div class="nav-pasos">
+    <button class="btn suave" onclick="irA('inicio')">Volver al inicio</button>
+    <button class="btn suave" onclick="abrirPrograma(true)">Actualizar</button>
+  </div>
+</section>
+
+<section class="pantalla wrap oculto" id="p-consultante">
+  <span class="kicker" id="pc-kicker">Programa de 90 días</span>
+  <h2 id="pc-nombre"></h2>
+  <p class="bajada" id="pc-bajada"></p>
+  <div id="pc-cuerpo"></div>
+  <div class="nav-pasos">
+    <button class="btn suave" onclick="abrirPrograma()">Volver a la lista</button>
+    <button class="btn suave" onclick="abrirConsultante(prog.actual)">Actualizar</button>
   </div>
 </section>
 
@@ -469,6 +567,7 @@
         <button class="btn chico" onclick="fichaNuevoPlan()">Plan nuevo</button>
         <button class="btn chico suave" onclick="fichaRecetario()">Recetario</button>
         <button class="btn chico suave" onclick="fichaGuardados()">Planes guardados</button>
+        <button class="btn chico suave" onclick="fichaBiblioteca()">Mandar un ejercicio</button>
         <button class="btn chico suave" onclick="abrirEditarDatos()">Editar datos</button>
       </div>
     </div>
@@ -549,18 +648,18 @@
 
   <div id="con-form" class="oculto">
     <div class="caja oculto" id="con-editando" style="border-color:var(--coral);background:#fdeeea;">
-      <p style="margin:0;"><b>Estás corrigiendo una consulta ya guardada</b> <span id="con-editando-fecha"></span>. Cambiá lo que haga falta y tocá Guardar cambios.</p>
+      <p style="margin:0;"><b id="con-editando-tipo">Estás corrigiendo una consulta ya guardada</b> <span id="con-editando-fecha"></span>. Cambiá lo que haga falta y tocá Guardar cambios.<span class="oculto" id="con-editando-antro"> Acá se corrigen peso, talla, cintura, fecha y notas; pliegues y perímetros se corrigen en la app anterior.</span></p>
     </div>
     <div class="caja">
       <span class="sub">Medidas</span>
       <div class="grid3">
-        <label class="campo">Peso (kg) *<input type="number" step="0.1" id="c-peso" data-req placeholder="0 si no lo tenés"></label>
-        <label class="campo">Talla (cm) *<input type="number" step="0.1" id="c-talla" data-req placeholder="0 si no la tenés"></label>
-        <label class="campo">Cintura (cm)<input type="number" step="0.1" id="c-cintura" placeholder="opcional"></label>
+        <label class="campo">Peso (kg)<input type="number" step="0.1" min="0" inputmode="decimal" id="c-peso" placeholder="opcional"></label>
+        <label class="campo">Talla (cm)<input type="number" step="0.1" min="0" inputmode="decimal" id="c-talla" placeholder="opcional"></label>
+        <label class="campo">Cintura (cm)<input type="number" step="0.1" min="0" inputmode="decimal" id="c-cintura" placeholder="opcional"></label>
       </div>
       <p class="nota" id="c-imc"></p>
     </div>
-    <div class="caja">
+    <div class="caja" id="con-escalas">
       <span class="sub">Cómo viene</span>
       <div class="grid2">
         <label class="campo">Adherencia al plan *<select id="c-adherencia" data-req></select></label>
@@ -617,6 +716,7 @@
       </div>
       <p class="aviso" id="pac-aviso"></p>
       <p class="aviso oculto" id="pac-guardados"></p>
+      <p class="nota oculto" id="ultimo-plan" style="margin:14px 0 0;"></p>
     </div>
     <div class="nav-pasos">
       <button class="btn suave" onclick="irA('inicio')">Volver al inicio</button>
@@ -1054,10 +1154,18 @@ function errorLegible(e){
   var m=String((e&&e.message)||e||"");
   if(/credit balance|billing|insufficient_quota|exceeded your current quota/i.test(m)) return "La cuenta de inteligencia artificial se quedó sin crédito. Avisale a Javo: hasta que se cargue, no se pueden armar planes ni recetas.";
   if(/Failed to fetch|NetworkError|Load failed|network/i.test(m)) return "Sin conexión. Revisá internet y probá de nuevo.";
-  if(/JWT|expired|not authenticated|401/i.test(m)) return "Se venció la sesión. Tocá Salir y volvé a entrar.";
+  if(/JWT|expired|not authenticated|401/i.test(m)) return "Se venció la sesión. Tocá Cerrar sesión y volvé a entrar.";
+  if(/La API respondió (429|5\d\d)|overloaded|rate_limit/i.test(m)) return "La inteligencia artificial está saturada. Probá de nuevo en 2 minutos.";
+  if(/JSON at position|Unexpected end of JSON|Expected ',' or/i.test(m)) return "La respuesta vino incompleta. Probá de nuevo.";
   if(/not valid JSON|Unexpected token|respuesta inválida|HTTP \d{3}|timeout/i.test(m)) return "El servidor no respondió bien. Esperá un minuto y probá de nuevo.";
   if(/row-level security|permission|policy/i.test(m)) return "La app no permitió esta acción con tu usuario.";
   return m || "Algo falló. Probá de nuevo.";
+}
+/* las funciones de IA solo responden a una usuaria con sesión: viaja su token */
+async function cabecerasIA(){
+  var h={"Content-Type":"application/json"};
+  try{ var s=(await sb.auth.getSession()).data.session; if(s&&s.access_token) h.Authorization="Bearer "+s.access_token; }catch(e){}
+  return h;
 }
 /* aviso flotante, para cosas que pasan mientras la pantalla ya es otra */
 function avisar(texto, ms){
@@ -1072,7 +1180,7 @@ function hayCambiosSinGuardar(){
 }
 function irA(nombre, forzar){
   if(!forzar && nombre!=="planes" && hayCambiosSinGuardar() && !confirm("Tenés cambios sin guardar en el plan. ¿Salir igual y perderlos?")) return false;
-  ["login","inicio","consulta","planes","recetario","listado","recomendaciones","guardados","ficha","alta"].forEach(function(p){ $("p-"+p).classList.toggle("oculto", p!==nombre); });
+  ["login","inicio","consulta","planes","recetario","listado","recomendaciones","guardados","ficha","alta","biblioteca","programa","consultante"].forEach(function(p){ $("p-"+p).classList.toggle("oculto", p!==nombre); });
   window.scrollTo(0,0);
   return true;
 }
@@ -1110,12 +1218,24 @@ async function iniciarSesion(u){
   $("barra-sesion").classList.remove("oculto");
   irA("inicio", true);
   repararDocumentos();
+  irDestino();
 }
+/* /herramientas/#plan y #recetario (los botones de la app anterior llevan acá) abren esa pantalla */
+function irDestino(){
+  var destino=(location.hash||"").replace("#","");
+  if(destino!=="plan" && destino!=="recetario") return;
+  try{ history.replaceState(null, "", location.pathname+location.search); }catch(e){}
+  if(destino==="plan") abrirPlanes(); else abrirRecetario();
+}
+window.addEventListener("hashchange", function(){ if(usuario) irDestino(); });
 /* todo lo que una sesión o empresa deja a medias: se limpia al entrar, al salir y al cambiar de empresa */
 function limpiarTodo(){
-  pacientes=[]; pacientesError=null;
-  deselegirPaciente(); recDeselegir(); conDeselegir(); guaDeselegir(); cerrarCorregirNombre();
-  plan.resultado=null; plan.docId=null; plan.deGuardado=false; plan.docFecha=null; plan.metricas=null; plan.gen=(plan.gen||0)+1;
+  plan.ultimo=null; pacientes=[]; pacientesError=null;
+  prog.lista=null; prog.actual=null; prog.n=(prog.n||0)+1;
+  ["prog-lista","pc-cuerpo"].forEach(function(id){ if($(id)) $(id).innerHTML=""; });
+  if($("prog-busca")) $("prog-busca").value="";
+  deselegirPaciente(); recDeselegir(); conDeselegir(); guaDeselegir(); bibDeselegir(true); cerrarCorregirNombre();
+  plan.resultado=null; plan.docId=null; plan.deGuardado=false; plan.docFecha=null; plan.metricas=null; plan.corregido=false; plan.ultimo=null; plan.gen=(plan.gen||0)+1;
   rec.resultado=null; rec.deGuardado=false; rec.deGuardadoResultado=false; rec.docFecha=null; rec.docId=null; rec.cantidades={};
   ficha.paciente=null; ficha.sesiones=[]; ficha.docs=[];
   ["plan-resultado","rec-resultado","l-resultado","ficha-cuerpo","lista-pacientes-ini"].forEach(function(id){ if($(id)) $(id).innerHTML=""; });
@@ -1172,11 +1292,32 @@ function cambiarEmpresa(nombre){
    ===================================================================== */
 async function cargarPacientes(){
   if(pacientes.length) return pacientes;
-  var r = await sb.from("patients").select("id, first_name, last_name, sex, birth_date, initial_weight, height, status, email, phone, area, company, created_at").eq("company",empresa).order("last_name",{ascending:true});
-  pacientesError = r.error ? errorLegible(r.error) : null;
-  pacientes = r.data||[];
-  return pacientes;
+  if(cargarPacientes.p && cargarPacientes.emp===empresa) return cargarPacientes.p;
+  var emp=empresa; cargarPacientes.emp=emp;
+  var promesa=(async function(){
+    // por tandas hasta traerlas todas: la primera dice cuántas hay; si no lo dice, se sigue hasta una tanda vacía
+    var todas=[], desde=0, POR_VEZ=1000, r=null, total=null;
+    for(var vuelta=0; vuelta<200; vuelta++){
+      r = await sb.from("patients").select("id, first_name, last_name, sex, birth_date, initial_weight, height, status, email, phone, area, company, created_at", vuelta===0?{count:"exact"}:undefined).eq("company",emp).order("last_name",{ascending:true}).order("id",{ascending:true}).range(desde, desde+POR_VEZ-1);
+      if(r.error || !r.data) break;
+      if(vuelta===0 && typeof r.count==="number") total=r.count;
+      todas=todas.concat(r.data);
+      desde+=r.data.length;
+      if(!r.data.length || (total!=null && todas.length>=total)) break;
+    }
+    if(emp!==empresa) return pacientes; // cambió de empresa mientras se cargaba
+    pacientesError = (r&&r.error) ? errorLegible(r.error) : null;
+    pacientes = pacientesError ? [] : todas;
+    return pacientes;
+  })();
+  cargarPacientes.p=promesa;
+  try{ return await promesa; } finally { if(cargarPacientes.p===promesa) cargarPacientes.p=null; }
 }
+/* si la pestaña estuvo un rato en segundo plano (por ejemplo, cargando a alguien en la app anterior), la lista se vuelve a traer */
+document.addEventListener("visibilitychange", function(){
+  if(document.visibilityState==="hidden") cargarPacientes.oculta=Date.now();
+  else if(cargarPacientes.oculta && Date.now()-cargarPacientes.oculta>15000){ cargarPacientes.oculta=0; pacientes=[]; }
+});
 function sinResultados(ul, q){
   if(pacientesError){ ul.innerHTML='<li><span>No se pudo cargar la lista de pacientes: '+esc(pacientesError)+'</span><button type="button" class="btn chico suave" onclick="pacientes=[];this.closest(\'ul\').previousElementSibling.dispatchEvent(new Event(\'input\'))">Reintentar</button></li>'; return true; }
   return false;
@@ -1220,9 +1361,10 @@ async function ultimasMedidas(pacienteId){
 elegirPaciente.n=0;
 async function elegirPaciente(p){
   var token=++elegirPaciente.n;
-  plan.paciente=p; plan.docId=null; plan.resultado=null; plan.deGuardado=false; plan.docFecha=null; cerrarCorregirNombre();
+  plan.paciente=p; plan.docId=null; plan.resultado=null; plan.deGuardado=false; plan.docFecha=null; plan.corregido=false; cerrarCorregirNombre();
   $("plan-resultado").innerHTML=""; $("plan-resultado").classList.remove("editando");
   $("lista-pacientes").innerHTML=""; $("busca-paciente").value=nombreCompleto(p); $("paciente-elegido").classList.add("oculto"); $("btn-p1").disabled=true;
+  if($("ultimo-plan")) $("ultimo-plan").classList.add("oculto");
   $("pac-aviso").className="aviso"; $("pac-aviso").textContent="Cargando la última sesión…";
   var m = await ultimasMedidas(p.id);
   if(token!==elegirPaciente.n) return;
@@ -1262,6 +1404,7 @@ function deselegirPaciente(){
   elegirPaciente.n++; plan.gen++; cerrarCorregirNombre();
   plan.paciente=null; plan.info=null; $("paciente-elegido").classList.add("oculto"); $("pac-guardados").classList.add("oculto"); $("pac-aviso").textContent="";
   $("busca-paciente").value=""; $("lista-pacientes").innerHTML=""; $("btn-p1").disabled=true;
+  pintarUltimoPlan();
 }
 
 /* =====================================================================
@@ -1500,16 +1643,31 @@ function irPaso(n){
 function otraPaciente(){
   if(plan.generando) return;
   if(hayCambiosSinGuardar() && !confirm("Tenés cambios sin guardar en el plan. ¿Seguir igual y perderlos?")) return;
-  deselegirPaciente(); plan.resultado=null; plan.docId=null; $("plan-resultado").innerHTML=""; $("plan-resultado").classList.remove("editando"); irPaso(1); $("busca-paciente").focus();
+  if(plan.resultado && plan.paciente && plan.docId) plan.ultimo={id:plan.docId, nombre:nombreCompleto(plan.paciente)};
+  plan.corregido=false; deselegirPaciente(); pintarUltimoPlan(); plan.resultado=null; plan.docId=null; $("plan-resultado").innerHTML=""; $("plan-resultado").classList.remove("editando"); irPaso(1); $("busca-paciente").focus();
 }
 function abrirPlanes(){
-  if(plan.deGuardado){ deselegirPaciente(); plan.resultado=null; plan.docId=null; $("plan-resultado").innerHTML=""; }
-  plan.deGuardado=false; plan.docFecha=null; $("pasos-plan").classList.remove("oculto"); $("plan-5-kicker").textContent="Plan alimentario · 5 de 5";
   if(!irA("planes")) return;
   cargarPacientes();
-  // si hay un plan recién armado para esta paciente, se muestra ese (y "Ajustar y volver a generar" lo actualiza); si no, se arranca uno nuevo
-  if(plan.resultado && plan.paciente && !plan.generando && $("plan-resultado").querySelector(".hoja")) irPaso(5);
-  else { plan.docId=null; irPaso(1); }
+  // un plan que se armó pero no se pudo guardar no se tira: se muestra para guardarlo o imprimirlo
+  if(planSinGuardar()){ $("pasos-plan").classList.remove("oculto"); irPaso(5); return; }
+  // siempre arranca un plan nuevo; el último que se armó queda a un toque ("Ver el último plan")
+  if(plan.resultado && plan.paciente && plan.docId && !plan.generando && !plan.deGuardado) plan.ultimo={id:plan.docId, nombre:nombreCompleto(plan.paciente)};
+  if(!plan.generando){ deselegirPaciente(); plan.resultado=null; plan.docId=null; plan.corregido=false; $("plan-resultado").innerHTML=""; $("plan-resultado").classList.remove("editando"); }
+  plan.deGuardado=false; plan.docFecha=null; $("pasos-plan").classList.remove("oculto"); $("plan-5-kicker").textContent="Plan alimentario · 5 de 5";
+  irPaso(plan.generando ? 5 : 1);
+  pintarUltimoPlan();
+}
+function pintarUltimoPlan(){
+  var el=$("ultimo-plan"); if(!el) return;
+  if(plan.ultimo && !plan.paciente){ el.innerHTML='Último plan armado: <b>'+esc(plan.ultimo.nombre)+'</b>. <button type="button" class="enlace" onclick="verUltimoPlan()">Verlo</button>'; el.classList.remove("oculto"); }
+  else { el.innerHTML=""; el.classList.add("oculto"); }
+}
+function planSinGuardar(){ return !!(plan.resultado && plan.paciente && !plan.docId && !plan.deGuardado && !plan.generando && $("plan-resultado").querySelector(".hoja")); }
+async function verUltimoPlan(){
+  if(!plan.ultimo || ocupado()) return;
+  var ok=await abrirPlanGuardado(plan.ultimo.id);
+  if(!ok){ plan.ultimo=null; var el=$("ultimo-plan"); if(el){ el.textContent="Ese plan ya no está en Planes guardados."; el.classList.remove("oculto"); } }
 }
 
 function preferenciasActuales(){
@@ -1534,14 +1692,16 @@ async function generarPlan(){
   if(ocupado()) return;
   plan.pref=preferenciasActuales();
   // se congela todo lo que el plan necesita: si Rosana cambia de paciente mientras la IA trabaja, el plan igual se guarda en la ficha correcta
-  var pac=plan.paciente, info=plan.info, met=plan.metricas, pref=plan.pref, plato=plan.plato||platoAutomaticoDe(plan.metricas), platoManual=plan.platoManual, docId=plan.docId, token=++plan.gen, emp=empresa, usr=usuario, ses=sesionN;
-  plan.generando=true;
+  // si Rosana ya corrigió y guardó este plan, el nuevo va aparte: el corregido queda en Planes guardados
+  var aparte=!!(plan.corregido && plan.docId);
+  var pac=plan.paciente, info=plan.info, met=plan.metricas, pref=plan.pref, plato=plan.plato||platoAutomaticoDe(plan.metricas), platoManual=plan.platoManual, docId=aparte?null:plan.docId, token=++plan.gen, emp=empresa, usr=usuario, ses=sesionN;
+  plan.generando=true; plan.generandoToken=token;
   irPaso(5);
   $("plan-cargando").classList.remove("oculto"); $("plan-error").textContent=""; $("plan-resultado").innerHTML="";
   $("btn-generar").disabled=true;
   try{
     var prefApi=Object.assign({}, pref); delete prefApi.generalRecommendations; // texto fijo, no lo escribe la IA
-    var r = await fetch("/api/generate-plan",{method:"POST",headers:{"Content-Type":"application/json"},
+    var r = await fetch("/api/generate-plan",{method:"POST",headers:await cabecerasIA(),
       body:JSON.stringify({patientInfo:info, metrics:met, preferences:prefApi})});
     var data;
     try{ data = await r.json(); }catch(e){ throw new Error("respuesta inválida del servidor (HTTP "+r.status+")"); }
@@ -1569,19 +1729,23 @@ async function generarPlan(){
       avisar(idAparte ? "El plan de "+nombreCompleto(pac)+" terminó de armarse y quedó en Planes guardados." : "El plan de "+nombreCompleto(pac)+" terminó pero no se pudo guardar.", 9000);
       return;
     }
-    plan.resultado=data;
+    plan.resultado=data; plan.corregido=false;
     pintarPlan(data);
-    // "Ajustar y volver a generar" actualiza el mismo documento de esta sesión; un plan nuevo (otra paciente, o "Plan nuevo") crea otro
+    // "Ajustar y volver a generar" actualiza el mismo documento de esta sesión, salvo que Rosana ya lo haya corregido; un plan nuevo (otra paciente, o "Plan nuevo") crea otro
     plan.guardando = guardarDocumento({type:"meal_plan", patientName:nombreCompleto(pac), patientId:pac.id, docId:docId, input:entrada, output:data, company:emp, usuario:usr});
     var idNuevo = await plan.guardando; plan.guardando=null;
     if(token===plan.gen && plan.paciente===pac) plan.docId=idNuevo;
+    if(aparte && idNuevo && $("plan-guardado") && /^aviso ok/.test($("plan-guardado").className)) $("plan-guardado").textContent="Guardado como plan nuevo. El que corregiste sigue en Planes guardados.";
     if($("p-planes").classList.contains("oculto") || pasoActual!==5) avisar("El plan de "+nombreCompleto(pac)+" ya está listo. Lo ves en Plan alimentario o en Planes guardados.", 9000);
   }catch(e){
     console.error(e);
     if(token!==plan.gen){ if(usuario && sesionN===ses) avisar("No se pudo armar el plan de "+nombreCompleto(pac)+": "+errorLegible(e), 9000); return; }
     $("plan-error").className="aviso error"; $("plan-error").textContent="No se pudo generar el plan: "+errorLegible(e);
     $("plan-resultado").innerHTML='<div class="nav-pasos"><button class="btn suave" onclick="irPaso(4)">Atrás</button><button class="btn" onclick="generarPlan()">Volver a intentar</button></div>';
-  }finally{ if(token===plan.gen){ plan.generando=false; $("plan-cargando").classList.add("oculto"); $("btn-generar").disabled=false; } }
+  }finally{
+    // se libera el armado de ESTE plan aunque Rosana haya abierto otro mientras tanto (si no, quedaba trabado hasta recargar)
+    if(plan.generandoToken===token){ plan.generando=false; plan.generandoToken=null; $("plan-cargando").classList.add("oculto"); $("btn-generar").disabled=false; }
+  }
 }
 var NOMBRES_GRUPOS={carbs:"Carbohidratos",proteins:"Proteínas",fats:"Grasas",vegetablesA:"Vegetales A",vegetablesB:"Vegetales B",fruits:"Frutas"};
 var NOMBRES_COMPRAS={carbsAndLegumes:"Carbohidratos y legumbres",proteins:"Proteínas",dairy:"Lácteos",vegetablesAndFruits:"Vegetales y frutas",fats:"Grasas",canned:"Enlatados",frozen:"Congelados"};
@@ -1693,7 +1857,7 @@ function pintarPlan(d){
      '<div class="acciones-res oculto" id="acciones-editar"><button class="btn" onclick="guardarEdicion()">Guardar cambios</button>'+
      '<button class="btn suave" onclick="cancelarEdicion()">Cancelar</button></div>'+
      '<p class="aviso ok" id="plan-guardado"></p></div>';
-  h=acciones+hoja("Plan alimentario · "+nombreCompleto(plan.paciente), h, plan.docFecha);
+  h=avisosDelPlan(d)+acciones+hoja("Plan alimentario · "+nombreCompleto(plan.paciente), h, plan.docFecha);
   $("plan-resultado").classList.remove("editando");
   $("plan-resultado").innerHTML=h;
 }
@@ -1723,6 +1887,7 @@ async function guardarEdicion(){
   $("plan-guardado").textContent="Guardando los cambios…";
   try{
     if(plan.guardando){ try{ await plan.guardando; }catch(e){} }
+    plan.corregido=true;
     plan.docId = await guardarDocumento({type:"meal_plan", patientName:nombreCompleto(plan.paciente), patientId:plan.paciente.id, docId:plan.docId, edicion:true,
       input:inputDelPlan(), output:nuevo});
   } finally {
@@ -1730,8 +1895,16 @@ async function guardarEdicion(){
     var b2=$("plan-resultado").querySelector(".acciones-fijas"); if(b2) setTimeout(function(){ b2.style.pointerEvents=""; }, 400);
   }
 }
+/* avisos que quedan a la vista hasta que Rosana revise el plan y guarde (no se imprimen) */
+function avisosDelPlan(d){
+  var h="";
+  if(d && d._aviso==="respaldo") h+='<p class="aviso no-imprimir" id="plan-respaldo"><b>Revisalo antes de entregarlo:</b> este plan lo armó el modelo de respaldo, porque el principal no respondió bien. Cuando lo revises, tocá Editar el plan y Guardar cambios.</p>';
+  if(d && Array.isArray(d._revisar) && d._revisar.length) h+='<p class="aviso error no-imprimir" id="plan-revisar"><b>Revisalo antes de entregarlo:</b> puede incluir alimentos que esta paciente no debe comer: '+esc(d._revisar.join(", "))+'. Sacalos con Editar el plan y Guardar cambios.</p>';
+  return h;
+}
 function leerPlanEditado(base){
   var d=JSON.parse(JSON.stringify(base)), raiz=$("plan-resultado");
+  delete d._aviso; delete d._revisar; // guardar después de revisar los da por vistos
   function t(el){ return el ? String(el.innerText!=null?el.innerText:el.textContent).replace(/\s+/g," ").trim() : ""; }
   function ruta(ambito, r){ return t(ambito.querySelector('[data-ruta="'+r+'"]')); }
   function items(ambito, nombre){ var ul=ambito.querySelector('ul[data-lista="'+nombre+'"]'); return ul ? Array.prototype.map.call(ul.querySelectorAll(':scope > li > [data-texto]'), t).filter(Boolean) : []; }
@@ -1830,6 +2003,234 @@ async function guardarDocumento(o){
       : o.patientName ? "Guardado en la ficha de "+o.patientName+". Lo encontrás en Planes guardados." : "Guardado como recetario general.";
   }
   return r.error ? (o.docId||null) : idExistente;
+}
+
+/* =====================================================================
+   BIBLIOTECA DE EJERCICIOS · los ejercicios sueltos, cada uno con su link.
+   Textos neutros: sirven igual para mujeres y varones. Lo que la persona
+   manda desde el ejercicio le llega a Rosana por mail (/api/aviso).
+   ===================================================================== */
+var EJERCICIOS_SUELTOS = [
+  { id:"menu", ruta:"/menu-de-palabras/", titulo:"Menú de Palabras",
+    que:"Escuchar cómo se habla y cambiar el tono de las frases que pesan. Unos diez minutos, desde el celular.",
+    msj:function(saludo, link){ return saludo+" Te mando un ejercicio para esta semana: el Menú de Palabras. Son unos diez minutos para escuchar cómo te hablás. Lo hacés desde el celular y al final tocás «Mandárselo a Rosana»: me llega a mí.\n"+link; } },
+  { id:"registro", ruta:"/registro/", titulo:"Mi registro del día",
+    que:"Anotar cada comida con la hora y el motivo. Un minuto por comida; a la noche se manda con un botón.",
+    msj:function(saludo, link){ return saludo+" Te mando tu registro de comidas. Anotás la hora, qué comiste y qué te llevó a comer: un minuto por comida. A la noche tocás «Mandar a Rosana» y me llega a mí.\n"+link; } }
+];
+/* =====================================================================
+   PROGRAMA DE 90 DÍAS (Turno 3) · lo que cargan las consultantes en /mi-plan/.
+   Solo lectura. La base se lo muestra solo al equipo (perfil habilitado).
+   ===================================================================== */
+var prog = { lista:null, actual:null, n:0 };
+var PIXEL_VACIO = "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7";
+function progDia(inicio){
+  if(!inicio) return 1;
+  var a=String(inicio).split("-"), i=new Date(+a[0], +a[1]-1, +a[2]);
+  if(isNaN(i)) return 1;
+  var h=new Date(); h=new Date(h.getFullYear(), h.getMonth(), h.getDate());
+  var n=Math.floor((h-i)/86400000)+1;
+  return n<1 ? 1 : (n>90 ? 90 : n);
+}
+function progLetra(d){ var s=Math.ceil(d/7); return s<3?"Nutrir":s<5?"Unir":s<7?"Personalizar":s<9?"Liberar":s<11?"Activar":s<13?"Naturalizar":"Cierre"; }
+function progFecha(iso){
+  var a=String(iso||"").split("-"); if(a.length<3) return "";
+  var d=new Date(+a[0], +a[1]-1, +a[2]); if(isNaN(d)) return "";
+  return d.toLocaleDateString("es-AR",{weekday:"long", day:"numeric", month:"long"});
+}
+function progHace(ts){
+  var d=new Date(ts); if(isNaN(d)) return "";
+  var hoy=new Date(); hoy=new Date(hoy.getFullYear(), hoy.getMonth(), hoy.getDate());
+  var dia=new Date(d.getFullYear(), d.getMonth(), d.getDate());
+  var n=Math.round((hoy-dia)/86400000), hh=String(d.getHours()).padStart(2,"0")+":"+String(d.getMinutes()).padStart(2,"0");
+  return n<=0 ? "hoy "+hh : n===1 ? "ayer "+hh : "hace "+n+" días";
+}
+async function abrirPrograma(recargar){
+  if(!irA("programa")) return;
+  if(prog.lista && !recargar){ pintarPrograma(); return; }
+  var n=prog.n;
+  $("prog-est").textContent="Cargando…"; $("prog-lista").innerHTML="";
+  var r;
+  try{ r=await sb.from("programa_estado").select("user_id, resumen, actualizado, creado").order("actualizado",{ascending:false}).limit(1000); }
+  catch(e){ r={error:e}; }
+  if(n!==prog.n) return;
+  if(r.error){
+    var faltaSQL=/programa_estado|schema cache|does not exist/i.test(String(r.error.message||""));
+    $("prog-est").textContent = faltaSQL ? "Todavía no está lista la base del programa (falta correr el SQL del Turno 3). Avisale a Javo." : "No se pudo cargar: "+errorLegible(r.error);
+    return;
+  }
+  prog.lista=r.data||[];
+  pintarPrograma();
+}
+function pintarPrograma(){
+  if(!prog.lista) return;
+  var q=String($("prog-busca").value||"").toLowerCase().trim();
+  if(!prog.lista.length){
+    $("prog-est").textContent="";
+    $("prog-lista").innerHTML='<div class="caja"><p class="prog-vacio">Todavía no hay consultantes con cuenta. Cuando una entra con su mail a <b>'+esc(location.origin)+'/mi-plan/</b>, aparece acá.</p></div>';
+    return;
+  }
+  var l=prog.lista.filter(function(x){ var r=x.resumen||{};
+    return !q || String(r.nombre||"").toLowerCase().indexOf(q)>-1 || String(r.email||"").toLowerCase().indexOf(q)>-1; });
+  $("prog-est").textContent = l.length + (l.length===1 ? " consultante" : " consultantes") + (q ? " con «"+$("prog-busca").value.trim()+"»" : "");
+  $("prog-lista").innerHTML=l.map(function(x){
+    var r=x.resumen||{}, d=progDia(r.inicio);
+    return '<button type="button" class="prog-item" data-u="'+esc(x.user_id)+'">'+
+      '<b>'+esc(r.nombre||"Sin nombre")+'</b><span class="prog-mail">'+esc(r.email||"")+'</span>'+
+      '<span class="prog-dia">Día '+d+' de 90 · '+progLetra(d)+' · '+esc(progHace(x.actualizado))+'</span>'+
+      '<span class="prog-cifras"><span>'+(+r.dias_diario||0)+' días con diario</span><span>'+(+r.ejercicios||0)+' ejercicios</span>'+
+      '<span>'+(+r.fotos||0)+' fotos</span><span>'+(+r.checkins||0)+' check-in</span></span></button>';
+  }).join("");
+  $("prog-lista").querySelectorAll(".prog-item").forEach(function(b){ b.onclick=function(){ abrirConsultante(b.getAttribute("data-u")); }; });
+}
+function progSec(t, cuerpo){ return '<div class="prog-sec"><h3>'+esc(t)+'</h3>'+cuerpo+'</div>'; }
+function progPar(k, v){ return '<div class="prog-par">'+(k?'<small>'+esc(k)+'</small>':'')+'<p>'+esc(v)+'</p></div>'; }
+function progVacio(t){ return '<p class="prog-vacio">'+esc(t)+'</p>'; }
+function progSem(k){ return k==="v"?"Verde":k==="a"?"Amarillo":k==="r"?"Rojo":""; }
+async function abrirConsultante(uid){
+  if(!uid || !irA("consultante")) return;
+  var n=prog.n;
+  prog.actual=uid;
+  $("pc-kicker").textContent="Programa de 90 días"; $("pc-nombre").textContent="Cargando…"; $("pc-bajada").textContent=""; $("pc-cuerpo").innerHTML="";
+  var r;
+  try{ r=await sb.from("programa_estado").select("estado, resumen, actualizado").eq("user_id", uid).maybeSingle(); }
+  catch(e){ r={error:e}; }
+  if(n!==prog.n || prog.actual!==uid) return;
+  if(r.error || !r.data){ $("pc-nombre").textContent="No se pudo abrir"; $("pc-bajada").textContent=r.error ? errorLegible(r.error) : "Ya no está en el programa."; return; }
+  var E=r.data.estado||{}, R=r.data.resumen||{}, d=progDia(E.inicio||R.inicio);
+  $("pc-kicker").textContent="Programa de 90 días · Día "+d+" de 90 · "+progLetra(d);
+  $("pc-nombre").textContent=E.nombre||R.nombre||"Sin nombre";
+  var ini=progFecha(E.inicio||R.inicio);
+  $("pc-bajada").textContent=[E.email||R.email||"", ini ? "empezó el "+ini : "", "última actividad: "+progHace(r.data.actualizado)].filter(Boolean).join(" · ");
+  var h="";
+  var onb=Array.isArray(E.onbTexto) ? E.onbTexto : [];
+  h+=progSec("Lo que contó antes de empezar", onb.length ? onb.map(function(x){ return progPar(x&&x.k, x&&x.v); }).join("") : progVacio("Todavía no completó el comienzo."));
+  var dias=Object.keys(E.diario||{}).filter(function(f){ return Array.isArray(E.diario[f]) && E.diario[f].length; }).sort().reverse().slice(0,7);
+  h+=progSec("Su diario · los últimos 7 días con comidas", dias.length ? dias.map(function(f){
+    return '<p class="prog-dia-t">'+esc(progFecha(f))+'</p>'+E.diario[f].map(function(c){
+      return progPar([c.hora, c.hambre, progSem(c.sem)].filter(Boolean).join(" · "), String(c.que||"")+(c.nota ? "\n"+c.nota : "")); }).join(""); }).join("")
+    : progVacio("Todavía no cargó comidas."));
+  var ejs=Object.keys(E.ej||{}).filter(function(k){ return E.ej[k] && E.ej[k].envio; }).sort(function(a,b){ return (+a.slice(1))-(+b.slice(1)); });
+  h+=progSec("Ejercicios que te mandó", ejs.length ? ejs.map(function(k){ var en=E.ej[k].envio;
+    return '<p class="prog-dia-t">Día '+(+k.slice(1)||"")+' · '+esc(en.t||"")+(en.f ? ' · '+esc(progFecha(en.f)) : '')+'</p>'+
+      (Array.isArray(en.bl) ? en.bl : []).map(function(b){ return (Array.isArray(b&&b.l) ? b.l : []).map(function(x){ return progPar(x&&x.k, x&&x.v); }).join(""); }).join(""); }).join("")
+    : progVacio("Todavía no mandó ejercicios."));
+  var fotos=(Array.isArray(E.fotos) ? E.fotos : []).filter(function(f){ return f && f.ruta; });
+  h+=progSec("Fotos", fotos.length ? '<div class="prog-fotos">'+fotos.map(function(f){
+    return '<figure><img alt="Foto del día '+(+f.d||"")+'" data-ruta="'+esc(f.ruta)+'" src="'+PIXEL_VACIO+'"><figcaption>Día '+(+f.d||"")+(f.k==="heladera"?" · su heladera":"")+'</figcaption></figure>'; }).join("")+'</div>'
+    : progVacio("Todavía no subió fotos."));
+  var notas=Object.keys(E.notas||{}).filter(function(k){ return String(E.notas[k]||"").trim(); }).sort(function(a,b){ return a-b; });
+  h+=progSec("Sus notas", notas.length ? notas.map(function(k){ return progPar("Día "+k, E.notas[k]); }).join("") : progVacio("Todavía no escribió notas."));
+  var cks=Object.keys(E.checkins||{}).filter(function(k){ return E.checkins[k]===true; }).sort(function(a,b){ return a-b; });
+  h+=progSec("Check-in", cks.length ? progVacio("Te mandó su resumen "+(cks.length===1 ? "el día "+cks[0] : "los días "+cks.join(", "))+".") : progVacio("Todavía no mandó ningún check-in."));
+  $("pc-cuerpo").innerHTML=h;
+  progFotos(n, uid);
+}
+async function progFotos(n, uid){
+  var imgs=Array.prototype.slice.call(document.querySelectorAll("#pc-cuerpo img[data-ruta]"));
+  if(!imgs.length) return;
+  var rutas=imgs.map(function(i){ return i.getAttribute("data-ruta"); });
+  try{
+    var urls={};
+    for(var p=0; p<rutas.length; p+=100){ /* de a 100, lo que firma el servidor por pedido */
+      var res=await fetch("/api/fotos",{ method:"POST", headers: await cabecerasIA(), body: JSON.stringify({ accion:"ver", rutas:rutas.slice(p, p+100) }) });
+      var j=await res.json().catch(function(){ return {}; });
+      if(!res.ok) throw new Error(j.error||("HTTP "+res.status));
+      Object.assign(urls, j.urls||{});
+    }
+    if(n!==prog.n || prog.actual!==uid) return;
+    imgs.forEach(function(i){ var u=urls[i.getAttribute("data-ruta")]; if(u){ i.src=u; i.removeAttribute("data-ruta"); } });
+    if(imgs.some(function(i){ return i.hasAttribute("data-ruta"); })) throw new Error("faltan");
+  }catch(e){
+    var g=document.querySelector("#pc-cuerpo .prog-fotos");
+    if(g && !g.parentNode.querySelector(".prog-falla")){ var p=document.createElement("p"); p.className="prog-vacio prog-falla"; p.style.marginTop="12px";
+      p.textContent="Alguna foto no se pudo mostrar ahora. Tocá Actualizar en un rato."; g.parentNode.appendChild(p); }
+  }
+}
+var bib = { paciente:null };
+function abrirBiblioteca(p){
+  if(!irA("biblioteca")) return;
+  cargarPacientes();
+  if(p) bibElegir(p); else pintarBiblioteca();
+}
+/* el nombre completo va en el link (así a Ro le llega con apellido); el saludo usa solo el primer nombre */
+function bibNombre(){
+  if(bib.paciente) return nombreCompleto(bib.paciente).replace(/\s+/g," ").trim().slice(0,60);
+  return String(($("bib-quien")||{}).value||"").replace(/\s+/g," ").trim().slice(0,60);
+}
+function bibSaludo(){ var n=bibNombre().split(" ")[0]; return n ? "Hola, "+n+"." : "Hola."; }
+/* teléfonos argentinos como los cargan (11 5555-1234, 011 15 5555 1234, +54 9 11…) al formato de WhatsApp */
+function waNumero(tel){
+  var d=String(tel||"").replace(/\D/g,"");
+  if(!d) return "";
+  if(d.indexOf("00")===0) d=d.slice(2);
+  if(d.indexOf("549")===0) d=d.slice(3);
+  else if(d.indexOf("54")===0 && d.length>=12) d=d.slice(2);
+  if(d.charAt(0)==="0") d=d.slice(1);
+  if(d.length===12){ var m=d.match(/^(\d{2,4})15(\d{6,8})$/); if(m && (m[1]+m[2]).length===10) d=m[1]+m[2]; }
+  /* sin característica (por ejemplo «15 5142-6830») no se puede saber de dónde es: WhatsApp deja elegir */
+  if(d.length!==10 || d.indexOf("15")===0) return "";
+  return "549"+d;
+}
+async function filtrarPacientesBib(q){
+  if(bib.paciente){ bib.paciente=null; $("bib-elegida").classList.add("oculto"); }
+  pintarBiblioteca();
+  await cargarPacientes();
+  var ul=$("lista-pacientes-bib"); ul.innerHTML="";
+  if(q.trim().length<2) return;
+  if(sinResultados(ul,q)) return;
+  pacientes.filter(function(p){ return coincide(p,q); }).slice(0,8).forEach(function(p){
+    var li=document.createElement("li");
+    li.innerHTML='<span>'+esc(nombreCompleto(p))+'</span><small>'+(waNumero(p.phone)?"con WhatsApp":"sin teléfono")+'</small>';
+    li.onclick=function(){ bibElegir(p); }; ul.appendChild(li);
+  });
+}
+function bibElegir(p){
+  bib.paciente=p; $("lista-pacientes-bib").innerHTML=""; $("bib-quien").value=nombreCompleto(p);
+  $("bib-elegida-nombre").textContent=nombreCompleto(p);
+  $("bib-elegida-txt").textContent=waNumero(p.phone) ? "WhatsApp abre su chat: "+p.phone : "No tiene teléfono cargado: WhatsApp te deja elegir a quién mandárselo.";
+  $("bib-elegida").classList.remove("oculto");
+  pintarBiblioteca();
+}
+function bibDeselegir(sinFoco){
+  bib.paciente=null;
+  if($("bib-quien")) $("bib-quien").value="";
+  if($("lista-pacientes-bib")) $("lista-pacientes-bib").innerHTML="";
+  if($("bib-elegida")) $("bib-elegida").classList.add("oculto");
+  pintarBiblioteca();
+  if(!sinFoco && $("bib-quien")) $("bib-quien").focus();
+}
+function bibLink(ej){ var n=bibNombre(); return location.origin+ej.ruta+(n?"?nombre="+encodeURIComponent(n):""); }
+function bibMensaje(ej){ return ej.msj(bibSaludo(), bibLink(ej)); }
+function pintarBiblioteca(){
+  var c=$("bib-lista"); if(!c) return;
+  var tel=bib.paciente ? waNumero(bib.paciente.phone) : "";
+  c.innerHTML=EJERCICIOS_SUELTOS.map(function(ej, i){
+    return '<div class="caja bib-ej" data-ej="'+ej.id+'">'+
+      '<span class="kicker">'+(i<9?"0":"")+(i+1)+'</span>'+
+      '<h3>'+esc(ej.titulo)+'</h3>'+
+      '<p class="bib-que">'+esc(ej.que)+'</p>'+
+      '<p class="bib-msj">'+esc(bibMensaje(ej))+'</p>'+
+      '<div class="botonera">'+
+        '<button type="button" class="btn chico" onclick="bibCopiar(\''+ej.id+'\')">Copiar</button>'+
+        '<a class="btn chico" data-wa target="_blank" rel="noopener" href="'+esc("https://wa.me/"+tel+"?text="+encodeURIComponent(bibMensaje(ej)))+'">WhatsApp</a>'+
+        '<a class="btn chico suave" data-ver target="_blank" rel="noopener" href="'+esc(bibLink(ej))+'">Ver el ejercicio</a>'+
+      '</div>'+
+      '<p class="aviso" id="bib-av-'+ej.id+'"></p>'+
+    '</div>';
+  }).join("");
+}
+async function bibCopiar(id){
+  var ej=EJERCICIOS_SUELTOS.filter(function(x){ return x.id===id; })[0]; if(!ej) return;
+  var t=bibMensaje(ej), av=$("bib-av-"+id), ok=false;
+  try{ await navigator.clipboard.writeText(t); ok=true; }
+  catch(e){
+    var ta=document.createElement("textarea"); ta.value=t; ta.setAttribute("readonly",""); ta.style.position="fixed"; ta.style.opacity="0";
+    document.body.appendChild(ta); ta.select();
+    try{ ok=document.execCommand("copy"); }catch(e2){}
+    ta.remove();
+  }
+  av.className="aviso"; av.textContent=ok ? "Copiado. Pegalo donde quieras." : "No se pudo copiar solo: mantené apretado el texto de arriba y copialo a mano.";
 }
 
 /* =====================================================================
@@ -1948,6 +2349,7 @@ function fichaNuevaConsulta(){ var p=ficha.paciente; if(!p) return; abrirConsult
 function fichaNuevoPlan(){ if(ficha.paciente) nuevoPlanPara(ficha.paciente); }
 function fichaRecetario(){ var p=ficha.paciente; if(!p) return; abrirRecetario(); recElegirPaciente(p); }
 function fichaGuardados(){ if(!ficha.paciente) return; gua.paciente=ficha.paciente; abrirGuardados(); }
+function fichaBiblioteca(){ if(ficha.paciente) abrirBiblioteca(ficha.paciente); }
 async function fichaCorregirConsulta(id){
   var p=ficha.paciente, fila=ficha.sesiones.filter(function(x){ return x.id===id; })[0]; if(!p||!fila) return;
   abrirConsulta(); await conElegir(p); cargarConsultaEnFormulario(fila, id);
@@ -2003,7 +2405,7 @@ async function guardarAlta(fuerza){
   if(!(peso>0)||!(talla>0)){ av.className="aviso error"; av.textContent="Completá peso y talla. Si no los tenés, poné los de la última vez que la viste."; return; }
   if($("btn-alta").disabled) return;
   $("btn-alta").disabled=true; av.textContent="Revisando que no exista…";
-  await cargarPacientes();
+  pacientes=[]; await cargarPacientes();
   if(pacientesError){ $("btn-alta").disabled=false; av.className="aviso error"; av.textContent="No se pudo revisar la lista de pacientes ("+pacientesError+"). Probá de nuevo en un rato."; return; }
   var repetida=pacientes.filter(function(x){ return plano(nombreCompleto(x)).trim()===plano(nombre+" "+apellido).trim(); })[0];
   if(repetida&&!fuerza){
@@ -2028,7 +2430,11 @@ async function guardarAlta(fuerza){
   await abrirFicha(p);
   $("fi-aviso").className="aviso ok"; $("fi-aviso").textContent="Dada de alta en "+empresa+". Ya está en la app. Ahora podés cargar su primera consulta.";
 }
-function abrirFichaPorId(id){ var p=pacientes.filter(function(x){ return x.id===id; })[0]; if(p) abrirFicha(p); }
+async function abrirFichaPorId(id){
+  var p=pacientes.filter(function(x){ return x.id===id; })[0];
+  if(!p){ pacientes=[]; await cargarPacientes(); p=pacientes.filter(function(x){ return x.id===id; })[0]; }
+  if(p) abrirFicha(p);
+}
 
 /* =====================================================================
    PLANES GUARDADOS · los documentos de cada paciente (generated_documents)
@@ -2116,7 +2522,7 @@ function pacienteDeDoc(d){
 }
 /* abre un plan ya hecho (desde Herramientas o desde la app) en la misma hoja: se imprime, se edita, se guarda sobre el mismo */
 async function abrirPlanGuardado(id){
-  var d=await traerDocumento(id); if(!d) return;
+  var d=await traerDocumento(id); if(!d) return false;
   var inp=d.input||{}, p=pacienteDeDoc(d);
   plan.paciente=p;
   plan.info = inp.patientData || inp.patientInfo || {firstName:p.first_name, lastName:p.last_name, age:edadDe(p.birth_date), sex:p.sex||"", weight:Number(p.initial_weight||0), height:Number(p.height||0), waist:null};
@@ -2132,6 +2538,7 @@ async function abrirPlanGuardado(id){
   $("plan-error").textContent=""; $("plan-cargando").classList.add("oculto");
   irA("planes"); irPaso(5);
   pintarPlan(plan.resultado);
+  return true;
 }
 async function abrirRecetarioGuardado(id){
   var d=await traerDocumento(id); if(!d) return;
@@ -2224,13 +2631,15 @@ async function generarRecetas(){
     var cuerpo={ patientInfo:rec.info, mealTypes:conteos.map(function(c){return c.type;}), mealCounts:conteos, count:totalRecetas(),
       objective:$("rec-objetivo").value.trim(), dietType:chipsElegidos("chips-dieta-rec")[0]||"Normal",
       intolerances:chipsElegidos("chips-clinicas-rec"), pregnancyStage:"", hideCalories:$("rec-ocultar").checked, foodRestrictions:$("rec-restricciones").value.trim() };
-    var r=await fetch("/api/generate-recipes",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(cuerpo)});
+    var r=await fetch("/api/generate-recipes",{method:"POST",headers:await cabecerasIA(),body:JSON.stringify(cuerpo)});
     var data; try{ data=await r.json(); }catch(e){ throw new Error("respuesta inválida del servidor (HTTP "+r.status+")"); }
     if(!r.ok||data.error) throw new Error(data.error||("HTTP "+r.status));
     if(!Array.isArray(data.recipes)||!data.recipes.length) throw new Error("No vinieron recetas. Probá de nuevo.");
+    var recRespaldo=data._aviso==="respaldo"; delete data._aviso; delete data._revisar;
     rec.resultado=data; rec.docId=null; rec.docFecha=null; rec.deGuardado=false;
     rec.inputGuardado=Object.assign({selectedPatientId:rec.paciente?rec.paciente.id:null, patientData:rec.info||null}, cuerpo);
     pintarRecetas(data);
+    if(recRespaldo) $("rec-resultado").insertAdjacentHTML("afterbegin", '<p class="aviso no-imprimir"><b>Revisalas antes de entregarlas:</b> estas recetas las armó el modelo de respaldo, porque el principal no respondió bien.</p>');
     rec.guardando = guardarDocumento({type:"recipes", patientName:rec.paciente?nombreCompleto(rec.paciente):null, patientId:rec.paciente?rec.paciente.id:null,
       input:rec.inputGuardado, output:data, company:empRec});
     rec.docId = await rec.guardando; rec.guardando=null;
@@ -2301,7 +2710,8 @@ async function filtrarPacientesCon(q){
 conElegir.n=0;
 async function conElegir(p){
   var token=++conElegir.n; cerrarCorregirNombre();
-  con.paciente=p; con.editandoId=null; con.ultima=null; $("lista-pacientes-con").innerHTML=""; $("busca-paciente-con").value=nombreCompleto(p);
+  con.paciente=p; con.editandoId=null; con.editandoTipo=null; con.filaCargada=null; con.formInicial=null; con.ultima=null; sacarOpcionesExtra(); $("lista-pacientes-con").innerHTML=""; $("busca-paciente-con").value=nombreCompleto(p);
+  $("con-escalas").classList.remove("oculto"); $("con-editando-antro").classList.add("oculto");
   $("con-elegido").classList.add("oculto"); $("con-form").classList.add("oculto"); $("btn-ultima-consulta").classList.add("oculto");
   var r=await sb.from("sessions").select("*").eq("patient_id",p.id).order("session_date",{ascending:false}).order("created_at",{ascending:false}).limit(1);
   if(token!==conElegir.n) return;
@@ -2320,7 +2730,7 @@ async function conElegir(p){
   $("c-aviso").textContent=""; $("c-imc").textContent="";
   $("c-peso").focus();
 }
-function conDeselegir(){ conElegir.n++; con.paciente=null; con.ultima=null; con.editandoId=null; $("con-elegido").classList.add("oculto"); $("con-form").classList.add("oculto"); $("busca-paciente-con").value=""; $("lista-pacientes-con").innerHTML=""; cerrarCorregirNombre(); }
+function conDeselegir(){ conElegir.n++; con.paciente=null; con.ultima=null; con.editandoId=null; con.editandoTipo=null; con.filaCargada=null; con.formInicial=null; sacarOpcionesExtra(); $("con-escalas").classList.remove("oculto"); $("con-editando-antro").classList.add("oculto"); $("con-elegido").classList.add("oculto"); $("con-form").classList.add("oculto"); $("busca-paciente-con").value=""; $("lista-pacientes-con").innerHTML=""; cerrarCorregirNombre(); }
 function conOtra(){ conDeselegir(); $("con-listo").classList.add("oculto"); $("busca-paciente-con").focus(); }
 function fechaCorta(iso){
   var t=String(iso||""); if(!t) return "";
@@ -2329,7 +2739,16 @@ function fechaCorta(iso){
 }
 /* carga una consulta guardada en el formulario para corregirla */
 function cargarConsultaEnFormulario(fila, id){
-  con.editandoId=id;
+  con.editandoId=id; con.editandoTipo=fila.session_type||"Consulta"; con.filaCargada=fila;
+  // un valor guardado que el formulario no ofrece (planillas viejas) se muestra igual, así no se pierde
+  [["c-actividad",fila.physical_activity],["c-adherencia",fila.adherence],["c-frutas",fila.consumo_frutas_verduras],["c-energia",fila.energy_level],["c-sueno",fila.sleep_quality]].forEach(function(par){
+    var sel=$(par[0]), v=par[1]; if(v==null||v==="") return; v=String(v);
+    if(!Array.prototype.some.call(sel.options, function(o){ return o.value===v; })){ var o=document.createElement("option"); o.value=v; o.textContent=v; o.setAttribute("data-extra","1"); sel.appendChild(o); }
+  });
+  var antro=/antropometr/i.test(con.editandoTipo);
+  $("con-escalas").classList.toggle("oculto", antro);
+  $("con-editando-antro").classList.toggle("oculto", !antro);
+  $("con-editando-tipo").textContent = antro ? "Estás corrigiendo una antropometría ya guardada" : "Estás corrigiendo una consulta ya guardada";
   $("c-peso").value=fila.weight!=null?fila.weight:""; $("c-talla").value=fila.height!=null?fila.height:""; $("c-cintura").value=fila.girth_waist!=null?fila.girth_waist:"";
   $("c-adherencia").value=fila.adherence!=null?String(fila.adherence):"";
   $("c-hidratacion").value=fila.hydration===true?"true":fila.hydration===false?"false":"";
@@ -2343,7 +2762,11 @@ function cargarConsultaEnFormulario(fila, id){
   $("con-editando").classList.remove("oculto"); $("btn-guardar-consulta").textContent="Guardar cambios";
   $("con-listo").classList.add("oculto"); $("con-form").classList.remove("oculto"); $("c-aviso").textContent="";
   conCalcIMC(); window.scrollTo(0,0); $("c-peso").focus();
+  con.formInicial=valoresConsulta();
 }
+var CAMPOS_CONSULTA={ "c-fecha":"session_date","c-peso":"weight","c-talla":"height","c-cintura":"girth_waist","c-motivo":"consultation_reason","c-notas":"consultation_notes","c-adherencia":"adherence","c-hidratacion":"hydration","c-actividad":"physical_activity","c-frutas":"consumo_frutas_verduras","c-energia":"energy_level","c-sueno":"sleep_quality" };
+function valoresConsulta(){ var o={}; Object.keys(CAMPOS_CONSULTA).forEach(function(id){ o[id]=String($(id).value); }); return o; }
+function sacarOpcionesExtra(){ document.querySelectorAll('#con-form option[data-extra]').forEach(function(o){ o.remove(); }); }
 function editarUltimaConsulta(){ if(con.ultima&&con.ultima.id) cargarConsultaEnFormulario(con.ultima, con.ultima.id); }
 function editarConsultaGuardada(){ if(con.ultimaFila&&con.ultimaId) cargarConsultaEnFormulario(con.ultimaFila, con.ultimaId); }
 function conCalcIMC(){
@@ -2353,47 +2776,64 @@ function conCalcIMC(){
 }
 async function guardarConsulta(){
   var av=$("c-aviso"); av.className="aviso";
-  var faltan=Array.prototype.filter.call(document.querySelectorAll("#con-form [data-req]"), function(el){ return String(el.value).trim()===""; });
-  if(faltan.length){ av.className="aviso error"; av.textContent="Completá los campos con asterisco. Si no tenés el dato, poné 0."; faltan[0].focus(); return; }
+  var editando=con.editandoId, esAntro=!!(editando && /antropometr/i.test(con.editandoTipo||""));
+  // en una consulta nueva las escalas son obligatorias; al corregir una ya guardada, no (puede venir de una planilla sin escalas)
+  var faltan=editando ? [] : Array.prototype.filter.call(document.querySelectorAll("#con-form [data-req]"), function(el){ return String(el.value).trim()===""; });
+  if(faltan.length){ av.className="aviso error"; av.textContent="Completá los campos con asterisco."; faltan[0].focus(); return; }
   if(!con.paciente){ av.className="aviso error"; av.textContent="Elegí a la paciente."; return; }
   var btn=$("btn-guardar-consulta"); if(btn.disabled) return; btn.disabled=true; av.textContent="Guardando…";
-  var cint=parseFloat($("c-cintura").value);
+  function medida(id){ var v=parseFloat(String($(id).value).replace(",",".")); return v>0 ? v : null; }
+  function escala(id){ var v=parseInt($(id).value,10); return isNaN(v) ? null : v; }
   var fila={
-    patient_id: con.paciente.id, nutritionist_id: usuario.id, company: empresa,
     session_date: $("c-fecha").value || new Date().toISOString().slice(0,10),
-    session_type: "Consulta",
-    weight: parseFloat($("c-peso").value), height: parseFloat($("c-talla").value),
-    girth_waist: isNaN(cint)?null:cint,
-    adherence: parseInt($("c-adherencia").value,10),
-    hydration: $("c-hidratacion").value==="true",
-    physical_activity: $("c-actividad").value,
-    consumo_frutas_verduras: parseInt($("c-frutas").value,10),
-    energy_level: parseInt($("c-energia").value,10),
-    sleep_quality: parseInt($("c-sueno").value,10),
+    weight: medida("c-peso"), height: medida("c-talla"), girth_waist: medida("c-cintura"),
     consultation_reason: $("c-motivo").value.trim()||null,
     consultation_notes: $("c-notas").value.trim()||null
   };
-  var editando=con.editandoId;
+  if(!esAntro){
+    var hid=$("c-hidratacion").value;
+    Object.assign(fila, {
+      adherence: escala("c-adherencia"),
+      hydration: hid==="true" ? true : hid==="false" ? false : null,
+      physical_activity: $("c-actividad").value||null,
+      consumo_frutas_verduras: escala("c-frutas"),
+      energy_level: escala("c-energia"),
+      sleep_quality: escala("c-sueno")
+    });
+  }
+  // al corregir no se tocan el tipo, la empresa ni quién la cargó, y solo viaja lo que Rosana cambió
+  if(!editando) Object.assign(fila, { patient_id: con.paciente.id, nutritionist_id: usuario.id, company: empresa, session_type: "Consulta" });
+  else if(con.formInicial){
+    var ahora=valoresConsulta();
+    Object.keys(CAMPOS_CONSULTA).forEach(function(id){ if(ahora[id]===con.formInicial[id]) delete fila[CAMPOS_CONSULTA[id]]; });
+    if(!Object.keys(fila).length){ btn.disabled=false; av.className="aviso"; av.textContent="No cambiaste nada: queda como estaba."; return; }
+  }
   var r = editando ? await sb.from("sessions").update(fila).eq("id",editando).select("id") : await sb.from("sessions").insert(fila);
   btn.disabled=false;
   if(r.error){ av.className="aviso error"; av.textContent="No se pudo guardar: "+errorLegible(r.error); return; }
-  if(editando&&(!r.data||!r.data.length)){ av.className="aviso error"; av.textContent="La app no permitió corregir esta consulta. Corregila desde la ficha de la paciente en la app."; return; }
+  if(editando&&(!r.data||!r.data.length)){ av.className="aviso error"; av.textContent="La app no permitió corregir esta consulta. Corregila desde la ficha de la paciente en la app anterior."; return; }
   av.textContent="";
   var id=editando||null;
   if(!id){
     var q=await sb.from("sessions").select("id").eq("patient_id",con.paciente.id).order("created_at",{ascending:false}).limit(1).maybeSingle();
     if(q.data) id=q.data.id;
   }
-  con.ultimaFila=fila; con.ultimaId=id; con.editandoId=null;
-  con.ultima=Object.assign({}, fila, {id:id}); $("btn-ultima-consulta").classList.toggle("oculto", !id);
+  var tipo=editando ? (con.editandoTipo||"Consulta") : "Consulta";
+  var completa=Object.assign({}, editando ? (con.filaCargada||{}) : {}, fila, {session_type:tipo});
+  con.ultimaFila=completa; con.ultimaId=id; con.editandoId=null; con.editandoTipo=null; con.filaCargada=null; con.formInicial=null; sacarOpcionesExtra();
+  con.ultima=Object.assign({}, completa, {id:id}); $("btn-ultima-consulta").classList.toggle("oculto", !id);
   $("btn-corregir-consulta").classList.toggle("oculto", !id);
+  $("btn-corregir-consulta").textContent = /antropometr/i.test(tipo) ? "Corregir esta antropometría" : "Corregir esta consulta";
   $("con-editando").classList.add("oculto"); $("btn-guardar-consulta").textContent="Guardar consulta";
+  $("con-escalas").classList.remove("oculto"); $("con-editando-antro").classList.add("oculto");
   $("con-form").classList.add("oculto");
-  $("con-listo-titulo").textContent = editando ? "Consulta corregida" : "Consulta guardada";
+  var palabra=/antropometr/i.test(tipo) ? "Antropometría" : "Consulta";
+  $("con-listo-titulo").textContent = editando ? palabra+" corregida" : "Consulta guardada";
   $("btn-volver-ficha").classList.toggle("oculto", !(ficha.paciente&&ficha.paciente.id===con.paciente.id));
-  $("con-listo-texto").textContent=nombreCompleto(con.paciente)+" · "+fila.weight+" kg · adherencia "+fila.adherence+"/5 · "+(editando?"corregida en su ficha.":"guardada en su ficha.");
+  $("con-listo-texto").textContent=[nombreCompleto(con.paciente), completa.weight!=null?numeroAR(completa.weight)+" kg":null, completa.adherence!=null?"adherencia "+completa.adherence+"/5":null].filter(Boolean).join(" · ")+" · "+(editando?"corregida en su ficha.":"guardada en su ficha.");
   $("con-listo").classList.remove("oculto"); window.scrollTo(0,0);
 }
+function numeroAR(n){ return String(n).replace(".",","); }
 
 /* =====================================================================
    LISTADO MENSUAL
@@ -2407,22 +2847,26 @@ async function cargarListado(){
   $("l-aviso").className="aviso"; $("l-aviso").textContent="Buscando…"; $("l-resultado").innerHTML="";
   var r=await sb.from("sessions").select("patient_id, session_date, patients(first_name, last_name)").eq("company",empresa).gte("session_date",desde).lt("session_date",hastaTxt).order("session_date",{ascending:true});
   if(r.error){ $("l-aviso").className="aviso error"; $("l-aviso").textContent="No se pudo leer: "+errorLegible(r.error); return; }
-  var porPersona={};
+  // una visita = una paciente en una fecha: la consulta y la antropometría del mismo día cuentan una vez
+  var porPersona={}, vistas={}, visitas=0, registros=(r.data||[]).length;
   (r.data||[]).forEach(function(s){
     var n=s.patients?((s.patients.first_name||"")+" "+(s.patients.last_name||"")).trim():("Paciente "+String(s.patient_id).slice(0,6));
-    porPersona[n]=porPersona[n]||{n:n,veces:0,fechas:[]}; porPersona[n].veces++; if(s.session_date) porPersona[n].fechas.push(String(s.session_date).slice(0,10));
+    var f=String(s.session_date||"").slice(0,10), clave=s.patient_id+"|"+f;
+    porPersona[s.patient_id]=porPersona[s.patient_id]||{n:n,veces:0,fechas:[]};
+    if(vistas[clave]) return; vistas[clave]=true; visitas++;
+    porPersona[s.patient_id].veces++; if(f) porPersona[s.patient_id].fechas.push(f);
   });
   var filas=Object.values(porPersona).sort(function(a,b){return a.n.localeCompare(b.n);});
   var nombreMes=new Date(y,m-1,1).toLocaleDateString("es-AR",{month:"long",year:"numeric"});
   $("l-aviso").textContent="";
   if(!filas.length){ $("l-resultado").innerHTML='<div class="caja"><p style="margin:0;">Nadie tuvo sesión en '+esc(empresa)+' en '+esc(nombreMes)+'.</p></div>'; return; }
-  var totalSes=(r.data||[]).length;
   var h='<div class="caja"><h3>'+esc(empresa)+' · '+esc(nombreMes)+'</h3>'+
     '<div class="grid2" style="margin-top:18px;">'+
-      '<div class="dato"><span class="l">Consultas del mes</span><span class="v">'+totalSes+'</span></div>'+
+      '<div class="dato"><span class="l">Consultas del mes</span><span class="v">'+visitas+'</span></div>'+
       '<div class="dato"><span class="l">Personas atendidas</span><span class="v">'+filas.length+'</span></div>'+
     '</div>'+
-    '<div class="tabla-scroll"><table class="tabla"><thead><tr><th>#</th><th>Nombre</th><th>Sesiones</th><th>Fechas</th></tr></thead><tbody>'+
+    (registros>visitas?'<p class="nota no-imprimir">'+registros+' registros cargados: la consulta y la antropometría del mismo día cuentan como una sola consulta.</p>':'')+
+    '<div class="tabla-scroll"><table class="tabla"><thead><tr><th>#</th><th>Nombre</th><th>Consultas</th><th>Fechas</th></tr></thead><tbody>'+
     filas.map(function(f,i){ return '<tr><td class="n">'+(i+1)+'</td><td>'+esc(f.n)+'</td><td class="n">'+f.veces+'</td><td class="n">'+(f.fechas.length?f.fechas.map(function(x){return x.slice(8,10)+"/"+x.slice(5,7);}).join(", "):"—")+'</td></tr>'; }).join("")+
     '</tbody></table></div></div>';
   $("l-resultado").innerHTML=hoja("Informe mensual · "+empresa, h)+'<div class="acciones-res"><button class="btn" onclick="window.print()">Imprimir o guardar PDF</button></div>';
@@ -2435,6 +2879,25 @@ function abrirRecomendaciones(){
   irA("recomendaciones");
   $("reco-resultado").innerHTML=hoja("Recomendaciones generales", RECOMENDACIONES.map(htmlRecomendacion).join(""));
 }
+
+/* =====================================================================
+   AVISO AL SALIR · recargar, cerrar o ir a la app anterior con algo a medio hacer
+   ===================================================================== */
+function trabajoSinGuardar(){
+  if(!usuario) return false;
+  if(plan.generando) return true;
+  if(planSinGuardar()) return true;
+  if($("rec-cargando") && !$("rec-cargando").classList.contains("oculto")) return true;
+  if(hayCambiosSinGuardar()) return true;
+  if(!$("p-consulta").classList.contains("oculto") && !$("con-form").classList.contains("oculto") &&
+     ["c-peso","c-cintura","c-motivo","c-notas","c-adherencia","c-hidratacion","c-actividad","c-frutas","c-energia","c-sueno"].some(function(id){ return $(id) && String($(id).value).trim()!==""; })) return true;
+  if(!$("p-planes").classList.contains("oculto") && plan.paciente && pasoActual>=2 && pasoActual<=4) return true;
+  if(!$("p-alta").classList.contains("oculto") && ["a-nombre","a-apellido","a-peso","a-talla"].some(function(id){ return $(id) && $(id).value.trim()!==""; })) return true;
+  return false;
+}
+window.addEventListener("beforeunload", function(e){
+  if(trabajoSinGuardar()){ e.preventDefault(); e.returnValue=""; return ""; }
+});
 
 /* =====================================================================
    ARRANQUE

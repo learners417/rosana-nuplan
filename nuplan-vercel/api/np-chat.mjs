@@ -1,7 +1,20 @@
 // NuPlan · Chat de la app del consultante (/mi-plan/).
 // Mismo molde que diagnostico.mjs, plan-personalizado.mjs y protocolo-deslices.mjs.
 
-import { llamarIA, leerJSON } from "./_lib.mjs";
+import {
+  llamarIA,
+  leerJSON,
+  origenPermitido,
+  topePublico,
+  sinCodigosHTML,
+  mensajeParaConsultante,
+  tipoDeFalla,
+  avisoDeFalla,
+  avisoTecnico,
+  registrar,
+  usuariaDeToken,
+  ErrorDeAcceso,
+} from "./_lib.mjs";
 
 // Solo estos dominios pueden llamar a esta función desde el navegador.
 const PERMITIDOS = [
@@ -17,7 +30,7 @@ function cabeceras(req) {
   const h = {
     "Content-Type": "application/json",
     "Access-Control-Allow-Methods": "POST, OPTIONS",
-    "Access-Control-Allow-Headers": "Content-Type",
+    "Access-Control-Allow-Headers": "Content-Type, Authorization",
     "Access-Control-Max-Age": "86400",
   };
   if (PERMITIDOS.includes(origen)) h["Access-Control-Allow-Origin"] = origen;
@@ -35,7 +48,8 @@ export async function OPTIONS(req) {
 const VOZ =
   "Sos la voz de Rosana Roldán, nutricionista de Buenos Aires con más de 20 años de " +
   "experiencia clínica, creadora del Método NuPlan. Estás acompañando a una consultante " +
-  "que va por la mitad de su programa de 90 días, dentro de su app.\n\n" +
+  "durante su programa de 90 días, dentro de su app. En qué día y en qué letra está " +
+  "te lo dice la sección DÓNDE ESTÁ ELLA HOY.\n\n" +
   "EL MÉTODO son seis letras, en este orden: NUTRIR (ver qué come y qué la lleva a comerlo), " +
   "UNIR (separar el hambre física de las otras hambres), PERSONALIZAR (armar su plan, no el de " +
   "nadie), LIBERAR (que un desliz no la arrastre al abandono), ACTIVAR (responderle a la duda " +
@@ -104,9 +118,12 @@ const VOZ =
   "qué recién ahí. No se lo adelantes.";
 
 function construirPrompt(d) {
+  // lo que escribió la consultante va tal cual; los textos de la página llegan con
+  // códigos HTML (&eacute;…) y se pasan a letras
   const c = (x, n = 900) => String(x == null ? "" : x).trim().slice(0, n);
-  const lista = (x, n = 10) =>
-    Array.isArray(x) ? x.slice(0, n).map((y) => "- " + c(y, 300)).join("\n") : "";
+  const pag = (x, n = 900) => sinCodigosHTML(x).trim().slice(0, n);
+  const lista = (x, n = 10, f = c) =>
+    Array.isArray(x) ? x.slice(0, n).map((y) => "- " + f(y, 300)).join("\n") : "";
 
   const historial = Array.isArray(d.historial)
     ? d.historial
@@ -120,15 +137,15 @@ function construirPrompt(d) {
     "",
     "DÓNDE ESTÁ ELLA HOY",
     "Nombre: " + (c(d.nombre, 80) || "sin nombre"),
-    "Día " + Number(d.dia || 1) + " de 90, en la letra " + c(d.letra, 40),
-    "El foco de esta semana: " + c(d.foco, 200),
-    "La acción de hoy: " + c(d.accion_de_hoy, 300),
+    "Día " + Math.min(90, Math.max(1, Math.round(Number(d.dia) || 1))) + " de 90, en la letra " + pag(d.letra, 40),
+    "El foco de esta semana: " + pag(d.foco, 200),
+    "La acción de hoy: " + pag(d.accion_de_hoy, 300),
   ];
 
   if (d.por_que_esta_aca) {
     partes.push("", "POR QUÉ EMPEZÓ, EN SUS PALABRAS", c(d.por_que_esta_aca, 700));
   }
-  const abiertos = lista(d.ejercicios_abiertos);
+  const abiertos = lista(d.ejercicios_abiertos, 10, pag);
   if (abiertos) partes.push("", "EJERCICIOS QUE YA TIENE ABIERTOS", abiertos);
 
   const ejercicios = lista(d.sus_ejercicios, 8);
@@ -151,10 +168,16 @@ function construirPrompt(d) {
   return partes.join("\n");
 }
 
+const SIN_RESPUESTA =
+  " Si es algo que no puede esperar, escribile a Rosana por WhatsApp.";
+
 export async function POST(req) {
+  if (!origenPermitido(req, PERMITIDOS)) {
+    return responder({ error: "Este chat solo responde dentro de la app de NuPlan." }, req, 403);
+  }
   let datos;
   try {
-    datos = await leerJSON(req);
+    datos = await leerJSON(req, 30000);
   } catch (e) {
     return responder({ error: String(e.message || e) }, req, 400);
   }
@@ -164,11 +187,26 @@ export async function POST(req) {
     return responder({ error: "No llegó ninguna pregunta." }, req, 400);
   }
 
+  // El chat es para quien entró con su mail: así nadie de afuera gasta el crédito,
+  // y el tope del día es por persona.
+  let u;
   try {
-    const r = await llamarIA(construirPrompt(datos), 1200);
+    u = await usuariaDeToken(req, "np-chat");
+  } catch (e) {
+    const status = e instanceof ErrorDeAcceso ? e.status : 503;
+    return responder({ error: e.message, codigo: e.codigo || "sin_verificar", sesion: status === 401 }, req, status);
+  }
+
+  const tope = await topePublico(req, "np-chat", null, u.id);
+  if (tope) return responder({ error: tope.mensaje, codigo: tope.codigo, tope: true }, req, 429);
+
+  try {
+    const r = await llamarIA(construirPrompt(datos), 1200, "np-chat");
     if (!r || !r.respuesta) {
-      throw new Error("La IA no devolvió una respuesta.");
+      throw new Error("La IA no devolvió una respuesta en formato válido.");
     }
+    // Contestó el modelo de respaldo porque el principal ya no existe: que alguien se entere.
+    if (r.__respaldo && tipoDeFalla(r.__motivo) === "modelo") await avisoTecnico("modelo", "el chat");
     let texto = String(r.respuesta);
     let derivar = r.avisar_a_rosana === true;
 
@@ -176,25 +214,23 @@ export async function POST(req) {
     const PROHIBIDO =
       /\b\d+([.,]\d+)?\s*(kcal|calor[ií]as?|kilogramos?|kilos?|kgs?)\b|\bIMC\b|\btalle\s*\d/i;
     if (PROHIBIDO.test(texto)) {
-      console.warn("np-chat: respuesta bloqueada por traer cifras de dieta.");
+      registrar("chat_bloqueo", { motivo: "cifras" });
       texto =
-        "Con números de ese tipo no trabajo, y Rosana tampoco: el método no mide calorías " +
-        "ni kilos. Si querés hablarlo igual, se lo dejo anotado a ella para la próxima " +
-        "sesión. Mientras tanto, mirá tu diario de ayer y fijate a qué hora comiste la " +
-        "última vez: eso te dice más que cualquier número.";
+        "Con números de ese tipo no trabajo, y Rosana tampoco: el método no se mide así. " +
+        "Si querés hablarlo igual, se lo dejo anotado a ella para la próxima sesión. " +
+        "Mientras tanto, mirá tu diario de ayer y fijate a qué hora comiste la última vez: " +
+        "eso te dice más que cualquier número.";
       derivar = true;
     }
 
     return responder({ respuesta: texto, avisar_a_rosana: derivar }, req);
   } catch (e) {
-    console.error("np-chat falló:", e.message);
-    return responder(
-      {
-        respuesta:
-          "Ahora no te puedo contestar. Si es algo que no puede esperar, escribile a Rosana por WhatsApp.",
-        avisar_a_rosana: false,
-      },
-      req
-    );
+    // La falla no se esconde: queda en los logs, si no se arregla sola le llega
+    // un aviso a Rosana (una vez por día) y la consultante ve que no se pudo.
+    const tipo = tipoDeFalla(e);
+    const aviso = avisoDeFalla(e);
+    registrar("ia_fallo", { funcion: "np-chat", tipo, error: String(e.message || e).slice(0, 300) });
+    if (tipo !== "pasajera") await avisoTecnico(aviso, "el chat");
+    return responder({ error: mensajeParaConsultante(e) + SIN_RESPUESTA, falla: true }, req, 503);
   }
 }

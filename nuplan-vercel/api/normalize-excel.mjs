@@ -4,7 +4,7 @@
 // la transformación de las filas se hace acá, en código, de forma
 // determinística. Devuelve { rows: [objetos], column_mapping }.
 
-import { llamarIA, responderConLatido, leerJSON } from "./_lib.mjs";
+import { llamarIA, responderConLatido, leerJSON, conAcceso, respuestaJSON } from "./_lib.mjs";
 
 const CAMPOS = [
   "first_name",
@@ -25,19 +25,43 @@ const CAMPOS = [
   "sleep_quality",
 ];
 
+// Qué tipo de dato tiene cada columna, sin mandar ningún dato de las pacientes:
+// la IA solo necesita saber si es texto, número, fecha, mail o teléfono.
+function pistaDeColumna(valores) {
+  const vs = valores.map((v) => (v === null || v === undefined ? "" : String(v).trim())).filter(Boolean);
+  if (!vs.length) return "vacía en las primeras filas";
+  const todos = (re) => vs.every((v) => re.test(v));
+  if (todos(/@/)) return "mail";
+  if (todos(/^\+?[\d\s().-]{7,}$/) && !todos(/^\d+([.,]\d+)?$/)) return "teléfono";
+  if (todos(/^\d{1,2}[\/.-]\d{1,2}[\/.-]\d{2,4}$|^\d{4}-\d{1,2}-\d{1,2}/)) return "fecha";
+  if (todos(/^\d{5}(\.\d+)?$/) && vs.every((v) => +v > 20000 && +v < 60000)) return "fecha (número de serie de Excel)";
+  if (todos(/^-?\d+([.,]\d+)?$/)) {
+    // solo el tamaño del número, nunca el valor: alcanza para distinguir peso, talla y puntajes
+    const mayor = Math.max(...vs.map((v) => Math.abs(parseFloat(v.replace(",", ".")))));
+    const tamano = mayor <= 10 ? "de 0 a 10" : mayor < 100 ? "de dos cifras" : mayor < 1000 ? "de tres cifras" : "de cuatro cifras o más";
+    return `número ${tamano}${vs.some((v) => /[.,]\d/.test(v)) ? ", con decimales" : ""}`;
+  }
+  if (todos(/^(f|m|fem|masc|femenino|masculino|mujer|hombre|otro|x)$/i)) return "sexo";
+  if (todos(/^(s[ií]|no|true|false|verdadero|falso)$/i)) return "sí/no";
+  const palabras = Math.round(vs.reduce((a, v) => a + v.split(/\s+/).length, 0) / vs.length);
+  return `texto de ${palabras} palabra${palabras === 1 ? "" : "s"}`;
+}
+
 function construirPrompt(headers, filasEjemplo) {
-  return `Recibís los encabezados de una planilla de pacientes de nutrición y algunas filas de ejemplo. Tu única tarea es mapear cada campo del sistema a la columna de la planilla que le corresponde.
+  const columnas = headers.map((h, i) => ({
+    indice: i,
+    encabezado: h,
+    tipo: pistaDeColumna(filasEjemplo.map((f) => (Array.isArray(f) ? f[i] : f && f[h]))),
+  }));
+  return `Recibís los encabezados de una planilla de pacientes de nutrición y el tipo de dato de cada columna (sin los datos). Tu única tarea es mapear cada campo del sistema a la columna de la planilla que le corresponde.
 
 CAMPOS DEL SISTEMA:
 ${CAMPOS.join(", ")}
 
 Significado: first_name y last_name (nombre y apellido — si la planilla trae el nombre completo en una sola columna, asigná esa columna a first_name y dejá last_name sin mapear), email, phone (teléfono), birth_date (fecha de nacimiento), sex (sexo/género), area (área o empresa), initial_weight (peso en kg), height (altura en cm), first_session_date (fecha de primera consulta), adherence (adherencia), hydration (hidratación), physical_activity (actividad física), consumo_frutas_verduras, energy_level (nivel de energía), sleep_quality (calidad de sueño).
 
-ENCABEZADOS DE LA PLANILLA (con su índice):
-${JSON.stringify(headers.map((h, i) => ({ indice: i, encabezado: h })), null, 2)}
-
-FILAS DE EJEMPLO:
-${JSON.stringify(filasEjemplo, null, 2)}
+COLUMNAS DE LA PLANILLA (índice, encabezado y tipo de dato):
+${JSON.stringify(columnas, null, 2)}
 
 Respondé ÚNICAMENTE con un objeto JSON, sin texto adicional, con esta forma:
 {"column_mapping": {"first_name": 0, "last_name": 1}}
@@ -99,7 +123,7 @@ async function normalizar({ headers, rows }) {
   }
 
   const ejemplo = rows.slice(0, 5);
-  const r = await llamarIA(construirPrompt(headers, ejemplo), 6000);
+  const r = await llamarIA(construirPrompt(headers, ejemplo), 6000, "excel");
   const mapping = r.column_mapping || {};
 
   const filas = rows.map((fila) => {
@@ -123,14 +147,13 @@ async function normalizar({ headers, rows }) {
 }
 
 export async function POST(req) {
-  let datos;
-  try {
-    datos = await leerJSON(req);
-  } catch (e) {
-    return new Response(JSON.stringify({ error: String(e.message || e) }), {
-      status: 400,
-      headers: { "Content-Type": "application/json" },
-    });
-  }
-  return responderConLatido(() => normalizar(datos));
+  return conAcceso(req, "excel", async () => {
+    let datos;
+    try {
+      datos = await leerJSON(req);
+    } catch (e) {
+      return respuestaJSON(400, { error: String(e.message || e) });
+    }
+    return responderConLatido(() => normalizar(datos), "excel");
+  });
 }

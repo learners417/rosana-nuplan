@@ -2,7 +2,14 @@
 // Devuelve exactamente la estructura que espera el frontend ya publicado.
 // Incorpora las guías clínicas de la Lic. Roldán (ver _patologias.mjs).
 
-import { llamarIA, responderConLatido, leerJSON } from "./_lib.mjs";
+import {
+  llamarIA,
+  responderConLatido,
+  leerJSON,
+  conAcceso,
+  respuestaJSON,
+  sinDatosPersonales,
+} from "./_lib.mjs";
 import {
   reglasDeLasCaracteristicas,
   patologiasConGuia,
@@ -564,24 +571,32 @@ function textoDelPlan(plan) {
   }
 }
 
-async function generar(datos) {
+async function generar(entrada) {
+  // La IA no necesita nombre, apellido ni contacto de la paciente.
+  const datos = { ...(entrada || {}), patientInfo: sinDatosPersonales(entrada?.patientInfo) };
   const etiquetas = Array.isArray(datos?.preferences?.intolerances)
     ? datos.preferences.intolerances
     : [];
 
-  let plan = await llamarIA(construirPrompt(datos), 16000);
+  // Vercel corta la función a los 300 s: todo tiene que terminar antes.
+  const limite = Date.now() + 280000;
+  let plan = await llamarIA(construirPrompt(datos), 16000, "plan", { limite });
+  let respaldo = !!plan.__respaldo;
 
   // Red de seguridad: si se coló un alimento prohibido por la patología,
   // se pide una corrección una sola vez.
   const colados = coladosEnElPlan(etiquetas, textoDelPlan(plan));
-  if (colados.length) {
+  if (colados.length && limite - Date.now() < 90000) {
+    console.warn("Sin tiempo para corregir el plan:", colados.join(", "));
+  } else if (colados.length) {
     const correccion = `${construirPrompt(datos)}
 
 CORRECCIÓN OBLIGATORIA:
 Un intento anterior incluyó alimentos que están prohibidos para este paciente: ${colados.join(", ")}.
 Rehacé el plan completo sin ninguno de esos alimentos, en ninguna comida, ni como opción, ni como reemplazo, ni en los grupos de alimentos, ni en las ideas de menú, ni en la lista de compras, ni en las recetas. Reemplazalos por alternativas permitidas según las guías clínicas.`;
     try {
-      plan = await llamarIA(correccion, 16000);
+      plan = await llamarIA(correccion, 16000, "plan_correccion", { limite });
+      respaldo = !!plan.__respaldo;
     } catch (e) {
       console.error("Fallo el reintento de corrección:", e);
     }
@@ -595,21 +610,24 @@ Rehacé el plan completo sin ninguno de esos alimentos, en ninguna comida, ni co
   const restantes = coladosEnElPlan(etiquetas, textoDelPlan(plan));
   if (restantes.length) {
     console.warn("Plan entregado con alimentos a revisar:", restantes.join(", "));
+    // la pantalla lo muestra hasta que la profesional lo revise y guarde
+    plan._revisar = restantes.map((x) => String(x).replace(/\s*\(.*\)$/, ""));
   }
+  // Si lo armó el modelo de respaldo, la pantalla lo avisa para que se revise.
+  if (respaldo) plan._aviso = "respaldo";
   return plan;
 }
 
 export async function POST(req) {
-  let datos;
-  try {
-    datos = await leerJSON(req);
-  } catch (e) {
-    return new Response(JSON.stringify({ error: String(e.message || e) }), {
-      status: 400,
-      headers: { "Content-Type": "application/json" },
-    });
-  }
-  return responderConLatido(() => generar(datos));
+  return conAcceso(req, "plan", async () => {
+    let datos;
+    try {
+      datos = await leerJSON(req);
+    } catch (e) {
+      return respuestaJSON(400, { error: String(e.message || e) });
+    }
+    return responderConLatido(() => generar(datos), "plan");
+  });
 }
 
 // Exportado solo para pruebas locales.

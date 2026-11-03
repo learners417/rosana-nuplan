@@ -10,11 +10,11 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700;0,800;1,500&family=Space+Mono:wght@400;700&display=swap">
 <style>
 /* Menú de Palabras · ejercicio de la Lic. Rosana Roldán. Una sola columna; el plato es el centro y cambia con cada paso.
-   Sin login: se guarda en el teléfono y se manda a Rosana por WhatsApp. */
+   Sin login: se guarda en el teléfono y se le manda a Rosana por mail, con reintento si no hay conexión. */
 :root{
   --bg:#fff6f3; --surface:#ffffff; --fg:#1a1a1a; --muted:#6b7280; --line:#e5e7eb;
   --coral:#e8472a; --coral-light:#f47a62; --accent:#f6a29a; --coral-dark:#c53a1e; --tinte:#fde9e4; --tinte-2:#fff0ec;
-  --ink:#2a2523; --ink-fg:#fff6f3; --rim:#f6d3cb;
+  --ink:#c53a1e; --ink-fg:#ffffff; --rim:#f6d3cb;
   --sans:"DM Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif; --mono:"Space Mono",ui-monospace,Menlo,monospace;
   color-scheme:light;
 }
@@ -23,7 +23,7 @@
 html,body{margin:0;background:var(--bg)}
 body{color:var(--fg);font-family:var(--sans);font-size:18px;line-height:1.55;-webkit-font-smoothing:antialiased}
 .wrap{max-width:720px;margin:0 auto;padding-block:calc(20px + env(safe-area-inset-top,0px)) calc(56px + env(safe-area-inset-bottom,0px));padding-left:max(18px,env(safe-area-inset-left,0px));padding-right:max(18px,env(safe-area-inset-right,0px));display:flex;flex-direction:column;gap:22px}
-.eyebrow{font-family:var(--mono);font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;color:var(--coral-dark)}
+.eyebrow{font-family:var(--mono);font-size:.95rem;letter-spacing:.08em;text-transform:uppercase;color:var(--coral-dark)}
 h1{font-weight:800;font-size:clamp(2.1rem,7.5vw,2.8rem);line-height:1.05;margin:4px 0 6px;letter-spacing:-.01em}
 h2{font-weight:800;font-size:1.45rem;line-height:1.2;margin:0;text-wrap:balance}
 p{margin:0;max-width:62ch}
@@ -32,7 +32,7 @@ p{margin:0;max-width:62ch}
 
 /* pasos */
 .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
-.steps button{font:inherit;font-size:.88rem;padding:10px 4px;border:1.5px solid var(--line);background:var(--surface);color:var(--muted);border-radius:.875rem;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:1px;transition:background .2s,border-color .2s}
+.steps button{font:inherit;font-size:.95rem;padding:10px 4px;min-height:44px;border:1.5px solid var(--line);background:var(--surface);color:var(--muted);border-radius:.875rem;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:1px;transition:background .2s,border-color .2s}
 .steps button b{font-family:var(--mono);font-size:1.05rem;color:var(--fg)}
 .steps button[aria-current="step"]{border-color:var(--coral);background:var(--tinte);color:var(--fg)}
 .steps button.hecho b::after{content:" ✓";color:var(--coral)}
@@ -45,9 +45,11 @@ button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px soli
 .btn{font:700 1rem var(--sans);padding:13px 20px;border-radius:999px;border:1.5px solid var(--line);background:var(--surface);color:var(--fg);cursor:pointer}
 .btn.prim{background:var(--coral);border-color:var(--coral);color:#fff}
 .btn.ink{background:var(--ink);border-color:var(--ink);color:var(--ink-fg)}
+.btn.cuida{background:var(--tinte);border-color:var(--accent);color:var(--coral-dark)}
 .btn.grande{width:100%;padding:17px;font-size:1.1rem;border-radius:1rem}
 .btn.wa{background:var(--coral-dark);border-color:var(--coral-dark);color:#fff}
-.btn.link{border:0;background:none;color:var(--muted);text-decoration:underline;padding:6px 4px;font-weight:500}
+.btn.link{border:0;background:none;color:var(--muted);text-decoration:underline;padding:10px 8px;font-weight:500;min-height:44px}
+a.btn{display:inline-flex;align-items:center;justify-content:center;text-decoration:none}
 .row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
 textarea,input[type=text]{font:500 1.05rem var(--sans);width:100%;border:1.5px solid var(--line);border-radius:.875rem;padding:13px 14px;background:#fff;color:var(--fg);resize:vertical}
 textarea{min-height:64px}
@@ -56,7 +58,7 @@ textarea:focus,input[type=text]:focus{border-color:var(--coral);outline:none;box
 .field label{font-weight:700}
 .field small{color:var(--muted);font-size:.95rem}
 .chips{display:flex;flex-wrap:wrap;gap:8px}
-.chip{font:600 .95rem var(--sans);padding:9px 14px;border-radius:999px;border:1.5px solid var(--line);background:#fff;color:var(--fg);cursor:pointer}
+.chip{font:600 .95rem var(--sans);padding:9px 14px;min-height:44px;border-radius:999px;border:1.5px solid var(--line);background:#fff;color:var(--fg);cursor:pointer}
 .chip.on{background:var(--tinte);border-color:var(--accent);color:var(--coral-dark)}
 
 /* plato */
@@ -64,39 +66,39 @@ textarea:focus,input[type=text]:focus{border-color:var(--coral);outline:none;box
 .cubierto{flex:0 0 auto;width:clamp(16px,4.5vw,30px);height:clamp(190px,58vw,380px);color:var(--accent)}
 .plato{position:relative;width:min(100%,440px);aspect-ratio:1;border-radius:50%;background:#fff;border:clamp(10px,3vw,18px) solid var(--rim);box-shadow:0 14px 34px -22px rgba(197,58,30,.55)}
 .centro{position:absolute;inset:12%;border-radius:50%;border:clamp(5px,1.4vw,9px) solid var(--tinte);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;padding:9% 8%;overflow:hidden}
-.tag{font-weight:600;line-height:1.2;text-align:center;font-size:clamp(.8rem,2.7vw,1rem);padding:5px 9px;border-radius:.6rem;max-width:100%;overflow-wrap:break-word;transition:opacity .5s,transform .5s}
+.tag{font-weight:600;line-height:1.2;text-align:center;font-size:clamp(.95rem,2.7vw,1.05rem);padding:5px 9px;border-radius:.6rem;max-width:100%;overflow-wrap:break-word;transition:opacity .5s,transform .5s}
 .tag.amable{background:var(--tinte);border:1.5px solid var(--accent);color:var(--fg)}
 .tag.si{background:#fff;border:1.5px dashed var(--coral);color:var(--coral-dark)}
-.tag.dura{position:absolute;transform:translate(-50%,-50%);width:max-content;max-width:40%;background:var(--ink);color:var(--ink-fg);box-shadow:0 3px 10px rgb(0 0 0 / .18)}
+.tag.dura{position:absolute;transform:translate(-50%,-50%);width:max-content;max-width:40%;background:var(--ink);color:var(--ink-fg);box-shadow:0 3px 10px rgba(197,58,30,.25)}
 .tag.dura.tachada{opacity:.35;text-decoration:line-through}
 .vacio{color:var(--muted);font-size:.98rem;text-align:center}
 .balanza{display:flex;flex-direction:column;gap:8px}
 .barra{display:flex;height:18px;border-radius:999px;overflow:hidden;border:1.5px solid var(--line);background:#fff}
 .barra span{display:block;height:100%;transition:width .5s}
-.leyenda{display:flex;justify-content:space-between;font-family:var(--mono);font-size:.9rem;color:var(--muted)}
+.leyenda{display:flex;justify-content:space-between;font-family:var(--mono);font-size:.95rem;color:var(--muted)}
 
 /* listas */
 .lista{display:flex;flex-direction:column;gap:8px;margin:0;padding:0;list-style:none}
 .lista li{display:flex;gap:10px;align-items:center;justify-content:space-between;background:var(--surface);border:1.5px solid var(--line);border-radius:.875rem;padding:11px 12px}
 .lista .txt{min-width:0;overflow-wrap:anywhere}
-.lista .ctx{display:block;font-size:.85rem;color:var(--muted);font-style:normal}
-.tipo{font-family:var(--mono);font-size:.8rem;text-transform:uppercase;letter-spacing:.06em;padding:5px 9px;border-radius:999px;white-space:nowrap;border:1.5px solid var(--line);background:#fff;color:var(--muted);cursor:pointer}
+.lista .ctx{display:block;font-size:.95rem;color:var(--muted);font-style:normal}
+.tipo{font-family:var(--mono);font-size:.95rem;text-transform:uppercase;letter-spacing:.06em;padding:8px 12px;min-height:44px;border-radius:999px;white-space:nowrap;border:1.5px solid var(--line);background:#fff;color:var(--muted);cursor:pointer}
 .tipo.dura{background:var(--ink);color:var(--ink-fg);border-color:var(--ink)}
 .tipo.amable{background:var(--tinte);color:var(--coral-dark);border-color:var(--accent)}
-.x{border:0;background:none;color:var(--muted);cursor:pointer;font-size:1.4rem;padding:2px 8px;line-height:1}
+.x{border:0;background:none;color:var(--muted);cursor:pointer;font-size:1.4rem;padding:2px 8px;line-height:1;min-width:44px;min-height:44px}
 .reform{display:flex;flex-direction:column;gap:10px}
 .desde{background:var(--ink);color:var(--ink-fg);padding:7px 11px;border-radius:.6rem;align-self:flex-start;font-weight:600;max-width:100%;overflow-wrap:anywhere}
-.flecha{font-family:var(--mono);color:var(--coral);font-size:.9rem}
+.flecha{font-family:var(--mono);color:var(--coral-dark);font-size:.95rem}
 details{border-top:1.5px solid var(--line);padding-top:12px}
 summary{cursor:pointer;font-weight:700;color:var(--coral-dark)}
 details ul{margin:10px 0 0;padding-left:1.1em;display:flex;flex-direction:column;gap:8px}
 details li::marker{color:var(--coral)}
-.elige label{display:flex;gap:12px;align-items:flex-start;cursor:pointer;padding:6px 0}
-.elige input{margin-top:5px;accent-color:var(--coral);width:21px;height:21px;flex:none}
+.elige label{display:flex;gap:12px;align-items:flex-start;cursor:pointer;padding:8px 0;min-height:44px}
+.elige input{margin-top:5px;accent-color:var(--coral);width:21px;height:21px;flex:none;font-size:16px}
 .frase{font-size:clamp(1.35rem,5vw,1.8rem);font-weight:800;line-height:1.25;color:var(--coral-dark);text-wrap:balance}
 .nota{font-size:.95rem;color:var(--muted);border-top:1.5px solid var(--line);padding-top:14px}
 .nav{display:flex;justify-content:space-between;gap:10px}
-.pie{font-family:var(--mono);font-size:.78rem;color:var(--muted);text-align:center}
+.pie{font-family:var(--mono);font-size:.95rem;color:var(--muted);text-align:center}
 .aviso{font-size:.95rem;color:var(--coral-dark);min-height:1.2em}
 @media (prefers-reduced-motion:reduce){.tag,.barra span,.steps button{transition:none}}
 </style>
@@ -158,7 +160,7 @@ details li::marker{color:var(--coral)}
         </div>
         <div class="row">
           <button class="btn ink" data-tipo="dura" type="button">Me pesa</button>
-          <button class="btn prim" data-tipo="amable" type="button">Me cuida</button>
+          <button class="btn cuida" data-tipo="amable" type="button">Me cuida</button>
         </div>
         <p class="aviso" id="aviso1"></p>
       </div>
@@ -193,7 +195,7 @@ details li::marker{color:var(--coral)}
       <details>
         <summary>Si no te sale, probá así</summary>
         <ul>
-          <li>Imaginate que se lo decís a una amiga que está pasando por lo mismo.</li>
+          <li>Imaginate que se lo decís a alguien que querés y que está pasando por lo mismo.</li>
           <li>Cambiá el juicio por un hecho: qué pasó, sin etiquetas.</li>
           <li>Usá «y» en lugar de «pero»: lo difícil y lo que podés hacer.</li>
           <li>Si la frase es sobre tu cuerpo, probá hablar de lo que tu cuerpo hace por vos.</li>
@@ -227,9 +229,15 @@ details li::marker{color:var(--coral)}
         <p class="frase" id="frase"></p>
         <div class="field"><label for="q5">¿Cuándo te la vas a decir?</label><small>Un momento concreto: antes de comer, cuando te mirás al espejo, al acostarte.</small><textarea id="q5"></textarea></div>
       </div>
+      <div class="field" id="campoNombre" hidden>
+        <label for="tuNombre">Tu nombre</label>
+        <small>Para que Rosana sepa que es tuyo.</small>
+        <input type="text" id="tuNombre" autocomplete="name" placeholder="Tu nombre y apellido">
+      </div>
       <button class="btn wa grande" id="mandar" type="button">Mandárselo a Rosana</button>
       <p class="aviso" id="aviso4"></p>
-      <p class="nota">Si algunas de estas frases te pesan mucho o aparecen todo el tiempo, contáselo a Rosana. No hace falta cargarlas sola.</p>
+      <a class="btn link" id="porWa" hidden target="_blank" rel="noopener">Si preferís, mandáselo por WhatsApp</a>
+      <p class="nota">Si algunas de estas frases te pesan mucho o aparecen todo el tiempo, contáselo a Rosana: es algo que se trabaja con ella.</p>
     </div>
 
     <div class="nav">
@@ -247,10 +255,11 @@ details li::marker{color:var(--coral)}
 "use strict";
 var KEY="nuplan-menu-palabras-v3";
 var P=new URLSearchParams(location.search);
-var WA=(P.get("wa")||"5491151426830").replace(/\D/g,"");   // WhatsApp de Rosana (se puede cambiar con ?wa=)
-var NOMBRE=(P.get("nombre")||"").trim().slice(0,40);
-var MOMENTOS=["Cuando comí más de lo que quería","Cuando no cumplí lo que me propuse","Cuando me miré al espejo","Cuando me comparé con otra","Cuando alguien me dijo qué hacer","Al terminar el día"];
-var EJ_SI=["Tomé agua","Anoté lo que comí","Me senté a comer tranquila","Pedí ayuda","Volví a empezar después de un mal día"];
+var WA="5491151426830";   // el WhatsApp del programa: el de Rosana
+var COLA_KEY="nuplan-menu-palabras-cola", NOMBRE_KEY="nuplan-sueltos-nombre";
+var NOMBRE=(P.get("nombre")||"").trim().slice(0,60);
+var MOMENTOS=["Cuando comí más de lo que quería","Cuando no cumplí lo que me propuse","Cuando me miré al espejo","Cuando me comparé con alguien","Cuando alguien me dijo qué hacer","Al terminar el día"];
+var EJ_SI=["Tomé agua","Anoté lo que comí","Comí en la mesa, sin apuro","Pedí ayuda","Volví a empezar después de un mal día"];
 var ARRANQUES=["Fue un día difícil y aun así…","Estoy aprendiendo a…","Lo que sí hice fue…","Me merezco…"];
 
 var uid=1;
@@ -411,9 +420,19 @@ document.addEventListener("input",function(e){
 });
 
 /* para Rosana */
+var Q={q1:"Qué veo en mi plato",q2:"Cómo me siento al verlo",q3:"Cuándo aparecen las frases que pesan",q4:"Si se las diría a alguien que quiero",q6:"De quién es esa voz"};
+function bloques(){
+  var duras=S.msgs.filter(function(m){return m.y==="dura";}), amables=S.msgs.filter(function(m){return m.y==="amable";}), b=[];
+  if(duras.length) b.push({t:"Frases que me pesan",l:duras.map(function(m){ return {k:m.ctx||"",v:"«"+m.t+"»"+(m.r.trim()?"\n→ la cambio por: "+m.r.trim():"")}; })});
+  if(amables.length) b.push({t:"Frases que me cuidan",l:amables.map(function(m){ return {v:"«"+m.t+"»"}; })});
+  var obs=Object.keys(Q).filter(function(k){ return (S.notes[k]||"").trim(); });
+  if(obs.length) b.push({t:"Lo que vi",l:obs.map(function(k){ return {k:Q[k],v:S.notes[k].trim()}; })});
+  if(S.si.length) b.push({t:"Lo que sí hice esta semana",l:S.si.map(function(x){ return {v:x.t}; })});
+  if(S.frase) b.push({t:"Mi frase para esta semana",l:[{v:"«"+S.frase+"»"}].concat((S.notes.q5||"").trim()?[{k:"Me la digo",v:S.notes.q5.trim()}]:[])});
+  return b;
+}
 function texto(){
   var duras=S.msgs.filter(function(m){return m.y==="dura";}), amables=S.msgs.filter(function(m){return m.y==="amable";});
-  var Q={q1:"Qué veo en mi plato",q2:"Cómo me siento al verlo",q3:"Cuándo aparecen las frases que pesan",q4:"Si se las diría a alguien que quiero",q6:"De quién es esa voz"};
   var t="*Menú de Palabras"+(NOMBRE?" · "+NOMBRE:"")+"*\n\n";
   if(duras.length) t+="*Frases que me pesan*\n"+duras.map(function(m){ return "• «"+m.t+"»"+(m.ctx?" ("+m.ctx.toLowerCase()+")":"")+(m.r.trim()?"\n   → la cambio por: "+m.r.trim():""); }).join("\n")+"\n\n";
   if(amables.length) t+="*Frases que me cuidan*\n"+amables.map(function(m){ return "• «"+m.t+"»"; }).join("\n")+"\n\n";
@@ -423,18 +442,121 @@ function texto(){
   if(S.frase) t+="*Mi frase para esta semana*\n«"+S.frase+"»"+((S.notes.q5||"").trim()?"\nMe la digo: "+S.notes.q5.trim():"")+"\n";
   return t.replace(/[ \t]{2,}/g," ").trim();
 }
+function nombreParaMandar(){
+  var v=(NOMBRE||$("tuNombre").value||"").trim().slice(0,60);
+  if(v&&!NOMBRE){ try{ localStorage.setItem(NOMBRE_KEY,v); }catch(e){} }
+  return v;
+}
+function hoyISO(){ var d=new Date(); return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0"); }
+function pintarEnvio(){
+  $("mandar").textContent = S.pend ? "En camino · se manda solo" : S.enviado ? "✓ Le llegó · mandar de nuevo" : "Mandárselo a Rosana";
+}
+function alSalir(){ S.enviado=new Date().toISOString(); S.pend=false; guardar(); pintarEnvio(); }
 $("mandar").onclick=function(){
   if(!S.msgs.length&&!S.si.length){ $("aviso4").textContent="Todavía no hay nada para mandar. Empezá por el paso 1."; return; }
-  $("aviso4").textContent="";
-  window.location.href="https://wa.me/"+WA+"?text="+encodeURIComponent(texto());
+  var nom=nombreParaMandar();
+  if(!nom){ $("campoNombre").hidden=false; $("aviso4").textContent="Escribí tu nombre, así Rosana sabe que es tuyo."; $("tuNombre").focus(); return; }
+  $("aviso4").textContent="Mandando…"; $("porWa").hidden=true;
+  var bl=bloques(), sub=nom+" · "+new Date().toLocaleDateString("es-AR",{weekday:"long",day:"numeric",month:"long"});
+  S.pend=true; guardar(); pintarEnvio();
+  encolar({paso:"Menú de Palabras · "+nom, asunto:"Menú de Palabras · "+nom, nombre:nom, email:"", fecha:hoyISO(),
+    mensaje:mailTexto("Menú de Palabras",sub,bl), mensaje_html:mailHTML("Menú de Palabras",sub,bl), paso_slug:"menu-de-palabras"},
+    "menu", {t:"menu"}, function(r){
+      if(r==="ok"){ $("aviso4").textContent="Listo, le llegó a Rosana."; return; }
+      if(r==="espera"){ $("aviso4").textContent="Se está mandando. Si cerrás la página, sale solo cuando la vuelvas a abrir."; return; }
+      $("aviso4").textContent="Quedó guardado en tu teléfono y se manda solo apenas haya conexión.";
+      var w=$("porWa"); w.href="https://wa.me/"+WA+"?text="+encodeURIComponent(texto()); w.hidden=false;
+    });
 };
 $("reset").onclick=function(e){
   var b=e.currentTarget;
   if(b.dataset.armed){ S=vacio(); delete b.dataset.armed; b.textContent="Borrar todo y empezar de nuevo"; pintar(); window.scrollTo({top:0}); }
   else { b.dataset.armed="1"; b.textContent="¿Seguro? Tocá de nuevo para borrar"; setTimeout(function(){ if(b.dataset.armed){ delete b.dataset.armed; b.textContent="Borrar todo y empezar de nuevo"; } },4000); }
 };
-window.__menu={texto:texto};
-pintar();
+/* Avisos a Rosana: lo que se manda queda guardado en el teléfono hasta que el
+   servidor confirma que salió. Sin conexión se reintenta solo (al volver
+   internet, al volver a abrir la página y cada medio minuto). Cada envío lleva
+   un identificador: aunque se reintente, a Rosana le llega una sola vez. */
+var COLA=[], enviando="", esperan={};
+try{ var cg=JSON.parse(localStorage.getItem(COLA_KEY)); if(Array.isArray(cg)) COLA=cg; }catch(e){}
+function guardarCola(){ try{ localStorage.setItem(COLA_KEY,JSON.stringify(COLA)); return true; }catch(e){ return false; } }
+function nuevoId(){
+  try{ if(window.crypto&&crypto.randomUUID) return crypto.randomUUID(); }catch(e){}
+  return "a"+Date.now().toString(36)+Math.random().toString(36).slice(2,10)+Math.random().toString(36).slice(2,10);
+}
+function encolar(cuerpo, clave, efecto, cb){
+  if(clave){
+    var firma=JSON.stringify(cuerpo), igual=COLA.filter(function(x){ return x.k===clave&&JSON.stringify(x.c)===firma; })[0];
+    if(igual){ /* doble toque, o lo mismo otra vez mientras sale: no se manda dos veces */
+      if(cb) esperar(igual.id,cb);
+      if(igual.id!==enviando){ igual.prox=0; procesarCola(); }
+      return;
+    }
+    COLA=COLA.filter(function(x){ return x.k!==clave||x.id===enviando; });
+  }
+  var it={id:nuevoId(),k:clave||"",c:cuerpo,ef:efecto||null,n:0,prox:0};
+  COLA.push(it); guardarCola();
+  if(cb) esperar(it.id,cb);
+  procesarCola();
+}
+/* cb("espera") a los 20 segundos si todavía está saliendo; cb("ok") o cb("cola") cuando termina */
+function esperar(id, cb){
+  esperan[id]=cb;
+  setTimeout(function(){ if(esperan[id]===cb){ try{ cb("espera"); }catch(e){} } },20000);
+}
+function contestar(id, estado){ var f=esperan[id]; if(!f) return; delete esperan[id]; try{ f(estado); }catch(e){} }
+function procesarCola(){
+  if(enviando||!COLA.length||document.hidden) return;
+  var ahora=Date.now(), it=COLA.filter(function(x){ return !x.prox||x.prox<=ahora; })[0];
+  if(!it) return;
+  enviando=it.id;
+  var ct=window.AbortController?new AbortController():null, to=ct&&setTimeout(function(){ ct.abort(); },30000);
+  fetch("/api/aviso",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(Object.assign({id:it.id},it.c)),signal:ct?ct.signal:undefined})
+    .then(function(r){ return r.json().then(function(j){ return {s:r.status,j:j}; },function(){ return {s:r.status,j:{}}; }); })
+    .then(function(res){ clearTimeout(to); terminarEnvio(it, res.s>=200&&res.s<300&&!!res.j&&res.j.ok===true, res.s); })
+    .catch(function(){ clearTimeout(to); terminarEnvio(it,false,0); });
+}
+function terminarEnvio(it, ok, status){
+  enviando="";
+  if(ok){ COLA=COLA.filter(function(x){ return x.id!==it.id; }); guardarCola(); alSalir(it.ef); contestar(it.id,"ok"); }
+  else if(it.k&&COLA.some(function(x){ return x.k===it.k&&x.id!==it.id; })){ COLA=COLA.filter(function(x){ return x.id!==it.id; }); guardarCola(); contestar(it.id,"cola"); }
+  else {
+    it.n=(it.n||0)+1;
+    it.prox=Date.now()+(status===429?3*3600000:(status===400||status===403)?6*3600000:Math.min(1800000,15000*Math.pow(2,Math.min(it.n-1,7))));
+    guardarCola(); contestar(it.id,"cola");
+  }
+  setTimeout(procesarCola,300);
+}
+window.addEventListener("online",function(){ COLA.forEach(function(x){ x.prox=0; }); procesarCola(); });
+document.addEventListener("visibilitychange",function(){ if(document.visibilityState==="visible") procesarCola(); });
+setInterval(procesarCola,30000); setTimeout(procesarCola,1500);
+/* El mail que le llega a Rosana: mismo diseño que los de la app de las consultantes. */
+function mailHTML(titulo, sub, bl){
+  var H=['<div style="font-family:\'DM Sans\',Helvetica,Arial,sans-serif;color:#1a1a1a;background:#fff6f3;padding:26px 18px;line-height:1.6"><div style="max-width:620px;margin:0 auto;background:#fff;border:1px solid #f6d9d1;border-radius:16px;padding:30px">',
+    '<p style="margin:0 0 6px;font-size:15px;letter-spacing:2px;text-transform:uppercase;color:#c53a1e;font-weight:700">Ejercicio NuPlan</p>',
+    '<h1 style="margin:0 0 6px;font-size:26px;line-height:1.2">'+esc(titulo)+'</h1>',
+    '<p style="margin:0 0 24px;padding-bottom:16px;border-bottom:2px solid #e8472a;font-size:16px;color:#4b5563">'+esc(sub)+'</p>'];
+  bl.forEach(function(b){
+    H.push('<p style="margin:22px 0 10px;font-size:15px;letter-spacing:1.5px;text-transform:uppercase;color:#c53a1e;font-weight:700">'+esc(b.t)+'</p>');
+    b.l.forEach(function(x){
+      H.push('<div style="margin:0 0 9px;padding:13px 15px;background:#fff6f3;border-left:4px solid #e8472a;border-radius:0 10px 10px 0">'+
+        (x.k?'<p style="margin:0 0 4px;font-size:15px;color:#6b7280">'+esc(x.k)+'</p>':'')+
+        '<p style="margin:0;font-size:16px;white-space:pre-wrap">'+esc(x.v)+'</p></div>');
+    });
+  });
+  H.push('<p style="margin:28px 0 0;padding-top:16px;border-top:1px solid #e5e7eb;font-size:15px;color:#6b7280">Llegó desde el link del ejercicio que le mandaste.</p></div></div>');
+  return H.join("");
+}
+function mailTexto(titulo, sub, bl){
+  var L=[titulo, sub, ""];
+  bl.forEach(function(b){ L.push("== "+b.t+" =="); b.l.forEach(function(x){ L.push((x.k?x.k+": ":"")+x.v); }); L.push(""); });
+  return L.join("\n");
+}
+
+if(S.pend&&!COLA.some(function(x){ return x.k==="menu"; })) S.pend=false;
+if(!NOMBRE){ $("campoNombre").hidden=false; try{ $("tuNombre").value=localStorage.getItem(NOMBRE_KEY)||""; }catch(e){} }
+window.__menu={texto:texto,bloques:bloques};
+pintar(); pintarEnvio();
 })();
 </script>
 </body>

@@ -9,17 +9,17 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700;800&family=Space+Mono:wght@400;700&display=swap">
 <style>
-  /* Registro diario de comidas para consultantes de NuPlan. Sin login: se guarda en el teléfono y se manda a Rosana por WhatsApp. */
+  /* Registro diario de comidas para consultantes de NuPlan. Sin login: se guarda en el teléfono y se le manda a Rosana por mail, con reintento si no hay conexión. */
   :root{
     --bg:#fff6f3; --surface:#fff; --text:#1a1a1a; --muted:#6b7280; --border:#e5e7eb;
-    --coral:#e8472a; --coral-light:#f47a62; --accent:#f6a29a; --coral-dark:#c53a1e; --tinte:#fde9e4; --ok:#15803d;
+    --coral:#e8472a; --coral-light:#f47a62; --accent:#f6a29a; --coral-dark:#c53a1e; --tinte:#fde9e4; --ok:#c53a1e;
     --sans:"DM Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif; --mono:"Space Mono",ui-monospace,Menlo,monospace;
     color-scheme:light;
   }
   *{box-sizing:border-box}
   html,body{margin:0;background:var(--bg);color:var(--text);font-family:var(--sans);font-size:18px;line-height:1.5;-webkit-font-smoothing:antialiased}
   .wrap{max-width:560px;margin:0 auto;padding:calc(18px + env(safe-area-inset-top,0px)) max(18px,env(safe-area-inset-right,0px)) calc(120px + env(safe-area-inset-bottom,0px)) max(18px,env(safe-area-inset-left,0px))}
-  .marca{font-family:var(--mono);font-size:14px;letter-spacing:.08em;text-transform:uppercase;color:var(--coral-dark)}
+  .marca{font-family:var(--mono);font-size:16px;letter-spacing:.08em;text-transform:uppercase;color:var(--coral-dark)}
   h1{font-size:32px;line-height:1.1;margin:6px 0 4px;font-weight:800}
   .fecha{font-size:19px;color:var(--muted);margin:0 0 18px}
   .caja{background:var(--surface);border:1.5px solid var(--border);border-radius:1rem;padding:18px;margin:0 0 14px}
@@ -46,9 +46,9 @@
   .que{font-size:19px;font-weight:600}
   .por{color:var(--muted);font-size:17px;margin-top:2px}
   .acc{display:flex;gap:14px;margin-top:6px}
-  .link{background:none;border:0;padding:4px 0;font:600 16px var(--sans);color:var(--coral-dark);text-decoration:underline;cursor:pointer}
+  .link{background:none;border:0;padding:10px 4px;min-height:44px;font:600 16px var(--sans);color:var(--coral-dark);text-decoration:underline;cursor:pointer}
   .vacio{color:var(--muted);margin:0}
-  .estado{font-family:var(--mono);font-size:15px;color:var(--ok);margin:10px 0 0;text-align:center}
+  .estado{font-family:var(--mono);font-size:16px;color:var(--ok);margin:10px 0 0;text-align:center}
   .estado.aviso{color:var(--coral-dark)}
   .fija{position:fixed;left:0;right:0;bottom:0;background:linear-gradient(to top,var(--bg) 70%,rgba(255,246,243,0));padding:16px max(18px,env(safe-area-inset-right,0px)) calc(16px + env(safe-area-inset-bottom,0px)) max(18px,env(safe-area-inset-left,0px))}
   .fija .in{max-width:560px;margin:0 auto}
@@ -68,7 +68,7 @@
 
   <!-- primera vez -->
   <section class="caja bienvenida oculto" id="v-nombre">
-    <p><b>Un minuto por comida.</b> Anotás la hora, qué comiste y qué te llevó a comer. Al final del día se lo mandás a Rosana por WhatsApp con un botón.</p>
+    <p><b>Un minuto por comida.</b> Anotás la hora, qué comiste y qué te llevó a comer. Al final del día se lo mandás a Rosana con un botón y le llega a su mail.</p>
     <p>Todo queda guardado en este teléfono: podés cerrar y volver cuando quieras.</p>
     <div class="campo" style="margin-top:16px">
       <label for="in-nombre">¿Cómo te llamás?</label>
@@ -117,7 +117,7 @@
       <h2>Días anteriores</h2>
       <ul class="dias" id="dias"></ul>
     </div>
-    <p class="pie">Si querés mandarle una foto de algún plato, mandásela directo por WhatsApp.</p>
+    <p class="pie">Si querés mandarle una foto de algún plato, mandásela directo <a href="https://wa.me/5491151426830" target="_blank" rel="noopener" style="color:var(--coral-dark);font-weight:700;display:inline-block;min-height:44px;padding:10px 0">por WhatsApp</a>.</p>
   </section>
 </main>
 
@@ -134,13 +134,13 @@
 <script>
 (function(){
   "use strict";
-  var MOTIVOS = ["Tenía hambre","Con calma, tranquila","Fue la hora, no el hambre","Me ganó el cansancio","Estaba nerviosa o acelerada","Estaba aburrida","Otra"];
+  var MOTIVOS = ["Tenía hambre","Con calma","Fue la hora, no el hambre","Me ganó el cansancio","Me ganaron los nervios o el apuro","Por aburrimiento","Otra cosa"];
   var CLAVE = "nuplan-registro-v1";
   var params = new URLSearchParams(location.search);
-  var WA = (params.get("wa")||"5491151426830").replace(/\D/g,""); // WhatsApp de Rosana (se puede cambiar con ?wa=)
+  var COLA_KEY = "nuplan-registro-cola";
   var hoy = claveDia(new Date());
   var datos = leer();
-  if(params.get("nombre") && !datos.nombre){ datos.nombre = params.get("nombre").trim().slice(0,40); guardar(); }
+  if(params.get("nombre") && !datos.nombre){ datos.nombre = params.get("nombre").trim().slice(0,60); guardar(); }
   var editando = null; // índice de la comida que se está editando
   var $ = function(id){ return document.getElementById(id); };
 
@@ -157,7 +157,7 @@
   function pintar(){
     $("fecha").textContent = fechaLarga(hoy);
     if(!datos.nombre){ $("v-nombre").classList.remove("oculto"); $("v-dia").classList.add("oculto"); $("barra").classList.add("oculto"); $("titulo").textContent="Mi registro del día"; return; }
-    $("titulo").textContent = "Hola, "+datos.nombre;
+    $("titulo").textContent = "Hola, "+datos.nombre.split(" ")[0];
     $("v-nombre").classList.add("oculto"); $("v-dia").classList.remove("oculto"); $("barra").classList.remove("oculto");
     var d = dia(hoy);
     var c = d.comidas.slice().map(function(x,i){ return {x:x,i:i}; }).sort(function(a,b){ return a.x.hora.localeCompare(b.x.hora); });
@@ -168,11 +168,11 @@
     }).join("") : '<p class="vacio">Todavía no anotaste nada hoy. Tocá <b>+ Anotar comida</b>.</p>';
     $("caja-extra").classList.toggle("oculto", !c.length);
     if(document.activeElement!==$("in-extra")) $("in-extra").value = d.extra||"";
-    $("b-enviar").textContent = d.enviado ? "Mandar de nuevo" : "Mandar a Rosana";
+    $("b-enviar").textContent = d.enviado === "cola" ? "En camino" : d.enviado ? "Mandar de nuevo" : "Mandar a Rosana";
     var anteriores = Object.keys(datos.dias).filter(function(k){ return k!==hoy && datos.dias[k].comidas.length; }).sort().reverse().slice(0,14);
     $("caja-dias").classList.toggle("oculto", !anteriores.length);
     $("dias").innerHTML = anteriores.map(function(k){ var x=datos.dias[k];
-      return '<li><span>'+esc(fechaLarga(k))+' · '+x.comidas.length+' comida'+(x.comidas.length===1?'':'s')+(x.enviado?' · enviado':'')+'</span><button class="link" data-reenviar="'+k+'" type="button">Mandar</button></li>'; }).join("");
+      return '<li><span>'+esc(fechaLarga(k))+' · '+x.comidas.length+' comida'+(x.comidas.length===1?'':'s')+(x.enviado==="cola"?' · en camino':x.enviado?' · enviado':'')+'</span><button class="link" data-reenviar="'+k+'" type="button">Mandar</button></li>'; }).join("");
   }
 
   function abrirForm(i){
@@ -223,15 +223,105 @@
   function enviar(k){
     var d=datos.dias[k];
     if(!d||!d.comidas.length){ avisar("Anotá al menos una comida antes de mandar.", true); return; }
-    var url=(WA?"https://wa.me/"+WA:"https://wa.me/")+"?text="+encodeURIComponent(texto(k));
-    d.enviado=new Date().toISOString(); guardar(); pintar();
-    window.location.href=url;
+    var c=d.comidas.slice().sort(function(a,b){ return a.hora.localeCompare(b.hora); });
+    var bl=[{t:"Lo que comió, hora por hora",l:c.map(function(x){
+      var por=(x.motivos||[]).join(", ")+(x.nota?((x.motivos&&x.motivos.length)?" · ":"")+x.nota:"");
+      return {k:x.hora+(por?" · "+por:""),v:x.que}; })}];
+    if(d.extra&&d.extra.trim()) bl.push({t:"Lo que le quiere contar",l:[{v:d.extra.trim()}]});
+    var sub=datos.nombre+" · "+fechaLarga(k);
+    d.enviado="cola"; guardar(); pintar(); avisar("Mandando…");
+    encolar({paso:"Registro del día · "+datos.nombre, asunto:"Registro del día · "+datos.nombre+" · "+fechaCorta(k), nombre:datos.nombre, email:"", fecha:k,
+      mensaje:mailTexto("Registro del día",sub,bl), mensaje_html:mailHTML("Registro del día",sub,bl), paso_slug:"registro"},
+      "dia-"+k, {t:"dia",k:k}, function(r){
+        avisar(r==="ok"?"Listo, le llegó a Rosana.":r==="espera"?"Se está mandando. Si cerrás la página, sale solo cuando la vuelvas a abrir.":"Quedó guardado y se manda solo apenas haya conexión.");
+      });
   }
+  function alSalir(ef){ if(ef&&ef.t==="dia"&&datos.dias[ef.k]){ datos.dias[ef.k].enviado=new Date().toISOString(); guardar(); pintar(); } }
   $("b-enviar").onclick = function(){ enviar(hoy); };
   $("dias").addEventListener("click", function(e){ var b=e.target.closest("[data-reenviar]"); if(b) enviar(b.getAttribute("data-reenviar")); });
 
   // si queda abierta de un día para otro, arranca el día nuevo sola
   document.addEventListener("visibilitychange", function(){ if(document.visibilityState==="visible"){ var k=claveDia(new Date()); if(k!==hoy){ hoy=k; cerrarForm(); pintar(); } } });
+  /* Avisos a Rosana: lo que se manda queda guardado en el teléfono hasta que el
+     servidor confirma que salió. Sin conexión se reintenta solo (al volver
+     internet, al volver a abrir la página y cada medio minuto). Cada envío lleva
+     un identificador: aunque se reintente, a Rosana le llega una sola vez. */
+  var COLA=[], enviando="", esperan={};
+  try{ var cg=JSON.parse(localStorage.getItem(COLA_KEY)); if(Array.isArray(cg)) COLA=cg; }catch(e){}
+  function guardarCola(){ try{ localStorage.setItem(COLA_KEY,JSON.stringify(COLA)); return true; }catch(e){ return false; } }
+  function nuevoId(){
+    try{ if(window.crypto&&crypto.randomUUID) return crypto.randomUUID(); }catch(e){}
+    return "a"+Date.now().toString(36)+Math.random().toString(36).slice(2,10)+Math.random().toString(36).slice(2,10);
+  }
+  function encolar(cuerpo, clave, efecto, cb){
+    if(clave){
+      var firma=JSON.stringify(cuerpo), igual=COLA.filter(function(x){ return x.k===clave&&JSON.stringify(x.c)===firma; })[0];
+      if(igual){ /* doble toque, o lo mismo otra vez mientras sale: no se manda dos veces */
+        if(cb) esperar(igual.id,cb);
+        if(igual.id!==enviando){ igual.prox=0; procesarCola(); }
+        return;
+      }
+      COLA=COLA.filter(function(x){ return x.k!==clave||x.id===enviando; });
+    }
+    var it={id:nuevoId(),k:clave||"",c:cuerpo,ef:efecto||null,n:0,prox:0};
+    COLA.push(it); guardarCola();
+    if(cb) esperar(it.id,cb);
+    procesarCola();
+  }
+  /* cb("espera") a los 20 segundos si todavía está saliendo; cb("ok") o cb("cola") cuando termina */
+  function esperar(id, cb){
+    esperan[id]=cb;
+    setTimeout(function(){ if(esperan[id]===cb){ try{ cb("espera"); }catch(e){} } },20000);
+  }
+  function contestar(id, estado){ var f=esperan[id]; if(!f) return; delete esperan[id]; try{ f(estado); }catch(e){} }
+  function procesarCola(){
+    if(enviando||!COLA.length||document.hidden) return;
+    var ahora=Date.now(), it=COLA.filter(function(x){ return !x.prox||x.prox<=ahora; })[0];
+    if(!it) return;
+    enviando=it.id;
+    var ct=window.AbortController?new AbortController():null, to=ct&&setTimeout(function(){ ct.abort(); },30000);
+    fetch("/api/aviso",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(Object.assign({id:it.id},it.c)),signal:ct?ct.signal:undefined})
+      .then(function(r){ return r.json().then(function(j){ return {s:r.status,j:j}; },function(){ return {s:r.status,j:{}}; }); })
+      .then(function(res){ clearTimeout(to); terminarEnvio(it, res.s>=200&&res.s<300&&!!res.j&&res.j.ok===true, res.s); })
+      .catch(function(){ clearTimeout(to); terminarEnvio(it,false,0); });
+  }
+  function terminarEnvio(it, ok, status){
+    enviando="";
+    if(ok){ COLA=COLA.filter(function(x){ return x.id!==it.id; }); guardarCola(); alSalir(it.ef); contestar(it.id,"ok"); }
+    else if(it.k&&COLA.some(function(x){ return x.k===it.k&&x.id!==it.id; })){ COLA=COLA.filter(function(x){ return x.id!==it.id; }); guardarCola(); contestar(it.id,"cola"); }
+    else {
+      it.n=(it.n||0)+1;
+      it.prox=Date.now()+(status===429?3*3600000:(status===400||status===403)?6*3600000:Math.min(1800000,15000*Math.pow(2,Math.min(it.n-1,7))));
+      guardarCola(); contestar(it.id,"cola");
+    }
+    setTimeout(procesarCola,300);
+  }
+  window.addEventListener("online",function(){ COLA.forEach(function(x){ x.prox=0; }); procesarCola(); });
+  document.addEventListener("visibilitychange",function(){ if(document.visibilityState==="visible") procesarCola(); });
+  setInterval(procesarCola,30000); setTimeout(procesarCola,1500);
+  /* El mail que le llega a Rosana: mismo diseño que los de la app de las consultantes. */
+  function mailHTML(titulo, sub, bl){
+    var H=['<div style="font-family:\'DM Sans\',Helvetica,Arial,sans-serif;color:#1a1a1a;background:#fff6f3;padding:26px 18px;line-height:1.6"><div style="max-width:620px;margin:0 auto;background:#fff;border:1px solid #f6d9d1;border-radius:16px;padding:30px">',
+      '<p style="margin:0 0 6px;font-size:15px;letter-spacing:2px;text-transform:uppercase;color:#c53a1e;font-weight:700">Ejercicio NuPlan</p>',
+      '<h1 style="margin:0 0 6px;font-size:26px;line-height:1.2">'+esc(titulo)+'</h1>',
+      '<p style="margin:0 0 24px;padding-bottom:16px;border-bottom:2px solid #e8472a;font-size:16px;color:#4b5563">'+esc(sub)+'</p>'];
+    bl.forEach(function(b){
+      H.push('<p style="margin:22px 0 10px;font-size:15px;letter-spacing:1.5px;text-transform:uppercase;color:#c53a1e;font-weight:700">'+esc(b.t)+'</p>');
+      b.l.forEach(function(x){
+        H.push('<div style="margin:0 0 9px;padding:13px 15px;background:#fff6f3;border-left:4px solid #e8472a;border-radius:0 10px 10px 0">'+
+          (x.k?'<p style="margin:0 0 4px;font-size:15px;color:#6b7280">'+esc(x.k)+'</p>':'')+
+          '<p style="margin:0;font-size:16px;white-space:pre-wrap">'+esc(x.v)+'</p></div>');
+      });
+    });
+    H.push('<p style="margin:28px 0 0;padding-top:16px;border-top:1px solid #e5e7eb;font-size:15px;color:#6b7280">Llegó desde el link del ejercicio que le mandaste.</p></div></div>');
+    return H.join("");
+  }
+  function mailTexto(titulo, sub, bl){
+    var L=[titulo, sub, ""];
+    bl.forEach(function(b){ L.push("== "+b.t+" =="); b.l.forEach(function(x){ L.push((x.k?x.k+": ":"")+x.v); }); L.push(""); });
+    return L.join("\n");
+  }
+  Object.keys(datos.dias).forEach(function(k){ if(datos.dias[k].enviado==="cola"&&!COLA.some(function(x){ return x.k==="dia-"+k; })) datos.dias[k].enviado=null; });
   window.__registro = { texto:texto, datos:function(){ return datos; } };
   pintar();
 })();

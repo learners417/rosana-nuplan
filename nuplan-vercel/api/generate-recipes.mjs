@@ -1,7 +1,14 @@
 // NuPlan · generación de recetas.
 // Devuelve exactamente la estructura que espera el frontend publicado.
 
-import { llamarIA, responderConLatido, leerJSON } from "./_lib.mjs";
+import {
+  llamarIA,
+  responderConLatido,
+  leerJSON,
+  conAcceso,
+  respuestaJSON,
+  sinDatosPersonales,
+} from "./_lib.mjs";
 import { reglasDeLasCaracteristicas } from "./_patologias.mjs";
 
 function construirPrompt(d) {
@@ -72,25 +79,27 @@ Respondé ÚNICAMENTE con un objeto JSON válido, sin texto antes ni después y 
 La lista "recipes" debe tener exactamente ${cant} recetas${detallePorTipo ? ", respetando la cantidad por tipo indicada arriba y en ese orden" : ""}.`;
 }
 
-async function generar(datos) {
-  const r = await llamarIA(construirPrompt(datos), 12000);
+async function generar(entrada) {
+  // La IA no necesita nombre, apellido ni contacto de la paciente.
+  const datos = { ...(entrada || {}), patientInfo: sinDatosPersonales(entrada?.patientInfo) };
+  const r = await llamarIA(construirPrompt(datos), 12000, "recetas", { limite: Date.now() + 280000 });
   if (!Array.isArray(r.recipes)) r.recipes = [];
   for (const rec of r.recipes) {
     if (!Array.isArray(rec.ingredients)) rec.ingredients = [];
     if (!Array.isArray(rec.preparation)) rec.preparation = [];
   }
+  if (r.__respaldo) r._aviso = "respaldo";
   return r;
 }
 
 export async function POST(req) {
-  let datos;
-  try {
-    datos = await leerJSON(req);
-  } catch (e) {
-    return new Response(JSON.stringify({ error: String(e.message || e) }), {
-      status: 400,
-      headers: { "Content-Type": "application/json" },
-    });
-  }
-  return responderConLatido(() => generar(datos));
+  return conAcceso(req, "recetas", async () => {
+    let datos;
+    try {
+      datos = await leerJSON(req);
+    } catch (e) {
+      return respuestaJSON(400, { error: String(e.message || e) });
+    }
+    return responderConLatido(() => generar(datos), "recetas");
+  });
 }

@@ -2,7 +2,17 @@
 // Lo llama la página del paso 3 publicada en metodo.nuplan.com.ar.
 // Usa la misma clave y el mismo respaldo de modelo que el resto de la app.
 
-import { llamarIA, leerJSON } from "./_lib.mjs";
+import {
+  llamarIA,
+  leerJSON,
+  origenPermitido,
+  topePublico,
+  mensajeParaConsultante,
+  tipoDeFalla,
+  avisoDeFalla,
+  avisoTecnico,
+  registrar,
+} from "./_lib.mjs";
 
 // Solo estos dominios pueden llamar a esta función desde el navegador.
 const PERMITIDOS = [
@@ -73,15 +83,22 @@ function construirPrompt(datos) {
 }
 
 export async function POST(req) {
+  if (!origenPermitido(req, PERMITIDOS)) {
+    return responder({ error: "Esta función solo responde a las páginas de NuPlan." }, req, 403);
+  }
   let datos;
   try {
-    datos = await leerJSON(req);
+    datos = await leerJSON(req, 30000);
   } catch (e) {
     return responder({ error: String(e.message || e) }, req, 400);
   }
 
+  const tope = await topePublico(req, "plan-personalizado");
+  if (tope) return responder({ error: tope.mensaje, codigo: tope.codigo, tope: true }, req, 429);
+
   try {
-    const r = await llamarIA(construirPrompt(datos), 2000);
+    const r = await llamarIA(construirPrompt(datos), 2000, "plan-personalizado");
+    if (r && r.__respaldo && tipoDeFalla(r.__motivo) === "modelo") await avisoTecnico("modelo", "el plan personalizado de PERSONALIZAR");
     if (!r || !r.resumen || !r.dia_tipo) {
       throw new Error("La IA no devolvió el plan completo.");
     }
@@ -101,7 +118,10 @@ export async function POST(req) {
       req
     );
   } catch (e) {
-    console.error("Plan personalizado falló:", e.message);
-    return responder({ error: String(e.message || e) }, req, 502);
+    const tipo = tipoDeFalla(e);
+    const aviso = avisoDeFalla(e);
+    registrar("ia_fallo", { funcion: "plan-personalizado", tipo, error: String(e.message || e).slice(0, 300) });
+    if (tipo !== "pasajera") await avisoTecnico(aviso, "el plan personalizado de PERSONALIZAR");
+    return responder({ error: mensajeParaConsultante(e, "armar tu devolución") }, req, 502);
   }
 }

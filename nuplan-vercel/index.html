@@ -39,31 +39,129 @@
       #generated-plan-view ul.space-y-2 > li.p-2 { padding: 4px 8px !important; }
       #generated-plan-view ul.space-y-2:has(> li.p-2) > li:not(:first-child) { margin-top: 4px !important; }
     </style>
+    <style>
+      /* la barra "Guardar todos los cambios" del plan quedaba pegada al final porque un contenedor animado tiene transform */
+      #root .animate-in:has(.fixed.bottom-6.right-6) { animation: none !important; transform: none !important; }
+      /* lugar al final de cada pantalla para que el botón "Herramientas" nunca tape lo último (paginación, Continuar, Guardar) */
+      @media screen { #root main { padding-bottom: 96px !important; } }
+      /* el aviso "¡Plan generado con éxito!" no sale en el PDF */
+      @media print { .fixed.bottom-8, #np-herramientas { display: none !important; } }
+    </style>
+    <!-- Planes y recetarios se hacen solo en Herramientas (decisión del 29/10/26): los botones de acá llevan allá. -->
+    <script>
+      (function () {
+        try { var t = localStorage.getItem("nutriapp.activeTab"); if (t === "generador" || t === "recetario") localStorage.setItem("nutriapp.activeTab", "dashboard"); } catch (e) {}
+        var DESVIO = { "Generador de Planes": "#plan", "Nuevo plan": "#plan", "Recetario": "#recetario", "Nuevo recetario": "#recetario" };
+        document.addEventListener("click", function (e) {
+          var b = e.target && e.target.closest ? e.target.closest("button, a") : null;
+          var root = document.getElementById("root");
+          if (!b || !root || !root.contains(b)) return;
+          var t = (b.getAttribute("title") || b.textContent || "").replace(/\s+/g, " ").trim();
+          if (Object.prototype.hasOwnProperty.call(DESVIO, t)) {
+            e.preventDefault(); e.stopImmediatePropagation();
+            location.href = "/herramientas/" + DESVIO[t];
+          }
+        }, true);
+      })();
+    </script>
+    <!-- Funciones de IA: viajan con la sesión de la usuaria, y si fallan se ve el motivo (no un falso éxito). -->
+    <script>
+      (function () {
+        var CLAVE = "sb-askebcmhmhmwtfklyxuf-auth-token";
+        function sesion() { try { return JSON.parse(localStorage.getItem(CLAVE) || "null"); } catch (e) { return null; } }
+        // si el token está por vencer, se espera hasta 4 segundos a que la app lo renueve sola
+        function tokenVigente() {
+          return new Promise(function (listo) {
+            var t0 = Date.now();
+            (function mirar() {
+              var s = sesion(), vence = s && s.expires_at ? s.expires_at * 1000 : 0;
+              var ok = s && s.access_token && (!vence || vence - Date.now() > 15000);
+              if (ok || !s || Date.now() - t0 > 4000) return listo((s && s.access_token) || "");
+              setTimeout(mirar, 250);
+            })();
+          });
+        }
+        var f0 = window.fetch;
+        window.fetch = function (input, init) {
+          var url = typeof input === "string" ? input : (input && input.url) || "";
+          var esApi = url.indexOf("/api/") === 0 || url.indexOf(location.origin + "/api/") === 0;
+          if (!esApi) return f0.apply(window, arguments);
+          return tokenVigente().then(function (token) {
+            var opciones = Object.assign({}, init || {});
+            var h = new Headers((init && init.headers) || (typeof input !== "string" && input && input.headers) || {});
+            if (token && !h.has("Authorization")) h.set("Authorization", "Bearer " + token);
+            opciones.headers = h;
+            return f0.call(window, input, opciones);
+          }).then(function (r) {
+            if (!r.ok) return r;
+            return r.clone().text().then(function (t) {
+              var j;
+              // la función se cortó a mitad de camino: la app recibe un error claro, no «Unexpected end of JSON input»
+              try { j = JSON.parse(t); } catch (e) {
+                return new Response(JSON.stringify({ error: "La respuesta llegó incompleta. Probá de nuevo en un minuto." }), { status: 502, headers: { "Content-Type": "application/json" } });
+              }
+              if (j && typeof j === "object" && !Array.isArray(j) && typeof j.error === "string" && Object.keys(j).length === 1)
+                return new Response(JSON.stringify(j), { status: 502, headers: { "Content-Type": "application/json" } });
+              return r;
+            });
+          });
+        };
+      })();
+    </script>
   </head>
   <body>
     <div id="root"></div>
-    <!-- Acceso a Herramientas NuPlan. No toca la app: es un botón flotante aparte. -->
+    <!-- Acceso a Herramientas NuPlan. No toca la app: es un botón flotante aparte, que se esconde cuando tapa algo. -->
     <script>
       (function () {
+        // algo que ocupa toda la pantalla y se ve (una ventana con su fondo oscuro)
+        // (las ventanas de la app entran con un fundido desde transparente: para ellas no se mira la opacidad)
+        function cubrePantalla(el, aunqueTransparente) {
+          var cs = getComputedStyle(el);
+          if (cs.position !== "fixed" || cs.display === "none" || cs.visibility === "hidden") return false;
+          if (!aunqueTransparente && Number(cs.opacity) === 0) return false;
+          var r = el.getBoundingClientRect();
+          return r.width >= innerWidth * 0.9 && r.height >= innerHeight * 0.9;
+        }
+        // una ventana, un cartel o la barra de guardar a la vista (con clases o con estilos propios, como el «¡Registro Exitoso!»).
+        // Lo que agregan las extensiones del navegador (chicos, en una esquina) no cuenta.
+        function hayVentana() {
+          if (document.querySelector(".fixed.bottom-8.right-8, .fixed.bottom-6.right-6")) return true;
+          var modales = document.querySelectorAll(".fixed.inset-0");
+          for (var m = 0; m < modales.length; m++) if (cubrePantalla(modales[m], true)) return true;
+          var hijos = document.body.children;
+          for (var i = 0; i < hijos.length; i++) {
+            var el = hijos[i];
+            if (el.id === "root" || el.id === "np-herramientas" || el.tagName === "SCRIPT" || el.tagName === "STYLE") continue;
+            if (cubrePantalla(el)) return true;
+            var fijos = el.querySelectorAll('[style*="position: fixed"], [style*="position:fixed"]');
+            for (var k = 0; k < fijos.length; k++) if (cubrePantalla(fijos[k])) return true;
+          }
+          return false;
+        }
         function mostrar() {
           var conSesion = false;
           try { conSesion = Object.keys(localStorage).some(function (k) { return k.indexOf("sb-") === 0 && k.indexOf("-auth-token") > 0; }); } catch (e) {}
           var esPublica = location.pathname.indexOf("/public/") === 0;
+          // sin la app adentro (login, nueva contraseña, acceso pendiente) o con un cartel, una ventana o la barra de guardar a la vista: no va
+          var tapa = !document.querySelector("#root main") || hayVentana();
           var ya = document.getElementById("np-herramientas");
-          if (!conSesion || esPublica) { if (ya) ya.remove(); return; }
+          if (!conSesion || esPublica || tapa) { if (ya) ya.remove(); return; }
           if (ya) return;
           var a = document.createElement("a");
           a.id = "np-herramientas";
           a.href = "/herramientas/";
           a.textContent = "Herramientas";
           a.setAttribute("aria-label", "Abrir Herramientas NuPlan");
-          a.style.cssText = "position:fixed;right:20px;bottom:20px;z-index:2147483000;background:#e8472a;color:#fff;font-family:'DM Sans',system-ui,sans-serif;font-weight:600;font-size:15px;padding:12px 18px;border-radius:999px;text-decoration:none;box-shadow:0 8px 20px -8px rgba(232,71,42,.7);";
+          a.style.cssText = "position:fixed;right:20px;bottom:20px;z-index:40;background:#e8472a;color:#fff;font-family:'DM Sans',system-ui,sans-serif;font-weight:600;font-size:16px;min-height:48px;display:inline-flex;align-items:center;padding:0 20px;border-radius:999px;text-decoration:none;box-shadow:0 8px 20px -8px rgba(232,71,42,.7);";
           document.body.appendChild(a);
         }
+        var pendiente = false;
+        function programar() { if (pendiente) return; pendiente = true; requestAnimationFrame(function () { pendiente = false; mostrar(); }); }
         mostrar();
         setInterval(mostrar, 3000);
-        window.addEventListener("beforeprint", function () { var b = document.getElementById("np-herramientas"); if (b) b.style.display = "none"; });
-        window.addEventListener("afterprint", function () { var b = document.getElementById("np-herramientas"); if (b) b.style.display = ""; });
+        new MutationObserver(programar).observe(document.documentElement, { childList: true, subtree: true });
+        window.addEventListener("storage", programar);
       })();
     </script>
   </body>

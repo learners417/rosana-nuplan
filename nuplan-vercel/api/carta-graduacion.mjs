@@ -3,7 +3,17 @@
 // Mismo molde que diagnostico.mjs, plan-personalizado.mjs, protocolo-deslices.mjs
 // e informe-evidencia.mjs. Cierra el método completo.
 
-import { llamarIA, leerJSON } from "./_lib.mjs";
+import {
+  llamarIA,
+  leerJSON,
+  origenPermitido,
+  topePublico,
+  mensajeParaConsultante,
+  tipoDeFalla,
+  avisoDeFalla,
+  avisoTecnico,
+  registrar,
+} from "./_lib.mjs";
 
 // Solo estos dominios pueden llamar a esta función desde el navegador.
 const PERMITIDOS = [
@@ -88,9 +98,12 @@ function construirPrompt(d) {
 }
 
 export async function POST(req) {
+  if (!origenPermitido(req, PERMITIDOS)) {
+    return responder({ error: "Esta función solo responde a las páginas de NuPlan." }, req, 403);
+  }
   let datos;
   try {
-    datos = await leerJSON(req);
+    datos = await leerJSON(req, 30000);
   } catch (e) {
     return responder({ error: String(e.message || e) }, req, 400);
   }
@@ -100,8 +113,12 @@ export async function POST(req) {
     return responder({ error: "Hacen falta al menos 3 reglas del manual." }, req, 400);
   }
 
+  const tope = await topePublico(req, "carta-graduacion");
+  if (tope) return responder({ error: tope.mensaje, codigo: tope.codigo, tope: true }, req, 429);
+
   try {
-    const r = await llamarIA(construirPrompt(datos), 1400);
+    const r = await llamarIA(construirPrompt(datos), 1400, "carta-graduacion");
+    if (r && r.__respaldo && tipoDeFalla(r.__motivo) === "modelo") await avisoTecnico("modelo", "la carta de graduación de NATURALIZAR");
     if (!r || !r.carta) {
       throw new Error("La IA no devolvió la carta completa.");
     }
@@ -113,7 +130,10 @@ export async function POST(req) {
       req
     );
   } catch (e) {
-    console.error("Carta de graduación falló:", e.message);
-    return responder({ error: String(e.message || e) }, req, 502);
+    const tipo = tipoDeFalla(e);
+    const aviso = avisoDeFalla(e);
+    registrar("ia_fallo", { funcion: "carta-graduacion", tipo, error: String(e.message || e).slice(0, 300) });
+    if (tipo !== "pasajera") await avisoTecnico(aviso, "la carta de graduación de NATURALIZAR");
+    return responder({ error: mensajeParaConsultante(e, "armar tu devolución") }, req, 502);
   }
 }

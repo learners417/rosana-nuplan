@@ -2,7 +2,17 @@
 // Lo llama la página del paso 4 publicada en metodo.nuplan.com.ar.
 // Mismo molde que diagnostico.mjs y plan-personalizado.mjs.
 
-import { llamarIA, leerJSON } from "./_lib.mjs";
+import {
+  llamarIA,
+  leerJSON,
+  origenPermitido,
+  topePublico,
+  mensajeParaConsultante,
+  tipoDeFalla,
+  avisoDeFalla,
+  avisoTecnico,
+  registrar,
+} from "./_lib.mjs";
 
 // Solo estos dominios pueden llamar a esta función desde el navegador.
 const PERMITIDOS = [
@@ -76,9 +86,12 @@ function construirPrompt(d) {
 }
 
 export async function POST(req) {
+  if (!origenPermitido(req, PERMITIDOS)) {
+    return responder({ error: "Esta función solo responde a las páginas de NuPlan." }, req, 403);
+  }
   let datos;
   try {
-    datos = await leerJSON(req);
+    datos = await leerJSON(req, 30000);
   } catch (e) {
     return responder({ error: String(e.message || e) }, req, 400);
   }
@@ -91,8 +104,12 @@ export async function POST(req) {
     return responder({ error: "Faltan los tres pasos de la consultante." }, req, 400);
   }
 
+  const tope = await topePublico(req, "protocolo-deslices");
+  if (tope) return responder({ error: tope.mensaje, codigo: tope.codigo, tope: true }, req, 429);
+
   try {
-    const r = await llamarIA(construirPrompt(datos), 1200);
+    const r = await llamarIA(construirPrompt(datos), 1200, "protocolo-deslices");
+    if (r && r.__respaldo && tipoDeFalla(r.__motivo) === "modelo") await avisoTecnico("modelo", "el protocolo de deslices de LIBERAR");
     if (!r || !r.apertura || !Array.isArray(r.pasos) || !r.pasos.length) {
       throw new Error("La IA no devolvió el protocolo completo.");
     }
@@ -105,7 +122,10 @@ export async function POST(req) {
       req
     );
   } catch (e) {
-    console.error("Protocolo de deslices falló:", e.message);
-    return responder({ error: String(e.message || e) }, req, 502);
+    const tipo = tipoDeFalla(e);
+    const aviso = avisoDeFalla(e);
+    registrar("ia_fallo", { funcion: "protocolo-deslices", tipo, error: String(e.message || e).slice(0, 300) });
+    if (tipo !== "pasajera") await avisoTecnico(aviso, "el protocolo de deslices de LIBERAR");
+    return responder({ error: mensajeParaConsultante(e, "armar tu devolución") }, req, 502);
   }
 }

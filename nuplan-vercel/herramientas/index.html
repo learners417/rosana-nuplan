@@ -351,6 +351,10 @@
   .quitar-tarjeta{float:right;background:none;border:1px solid var(--line);color:var(--muted);border-radius:999px;padding:4px 12px;font-size:.85rem;cursor:pointer;font-family:var(--body);margin-left:12px;}
   .quitar-tarjeta:hover{color:var(--coral);border-color:var(--coral);}
   .res-cabecera .bajada{margin:0;}
+  .datos-cab{display:flex;gap:12px;flex-wrap:wrap;}
+  .dato .v.txt{font-family:var(--body);font-size:1.25rem;line-height:1.3;}
+  #obj-origen,#obj-aviso{font-family:var(--body);font-size:1rem;line-height:1.5;}
+  #obj-origen:empty,#obj-aviso:empty{display:none;}
   .comida .plato-txt{margin:6px 0 0;font-size:1.08rem;} .comida .reco-txt{margin:8px 0 0;}
   .ayuda-edicion{font-family:var(--mono);font-size:.88rem;color:var(--coral-dark);margin:0 0 18px;}
 
@@ -766,6 +770,8 @@
     <div class="caja">
       <span class="sub">Objetivo principal</span>
       <div class="chips" id="chips-objetivo"></div>
+      <p class="nota" id="obj-origen"></p>
+      <p class="aviso" id="obj-aviso" role="alert"></p>
       <span class="sub">Situación fisiológica</span>
       <div class="chips" id="chips-fisio"></div>
       <label class="campo oculto" id="campo-embarazo" style="margin-top:16px;">Etapa<select id="d-embarazo" onchange="recalcular()"></select></label>
@@ -781,7 +787,7 @@
     </div>
     <div class="nav-pasos">
       <button class="btn suave" onclick="irPaso(2)">Atrás</button>
-      <button class="btn" onclick="irPaso(4)">Siguiente</button>
+      <button class="btn" onclick="siguienteDesdeObjetivo()">Siguiente</button>
     </div>
   </div>
 
@@ -1358,6 +1364,26 @@ async function ultimasMedidas(pacienteId){
   (r.data||[]).forEach(function(s){ ["weight","height","girth_waist"].forEach(function(k){ if(out[k]==null && s[k]!=null && Number(s[k])>0) out[k]=s[k]; }); });
   return out;
 }
+/* el objetivo de la paciente: el motivo de consulta más reciente de su ficha que sea uno de los objetivos del plan */
+async function objetivoDeLaFicha(pacienteId){
+  try{
+    var r = await sb.from("sessions").select("consultation_reason, session_date").eq("patient_id",pacienteId).in("consultation_reason",OBJETIVOS).order("session_date",{ascending:false}).order("created_at",{ascending:false}).limit(1);
+    var f = (r.data||[])[0];
+    return (!r.error && f && OBJETIVOS.indexOf(f.consultation_reason)!==-1) ? {objetivo:f.consultation_reason, fecha:f.session_date} : null;
+  }catch(e){ return null; }
+}
+function pintarOrigenObjetivo(obj){
+  var el=$("obj-origen"); if(!el) return;
+  el.textContent = obj ? "Viene de su ficha: motivo de consulta"+(obj.fecha?" del "+fechaCorta(obj.fecha):"")+". Si cambió, tocá otro." : "Elegí uno: es lo primero que dice el plan.";
+}
+function siguienteDesdeObjetivo(){
+  if(!chipsElegidos("chips-objetivo").length){ avisarFaltaObjetivo(); return; }
+  irPaso(4);
+}
+function avisarFaltaObjetivo(){
+  var a=$("obj-aviso"); a.className="aviso error"; a.textContent="Elegí el objetivo principal para seguir.";
+  setTimeout(function(){ a.scrollIntoView({block:"center"}); }, 0);
+}
 elegirPaciente.n=0;
 async function elegirPaciente(p){
   var token=++elegirPaciente.n;
@@ -1366,7 +1392,8 @@ async function elegirPaciente(p){
   $("lista-pacientes").innerHTML=""; $("busca-paciente").value=nombreCompleto(p); $("paciente-elegido").classList.add("oculto"); $("btn-p1").disabled=true;
   if($("ultimo-plan")) $("ultimo-plan").classList.add("oculto");
   $("pac-aviso").className="aviso"; $("pac-aviso").textContent="Cargando la última sesión…";
-  var m = await ultimasMedidas(p.id);
+  var ambos = await Promise.all([ultimasMedidas(p.id), objetivoDeLaFicha(p.id)]);
+  var m = ambos[0], obj = ambos[1];
   if(token!==elegirPaciente.n) return;
   var peso = m.weight ?? p.initial_weight ?? 70, talla = m.height ?? p.height ?? 165;
   plan.info = { firstName:p.first_name, lastName:p.last_name, age:edadDe(p.birth_date), sex:p.sex||"Femenino", weight:Number(peso), height:Number(talla), waist:m.girth_waist!=null?Number(m.girth_waist):null };
@@ -1379,6 +1406,8 @@ async function elegirPaciente(p){
   $("d-peso").value=plan.info.weight; $("d-talla").value=plan.info.height; $("d-cintura").value=plan.info.waist??"";
   $("d-edad").value=plan.info.age; $("d-sexo").value=plan.info.sex;
   limpiarFormularioPlan();
+  if(obj) marcarChip("chips-objetivo", obj.objetivo);
+  pintarOrigenObjetivo(obj);
   plan.platoManual=false; recalcular();
   avisarPlanesPrevios(p);
 }
@@ -1394,6 +1423,8 @@ async function avisarPlanesPrevios(p){
 function verGuardadosDe(){ if(!plan.paciente) return; gua.paciente=plan.paciente; abrirGuardados(); }
 function limpiarFormularioPlan(){
   ["chips-objetivo","chips-fisio","chips-clinicas","chips-habitos"].forEach(function(id){ $(id).querySelectorAll(".chip.on").forEach(function(b){ b.classList.remove("on"); }); });
+  if($("obj-origen")) $("obj-origen").textContent="";
+  if($("obj-aviso")){ $("obj-aviso").textContent=""; $("obj-aviso").className="aviso"; }
   marcarChip("chips-dieta","Normal");
   $("campo-embarazo").classList.add("oculto"); $("d-embarazo").value="";
   $("d-restricciones").value=""; $("d-objetivos").value=""; $("d-habito-libre").value="";
@@ -1676,6 +1707,7 @@ function preferenciasActuales(){
     dietType: chipsElegidos("chips-dieta")[0]||"Normal",
     intolerances: etiquetasActuales(),
     activityLevel: $("d-actividad").value,
+    goal: chipsElegidos("chips-objetivo")[0]||"",
     objectives: [chipsElegidos("chips-objetivo")[0]||"", $("d-objetivos").value.trim()].filter(Boolean).join(". "),
     foodRestrictions: $("d-restricciones").value.trim(),
     pregnancyStage: $("d-embarazo").value||"",
@@ -1690,6 +1722,7 @@ function preferenciasActuales(){
 async function generarPlan(){
   if(!plan.info||!plan.metricas||!plan.paciente){ $("plan-error").textContent="Elegí a la paciente de nuevo: se perdieron los datos del cálculo."; return; }
   if(ocupado()) return;
+  if(!chipsElegidos("chips-objetivo").length){ irPaso(3); avisarFaltaObjetivo(); return; }
   plan.pref=preferenciasActuales();
   // se congela todo lo que el plan necesita: si Rosana cambia de paciente mientras la IA trabaja, el plan igual se guarda en la ficha correcta
   // si Rosana ya corrigió y guardó este plan, el nuevo va aparte: el corregido queda en Planes guardados
@@ -1792,10 +1825,18 @@ function normalizarPlan(d){
   if(d.shoppingList!=null){ if(typeof d.shoppingList!=="object"||Array.isArray(d.shoppingList)) d.shoppingList={}; Object.keys(d.shoppingList).forEach(function(k){ d.shoppingList[k]=listaDe(d.shoppingList[k]).map(textoDe); }); }
   return d;
 }
+/* el objetivo principal del plan: el que se eligió; en planes de antes del 6/11/26, el primero de preferences.objectives si es uno de la lista */
+function objetivoDelPlan(){
+  var pr=plan.pref||{};
+  if(pr.goal) return String(pr.goal);
+  var primero=String(pr.objectives||"").split(". ")[0].trim();
+  return OBJETIVOS.indexOf(primero)!==-1 ? primero : "";
+}
 function pintarPlan(d){
   d=normalizarPlan(d);
   var h='<div class="res-cabecera cabecera-doc"><div><h2>'+esc(nombreCompleto(plan.paciente))+'</h2>'+edTexto("planObjective", d.planObjective, "p", "bajada", "Objetivo del plan")+'</div>'+
-    '<div class="dato"><span class="l">Objetivo</span><span class="v">'+((plan.pref.hideCalories||(plan.pref.intolerances||[]).indexOf('Embarazo y Lactancia')!==-1||!(plan.metricas&&plan.metricas.calories))?"—":plan.metricas.calories+' <small>kcal</small>')+'</span></div></div>';
+    '<div class="datos-cab">'+(objetivoDelPlan()?'<div class="dato"><span class="l">Objetivo</span><span class="v txt">'+esc(objetivoDelPlan())+'</span></div>':'')+
+    '<div class="dato"><span class="l">Calorías</span><span class="v">'+((plan.pref.hideCalories||(plan.pref.intolerances||[]).indexOf('Embarazo y Lactancia')!==-1||!(plan.metricas&&plan.metricas.calories))?"—":plan.metricas.calories+' <small>kcal</small>')+'</span></div></div></div>';
   {
     var p=platoDelPlan(d), hp=d.hydrationPlan||{};
     var agua = hp.targetLiters ? '<li class="agua"><b>'+String(hp.targetLiters).replace('.',',')+'</b><span>litros de agua por día'+(hp.equivalentGlasses?' · '+hp.equivalentGlasses+' vasos':'')+'</span></li>' : '';
@@ -2905,7 +2946,7 @@ window.addEventListener("beforeunload", function(e){
 (function(){
   var sel=$("d-actividad"); ACTIVIDAD.forEach(function(a){ var o=document.createElement("option"); o.value=a.value; o.textContent=a.label; sel.appendChild(o); });
   var se=$("d-embarazo"); se.innerHTML='<option value="">Elegí la etapa</option>'; ETAPAS.forEach(function(e){ var o=document.createElement("option"); o.value=e.value; o.textContent=e.label; se.appendChild(o); });
-  armarChips("chips-objetivo", OBJETIVOS, true);
+  armarChips("chips-objetivo", OBJETIVOS, true, function(){ var a=$("obj-aviso"); if(a&&chipsElegidos("chips-objetivo").length){ a.textContent=""; a.className="aviso"; } });
   armarChips("chips-fisio", FISIOLOGICAS, false, alCambiarCondiciones);
   armarChips("chips-clinicas", CLINICAS, false, recalcular);
   armarChips("chips-dieta", DIETAS, true); marcarChip("chips-dieta","Normal");

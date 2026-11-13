@@ -4,6 +4,66 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>NuPlan</title>
+    <!-- Listas completas (13/11/26): la base devuelve como mucho 1000 filas por pedido, y la app pedía las
+         pacientes de una empresa de una sola vez. Con más de 1000, las que quedaban más allá (por apellido)
+         no aparecían en «Nueva Consulta», en Pacientes ni en los informes. Esto pide la lista por tandas y se la
+         entrega entera a la app. Corre antes que la app (la app es un módulo y arranca después). -->
+    <script>
+      (function () {
+        var BASE = "https://askebcmhmhmwtfklyxuf.supabase.co/rest/v1/";
+        var TABLAS = { patients: 1, sessions: 1, lab_results: 1, form_responses: 1 };
+        var original = window.fetch;
+        if (!original) return;
+        function directo(self, args) { return original.apply(self, args); }
+        window.fetch = function (input, init) {
+          try {
+            var url = typeof input === "string" ? input : input && input.url ? input.url : String(input || "");
+            var metodo = String((init && init.method) || (input && input.method) || "GET").toUpperCase();
+            if (metodo !== "GET" || url.indexOf(BASE) !== 0) return directo(this, arguments);
+            var u = new URL(url);
+            if (!TABLAS[u.pathname.split("/").pop()] || u.searchParams.has("limit") || u.searchParams.has("offset")) return directo(this, arguments);
+            var h = new Headers((init && init.headers) || (input && input.headers) || {});
+            if (h.has("Range") || /vnd\.pgrst\.object/.test(h.get("Accept") || "")) return directo(this, arguments);
+            return porTandas(u, init || {}, h);
+          } catch (e) {
+            return directo(this, arguments);
+          }
+        };
+        async function porTandas(u, init, h) {
+          // orden fijo para que ninguna fila se repita ni se pierda entre tandas
+          var orden = u.searchParams.get("order");
+          if (!orden) u.searchParams.set("order", "id.asc");
+          else if (!/(^|,)id\./.test(orden)) u.searchParams.set("order", orden + ",id.asc");
+          var pidioTotal = /count=exact/.test(h.get("Prefer") || "");
+          var prefer = h.get("Prefer");
+          var hPrimera = new Headers(h);
+          if (!pidioTotal) hPrimera.set("Prefer", prefer ? prefer + ",count=exact" : "count=exact");
+          var todas = [], total = null, primera = null;
+          for (var vuelta = 0; vuelta < 200; vuelta++) {
+            var p = new URL(u.toString());
+            p.searchParams.set("offset", String(todas.length));
+            var r = await original.call(window, p.toString(), Object.assign({}, init, { headers: vuelta === 0 ? hPrimera : h }));
+            if (!r.ok) return r;
+            var datos = await r.json();
+            if (!Array.isArray(datos)) return new Response(JSON.stringify(datos), { status: r.status, headers: r.headers });
+            if (!primera) {
+              primera = r;
+              var m = /\/(\d+)\s*$/.exec(r.headers.get("Content-Range") || "");
+              if (m) total = +m[1];
+            }
+            todas = todas.concat(datos);
+            if (!datos.length || (total != null && todas.length >= total)) break;
+            if (total == null) break; // sin total no se sabe si hay más: se queda con lo que vino, como antes
+          }
+          var cab = new Headers(primera.headers);
+          cab.delete("Content-Length");
+          cab.delete("Content-Encoding");
+          cab.set("Content-Type", "application/json; charset=utf-8");
+          cab.set("Content-Range", (todas.length ? "0-" + (todas.length - 1) : "*") + "/" + (pidioTotal ? todas.length : "*"));
+          return new Response(JSON.stringify(todas), { status: 200, statusText: "OK", headers: cab });
+        }
+      })();
+    </script>
     <script type="module" crossorigin src="/assets/index-44c90506.js"></script>
     <link rel="stylesheet" crossorigin href="/assets/index-BS7hifpF.css" />
     <!-- PDF del plan más junto (pedido de Rosana, 21/10/26). Solo cambia la impresión: la pantalla queda igual. -->

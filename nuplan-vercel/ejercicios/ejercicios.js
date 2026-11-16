@@ -27,9 +27,9 @@
 
   var ZONAS =
     '<div class="zonas" aria-hidden="true">' +
-    '<div class="z-blanca">Zona blanca<small>lo que te negás</small></div>' +
-    '<div class="z-negra">Zona negra<small>cuando aparece tu parte rebelde</small></div>' +
-    '<div class="z-arco"><i><b style="background:#c53a1e"></b><b style="background:#e8472a"></b><b style="background:#f47a62"></b><b style="background:#f6a29a"></b><b style="background:#f6d3cb"></b></i>Zona arcoíris<small>el equilibrio</small></div>' +
+    '<div class="z-blanca">Lo que evitás<small>lo que te negás</small></div>' +
+    '<div class="z-negra">Lo que pasa<small>cuando aparece tu parte rebelde</small></div>' +
+    '<div class="z-arco">El equilibrio<small>tu punto del medio</small></div>' +
     "</div>";
 
   function icono(d) {
@@ -94,7 +94,7 @@
       lede: "Con la comida no todo es blanco o negro. Hay una tercera zona, y ahí está el equilibrio.",
       intro: [
         "Cuando ponés un alimento en la lista de los que no se tocan, empieza a llamarte más. Y el día que aparece tu parte rebelde, lo comés de más y te sentís peor.",
-        "Así se arma un ida y vuelta: de negártelo a comerlo sin medida, y otra vez a negártelo. Este ejercicio es para encontrar el punto del medio: tu zona arcoíris.",
+        "Así se arma un ida y vuelta: de negártelo a comerlo sin medida, y otra vez a negártelo. Este ejercicio es para encontrar el punto del medio: tu equilibrio.",
         "Elegí de uno a cinco alimentos. Te lleva unos diez minutos.",
       ],
       ilus: ZONAS,
@@ -109,9 +109,9 @@
               rotulo: "Alimento",
               sumar: "Sumar otro alimento",
               campos: [
-                { id: "blanca", zona: "blanca", etiqueta: "Zona blanca", label: "Un alimento que te negás seguido", ph: "Por ejemplo: alfajores", corto: true },
-                { id: "negra", zona: "negra", etiqueta: "Zona negra", label: "¿Qué pasa con ese alimento cuando aparece tu parte rebelde?", ph: "Por ejemplo: me como dos, rápido, a la tarde" },
-                { id: "arcoiris", zona: "arcoiris", etiqueta: "Zona arcoíris", label: "¿Cómo sería comerlo con equilibrio?", ph: "Por ejemplo: uno, con un café y sin apuro, dos veces por semana" },
+                { id: "blanca", zona: "blanca", etiqueta: "Lo que evitás", label: "Un alimento que te negás seguido", ph: "Por ejemplo: alfajores", corto: true },
+                { id: "negra", zona: "negra", etiqueta: "Lo que pasa", label: "¿Qué pasa con ese alimento cuando aparece tu parte rebelde?", ph: "Por ejemplo: me como dos, rápido, a la tarde" },
+                { id: "arcoiris", zona: "arcoiris", etiqueta: "El equilibrio", label: "¿Cómo sería comerlo con equilibrio?", ph: "Por ejemplo: uno, con un café y sin apuro, dos veces por semana" },
               ],
             },
           ],
@@ -119,7 +119,7 @@
         {
           nombre: "Tu compromiso",
           bloques: [
-            { tipo: "texto", id: "compromiso", label: "¿Qué acción concreta vas a hacer esta semana para entrar en tu zona arcoíris?", help: "Con día y momento. Por ejemplo: «el miércoles y el sábado, un alfajor con el café de la tarde, en la mesa».", ph: "Esta semana voy a…" },
+            { tipo: "texto", id: "compromiso", acuerdo: true, label: "¿Qué acción concreta vas a hacer esta semana para llegar a tu equilibrio?", help: "Después elegí el día y la hora: sin día y hora todavía no es un acuerdo, es una intención.", ph: "Por ejemplo: un alfajor con el café de la tarde, sentada a la mesa" },
           ],
         },
       ],
@@ -147,7 +147,7 @@
               sumar: "Sumar otro",
               campos: [
                 { id: "alimento", label: "Un alimento que te da placer", ph: "Por ejemplo: un helado", corto: true },
-                { id: "momento", label: "¿En qué momento lo vas a comer?", ph: "Por ejemplo: el domingo a la tarde, en la heladería" },
+                { id: "momento", acuerdo: true, label: "¿Dónde y con quién lo vas a comer?", help: "Y elegí el día y la hora: así es un acuerdo con ella.", ph: "Por ejemplo: en la heladería, con mi hija" },
               ],
             },
           ],
@@ -212,13 +212,61 @@
     '<p class="pie">Lo que escribís queda guardado en este teléfono.</p>' +
     "</section>";
 
+  /* acuerdos: además del texto, el día (uno o más) y la hora. Se guardan al lado: <id>_dias y <id>_hora */
+  function acuerdoDe(attr) {
+    var p = attr.split("|");
+    if (p[0] === "v") return { dias: S.v[p[1] + "_dias"] || [], hora: S.v[p[1] + "_hora"] || "" };
+    if (p[0] === "f") { var f = filasDe(p[1])[+p[2]] || {}; return { dias: f[p[3] + "_dias"] || [], hora: f[p[3] + "_hora"] || "" }; }
+    return { dias: [], hora: "" };
+  }
+  function guardarDias(attr, dias) {
+    var p = attr.split("|");
+    if (p[0] === "v") S.v[p[1] + "_dias"] = dias;
+    else if (p[0] === "f") { var f = filasDe(p[1])[+p[2]]; if (f) f[p[3] + "_dias"] = dias; }
+  }
+  function acuerdoHTML(attr) {
+    var a = acuerdoDe(attr), idc = "h-" + attr.replace(/[^a-z0-9]/gi, "-");
+    return '<div class="acuerdo"><p class="etiqueta">Qué día</p><div class="puntos dias-ac">' + DIAS.map(function (d) {
+      var on = a.dias.indexOf(d[0]) !== -1;
+      return '<button type="button" data-acdia="' + esc(attr) + "|" + d[0] + '" class="' + (on ? "si" : "") + '" aria-pressed="' + on + '" aria-label="' + d[1] + '">' + d[1].slice(0, 2) + "</button>";
+    }).join("") + '</div><div class="field"><label for="' + idc + '">A qué hora</label><input type="time" id="' + idc + '" data-b="' + esc(attr) + '_hora" value="' + esc(a.hora) + '"></div></div>';
+  }
+  function textoAcuerdo(a) {
+    var nombres = DIAS.filter(function (d) { return a.dias.indexOf(d[0]) !== -1; }).map(function (d) { return "el " + d[1].toLowerCase(); });
+    var dias = nombres.length > 1 ? nombres.slice(0, -1).join(", ") + " y " + nombres[nombres.length - 1] : nombres.join("");
+    return dias + (a.hora ? (dias ? " a las " : "a las ") + a.hora : "");
+  }
+  /* lo que falta para que un acuerdo sea acuerdo: devuelve el texto del aviso, o "" si está completo */
+  function faltaEnAcuerdos() {
+    var falta = "";
+    E.pasos.forEach(function (p, ip) {
+      p.bloques.forEach(function (b) {
+        if (falta) return;
+        if (b.tipo === "texto" && b.acuerdo) {
+          var a = acuerdoDe("v|" + b.id), t = limpio(S.v[b.id]);
+          if (!t) falta = "Te falta tu compromiso (paso " + (ip + 1) + "): qué vas a hacer, qué día y a qué hora.";
+          else if (!a.dias.length || !a.hora) falta = "Elegí el día y la hora de tu compromiso (paso " + (ip + 1) + "): sin día y hora todavía no es un acuerdo.";
+        }
+        if (b.tipo === "filas") b.campos.forEach(function (c) {
+          if (!c.acuerdo || falta) return;
+          (S.filas[b.id] || []).forEach(function (f, i) {
+            if (falta) return;
+            var hay = b.campos.some(function (x) { return limpio(f[x.id]); });
+            var a = acuerdoDe("f|" + b.id + "|" + i + "|" + c.id);
+            if (hay && (!a.dias.length || !a.hora)) falta = "En " + b.rotulo.toLowerCase() + " " + (i + 1) + " elegí el día y la hora: sin día y hora todavía no es un acuerdo.";
+          });
+        });
+      });
+    });
+    return falta;
+  }
   function campoTexto(b, valor, attr) {
     var idc = "c-" + attr.replace(/[^a-z0-9]/gi, "-");
     return '<div class="field"><label for="' + idc + '">' + esc(b.label) + "</label>" + (b.help ? "<small>" + esc(b.help) + "</small>" : "") +
       (b.corto
         ? '<input type="text" id="' + idc + '" data-b="' + esc(attr) + '" value="' + esc(valor) + '" placeholder="' + esc(b.ph || "") + '" maxlength="200">'
         : '<textarea id="' + idc + '" data-b="' + esc(attr) + '" rows="3" placeholder="' + esc(b.ph || "") + '" maxlength="2000">' + esc(valor) + "</textarea>") +
-      "</div>";
+      "</div>" + (b.acuerdo ? acuerdoHTML(attr) : "");
   }
   function filasDe(id) { var f = S.filas[id]; if (!Array.isArray(f) || !f.length) { f = [{}]; S.filas[id] = f; } return f; }
   function puntosSemana() {
@@ -312,6 +360,13 @@
     var t = e.target.closest ? e.target.closest("button") : null;
     if (!t) return;
     if (t.dataset.step != null) return irA(+t.dataset.step);
+    if (t.dataset.acdia) {
+      var q2 = t.dataset.acdia.split("|"), dia = q2.pop(), at = q2.join("|"), lista = acuerdoDe(at).dias.slice();
+      var k2 = lista.indexOf(dia); if (k2 === -1) lista.push(dia); else lista.splice(k2, 1);
+      guardarDias(at, DIAS.map(function (d) { return d[0]; }).filter(function (d) { return lista.indexOf(d) !== -1; }));
+      guardar(); t.classList.toggle("si", k2 === -1); t.setAttribute("aria-pressed", String(k2 === -1)); marcarPasos(); $("avisoEnvio").textContent = "";
+      return;
+    }
     if (t.dataset.dia) { diaElegido = t.dataset.dia; pintar(); var c = document.querySelector('[data-b="s|' + diaElegido + '|a"]'); if (c) c.focus({ preventScroll: true }); return; }
     if (t.dataset.sumar) {
       var id = t.dataset.sumar, bl = bloquePorId(id), f = filasDe(id);
@@ -342,13 +397,13 @@
   function bloquesDe(paso) {
     var l = [];
     paso.bloques.forEach(function (b) {
-      if (b.tipo === "texto") { var v = limpio(S.v[b.id]); if (v) l.push({ k: b.label, v: v }); }
+      if (b.tipo === "texto") { var v = limpio(S.v[b.id]); if (v) { var ta = b.acuerdo ? textoAcuerdo(acuerdoDe("v|" + b.id)) : ""; l.push({ k: b.label, v: v + (ta ? "\nCuándo: " + ta : "") }); } }
       if (b.tipo === "semana") DIAS.forEach(function (d) {
         var x = S.semana[d[0]] || {}, a = limpio(x.a), z = limpio(x.b);
         if (a || z) l.push({ k: d[1], v: (a ? "Me acercó: " + a : "") + (a && z ? "\n" : "") + (z ? "Me alejó: " + z : "") });
       });
       if (b.tipo === "filas") (S.filas[b.id] || []).forEach(function (f, i) {
-        var partes = b.campos.map(function (c) { var v = limpio(f[c.id]); return v ? (c.etiqueta ? c.etiqueta + " · " : "") + c.label + ": " + v : ""; }).filter(Boolean);
+        var partes = b.campos.map(function (c) { var v = limpio(f[c.id]); var ta = c.acuerdo ? textoAcuerdo(acuerdoDe("f|" + b.id + "|" + i + "|" + c.id)) : ""; return v || ta ? (c.etiqueta ? c.etiqueta + " · " : "") + c.label + ": " + (v || "—") + (ta ? "\nCuándo: " + ta : "") : ""; }).filter(Boolean);
         if (partes.length) l.push({ k: b.rotulo + " " + (i + 1), v: partes.join("\n") });
       });
       if (b.tipo === "sentidos") {
@@ -398,6 +453,7 @@
   $("mandar").onclick = function () {
     var bl = bloques(), av = $("avisoEnvio");
     if (!bl.length) { av.textContent = "Todavía no hay nada para mandar. Empezá por el paso 1."; return; }
+    var falta = faltaEnAcuerdos(); if (falta) { av.textContent = falta; avisarAlto(); return; }
     var nom = nombreParaMandar();
     if (!nom) { $("campoNombre").hidden = false; av.textContent = "Escribí tu nombre, así Rosana sabe que es tuyo."; $("tuNombre").focus(); avisarAlto(); return; }
     av.textContent = "Mandando…"; $("porWa").hidden = true;

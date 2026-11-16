@@ -61,7 +61,7 @@ export const PATOLOGIAS = {
       "Es un plan de etapa inicial y transitorio: decilo así en el objetivo del plan.",
     ],
     tips: [
-      "Comé despacio y mastícá bien: eso también reduce el gas.",
+      "Comé despacio y masticá bien: eso también reduce el gas.",
       "Anotar qué comés y cómo te sentís ayuda a identificar qué te cae mejor o peor.",
       "Este plan acompaña el tratamiento de tu médico, no lo reemplaza.",
     ],

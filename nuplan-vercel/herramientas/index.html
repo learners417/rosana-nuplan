@@ -434,6 +434,49 @@
   .hoja>thead,.hoja>tfoot{display:none;}
   .hoja>tbody>tr>td,.hoja>thead>tr>td,.hoja>tfoot>tr>td{padding:0;}
 
+
+  /* ---------- menú de la semana (bloque 2) ---------- */
+  .botonera-gen{display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end;}
+  .botonera-plato{display:flex;gap:8px;flex-wrap:wrap;}
+  .ayuda-semana{font-size:1rem;color:var(--muted);margin:0 0 14px;}
+  .semana{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px;}
+  .dia-menu{background:var(--surface);border:1px solid var(--borde);border-radius:var(--r-xl);padding:14px 14px 8px;break-inside:avoid;}
+  .dia-menu .dia-n{display:block;font-family:var(--mono);font-size:.95rem;color:var(--coral-dark);letter-spacing:.04em;text-transform:uppercase;margin:0 0 6px 4px;}
+  .dia-menu ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:2px;}
+  .dia-menu li{display:flex;flex-direction:column;gap:0;}
+  .dia-menu .mom{font-size:.9rem;font-weight:700;color:var(--muted);margin:6px 4px 0;}
+  .plato-btn{display:flex;flex-direction:column;align-items:flex-start;gap:2px;text-align:left;background:transparent;border:1.5px solid transparent;border-radius:var(--r-lg);
+    padding:6px 8px;min-height:44px;width:100%;cursor:pointer;color:var(--ink);font:inherit;transition:background .15s,border-color .15s;}
+  button.plato-btn:hover{background:var(--tinte);border-color:var(--accent);}
+  .plato-btn .pl{font-weight:600;line-height:1.35;}
+  .plato-btn small{color:var(--muted);font-size:.95rem;line-height:1.4;}
+  .editando .plato-btn{pointer-events:none;opacity:.6;}
+  .grupos.ideas{grid-template-columns:1fr 1fr;}
+  @media(max-width:760px){.grupos.ideas{grid-template-columns:1fr;}}
+  .hoja-cambio{position:fixed;inset:0;z-index:60;background:rgba(26,26,26,.35);display:flex;align-items:center;justify-content:center;padding:20px;animation:aparecer .2s ease;}
+  .hoja-cambio.oculto{display:none;}
+  .hoja-caja{background:var(--surface);border-radius:var(--r-2xl);padding:22px;width:min(560px,100%);max-height:84vh;display:flex;flex-direction:column;box-shadow:var(--sombra-alta);}
+  .hoja-cab{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:8px;}
+  .hoja-lista{overflow:auto;display:flex;flex-direction:column;gap:8px;padding:2px;min-height:0;}
+  .hoja-lista > .opcion{flex:0 0 auto;}
+  .opcion{display:flex;flex-direction:column;align-items:flex-start;gap:2px;text-align:left;background:var(--bg);border:1.5px solid var(--borde);border-radius:var(--r-xl);
+    padding:12px 14px;min-height:52px;cursor:pointer;color:var(--ink);font:inherit;}
+  .opcion:hover,.opcion:focus-visible{border-color:var(--coral);background:#fff;}
+  .opcion small{color:var(--muted);font-size:.95rem;}
+  body.con-hoja{overflow:hidden;}
+  @media(max-width:640px){
+    .hoja-cambio{align-items:flex-end;padding:0;}
+    .hoja-caja{border-radius:var(--r-2xl) var(--r-2xl) 0 0;max-height:88vh;padding:18px 16px calc(18px + env(safe-area-inset-bottom));}
+    .botonera-gen{width:100%;} .botonera-gen .btn{flex:1 1 auto;}
+  }
+  @media print{
+    .semana{grid-template-columns:1fr 1fr;gap:6px;}
+    .dia-menu{padding:6px 8px;border-color:#ccc;}
+    .plato-btn{padding:1px 0;min-height:0;border:none;}
+    .dia-menu .mom{margin:3px 0 0;}
+    .hoja-cambio,.ayuda-semana{display:none !important;}
+  }
+
   @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important;scroll-behavior:auto!important;}}
 
   @page{margin:0;}
@@ -861,7 +904,7 @@
   <div id="plan-4" class="oculto">
     <span class="kicker">Plan alimentario · 4 de 5</span>
     <h2>El plato y los micro hábitos</h2>
-    <p class="bajada">El plato arranca en lo que calcula el sistema. Si querés otra proporción, movela.</p>
+    <p class="bajada">El plan sale al instante, por porciones, con tus modelos. El plato arranca en lo que calcula el sistema: si querés otra proporción, movela.</p>
     <div class="caja">
       <span class="sub">Plato saludable</span>
       <div class="plato-layout">
@@ -874,8 +917,15 @@
           <div class="desliz carb"><div class="fila"><b>Carbohidrato</b><span class="pct" id="pct-carb">25%</span></div>
             <input type="range" min="10" max="60" step="5" id="r-carb" oninput="moverPlato('carb')"></div>
           <p class="plato-total" id="plato-total"></p>
-          <button class="btn chico suave" onclick="platoAutomatico()">Volver al cálculo automático</button>
+          <div class="botonera-plato"><button class="btn chico suave" onclick="platoAutomatico()">Volver al cálculo automático</button><button class="btn chico suave" onclick="platoTercios()">Un tercio cada uno</button></div>
         </div>
+      </div>
+    </div>
+    <div class="caja">
+      <span class="sub">La cena</span>
+      <div class="chips" id="chips-cena">
+        <button type="button" class="chip on" data-cena="sin" onclick="elegirCena('sin')">Sin carbohidrato: mitad vegetales y mitad proteína</button>
+        <button type="button" class="chip" data-cena="igual" onclick="elegirCena('igual')">Igual que el almuerzo</button>
       </div>
     </div>
     <div class="caja">
@@ -887,12 +937,15 @@
     </div>
     <div class="caja">
       <span class="sub">Recomendaciones generales al final del plan</span>
-      <p class="bajada" style="margin-bottom:10px;font-size:1rem;">Van las tres. Destildá la que no corresponda para esta paciente.</p>
+      <p class="bajada" style="margin-bottom:10px;font-size:1rem;">Tocá las que van para esta paciente. Cada una suma una hoja al plan.</p>
       <div class="chips" id="chips-reco"></div>
     </div>
     <div class="nav-pasos">
       <button class="btn suave" onclick="irPaso(3)">Atrás</button>
-      <button class="btn" id="btn-generar" onclick="generarPlan()">Generar el plan</button>
+      <div class="botonera-gen"><button class="btn ghost" id="btn-generar" onclick="generarPlan()">Con IA, para patologías</button><button class="btn" id="btn-porciones" onclick="generarPlan('porciones')">Armar el plan</button></div>
+    </div>
+    <p class="nota" id="nota-ia" style="text-align:right;"></p>
+    <div>
     </div>
   </div>
 
@@ -988,6 +1041,7 @@
 <footer><p>Lic. Rosana Roldán · NuPlan&trade;</p></footer>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.97.0/dist/umd/supabase.js"></script>
+<script src="/plan/menu-ro.js"></script>
 <script>
 /* =====================================================================
    CONFIGURACIÓN · misma base y misma clave pública que la app
@@ -1521,7 +1575,7 @@ function limpiarFormularioPlan(){
   $("campo-embarazo").classList.add("oculto"); $("d-embarazo").value="";
   $("d-restricciones").value=""; $("d-objetivos").value=""; $("d-habito-libre").value="";
   $("d-ocultar").checked=false; $("d-manual").value=""; $("d-actividad").value=ACTIVIDAD[0].value;
-  $("chips-reco").querySelectorAll(".chip").forEach(function(b){ b.classList.add("on"); });
+  if($("chips-cena")) elegirCena("sin");
 }
 function deselegirPaciente(){
   elegirPaciente.n++; plan.gen++; cerrarCorregirNombre();
@@ -1700,6 +1754,7 @@ function pintarPlato(){
   t.textContent = total===100 ? (plan.platoManual?"Plato definido a mano · 100%":"Plato automático según el cálculo · 100%") : "Suma "+total+"%. Tiene que dar 100.";
   t.className="plato-total"+(total===100?"":" mal");
   $("btn-generar").disabled = total!==100;
+  if($("btn-porciones")) $("btn-porciones").disabled = total!==100;
 }
 function moverPlato(cual){
   plan.platoManual=true;
@@ -1715,6 +1770,12 @@ function moverPlato(cual){
   plan.plato=vals; pintarPlato();
 }
 function platoAutomatico(){ plan.platoManual=false; plan.plato=platoAutomaticoDe(plan.metricas); pintarPlato(); }
+function platoTercios(){ plan.platoManual=true; plan.plato={veg:34,prot:33,carb:33}; pintarPlato(); }
+function elegirCena(v){ plan.cenaSinCarbo = v!=="igual"; $("chips-cena").querySelectorAll(".chip").forEach(function(b){ b.classList.toggle("on", b.getAttribute("data-cena")===v); }); }
+function notaIA(){
+  var n=chipsElegidos("chips-clinicas").length, el=$("nota-ia"); if(!el) return;
+  el.textContent = n ? "Marcaste "+n+" característica"+(n>1?"s":"")+" clínica"+(n>1?"s":"")+". Si querés el plan adaptado a cada una, armalo con IA." : "";
+}
 
 /* =====================================================================
    CHIPS
@@ -1761,6 +1822,7 @@ function irPaso(n){
   pasoActual=n; pintarPasos();
   for(var i=1;i<=5;i++) $("plan-"+i).classList.toggle("oculto", i!==n);
   if(n===2||n===4) recalcular();
+  if(n===4) notaIA();
   window.scrollTo(0,0);
 }
 function otraPaciente(){
@@ -1807,11 +1869,13 @@ function preferenciasActuales(){
     manualCalories: $("d-manual").value||"",
     plate: plan.platoManual ? plan.plato : null,
     microHabits: habitos,
+    dinnerWithoutCarbs: plan.cenaSinCarbo!==false,
     specificObjectives: [],
     generalRecommendations: RECOMENDACIONES.filter(function(r){ return chipsElegidos("chips-reco").indexOf(r.chip)!==-1; }).map(function(r){ return r.clave; })
   };
 }
-async function generarPlan(){
+async function generarPlan(modo){
+  modo = modo==="porciones" ? "porciones" : "ia";
   if(!plan.info||!plan.metricas||!plan.paciente){ $("plan-error").textContent="Elegí a la paciente de nuevo: se perdieron los datos del cálculo."; return; }
   if(ocupado()) return;
   if(!chipsElegidos("chips-objetivo").length){ irPaso(3); avisarFaltaObjetivo(); return; }
@@ -1823,14 +1887,23 @@ async function generarPlan(){
   plan.generando=true; plan.generandoToken=token;
   irPaso(5);
   $("plan-cargando").classList.remove("oculto"); $("plan-error").textContent=""; $("plan-resultado").innerHTML="";
-  $("btn-generar").disabled=true;
+  $("btn-generar").disabled=true; if($("btn-porciones")) $("btn-porciones").disabled=true;
+  $("plan-cargando").innerHTML = modo==="porciones" ? '<span class="punto"></span> Armando el plan con tus porciones…' : '<span class="punto"></span> Armando el plan con IA. Tarda entre 30 y 60 segundos.';
   try{
-    var prefApi=Object.assign({}, pref); delete prefApi.generalRecommendations; // texto fijo, no lo escribe la IA
-    var r = await fetch("/api/generate-plan",{method:"POST",headers:await cabecerasIA(),
-      body:JSON.stringify({patientInfo:info, metrics:met, preferences:prefApi})});
     var data;
-    try{ data = await r.json(); }catch(e){ throw new Error("respuesta inválida del servidor (HTTP "+r.status+")"); }
-    if(!r.ok||data.error) throw new Error(data.error||("HTTP "+r.status));
+    if(modo==="porciones"){
+      // sale en el momento y sin crédito de IA: los modelos de Ro, por porciones (decisión 3 del 29/10)
+      if(!window.NPMenu) throw new Error("no se cargó el menú de Ro. Recargá la página.");
+      data = NPMenu.planSinIA({ preferences: pref, nombre: nombreCompleto(pac), cenaSinCarbo: pref.dinnerWithoutCarbs!==false, semilla: Date.now()%7,
+        microHabits: (pref.microHabits||[]).map(function(h){ return {habit:h, tip:""}; }) });
+      await new Promise(function(r){ setTimeout(r, 250); });
+    } else {
+      var prefApi=Object.assign({}, pref); delete prefApi.generalRecommendations; // texto fijo, no lo escribe la IA
+      var r = await fetch("/api/generate-plan",{method:"POST",headers:await cabecerasIA(),
+        body:JSON.stringify({patientInfo:info, metrics:met, preferences:prefApi})});
+      try{ data = await r.json(); }catch(e){ throw new Error("respuesta inválida del servidor (HTTP "+r.status+")"); }
+      if(!r.ok||data.error) throw new Error(data.error||("HTTP "+r.status));
+    }
     if(!Array.isArray(data.dailyPlan)||!data.dailyPlan.length) throw new Error("El plan vino sin comidas. Probá de nuevo.");
     var agua=aguaDe(info, met);
     data.hydrationPlan=data.hydrationPlan||{};
@@ -1866,10 +1939,10 @@ async function generarPlan(){
     console.error(e);
     if(token!==plan.gen){ if(usuario && sesionN===ses) avisar("No se pudo armar el plan de "+nombreCompleto(pac)+": "+errorLegible(e), 9000); return; }
     $("plan-error").className="aviso error"; $("plan-error").textContent="No se pudo generar el plan: "+errorLegible(e);
-    $("plan-resultado").innerHTML='<div class="nav-pasos"><button class="btn suave" onclick="irPaso(4)">Atrás</button><button class="btn" onclick="generarPlan()">Volver a intentar</button></div>';
+    $("plan-resultado").innerHTML='<div class="nav-pasos"><button class="btn suave" onclick="irPaso(4)">Atrás</button><button class="btn" onclick="generarPlan(\''+modo+'\')">Volver a intentar</button>'+(modo==="ia"?'<button class="btn ghost" onclick="generarPlan(\'porciones\')">Armarlo por porciones, sin IA</button>':'')+'</div>';
   }finally{
     // se libera el armado de ESTE plan aunque Rosana haya abierto otro mientras tanto (si no, quedaba trabado hasta recargar)
-    if(plan.generandoToken===token){ plan.generando=false; plan.generandoToken=null; $("plan-cargando").classList.add("oculto"); $("btn-generar").disabled=false; }
+    if(plan.generandoToken===token){ plan.generando=false; plan.generandoToken=null; $("plan-cargando").classList.add("oculto"); $("btn-generar").disabled=false; if($("btn-porciones")) $("btn-porciones").disabled=false; }
   }
 }
 var NOMBRES_GRUPOS={carbs:"Carbohidratos",proteins:"Proteínas",fats:"Grasas",vegetablesA:"Vegetales A",vegetablesB:"Vegetales B",fruits:"Frutas"};
@@ -1924,6 +1997,54 @@ function objetivoDelPlan(){
   var primero=String(pr.objectives||"").split(". ")[0].trim();
   return OBJETIVOS.indexOf(primero)!==-1 ? primero : "";
 }
+/* ---------- menú de la semana: tocar una comida y elegir otra del mismo grupo (3 toques), se guarda solo */
+function modeloDelPlan(d){ var m=(d&&d.modeloRo)||{}; return { tipo: m.tipo||NPMenu.dietaDe((plan.pref||{}).dietType), celiaco: m.celiaco!=null ? !!m.celiaco : NPMenu.esCeliaco((plan.pref||{}).intolerances) }; }
+function htmlSemana(d){
+  var cambia = !!window.NPMenu;
+  return '<div class="bloque-res" id="semana"><h3>Menú de la semana</h3>'+
+    (cambia?'<p class="ayuda-semana no-imprimir">Tocá una comida para cambiarla por otra del mismo grupo. Se guarda sola y la lista de compras se rearma.</p>':'')+
+    '<div class="semana">'+d.weeklyMenu.map(function(dia,i){
+      return '<div class="dia-menu"><b class="dia-n">'+esc(dia.dia)+'</b><ul>'+(dia.comidas||[]).map(function(c){
+        var nom=NPMenu?NPMenu.nombreMomento(c.k):c.k;
+        return '<li><span class="mom">'+esc(nom)+'</span>'+(cambia?'<button type="button" class="plato-btn" onclick="cambiarComida('+i+',\''+c.k+'\')" aria-label="Cambiar '+esc(nom)+' del '+esc(dia.dia)+': '+esc(c.t)+'">':'<span class="plato-btn">')+
+          '<span class="pl">'+esc(c.t)+'</span><small>'+esc(c.p||"")+'</small>'+(cambia?'</button>':'</span>')+'</li>';
+      }).join("")+'</ul></div>';
+    }).join("")+'</div></div>';
+}
+function cambiarComida(dia, k){
+  if($("plan-resultado").classList.contains("editando")){ avisar("Primero guardá o cancelá los cambios de texto.", 5000); return; }
+  var d=plan.resultado; if(!d||!d.weeklyMenu||!window.NPMenu) return;
+  var m=modeloDelPlan(d), alt=NPMenu.alternativas(d.weeklyMenu, dia, k, m.tipo, m.celiaco);
+  var actual=(d.weeklyMenu[dia].comidas||[]).filter(function(c){ return c.k===k; })[0]||{};
+  var hoja=$("hoja-cambio");
+  if(!hoja){ hoja=document.createElement("div"); hoja.id="hoja-cambio"; hoja.className="hoja-cambio"; hoja.setAttribute("role","dialog"); hoja.setAttribute("aria-modal","true");
+    hoja.addEventListener("click", function(e){ if(e.target===hoja) cerrarCambio(); }); document.body.appendChild(hoja);
+    document.addEventListener("keydown", function(e){ if(e.key==="Escape" && $("hoja-cambio") && !$("hoja-cambio").classList.contains("oculto")) cerrarCambio(); }); }
+  hoja.innerHTML='<div class="hoja-caja"><div class="hoja-cab"><div><span class="kicker" style="margin:0">'+esc(d.weeklyMenu[dia].dia)+' · '+esc(NPMenu.nombreMomento(k))+'</span><h3 style="margin:4px 0 0">Cambiar por…</h3></div>'+
+    '<button type="button" class="quitar-item" onclick="cerrarCambio()" aria-label="Cerrar">×</button></div>'+
+    '<p class="nota" style="margin:0 0 12px">Ahora: '+esc(actual.t||"")+'</p><div class="hoja-lista">'+
+    alt.map(function(o){ return '<button type="button" class="opcion" onclick="elegirCambio('+dia+',\''+k+'\',\''+o.id+'\')"><b>'+esc(o.t)+'</b><small>'+esc(o.p)+'</small></button>'; }).join("")+
+    '</div></div>';
+  hoja.classList.remove("oculto"); document.body.classList.add("con-hoja");
+  var b=hoja.querySelector(".opcion"); if(b) b.focus({preventScroll:true});
+}
+function cerrarCambio(){ var h=$("hoja-cambio"); if(h) h.classList.add("oculto"); document.body.classList.remove("con-hoja"); }
+async function elegirCambio(dia, k, id){
+  var d=plan.resultado; if(!d||!d.weeklyMenu) return cerrarCambio();
+  var m=modeloDelPlan(d);
+  d.weeklyMenu=NPMenu.cambiar(d.weeklyMenu, dia, k, id, m.tipo, m.celiaco);
+  if(d.origen==="porciones") d.shoppingList=NPMenu.compras(d.weeklyMenu, m.tipo, m.celiaco);
+  if(dia===0) d.sampleDayMenu=d.weeklyMenu[0].comidas.map(function(c){ return {meal:NPMenu.nombreMomento(c.k), dish:c.t+" · "+c.p}; });
+  cerrarCambio();
+  var y=window.scrollY; pintarPlan(d); window.scrollTo(0,y);
+  if(!plan.paciente) return;
+  $("plan-guardado").className="aviso"; $("plan-guardado").textContent="Guardando el cambio…";
+  try{
+    if(plan.guardando){ try{ await plan.guardando; }catch(e){} }
+    plan.corregido=true;
+    plan.docId = await guardarDocumento({type:"meal_plan", patientName:nombreCompleto(plan.paciente), patientId:plan.paciente.id, docId:plan.docId, edicion:true, input:inputDelPlan(), output:d});
+  }catch(e){ console.error(e); }
+}
 function pintarPlan(d){
   d=normalizarPlan(d);
   var h='<div class="res-cabecera cabecera-doc"><div><h2>'+esc(nombreCompleto(plan.paciente))+'</h2>'+edTexto("planObjective", d.planObjective, "p", "bajada", "Objetivo del plan")+'</div>'+
@@ -1940,9 +2061,16 @@ function pintarPlan(d){
   h+='<p class="ayuda-edicion solo-edicion">Tocá cualquier texto para cambiarlo. Con × sacás un renglón o una comida, con + agregás. Al final, Guardar cambios.</p>';
   h+='<div id="comidas">'+(d.dailyPlan||[]).map(htmlComida).join("")+'</div>';
   h+='<button type="button" class="agregar-comida solo-edicion" onclick="agregarComida()">+ agregar una comida</button>';
-  if(d.sampleDayMenu&&d.sampleDayMenu.length){
+  if(d.weeklyMenu&&d.weeklyMenu.length){
+    h+=htmlSemana(d);
+  } else if(d.sampleDayMenu&&d.sampleDayMenu.length){
     h+='<div class="bloque-res"><h3>Menú modelo del día</h3>'+d.sampleDayMenu.map(function(m){
       return '<div class="comida" data-menu>'+edQuitarTarjeta()+edTexto("meal", m.meal, "span", "tipo", "Comida")+edTexto("dish", m.dish, "p", "plato-txt", "Plato")+'</div>';}).join("")+'</div>';
+  }
+  if(d.menuIdeas&&((d.menuIdeas.carbsIdeas||[]).length||(d.menuIdeas.proteinIdeas||[]).length)){
+    h+='<div class="bloque-res"><h3>Ideas de menú</h3><div class="grupos ideas">'+
+      '<div class="grupo"><b>Con carbohidrato</b><ul>'+(d.menuIdeas.carbsIdeas||[]).map(function(x){ return '<li>'+esc(x)+'</li>'; }).join("")+'</ul></div>'+
+      '<div class="grupo"><b>Con proteína</b><ul>'+(d.menuIdeas.proteinIdeas||[]).map(function(x){ return '<li>'+esc(x)+'</li>'; }).join("")+'</ul></div></div></div>';
   }
   if(d.microHabits&&d.microHabits.length){
     h+='<div class="bloque-res"><h3>Micro hábitos para empezar</h3>'+d.microHabits.map(function(m,i){
@@ -2045,7 +2173,7 @@ function leerPlanEditado(base){
   d.planObjective=ruta(raiz,"planObjective");
   d.dailyPlan=tarjetas('[data-comida]', function(c){ return {type:ruta(c,"type"), title:ruta(c,"title"), items:items(c,"items"), tip:ruta(c,"tip")}; })
     .filter(function(c){ return c.type||c.items.length; });
-  if(d.sampleDayMenu) d.sampleDayMenu=tarjetas('[data-menu]', function(m){ return {meal:ruta(m,"meal"), dish:ruta(m,"dish")}; }).filter(function(m){ return m.meal||m.dish; });
+  if(d.sampleDayMenu && !d.weeklyMenu) d.sampleDayMenu=tarjetas('[data-menu]', function(m){ return {meal:ruta(m,"meal"), dish:ruta(m,"dish")}; }).filter(function(m){ return m.meal||m.dish; });
   if(d.microHabits) d.microHabits=tarjetas('[data-habito]', function(m){ return {habit:ruta(m,"habit"), tip:ruta(m,"tip")}; }).filter(function(m){ return m.habit; });
   if(d.foodGroupsDetail) Object.keys(NOMBRES_GRUPOS).forEach(function(k){ d.foodGroupsDetail[k]=items(raiz,"foodGroupsDetail."+k); });
   if(d.hydrationPlan){
@@ -3054,7 +3182,7 @@ window.addEventListener("beforeunload", function(e){
   armarChips("chips-dieta", DIETAS, true); marcarChip("chips-dieta","Normal");
   armarChips("chips-habitos", MICRO_HABITOS, false);
   armarChips("chips-reco", RECOMENDACIONES.map(function(r){ return r.chip; }), false);
-  $("chips-reco").querySelectorAll(".chip").forEach(function(b){ b.classList.add("on"); });
+  // las recomendaciones generales arrancan sin tildar: Ro elige cuáles van (cada una suma una hoja)
   armarChips("chips-dieta-rec", DIETAS, true); marcarChip("chips-dieta-rec","Normal");
   armarChips("chips-clinicas-rec", CLINICAS, false);
   armarEscala("c-adherencia", ESCALAS.adherencia); armarEscala("c-frutas", ESCALAS.frutas);

@@ -259,7 +259,7 @@ function modeloRoldan(preferences = {}) {
 - Avena: solo certificada sin TACC.
 PROHIBIDO en celiaquía, aunque figure en otros modelos: pan común, tostadas de gluten, galletitas integrales o de salvado comunes, cous-cous, trigo burgol, seitán, cerveza y cualquier producto sin el logo sin TACC.`
     : `GRUPO CARBOHIDRATOS (día por medio), con las porciones exactas de la Lic. Roldán:
-- Pastas simples de trigo candeal, de arroz o integrales: 2 tazas de pasta corta medida en cocido, o spaguettis crudos (80 g). Pastas rellenas: 1/2 plancha de ravioles o ñoquis (base del plato hondo).
+- Pastas simples de trigo candeal, de arroz o integrales: 2 tazas de pasta corta medida en cocido, o spaghetti crudos (80 g). Pastas rellenas: 1/2 plancha de ravioles o ñoquis (base del plato hondo).
 - Arroz preferentemente integral, yamaní o parboil: 1 pocillo crudo.
 - Legumbres (lentejas, soja, porotos, arvejas, garbanzos): 2 tazas en cocido.
 - Papa, batata, choclo, boniato, mandioca: 1 unidad grande.
@@ -277,7 +277,7 @@ PROHIBIDO en celiaquía, aunque figure en otros modelos: pan común, tostadas de
     : vegetariano
     ? `GRUPO PROTEÍNAS (1 porción mediana en almuerzo y en cena), modelo vegetariano:
 - Seitán${celiaco ? " NO (lleva gluten)" : ": 2 rebanadas"}.
-- Queso: 2 rebanadas, o huevo: 2 unidades. En omelette, budines, souflée o tortillas, agregándoles aire con el batido para lograr mayor saciedad.
+- Queso: 2 rebanadas, o huevo: 2 unidades. En omelette, budines, soufflé o tortillas, agregándoles aire con el batido para lograr mayor saciedad.
 - Tofu: 2 rebanadas. Soja texturizada: 1 taza ya hidratada.
 - Sin carnes, sin pollo, sin pescados ni mariscos, en ningún ítem del plan ni de la lista de compras.`
     : `GRUPO PROTEÍNAS, con los cortes y frecuencias de la Lic. Roldán:
@@ -285,7 +285,7 @@ PROHIBIDO en celiaquía, aunque figure en otros modelos: pan común, tostadas de
 - Cerdo: solomillo, carré deshuesado, lomo, paleta. 1 vez por semana: 200 g.
 - Pollo, preferentemente pechuga sin piel: 1 pata y muslo o 1 pechuga. 2 veces por semana.
 - Pescado: atún, caballa, jurel al natural, merluza.
-- Queso: 2 rebanadas. Huevo: 3 unidades, en omelette, budines, souflée o tortillas, agregándoles aire con el batido para lograr mayor saciedad.
+- Queso: 2 rebanadas. Huevo: 3 unidades, en omelette, budines, soufflé o tortillas, agregándoles aire con el batido para lograr mayor saciedad.
 - Tofu: 2 rebanadas. Soja texturizada: 2 tazas ya hidratada.`;
 
   const desayunos = `DESAYUNOS Y MERIENDAS, esquema de la Lic. Roldán:
@@ -299,7 +299,7 @@ PROHIBIDO en celiaquía, aunque figure en otros modelos: pan común, tostadas de
 - Snacks de media mañana o media tarde: fruta; barrita${celiaco ? " sin TACC" : ""}; almendras 6 o 2 nueces; ${vegano ? "" : "yogurt descremado; queso; "}1 puñado de maní. Adecuar las colaciones a los horarios y a la actividad física.
 - Elegir cereales integrales como panes, galletitas o copos, evitando cereales azucarados. ${vegano ? "Cubrir el calcio con almendras, tofu y vegetales de hoja verde." : "La proteína láctea da saciedad y vehiculiza el calcio: incorporarla en desayunos y meriendas."} Un desayuno completo evita el picoteo el resto del día.`;
 
-  const vegetales = `GRUPO VEGETALES Y FRUTAS: incorporar variedad, crudos o al vapor. Vegetales A: acelga, achicoria, apio, berro, rúcula, berenjena, brócoli, coliflor, escarola, espárrago, espinaca, lechuga, pepino, pimiento, rábano, rabanito, radicheta, repollo, repollito de Bruselas, tomate, zapallito. Vegetales B: alcaucil, arvejas frescas, cebolla, chaucha, nabo, puerro, remolacha, zapallo, zanahoria. Preferentemente crudos, o en budines, tortillas o souflées, al horno o a la parrilla. Frutas: todas, frescas o deshidratadas, 3 al día, y una cítrica por día (naranja, mandarina, pomelo, limón, frutilla, arándanos o kiwi) por su vitamina C. Grasas saludables: aceite de oliva, frutos secos, semillas, maní, palta, aceitunas, cuidando las cantidades. Sumar 6 vasos de agua o líquidos sin azúcar.`;
+  const vegetales = `GRUPO VEGETALES Y FRUTAS: incorporar variedad, crudos o al vapor. Vegetales A: acelga, achicoria, apio, berro, rúcula, berenjena, brócoli, coliflor, escarola, espárrago, espinaca, lechuga, pepino, pimiento, rábano, rabanito, radicheta, repollo, repollito de Bruselas, tomate, zapallito. Vegetales B: alcaucil, arvejas frescas, cebolla, chaucha, nabo, puerro, remolacha, zapallo, zanahoria. Preferentemente crudos, o en budines, tortillas o soufflés, al horno o a la parrilla. Frutas: todas, frescas o deshidratadas, 3 al día, y una cítrica por día (naranja, mandarina, pomelo, limón, frutilla, arándanos o kiwi) por su vitamina C. Grasas saludables: aceite de oliva, frutos secos, semillas, maní, palta, aceitunas, cuidando las cantidades. Sumar 6 vasos de agua o líquidos sin azúcar.`;
 
   const ideas = vegano
     ? `IDEAS DE MENÚ DE LA LIC. ROLDÁN (modelo vegano), para armar el menú modelo del día y las recomendaciones:

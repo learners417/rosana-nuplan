@@ -2373,6 +2373,8 @@ async function abrirConsultante(uid){
   $("pc-bajada").textContent=[E.email||R.email||"", ini ? "empezó el "+ini : "", "última actividad: "+progHace(r.data.actualizado)].filter(Boolean).join(" · ");
   var h="";
   var onb=Array.isArray(E.onbTexto) ? E.onbTexto : [];
+  var obj=onb.filter(function(x){ return x && /^Tu objetivo, con tus palabras$/.test(String(x.k||"")); })[0];
+  if(obj) h+=progSec("Su objetivo, con sus palabras", progPar("", obj.v));
   h+=progSec("Lo que contó antes de empezar", onb.length ? onb.map(function(x){ return progPar(x&&x.k, x&&x.v); }).join("") : progVacio("Todavía no completó el comienzo."));
   var dias=Object.keys(E.diario||{}).filter(function(f){ return Array.isArray(E.diario[f]) && E.diario[f].length; }).sort().reverse().slice(0,7);
   h+=progSec("Su diario · los últimos 7 días con comidas", dias.length ? dias.map(function(f){
@@ -2386,7 +2388,7 @@ async function abrirConsultante(uid){
     : progVacio("Todavía no mandó ejercicios."));
   var fotos=(Array.isArray(E.fotos) ? E.fotos : []).filter(function(f){ return f && f.ruta; });
   h+=progSec("Fotos", fotos.length ? '<div class="prog-fotos">'+fotos.map(function(f){
-    return '<figure><img alt="Foto del día '+(+f.d||"")+'" data-ruta="'+esc(f.ruta)+'" src="'+PIXEL_VACIO+'"><figcaption>Día '+(+f.d||"")+(f.k==="heladera"?" · su heladera":"")+'</figcaption></figure>'; }).join("")+'</div>'
+    return '<figure><img alt="Foto del día '+(+f.d||"")+'" data-ruta="'+esc(f.ruta)+'" src="'+PIXEL_VACIO+'"><figcaption>Día '+(+f.d||"")+(f.k==="heladera"?" · su heladera":f.k==="estudios"?" · sus estudios":f.k==="diario"?" · su diario":"")+'</figcaption></figure>'; }).join("")+'</div>'
     : progVacio("Todavía no subió fotos."));
   var notas=Object.keys(E.notas||{}).filter(function(k){ return String(E.notas[k]||"").trim(); }).sort(function(a,b){ return a-b; });
   h+=progSec("Sus notas", notas.length ? notas.map(function(k){ return progPar("Día "+k, E.notas[k]); }).join("") : progVacio("Todavía no escribió notas."));

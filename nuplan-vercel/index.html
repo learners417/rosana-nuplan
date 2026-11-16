@@ -3,7 +3,10 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>NuPlan</title>
+    <title>NuPlan · Empresas e informes</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&family=Space+Mono:wght@400;700&display=swap" />
     <!-- Listas completas (13/11/26): la base devuelve como mucho 1000 filas por pedido, y la app pedía las
          pacientes de una empresa de una sola vez. Con más de 1000, las que quedaban más allá (por apellido)
          no aparecían en «Nueva Consulta», en Pacientes ni en los informes. Esto pide la lista por tandas y se la
@@ -107,6 +110,44 @@
       /* el aviso "¡Plan generado con éxito!" no sale en el PDF */
       @media print { .fixed.bottom-8, #np-herramientas { display: none !important; } }
     </style>
+
+    <!-- Piel 2 (16/11/26): la misma de NuPlan. Sin verde ni azul, sin degradés, letra de 15 px o más. -->
+    <style>
+      :root{
+        --color-green-100:#fff1ec; --color-green-200:#f6d3cb; --color-green-400:#f6a29a; --color-green-500:#e8472a;
+        --color-green-600:#c53a1e; --color-green-700:#c53a1e;
+        --color-blue-50:#fff1ec; --color-blue-100:#fde6df; --color-blue-200:#f6d3cb; --color-blue-700:#c53a1e; --color-blue-800:#a8311a;
+        --color-indigo-50:#fff1ec; --color-indigo-200:#f6d3cb; --color-indigo-500:#e8472a; --color-indigo-600:#c53a1e; --color-indigo-700:#c53a1e; --color-indigo-900:#7a2614;
+        --color-info:#f47a62; --color-warning:#d99a2b; --color-danger:#c53a1e;
+      }
+      html,body{font-family:"DM Sans",ui-sans-serif,system-ui,sans-serif;}
+      body{background:#fff6f3;}
+      /* sin degradés: botones y barra lateral en coral liso */
+      [style*="linear-gradient(165deg"]{background-image:none !important;background-color:#e8472a !important;}
+      [class*="bg-gradient-to-"]{background-image:none !important;}
+      [class*="bg-gradient-to-"][class*="from-primary"]{background-color:#e8472a !important;}
+      [class*="bg-gradient-to-"][class*="from-primary"][class*="text-white"]:hover{background-color:#c53a1e !important;}
+      [class*="bg-gradient-to-"][class*="from-accent"]{background-color:#f6a29a !important;}
+      [class*="bg-gradient-to-"][class*="from-info"]{background-color:#f47a62 !important;}
+      [class*="bg-gradient-to-"][class*="from-danger"]{background-color:#c53a1e !important;}
+      [class*="bg-gradient-to-"][class*="from-warning"]{background-color:#d99a2b !important;}
+      [class*="bg-gradient-to-"][class*="from-success"]{background-color:#e8472a !important;}
+      [class*="bg-gradient-to-"][class*="from-accent/"],[class*="bg-gradient-to-"][class*="from-primary/"],[class*="bg-gradient-to-"][class*="from-bg"],[class*="bg-gradient-to-"][class*="from-surface"]{background-color:transparent !important;}
+      /* letra de 15 px o más (en pantalla) */
+      @media screen{
+        #root .text-\[9px\], #root .text-\[10px\], #root .text-\[11px\], #root .text-xs, #root [class*="text-[0.6"], #root [class*="text-[0.7"], #root [class*="text-[0.8"], #root [class*="text-[0.9"], #root [class*="text-[12px]"], #root [class*="text-[13px]"], #root [class*="text-[14px]"]{font-size:15px !important;line-height:1.4 !important;}
+        #root .text-sm{font-size:15px !important;}
+        #root svg text, #root svg tspan{font-size:15px !important;}
+        #root button{min-height:44px;min-width:44px;}
+        #root input:not([type=checkbox]):not([type=radio]):not([type=range]), #root select{min-height:44px;}
+        #root select{min-width:64px;}
+      }
+      /* celular: las pestañas de la ficha se deslizan y ninguna queda afuera */
+      @media (max-width:640px){
+        #root main [role="tablist"], #root main .flex.border-b:has(> button + button + button){overflow-x:auto;flex-wrap:nowrap;scrollbar-width:none;}
+        #root main [role="tablist"] > *, #root main .flex.border-b:has(> button + button + button) > button{flex:0 0 auto;}
+      }
+    </style>
     <!-- Planes y recetarios se hacen solo en Herramientas (decisión del 29/10/26): los botones de acá llevan allá. -->
     <script>
       (function () {
@@ -168,6 +209,95 @@
         };
       })();
     </script>
+
+    <!-- QR propios: se arman acá mismo, sin depender de un servicio de afuera (16/11/26). -->
+    <script src="/assets/qrcode-generator-1.4.4.js"></script>
+    <script>
+      (function () {
+        var SERV = "https://api.qrserver.com/v1/create-qr-code/";
+        function datos(url) { try { return new URL(url).searchParams.get("data") || ""; } catch (e) { return ""; } }
+        function png(texto, lado) {
+          if (!window.qrcode) return "";
+          var q = qrcode(0, "M"); q.addData(texto); q.make();
+          var n = q.getModuleCount(), borde = 4, celda = Math.max(2, Math.floor(lado / (n + borde * 2)));
+          var c = document.createElement("canvas"); c.width = c.height = celda * (n + borde * 2);
+          var x = c.getContext("2d"); x.fillStyle = "#fff"; x.fillRect(0, 0, c.width, c.height); x.fillStyle = "#1a1a1a";
+          for (var f = 0; f < n; f++) for (var k = 0; k < n; k++) if (q.isDark(f, k)) x.fillRect((k + borde) * celda, (f + borde) * celda, celda, celda);
+          return c.toDataURL("image/png");
+        }
+        function arreglar(raiz) {
+          (raiz.querySelectorAll ? raiz : document).querySelectorAll('img[src^="' + SERV + '"]').forEach(function (img) {
+            var t = datos(img.src), u = t && png(t, 300); if (u) img.src = u;
+          });
+        }
+        document.addEventListener("click", function (e) {
+          var a = e.target && e.target.closest ? e.target.closest('a[href^="' + SERV + '"]') : null;
+          if (!a) return;
+          var t = datos(a.href), u = t && png(t, 600); if (!u) return;
+          e.preventDefault(); e.stopImmediatePropagation();
+          var d = document.createElement("a"); d.href = u; d.download = "qr-formulario.png"; document.body.appendChild(d); d.click(); d.remove();
+        }, true);
+        new MutationObserver(function () { arreglar(document); }).observe(document.documentElement, { childList: true, subtree: true, attributes: true, attributeFilter: ["src"] });
+      })();
+    </script>
+    <!-- Borrar una paciente: todo o nada (B05). Borrar una empresa con pacientes: no se puede (B21). -->
+    <script>
+      (function () {
+        var REST = "https://askebcmhmhmwtfklyxuf.supabase.co/rest/v1/";
+        var f0 = window.fetch;
+        var yaBorradas = {};
+        function respuesta(cuerpo, estado) { return new Response(cuerpo == null ? null : JSON.stringify(cuerpo), { status: estado, headers: { "Content-Type": "application/json" } }); }
+        function cabeceras(init) { var h = new Headers((init && init.headers) || {}); h.delete("Prefer"); h.set("Content-Type", "application/json"); return h; }
+        async function borrarTodo(id, init) {
+          var h = cabeceras(init);
+          // 1) si está la función de la base, borra todo junto en una sola operación
+          var r = await f0.call(window, REST + "rpc/borrar_paciente", { method: "POST", headers: h, body: JSON.stringify({ p_id: id }) });
+          if (r.ok) { yaBorradas[id] = 1; return respuesta(null, 204); }
+          var t = ""; try { t = await r.text(); } catch (e) {}
+          if (r.status !== 404 && !/PGRST202|Could not find the function/i.test(t)) return new Response(t, { status: r.status, headers: { "Content-Type": "application/json" } });
+          // 2) sin la función: primero lo que la traba (laboratorio y formularios); si algo falla, no se toca nada más
+          var q = "?patient_id=eq." + encodeURIComponent(id);
+          var lab = await f0.call(window, REST + "lab_results" + q, { method: "DELETE", headers: h });
+          if (!lab.ok) return lab;
+          var fr = await f0.call(window, REST + "form_responses" + q, { method: "PATCH", headers: h, body: JSON.stringify({ patient_id: null }) });
+          if (!fr.ok && fr.status !== 404) return fr;
+          return null; // sigue el pedido original (las consultas) y después la paciente
+        }
+        window.fetch = function (input, init) {
+          try {
+            var url = typeof input === "string" ? input : (input && input.url) || "";
+            var metodo = String((init && init.method) || (input && input.method) || "GET").toUpperCase();
+            if (metodo !== "DELETE" || url.indexOf(REST) !== 0) return f0.apply(window, arguments);
+            var u = new URL(url), tabla = u.pathname.split("/").pop(), args = arguments, self = this;
+            var porPaciente = u.searchParams.get("patient_id"), porId = u.searchParams.get("id");
+            if (tabla === "sessions" && porPaciente && /^eq\./.test(porPaciente) && !porId) {
+              var id = porPaciente.slice(3);
+              return borrarTodo(id, init).then(function (r) { return r || f0.apply(self, args); });
+            }
+            if (tabla === "patients" && porId && /^eq\./.test(porId) && yaBorradas[porId.slice(3)]) {
+              var pid = porId.slice(3); delete yaBorradas[pid];
+              return Promise.resolve(respuesta([{ id: pid }], 200));
+            }
+            if (tabla === "companies" && porId && /^eq\./.test(porId)) {
+              var h = cabeceras(init);
+              return f0.call(window, REST + "companies?select=name&id=eq." + encodeURIComponent(porId.slice(3)), { headers: h }).then(function (r) { return r.ok ? r.json() : []; }).then(function (fila) {
+                var nombre = fila && fila[0] && fila[0].name;
+                if (!nombre) return f0.apply(self, args);
+                return f0.call(window, REST + "patients?select=id&limit=1&company=eq." + encodeURIComponent(nombre), { headers: h }).then(function (r) { return r.ok ? r.json() : []; }).then(function (pac) {
+                  if (pac && pac.length) {
+                    var msj = "«" + nombre + "» todavía tiene pacientes. Pasalas a otra empresa o borralas antes de borrar la empresa.";
+                    try { alert(msj); } catch (e) {}
+                    return respuesta({ message: msj, code: "NP409" }, 409);
+                  }
+                  return f0.apply(self, args);
+                });
+              });
+            }
+          } catch (e) {}
+          return f0.apply(window, arguments);
+        };
+      })();
+    </script>
   </head>
   <body>
     <div id="root"></div>
@@ -211,11 +341,18 @@
           var a = document.createElement("a");
           a.id = "np-herramientas";
           a.href = "/herramientas/";
-          a.textContent = "Herramientas";
-          a.setAttribute("aria-label", "Abrir Herramientas NuPlan");
-          a.style.cssText = "position:fixed;right:20px;bottom:20px;z-index:40;background:#e8472a;color:#fff;font-family:'DM Sans',system-ui,sans-serif;font-weight:600;font-size:16px;min-height:48px;display:inline-flex;align-items:center;padding:0 20px;border-radius:999px;text-decoration:none;box-shadow:0 8px 20px -8px rgba(232,71,42,.7);";
+          a.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5.5 8.5 12l6.5 6.5"/></svg><span>Volver a NuPlan</span>';
+          a.setAttribute("aria-label", "Volver a NuPlan");
+          a.style.cssText = "position:fixed;right:20px;bottom:20px;z-index:40;background:#e8472a;color:#fff;font-family:'DM Sans',system-ui,sans-serif;font-weight:600;font-size:16px;min-height:48px;display:inline-flex;align-items:center;gap:6px;padding:0 20px 0 14px;border-radius:16px;text-decoration:none;box-shadow:0 8px 20px -8px rgba(232,71,42,.7);";
           document.body.appendChild(a);
         }
+        function tituloFormularios() {
+          var h = document.querySelector("#root header h1");
+          if (!h || !h.firstChild || h.firstChild.nodeType !== 3 || h.textContent.trim() !== "NuPlan") return;
+          var t = ""; try { t = String(localStorage.getItem("nutriapp.activeTab") || "").replace(/"/g, ""); } catch (e) {}
+          if (t === "formularios") h.firstChild.nodeValue = "Formularios";
+        }
+        new MutationObserver(function () { tituloFormularios(); }).observe(document.documentElement, { childList: true, subtree: true, characterData: true });
         var pendiente = false;
         function programar() { if (pendiente) return; pendiente = true; requestAnimationFrame(function () { pendiente = false; mostrar(); }); }
         mostrar();

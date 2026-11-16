@@ -5,6 +5,16 @@
     }
   },
   "rewrites": [
-    { "source": "/((?!api/|assets/|herramientas).*)", "destination": "/index.html" }
+    {
+      "source": "/((?!api/|assets/|herramientas).*)",
+      "destination": "/index.html"
+    }
+  ],
+  "redirects": [
+    {
+      "source": "/",
+      "destination": "/herramientas/",
+      "permanent": false
+    }
   ]
 }

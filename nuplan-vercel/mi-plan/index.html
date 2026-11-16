@@ -20,9 +20,10 @@
  --sans:'DM Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;
  --mono:'Space Mono','SFMono-Regular',Consolas,monospace;
  --r1:.375rem;--r2:.5rem;--r3:.75rem;--r4:1rem;--r5:1.5rem;
- --nav:calc(68px + env(safe-area-inset-bottom))}
-html{-webkit-text-size-adjust:100%;background:var(--bg)}
-body{font-family:var(--sans);background:var(--bg);color:var(--ink);font-size:17px;line-height:1.6;
+ --nav:calc(72px + env(safe-area-inset-bottom));
+ --sombra:0 1px 2px rgba(26,26,26,.04),0 10px 30px -14px rgba(197,58,30,.18);--tinte:#fff1ec}
+html{-webkit-text-size-adjust:100%;background:var(--bg);font-size:17px}
+body{font-family:var(--sans);background:var(--bg);color:var(--ink);font-size:18px;line-height:1.6;
  -webkit-font-smoothing:antialiased;min-height:100vh;-webkit-tap-highlight-color:transparent}
 .app{max-width:560px;margin:0 auto;min-height:100vh;display:flex;flex-direction:column}
 .scr{flex:1;padding:18px 18px calc(var(--nav) + 26px)}
@@ -33,8 +34,12 @@ body{font-family:var(--sans);background:var(--bg);color:var(--ink);font-size:17p
 @keyframes fade{from{opacity:0}to{opacity:1}}
 
 .top{display:flex;align-items:center;gap:12px;margin-bottom:20px;padding-top:6px}
-.marca{font-family:var(--mono);font-size:1rem;font-weight:700;letter-spacing:.06em;color:var(--cord)}
+.marca{display:flex;align-items:center;gap:9px;font-size:1.2rem;font-weight:800;letter-spacing:-.035em;color:var(--ink)}
 .marca em{font-style:normal;color:var(--ink)}
+.marca .pt{width:28px;height:28px;border-radius:8px;background:var(--cor);color:#fff;display:grid;place-items:center;flex:0 0 auto}
+.marca .pt svg{width:17px;height:17px;stroke-width:2.2}
+.marca small{font-family:var(--mono);font-size:.95rem;font-weight:700;letter-spacing:.04em;color:var(--cord);margin-left:2px}
+svg.i{width:22px;height:22px;flex:0 0 auto;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 .quien{margin-left:auto;display:flex;align-items:center;gap:9px}
 .quien span{font-size:.98rem;color:var(--mut)}
 .av{width:36px;height:36px;border-radius:50%;background:var(--ac);color:var(--ink);display:grid;
@@ -47,7 +52,7 @@ h3{font-size:1.25rem;letter-spacing:-.02em;line-height:1.25;margin-bottom:8px}
 .ojo{font-family:var(--mono);font-size:.95rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
  color:var(--cord);margin-bottom:9px}
 
-.card{background:var(--sup);border:1px solid var(--line2);border-radius:var(--r5);padding:24px 22px;margin-bottom:16px}
+.card{background:var(--sup);border:1px solid var(--line2);border-radius:var(--r5);padding:24px 22px;margin-bottom:16px;box-shadow:var(--sombra)}
 .card.chico{border-radius:var(--r3);padding:16px 17px}
 .cab{display:flex;align-items:center;gap:13px;margin-bottom:17px;padding-bottom:15px;border-bottom:1px solid var(--line)}
 .nd{font-family:var(--mono);font-size:2.4rem;font-weight:700;color:var(--cor);line-height:1}
@@ -63,7 +68,7 @@ h3{font-size:1.25rem;letter-spacing:-.02em;line-height:1.25;margin-bottom:8px}
  text-transform:uppercase;opacity:.78;margin-bottom:3px}
 
 .bt{display:flex;flex-direction:column;gap:10px}
-.bt button,.bt a{display:flex;align-items:center;gap:12px;width:100%;background:var(--bg);
+.bt button,.bt a{display:flex;align-items:center;gap:12px;width:100%;background:var(--sup);
  border:1.5px solid var(--line2);border-radius:var(--r3);padding:15px 16px;font:inherit;font-size:1.06rem;
  color:var(--ink);cursor:pointer;text-align:left;transition:transform .12s,border-color .16s,background .16s;
  text-decoration:none;min-height:54px}
@@ -71,12 +76,13 @@ h3{font-size:1.25rem;letter-spacing:-.02em;line-height:1.25;margin-bottom:8px}
 .bt button:hover,.bt a:hover{border-color:var(--cor)}
 .bt .lleno{background:var(--cor);border-color:var(--cor);color:#fff;font-weight:700;
  justify-content:center;font-size:1.2rem;padding:17px}
-.bt .ic{flex:0 0 auto;width:26px;display:grid;place-items:center;font-size:1.2rem}
+.bt .ic{flex:0 0 auto;width:36px;height:36px;border-radius:10px;background:var(--tinte);color:var(--cord);display:grid;place-items:center;font-size:1.2rem}
+.bt .ic svg{width:20px;height:20px}
 .bt .mk{margin-left:auto;font-family:var(--mono);font-size:.95rem;color:var(--ok);font-weight:700;white-space:nowrap}
 .bt .hecho{background:var(--okbg);border-color:var(--ac)}
 .bt .lleno.hecho{background:var(--ok);border-color:var(--ok);color:#fff}
 
-.prog{background:var(--sup);border:1px solid var(--line2);border-radius:var(--r4);padding:19px 20px;margin-bottom:16px}
+.prog{background:var(--sup);border:1px solid var(--line2);border-radius:var(--r5);padding:20px 20px;margin-bottom:16px;box-shadow:var(--sombra)}
 .ln{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:11px}
 .ln b{font-family:var(--mono);font-size:1.18rem;color:var(--cord)}
 .ln span{font-size:1rem;color:var(--mut)}
@@ -117,14 +123,15 @@ h3{font-size:1.25rem;letter-spacing:-.02em;line-height:1.25;margin-bottom:8px}
  width:100%;margin:0 auto}
 
 .lst{display:flex;flex-direction:column;gap:10px}
-.it{display:flex;align-items:flex-start;gap:14px;background:var(--sup);border:1px solid var(--line2);
+.it{display:flex;align-items:center;gap:14px;background:var(--sup);border:1px solid var(--line2);box-shadow:var(--sombra);
  border-radius:var(--r3);padding:16px 17px;text-decoration:none;color:inherit;
  transition:transform .12s,border-color .16s;width:100%;text-align:left;font:inherit;cursor:pointer}
 .it:active{transform:scale(.985)}
 .it:hover{border-color:var(--cor)}
 .it.cerrado{opacity:.5;cursor:default}
 .it.cerrado:hover{border-color:var(--line2)}
-.hn{flex:0 0 auto;width:34px;height:34px;border-radius:9px;background:#fff2ee;color:var(--cord);
+.hn svg{width:20px;height:20px}
+.hn{flex:0 0 auto;width:38px;height:38px;border-radius:10px;background:#fff2ee;color:var(--cord);
  display:grid;place-items:center;font-family:var(--mono);font-size:1rem;font-weight:700}
 .it b{display:block;font-size:1.08rem;margin-bottom:3px;line-height:1.3}
 .it span{display:block;font-size:1rem;color:var(--mut);line-height:1.45}
@@ -142,8 +149,9 @@ h3{font-size:1.25rem;letter-spacing:-.02em;line-height:1.25;margin-bottom:8px}
 .campo{display:flex;gap:9px;align-items:center;background:var(--sup);border:1.5px solid var(--line2);
  border-radius:99px;padding:5px 5px 5px 18px;position:sticky;bottom:0}
 .campo input{flex:1;border:none;background:none;font:inherit;font-size:1.04rem;outline:none;min-width:0;height:46px}
-.campo button{flex:0 0 auto;width:46px;height:46px;border-radius:50%;background:var(--cord);border:none;
- color:#fff;font-size:1.3rem;font-weight:700;cursor:pointer}
+.campo button{flex:0 0 auto;width:46px;height:46px;border-radius:50%;background:var(--cor);border:none;
+ color:#fff;font-size:1.3rem;font-weight:700;cursor:pointer;display:grid;place-items:center}
+.campo button svg{width:22px;height:22px;stroke-width:2.2}
 .campo button:disabled{opacity:.45}
 
 label{display:block;font-family:var(--mono);font-size:.96rem;font-weight:700;color:var(--cord);margin-bottom:8px}
@@ -159,12 +167,14 @@ input:focus,textarea:focus,select:focus{outline:none;border-color:var(--cor)}
 .pill button.on{background:var(--cor);border-color:var(--cor);color:#fff;font-weight:700}
 
 nav{position:fixed;left:50%;transform:translateX(-50%);bottom:0;width:100%;max-width:560px;z-index:50;
- background:var(--sup);border-top:1px solid var(--line);display:flex;padding:8px 4px calc(10px + env(safe-area-inset-bottom));
+ background:rgba(255,255,255,.97);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-top:1px solid var(--line2);display:flex;padding:8px 4px calc(10px + env(safe-area-inset-bottom));
  box-shadow:0 -6px 26px rgba(26,26,26,.1)}
 nav button{flex:1;background:none;border:none;cursor:pointer;padding:6px 2px;color:var(--mut);font:inherit;
  display:flex;flex-direction:column;align-items:center;gap:3px;min-width:0;transition:transform .12s}
 nav button:active{transform:scale(.94)}
-nav button i{font-size:1.35rem;font-style:normal;line-height:1}
+nav button i{font-size:1.35rem;font-style:normal;line-height:1;display:grid;place-items:center;width:44px;height:28px;border-radius:99px;transition:background .16s}
+nav button i svg{width:23px;height:23px}
+nav button.on i{background:var(--tinte)}
 nav button span{font-size:.95rem;line-height:1.15;text-align:center;max-width:100%;
  white-space:normal;overflow-wrap:anywhere}
 nav button.on{color:var(--cord);font-weight:700}
@@ -208,8 +218,10 @@ nav .pt{position:absolute;top:4px;right:calc(50% - 22px);width:8px;height:8px;bo
 .splash{min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:28px 20px;
  max-width:520px;margin:0 auto}
 .splash a{display:inline-block;padding:12px 8px;min-height:44px}
-.splash .logo{font-family:var(--mono);font-size:1.4rem;font-weight:700;letter-spacing:.08em;
- color:var(--cord);margin-bottom:26px}
+.splash .logo{display:flex;align-items:center;gap:10px;font-size:1.5rem;font-weight:800;letter-spacing:-.035em;
+ color:var(--ink);margin-bottom:28px}
+.splash .logo .pt{width:34px;height:34px;border-radius:10px;background:var(--cor);color:#fff;display:grid;place-items:center}
+.splash .logo .pt svg{width:20px;height:20px;stroke-width:2.2}
 .splash .logo em{font-style:normal;color:var(--ink)}
 .splash h1{font-size:2.1rem;margin-bottom:12px}
 .pasoN{font-family:var(--mono);font-size:.96rem;color:var(--mut);margin-bottom:10px}
@@ -226,8 +238,10 @@ ul.mini.no li:before{background:var(--cor)}
 .btn2{background:var(--sup);border:2px solid var(--line2);border-radius:var(--r3);padding:16px;font:inherit;
  font-size:1.08rem;font-weight:700;color:var(--ink);cursor:pointer;min-height:56px;transition:transform .12s}
 .btn2:active{transform:scale(.97)}
-.btn1{background:var(--cor);border:none;border-radius:var(--r3);padding:16px;font:inherit;font-size:1.2rem;
- font-weight:700;color:#fff;cursor:pointer;width:100%;min-height:58px;transition:transform .12s}
+.btn1{background:var(--cor);border:none;border-radius:var(--r4);padding:16px;font:inherit;font-size:1.2rem;
+ font-weight:700;color:#fff;cursor:pointer;width:100%;min-height:58px;transition:transform .12s,background .15s;
+ box-shadow:0 1px 0 rgba(197,58,30,.25),0 10px 22px -12px rgba(232,71,42,.75)}
+.btn1:hover{background:var(--cord)}
 .btn1:active{transform:scale(.98)}
 .btn1:disabled{opacity:.45}
 
@@ -310,7 +324,7 @@ img[data-ruta]{background:var(--line2);min-height:120px}
 </head><body>
 
 <div class="splash" id="splash" style="display:none">
-  <p class="logo">Nu<em>Plan</em>&trade;</p>
+  <p class="logo"><span class="pt"><svg class="i" aria-hidden="true"><use href="#i-marca"/></svg></span>NuPlan</p>
   <div id="spPaso1">
     <h1 id="spT">Bienvenida.</h1>
     <p class="sub" id="spSub">Esto es tu acompa&ntilde;amiento de 90 d&iacute;as con Rosana. Se abre un d&iacute;a por vez.</p>
@@ -359,6 +373,7 @@ img[data-ruta]{background:var(--line2);min-height:120px}
 </div>
 
 
+<svg xmlns="http://www.w3.org/2000/svg" style="position:absolute;width:0;height:0;overflow:hidden" aria-hidden="true"><symbol id="i-marca" viewBox="0 0 24 24"><circle cx="12" cy="7.6" r="3.4"/><circle cx="16.4" cy="12" r="3.4"/><circle cx="12" cy="16.4" r="3.4"/><circle cx="7.6" cy="12" r="3.4"/></symbol><symbol id="i-inicio" viewBox="0 0 24 24"><path d="M3.5 10.5 12 3.5l8.5 7"/><path d="M5.5 9v10.5a1 1 0 0 0 1 1H10v-5.5h4v5.5h3.5a1 1 0 0 0 1-1V9"/></symbol><symbol id="i-buscar" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.6-3.6"/></symbol><symbol id="i-consulta" viewBox="0 0 24 24"><rect x="5" y="4" width="14" height="17" rx="2.2"/><path d="M9 4V2.8h6V4"/><path d="M8 13.2h2l1.5-3 2 5.6 1.5-2.6H16"/></symbol><symbol id="i-plato" viewBox="0 0 24 24"><path d="M3.5 3v6.2a2 2 0 0 0 2 2V21"/><path d="M7.5 3v6.2a2 2 0 0 1-2 2"/><path d="M5.5 3v5"/><circle cx="15.5" cy="12" r="5.5"/><circle cx="15.5" cy="12" r="2.4"/></symbol><symbol id="i-receta" viewBox="0 0 24 24"><path d="M12 6.6C10.4 5.1 7.8 4.6 4 4.6V18c3.8 0 6.4.5 8 2 1.6-1.5 4.2-2 8-2V4.6c-3.8 0-6.4.5-8 2Z"/><path d="M12 6.6V20"/></symbol><symbol id="i-informe" viewBox="0 0 24 24"><path d="M4 20.5h16"/><rect x="5.5" y="11" width="3.2" height="6.5" rx="1"/><rect x="10.4" y="6.5" width="3.2" height="11" rx="1"/><rect x="15.3" y="13.5" width="3.2" height="4" rx="1"/></symbol><symbol id="i-reco" viewBox="0 0 24 24"><path d="m4 6.2 1.6 1.6L8.4 5"/><path d="M11.5 6.5H20"/><path d="m4 12.2 1.6 1.6 2.8-2.8"/><path d="M11.5 12.5H20"/><path d="m4 18.2 1.6 1.6 2.8-2.8"/><path d="M11.5 18.5H20"/></symbol><symbol id="i-carpeta" viewBox="0 0 24 24"><path d="M3 7.2a2 2 0 0 1 2-2h4l2 2.4h8a2 2 0 0 1 2 2V18a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z"/></symbol><symbol id="i-enviar" viewBox="0 0 24 24"><path d="M21 3 10.2 13.8"/><path d="M21 3 14.6 21l-3.9-7.3L3.4 9.8Z"/></symbol><symbol id="i-programa" viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15.5" rx="2.2"/><path d="M3.5 10h17M8 3v4M16 3v4"/><path d="M7.5 14h3.5M7.5 17h6"/></symbol><symbol id="i-empresa" viewBox="0 0 24 24"><rect x="4" y="3" width="10.5" height="18" rx="1.6"/><path d="M14.5 9H19a1 1 0 0 1 1 1v11"/><path d="M7.5 7h3.5M7.5 11h3.5M7.5 15h3.5M2.5 21h19"/></symbol><symbol id="i-salir" viewBox="0 0 24 24"><path d="M10 4H6.5a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2H10"/><path d="m15 16 4-4-4-4"/><path d="M19 12H9.5"/></symbol><symbol id="i-chev" viewBox="0 0 24 24"><path d="m9 5.5 6.5 6.5L9 18.5"/></symbol><symbol id="i-atras" viewBox="0 0 24 24"><path d="M15 5.5 8.5 12l6.5 6.5"/></symbol><symbol id="i-mas" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol><symbol id="i-persona-mas" viewBox="0 0 24 24"><circle cx="9.5" cy="8" r="3.6"/><path d="M3 20.2c.8-3.6 3.4-5.6 6.5-5.6s5.7 2 6.5 5.6"/><path d="M19 7.5v6.5M15.8 10.8h6.4"/></symbol><symbol id="i-imprimir" viewBox="0 0 24 24"><path d="M7 9V3.5h10V9"/><rect x="3.5" y="9" width="17" height="8" rx="2"/><path d="M7 14.5h10v6H7Z"/></symbol><symbol id="i-mail" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2.2"/><path d="m4 7 8 6 8-6"/></symbol><symbol id="i-copiar" viewBox="0 0 24 24"><rect x="8.5" y="8.5" width="12" height="12" rx="2.2"/><path d="M15.5 8.5V5.5a2 2 0 0 0-2-2h-8a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h3"/></symbol><symbol id="i-editar" viewBox="0 0 24 24"><path d="M4 20h4L19 9a2.8 2.8 0 0 0-4-4L4 16Z"/><path d="m13.5 6.5 4 4"/></symbol><symbol id="i-hoy" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6"/></symbol><symbol id="i-camino" viewBox="0 0 24 24"><circle cx="6" cy="18.5" r="2.4"/><circle cx="18" cy="5.5" r="2.4"/><path d="M8.4 18.5h7.1a3 3 0 0 0 0-6h-7a3 3 0 0 1 0-6h7.1"/></symbol><symbol id="i-diario" viewBox="0 0 24 24"><path d="M5 3.5h11.5a2 2 0 0 1 2 2V20a.5.5 0 0 1-.5.5H7a2 2 0 0 1-2-2Z"/><path d="M5 18.5a2 2 0 0 1 2-2h11.5"/><path d="M9 8h6M9 11.5h4"/></symbol><symbol id="i-pasos" viewBox="0 0 24 24"><path d="M3.5 20.5h5v-5h5v-5h5v-5h2"/></symbol><symbol id="i-chat" viewBox="0 0 24 24"><path d="M20 14.5a2 2 0 0 1-2 2H8.5L4 20V6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2Z"/><path d="M8.5 9.5h7M8.5 12.5h4.5"/></symbol><symbol id="i-rosana" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4.5 20.5c1-4 4-6 7.5-6s6.5 2 7.5 6"/></symbol><symbol id="i-foto" viewBox="0 0 24 24"><path d="M4 8.5a2 2 0 0 1 2-2h2l1.6-2.2h4.8L16 6.5h2a2 2 0 0 1 2 2V18a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2Z"/><circle cx="12" cy="12.8" r="3.6"/></symbol><symbol id="i-reloj" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></symbol><symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5"/></symbol><symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></symbol><symbol id="i-linea" viewBox="0 0 24 24"><path d="M4 6h3M4 12h3M4 18h3"/><circle cx="10" cy="6" r="1.4"/><circle cx="10" cy="12" r="1.4"/><circle cx="10" cy="18" r="1.4"/><path d="M14 6h6M14 12h6M14 18h6"/></symbol><symbol id="i-play" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M10 8.5v7l6-3.5Z"/></symbol><symbol id="i-chispa" viewBox="0 0 24 24"><path d="M12 3.5 13.8 10 20.5 12 13.8 14 12 20.5 10.2 14 3.5 12 10.2 10Z"/></symbol><symbol id="i-whatsapp" viewBox="0 0 24 24"><path d="M4 20l1.3-4A8 8 0 1 1 8.4 19Z"/><path d="M9 8.6c0 3.2 2.9 6.4 6.3 6.4l.9-1.5-2-1-1 1c-1-.4-2.4-1.8-2.8-2.8l1-1-1-2Z"/></symbol><symbol id="i-basura" viewBox="0 0 24 24"><path d="M4 7h16M10 11v6M14 11v6"/><path d="M6 7l1 12.5a1.5 1.5 0 0 0 1.5 1.5h7a1.5 1.5 0 0 0 1.5-1.5L18 7"/><path d="M9 7V4.5h6V7"/></symbol><symbol id="i-llave" viewBox="0 0 24 24"><circle cx="8" cy="15" r="4"/><path d="m11 12 8.5-8.5M16.5 6.5l2.5 2.5M14 9l2 2"/></symbol></svg>
 <div class="app" id="app" style="display:none">
   <div class="cinta" id="cintaR" style="display:none">
     <span>Modo Rosana</span>
@@ -369,7 +384,7 @@ img[data-ruta]{background:var(--line2);min-height:120px}
   <div class="scr" id="scr">
 
   <section class="pant on" data-p="hoy">
-    <div class="top"><span class="marca">Nu<em>Plan</em></span>
+    <div class="top"><span class="marca"><span class="pt"><svg class="i" aria-hidden="true"><use href="#i-marca"/></svg></span>NuPlan</span>
       <div class="quien"><span id="nom1"></span><div class="av" id="av1"></div></div></div>
     <div class="aviso" id="cola" hidden></div>
     <div id="bannerCuenta"></div>
@@ -380,14 +395,14 @@ img[data-ruta]{background:var(--line2);min-height:120px}
       <div class="seis" id="pgS"></div>
     </div>
     <div class="lst">
-      <button class="it" onclick="ir('linea')"><div class="hn">&#9201;</div>
+      <button class="it" onclick="ir('linea')"><div class="hn"><svg class="i" aria-hidden="true"><use href="#i-linea"/></svg></div>
         <div><b>Mi l&iacute;nea de tiempo</b><span>Todo lo que fuiste cargando, d&iacute;a por d&iacute;a</span></div></button>
     </div>
     <p class="est" id="estNube"></p>
   </section>
 
   <section class="pant" data-p="camino">
-    <div class="top"><span class="marca">Nu<em>Plan</em></span>
+    <div class="top"><span class="marca"><span class="pt"><svg class="i" aria-hidden="true"><use href="#i-marca"/></svg></span>NuPlan</span>
       <div class="quien"><span id="nom2"></span><div class="av" id="av2"></div></div></div>
     <h2>El camino</h2>
     <p class="sub">Noventa d&iacute;as, seis letras. Se abre uno por d&iacute;a.</p>
@@ -395,7 +410,7 @@ img[data-ruta]{background:var(--line2);min-height:120px}
   </section>
 
   <section class="pant" data-p="diario">
-    <div class="top"><span class="marca">Nu<em>Plan</em></span>
+    <div class="top"><span class="marca"><span class="pt"><svg class="i" aria-hidden="true"><use href="#i-marca"/></svg></span>NuPlan</span>
       <div class="quien"><span id="nom3"></span><div class="av" id="av3"></div></div></div>
     <h2>Mi diario</h2>
     <p class="sub">Lo que comiste y qu&eacute; te llev&oacute; a comerlo. Todos los d&iacute;as, pase lo que pase.</p>
@@ -405,13 +420,13 @@ img[data-ruta]{background:var(--line2);min-height:120px}
     <div id="dLista"></div>
     <div class="bt" style="margin-top:14px">
       <button class="lleno" onclick="abrirComida()">Cargar una comida</button>
-      <button id="bEnvDia" onclick="enviarDia()"><span class="ic">&#9993;</span>Mandarle mi d&iacute;a a Rosana<span class="mk" id="mkEnv"></span></button>
+      <button id="bEnvDia" onclick="enviarDia()"><span class="ic"><svg class="i" aria-hidden="true"><use href="#i-mail"/></svg></span>Mandarle mi d&iacute;a a Rosana<span class="mk" id="mkEnv"></span></button>
     </div>
     <p class="est" id="estDia"></p>
   </section>
 
   <section class="pant" data-p="herr">
-    <div class="top"><span class="marca">Nu<em>Plan</em></span>
+    <div class="top"><span class="marca"><span class="pt"><svg class="i" aria-hidden="true"><use href="#i-marca"/></svg></span>NuPlan</span>
       <div class="quien"><span id="nom4"></span><div class="av" id="av4"></div></div></div>
     <h2>Mis ejercicios</h2>
     <p class="sub">Cada uno se abre el d&iacute;a que te toca. Lo que contest&aacute;s le llega a Rosana.</p>
@@ -419,26 +434,26 @@ img[data-ruta]{background:var(--line2);min-height:120px}
   </section>
 
   <section class="pant" data-p="nuplan">
-    <div class="top"><span class="marca">Nu<em>Plan</em></span>
+    <div class="top"><span class="marca"><span class="pt"><svg class="i" aria-hidden="true"><use href="#i-marca"/></svg></span>NuPlan</span>
       <div class="quien"><span id="nom5"></span><div class="av" id="av5"></div></div></div>
     <h2>Preguntale a NuPlan</h2>
     <p class="sub">Contesta con el criterio de Rosana. Lo cl&iacute;nico y los n&uacute;meros los ve ella.</p>
     <div class="ch" id="chL"></div>
     <div class="campo">
       <input type="text" id="iChat" placeholder="Escrib&iacute; tu pregunta&hellip;" autocomplete="off">
-      <button id="bChat" aria-label="Enviar">&#8593;</button>
+      <button id="bChat" aria-label="Enviar"><svg class="i" aria-hidden="true"><path d="M12 19V5M5.5 11.5 12 5l6.5 6.5"/></svg></button>
     </div>
   </section>
 
   <section class="pant" data-p="rosana">
-    <div class="top"><span class="marca">Nu<em>Plan</em></span>
+    <div class="top"><span class="marca"><span class="pt"><svg class="i" aria-hidden="true"><use href="#i-marca"/></svg></span>NuPlan</span>
       <div class="quien"><span id="nom6"></span><div class="av" id="av6"></div></div></div>
     <h2>Rosana</h2>
     <p class="sub">Tu nutricionista. Escribile cuando lo necesites.</p>
     <div id="ckAviso"></div>
     <div class="bt">
       <a class="lleno" id="aWsp" target="_blank" rel="noopener">Escribirle por WhatsApp</a>
-      <button onclick="mandarCheckin()"><span class="ic">&#9993;</span>Mandarle c&oacute;mo vengo</button>
+      <button onclick="mandarCheckin()"><span class="ic"><svg class="i" aria-hidden="true"><use href="#i-mail"/></svg></span>Mandarle c&oacute;mo vengo</button>
     </div>
     <p class="est" id="estCk"></p>
     <div class="card chico" style="margin-top:16px">
@@ -448,13 +463,13 @@ img[data-ruta]{background:var(--line2);min-height:120px}
     <div class="card chico" id="cuentaCard" hidden>
       <h3>Tu cuenta</h3>
       <p class="sub" style="margin-bottom:12px" id="cuentaTxt"></p>
-      <div class="bt"><button id="bSalirCuenta"><span class="ic">&#8617;</span>Salir de mi cuenta en este tel&eacute;fono</button></div>
+      <div class="bt"><button id="bSalirCuenta"><span class="ic"><svg class="i" aria-hidden="true"><use href="#i-salir"/></svg></span>Salir de mi cuenta en este tel&eacute;fono</button></div>
       <p class="est" id="estCuenta"></p>
     </div>
   </section>
 
   <section class="pant" data-p="linea">
-    <div class="top"><span class="marca">Nu<em>Plan</em></span>
+    <div class="top"><span class="marca"><span class="pt"><svg class="i" aria-hidden="true"><use href="#i-marca"/></svg></span>NuPlan</span>
       <div class="quien"><span id="nom7"></span><div class="av" id="av7"></div></div></div>
     <h2>Mi l&iacute;nea de tiempo</h2>
     <p class="sub">Esto se llena solo.</p>
@@ -462,21 +477,21 @@ img[data-ruta]{background:var(--line2);min-height:120px}
   </section>
 
   <section class="pant" data-p="programa">
-    <div class="top"><span class="marca">Nu<em>Plan</em> &middot; panel</span></div>
+    <div class="top"><span class="marca"><span class="pt"><svg class="i" aria-hidden="true"><use href="#i-marca"/></svg></span>NuPlan<small>panel</small></span></div>
     <h2>El programa</h2>
     <p class="sub">Los 90 d&iacute;as. Toc&aacute; cualquiera para leerlo y anotar lo que cambiar&iacute;as.</p>
     <div id="grilla2"></div>
   </section>
 
   <section class="pant" data-p="ia">
-    <div class="top"><span class="marca">Nu<em>Plan</em> &middot; panel</span></div>
+    <div class="top"><span class="marca"><span class="pt"><svg class="i" aria-hidden="true"><use href="#i-marca"/></svg></span>NuPlan<small>panel</small></span></div>
     <h2>La IA</h2>
     <p class="sub">Con qu&eacute; criterio contesta, y d&oacute;nde se detiene.</p>
     <div id="iaL"></div>
   </section>
 
   <section class="pant" data-p="mails">
-    <div class="top"><span class="marca">Nu<em>Plan</em> &middot; panel</span></div>
+    <div class="top"><span class="marca"><span class="pt"><svg class="i" aria-hidden="true"><use href="#i-marca"/></svg></span>NuPlan<small>panel</small></span></div>
     <h2>Lo que te llega</h2>
     <p class="sub">A la misma casilla donde recib&iacute;s las respuestas del m&eacute;todo.</p>
     <div class="aviso"><b>Todo lo de cada una, en NuPlan</b>En NuPlan &rarr; Programa ves a todas tus consultantes
@@ -485,32 +500,32 @@ img[data-ruta]{background:var(--line2);min-height:120px}
   </section>
 
   <section class="pant" data-p="cambios">
-    <div class="top"><span class="marca">Nu<em>Plan</em> &middot; panel</span></div>
+    <div class="top"><span class="marca"><span class="pt"><svg class="i" aria-hidden="true"><use href="#i-marca"/></svg></span>NuPlan<small>panel</small></span></div>
     <h2>Mis cambios</h2>
     <p class="sub">Todo lo que anotaste. Revisalo y mandalo de una sola vez.</p>
     <div id="corrL"></div>
     <div class="bt" style="margin-top:16px">
       <button class="lleno" onclick="mandarCorr()">Mandarle mis cambios a Javo</button>
-      <button onclick="aprobarTodo()"><span class="ic">&#10003;</span>Revis&eacute; todo y est&aacute; bien as&iacute;</button>
+      <button onclick="aprobarTodo()"><span class="ic"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg></span>Revis&eacute; todo y est&aacute; bien as&iacute;</button>
     </div>
     <p class="est" id="estCorr"></p>
   </section>
 
   </div>
   <nav id="navR" style="display:none">
-    <button data-irr="programa" class="on"><i>&#9636;</i><span>Programa</span></button>
-    <button data-irr="herr"><i>&#9671;</i><span>Pasos</span></button>
-    <button data-irr="ia"><i>&#9670;</i><span>La IA</span></button>
-    <button data-irr="mails"><i>&#9993;</i><span>Mails</span></button>
-    <button data-irr="cambios"><i>&#9998;</i><span>Cambios</span><span class="bb" id="nCorr"></span></button>
+    <button data-irr="programa" class="on"><i><svg class="i" aria-hidden="true"><use href="#i-programa"/></svg></i><span>Programa</span></button>
+    <button data-irr="herr"><i><svg class="i" aria-hidden="true"><use href="#i-pasos"/></svg></i><span>Pasos</span></button>
+    <button data-irr="ia"><i><svg class="i" aria-hidden="true"><use href="#i-chispa"/></svg></i><span>La IA</span></button>
+    <button data-irr="mails"><i><svg class="i" aria-hidden="true"><use href="#i-mail"/></svg></i><span>Mails</span></button>
+    <button data-irr="cambios"><i><svg class="i" aria-hidden="true"><use href="#i-editar"/></svg></i><span>Cambios</span><span class="bb" id="nCorr"></span></button>
   </nav>
   <nav id="navC">
-    <button data-ir="hoy" class="on"><i>&#9673;</i><span>Hoy</span></button>
-    <button data-ir="camino"><i>&#9636;</i><span>Camino</span></button>
-    <button data-ir="diario"><i>&#9998;</i><span>Diario</span></button>
-    <button data-ir="herr"><i>&#9671;</i><span>Pasos</span></button>
-    <button data-ir="nuplan"><i>&#9670;</i><span>NuPlan</span></button>
-    <button data-ir="rosana"><i>&#9786;</i><span>Rosana</span></button>
+    <button data-ir="hoy" class="on"><i><svg class="i" aria-hidden="true"><use href="#i-hoy"/></svg></i><span>Hoy</span></button>
+    <button data-ir="camino"><i><svg class="i" aria-hidden="true"><use href="#i-camino"/></svg></i><span>Camino</span></button>
+    <button data-ir="diario"><i><svg class="i" aria-hidden="true"><use href="#i-diario"/></svg></i><span>Diario</span></button>
+    <button data-ir="herr"><i><svg class="i" aria-hidden="true"><use href="#i-pasos"/></svg></i><span>Pasos</span></button>
+    <button data-ir="nuplan"><i><svg class="i" aria-hidden="true"><use href="#i-chat"/></svg></i><span>NuPlan</span></button>
+    <button data-ir="rosana"><i><svg class="i" aria-hidden="true"><use href="#i-rosana"/></svg></i><span>Rosana</span></button>
   </nav>
 </div>
 
@@ -914,11 +929,11 @@ function pintarHoy(){
     '<p class="acc">' + x.a + '</p><p class="fo2">' + x.fo + '</p>' + paso +
     '<div class="bt">' + bEj +
       (x.u ? '<a' + (bEj ? '' : ' class="lleno"') + ' href="' + x.u + '" target="_blank" rel="noopener">' +
-        (bEj ? '<span class="ic">&#9671;</span>' : '') + 'Abrir ' + x.un + '</a>' : "") +
-      '<button onclick="ir(\'diario\')"><span class="ic">&#9998;</span>Cargar una comida' +
+        (bEj ? '<span class="ic"><svg class="i" aria-hidden="true"><use href="#i-pasos"/></svg></span>' : '') + 'Abrir ' + x.un + '</a>' : "") +
+      '<button onclick="ir(\'diario\')"><span class="ic"><svg class="i" aria-hidden="true"><use href="#i-diario"/></svg></span>Cargar una comida' +
         (nCom ? '<span class="mk">' + nCom + ' hoy</span>' : "") + '</button>' +
-      '<button onclick="pedirFoto()"><span class="ic">&#9634;</span>Subir una foto</button>' +
-      '<button onclick="ir(\'nuplan\')"><span class="ic">&#9670;</span>Preguntárselo a NuPlan</button>' +
+      '<button onclick="pedirFoto()"><span class="ic"><svg class="i" aria-hidden="true"><use href="#i-foto"/></svg></span>Subir una foto</button>' +
+      '<button onclick="ir(\'nuplan\')"><span class="ic"><svg class="i" aria-hidden="true"><use href="#i-chat"/></svg></span>Preguntárselo a NuPlan</button>' +
       '<button class="' + (bEj || x.u ? "" : "lleno") + (hecho?" hecho":"") + '" onclick="marcarHecho()">' +
         (hecho ? "&#10003; Día hecho" : "Marcar el día como hecho") + '</button>' +
     '</div></div>';
@@ -974,7 +989,7 @@ function abrirDia(d, alEj){
     (x.x ? '<p class="chip"><b>' + x.xp + '</b>' + x.x + '</p>' : "") +
     '<h2>' + x.a + '</h2><p class="sub">' + x.fo + '</p>' +
     (x.u ? '<div class="bt"><a' + (conEj ? '' : ' class="lleno"') + ' href="' + x.u + '" target="_blank" rel="noopener">' +
-      (conEj ? '<span class="ic">&#9671;</span>' : '') + 'Abrir ' + x.un + '</a></div>' : "") +
+      (conEj ? '<span class="ic"><svg class="i" aria-hidden="true"><use href="#i-pasos"/></svg></span>' : '') + 'Abrir ' + x.un + '</a></div>' : "") +
     ej +
     '<div class="bt" style="margin-top:22px">' +
       '<button id="hjHecho" class="' + (conEj || x.u ? "" : "lleno") + (hecho?" hecho":"") + '" onclick="togDia(' + d + ')">' +
@@ -1432,7 +1447,7 @@ var FORMS = {
   momento: { t:"El momento que más te cuesta", i:"Seguís con tu diario como siempre. Hoy sumás una sola pregunta.", c:[
     { l:"¿En qué momento del día te cuesta más manejar el hambre? ¿Qué pasa en ese momento?" } ] },
   automon: { t:"Automonitoreo", i:"Cargá cada comida en tu diario, como siempre. Acá sumás lo que pasa alrededor.", pre:function(){
-      return '<div class="bt" style="margin-bottom:18px"><button onclick="irComoElla(\'diario\')"><span class="ic">&#9998;</span>Ir a mi diario</button></div>' }, c:[
+      return '<div class="bt" style="margin-bottom:18px"><button onclick="irComoElla(\'diario\')"><span class="ic"><svg class="i" aria-hidden="true"><use href="#i-diario"/></svg></span>Ir a mi diario</button></div>' }, c:[
     { l:"Antes de comer sin hambre, ¿qué estaba pasando? ¿Qué pensaste?" },
     { l:"¿Cómo dormiste anoche? ¿Cómo descansaste hoy?" } ] },
   emocion: { t:"Lo que descubriste", i:"Mirá lo que anotaste estos dos días.", c:[
@@ -1509,7 +1524,7 @@ var EJC = {
     html: function(d, st){ var f = fotoK("heladera");
       return '<p class="sub">Abrila y sacale una foto así como está. Sin ordenar, sin limpiar, sin sacar nada. Es tu punto de partida y no hay nada que esconder.</p>' +
         (f ? fotoImg(f, "ejfoto", "Tu heladera") : '') +
-        '<div class="bt" style="margin-bottom:18px"><button onclick="ejFoto(' + d + ')"><span class="ic">&#9634;</span>' + (f ? "Cambiar la foto" : "Sacar la foto") + '</button></div>' +
+        '<div class="bt" style="margin-bottom:18px"><button onclick="ejFoto(' + d + ')"><span class="ic"><svg class="i" aria-hidden="true"><use href="#i-foto"/></svg></span>' + (f ? "Cambiar la foto" : "Sacar la foto") + '</button></div>' +
         campo("c0", "Mirándola, ¿qué ves? Una línea, sin juzgarte.", "Lo primero que me llama la atención es…", 2, "", st) },
     bloq: function(d, st){
       var l = [{ k:"La foto", v: fotoK("heladera") ? (S.cuenta ? "La sacó. La ves en NuPlan → Programa." : "La sacó. Queda guardada en su teléfono.") : "Todavía no la sacó." }];
@@ -1569,7 +1584,7 @@ var EJC = {
         : '<div class="aviso"><b>Todavía no elegiste tu paso chico</b>Está en el día 12.<div class="bt" style="margin-top:12px"><button onclick="abrirDia(12,1)">Elegirlo ahora</button></div></div>') +
         pildoras("dio", "¿Empezaste a darlo?", ["Sí, empecé","A medias","Todavía no"], false, 0, st) +
         campo("c0", "¿Cómo te fue? ¿Qué pasó?", "", 3, "", st) +
-        '<div class="bt" style="margin-bottom:18px"><button onclick="irComoElla(\'diario\')"><span class="ic">&#9998;</span>Cargar el diario de hoy</button></div>' },
+        '<div class="bt" style="margin-bottom:18px"><button onclick="irComoElla(\'diario\')"><span class="ic"><svg class="i" aria-hidden="true"><use href="#i-diario"/></svg></span>Cargar el diario de hoy</button></div>' },
     bloq: function(d, st){ var l = [], p = S.ej.e12 && S.ej.e12.v;
       if(p && ejLleno(p.c0)) l.push({ k:"Su paso chico", v: p.c0 });
       if(st.v.dio) l.push({ k:"¿Lo empezó a dar?", v: st.v.dio });
@@ -1662,7 +1677,7 @@ function semResumen(){ var c = semCuenta();
 function semLista(){
   var e = semEntradas();
   if(!e.length) return '<div class="vac">Tu semáforo se arma con tu diario.<br>Cargá tus comidas y volvé.</div>' +
-    '<div class="bt" style="margin-bottom:18px"><button onclick="irComoElla(\'diario\')"><span class="ic">&#9998;</span>Ir a mi diario</button></div>';
+    '<div class="bt" style="margin-bottom:18px"><button onclick="irComoElla(\'diario\')"><span class="ic"><svg class="i" aria-hidden="true"><use href="#i-diario"/></svg></span>Ir a mi diario</button></div>';
   return e.map(function(x){
     return '<div class="semi"><p><span class="h">' + esc(fechaLinda(x.f)) + ' · ' + esc(x.c.hora) + '</span><br>' + esc(x.c.que) + '</p>' +
       '<div class="semb">' + SEM.map(function(s){ return '<button type="button" class="' + s[0] + (x.c.sem === s[0] ? " on" : "") +

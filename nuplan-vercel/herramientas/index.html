@@ -493,6 +493,68 @@
 
   @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important;scroll-behavior:auto!important;}}
 
+  /* ===== bloque 5 · el plan impreso: 6 hojas o menos, letra de 10 pt o más (A07, B12) ===== */
+  @media print{
+    #plan-resultado{font-size:10.5pt;}
+    #plan-resultado .hoja>tbody>tr>td{padding-top:3mm;}
+    #plan-resultado .res-cabecera{margin-bottom:3mm;padding-bottom:3mm;}
+    #plan-resultado .res-cabecera h2{font-size:20pt;margin:0 0 1mm;}
+    #plan-resultado .res-cabecera .bajada{font-size:10.5pt;margin:0;}
+    #plan-resultado .plato-bloque{display:flex;align-items:center;gap:6mm;padding:2.5mm 4mm;margin:0 0 3mm;}
+    #plan-resultado .plato-bloque h3{margin:0;white-space:nowrap;}
+    #plan-resultado .plato-res{display:flex;align-items:center;gap:5mm;}
+    #plan-resultado .plato-res svg{width:22mm;height:22mm;flex:none;}
+    #plan-resultado .plato-leyenda{display:grid;grid-template-columns:auto auto;gap:1mm 6mm;margin:0;}
+    #plan-resultado .plato-leyenda li{margin:0;}
+    /* las comidas del día, de a dos */
+    #comidas,#plan-resultado .bloque-res:has(> .comida),#plan-resultado .bloque-res:has(> .receta),#plan-resultado .bloque-res:has(> .habito){
+      display:grid;grid-template-columns:1fr 1fr;gap:3mm;align-items:start;}
+    #plan-resultado .bloque-res:has(> .comida)>h3,#plan-resultado .bloque-res:has(> .receta)>h3,#plan-resultado .bloque-res:has(> .habito)>h3{grid-column:1/-1;margin:0;}
+    #plan-resultado .comida,#plan-resultado .receta,#plan-resultado .habito{margin:0;padding:3mm 4mm;}
+    #plan-resultado .comida{break-inside:auto;orphans:3;widows:3;}
+    #plan-resultado .comida li{break-inside:avoid;}
+    #plan-resultado .comida .tipo,#plan-resultado .comida .hora{break-after:avoid;}
+    #plan-resultado .comida ul{margin:1mm 0 0;}
+    #plan-resultado .comida li{margin:0 0 1mm;line-height:1.35;}
+    #plan-resultado .comida .tip,#plan-resultado .receta .tip{margin:1.5mm 0 0;padding:0;font-size:10pt;}
+    #plan-resultado .bloque-res{margin:4mm 0 0;}
+    #plan-resultado .bloque-res>h3{margin:0 0 2mm;font-size:13pt;}
+    /* la semana, de a tres días, con el plato y su porción */
+    #plan-resultado .semana{grid-template-columns:repeat(4,1fr);gap:2mm;}
+    #plan-resultado .dia-menu{padding:2.5mm 3mm;break-inside:auto;}
+    #plan-resultado .dia-menu li,#plan-resultado .dia-menu .mom{break-inside:avoid;}
+    #plan-resultado .dia-menu .dia-n{break-after:avoid;}
+    #plan-resultado .dia-menu *{font-size:10pt;line-height:1.3;}
+    #plan-resultado .dia-menu .dia-n{font-size:11pt;}
+    /* listas largas (compras, grupos de alimentos): tres columnas, renglón corrido */
+    #plan-resultado .grupos{grid-template-columns:repeat(3,1fr);gap:3mm;}
+    #plan-resultado .grupos.ideas{grid-template-columns:1fr 1fr;}
+    #plan-resultado .grupos:has(> .grupo:nth-child(5)){display:block;columns:3;column-gap:3mm;}
+    #plan-resultado .grupos:has(> .grupo:nth-child(5)) .grupo{margin:0 0 3mm;}
+    #plan-resultado .grupo{padding:2.5mm 3mm;break-inside:auto;}
+    #plan-resultado .grupo li{break-inside:avoid;}
+    #plan-resultado .bloque-res>h3,#plan-resultado .grupo h4{break-after:avoid;}
+    #plan-resultado .grupo li{margin:0;line-height:1.3;font-size:10pt;}
+    /* listas largas (compras, grupos de alimentos): en columnas y en renglón corrido separado por puntos */
+    #plan-resultado .grupos:has(> .grupo:nth-child(5)) .grupo ul{display:block;padding:0;margin:0;list-style:none;}
+    #plan-resultado .grupos:has(> .grupo:nth-child(5)) .grupo li{display:inline;padding:0;}
+    #plan-resultado .grupos:has(> .grupo:nth-child(5)) .grupo li::before{display:none;content:none;}
+    #plan-resultado .grupos:has(> .grupo:nth-child(5)) .grupo li:not(:last-child)::after{content:" · ";color:#9ca3af;}
+    #plan-resultado .grupo h4,#plan-resultado .grupo .tit{margin:0 0 1mm;}
+    #plan-resultado .lista-simple li{margin:0 0 1mm;}
+    /* las recomendaciones, en dos columnas (la tabla de fibra entera, arriba) */
+    #plan-resultado .reco{columns:2;column-gap:6mm;break-inside:auto;padding:3mm 4mm;margin:0 0 3mm;}
+    #plan-resultado .reco>h3,#plan-resultado .reco>h4,#plan-resultado .reco>.bajada{column-span:all;}
+    #plan-resultado .reco li,#plan-resultado .reco tr{break-inside:avoid;}
+    #plan-resultado .reco table{width:100%;break-inside:auto;}
+    #plan-resultado .reco h5,#plan-resultado .reco .sub,#plan-resultado .reco strong{break-after:avoid;}
+    #plan-resultado .reco *{font-size:10pt;line-height:1.35;}
+    #plan-resultado .reco>h3,#plan-resultado .reco>h4{font-size:12pt;}
+    /* nada impreso de menos de 10 pt */
+    .hoja-cab,.hoja-pie{font-size:10pt !important;}
+    #plan-resultado small,#plan-resultado .tipo,#plan-resultado .hora,#plan-resultado .hid-nums,#plan-resultado .plato-leyenda li{font-size:10pt !important;}
+  }
+
   @page{margin:0;}
   @media print{
     html{font-size:11.5pt;}
@@ -530,6 +592,56 @@
     .evo{grid-template-columns:1fr;gap:14px;} .evo .graf{padding:12px 16px 8px;}
     .solo-imprimir{display:flex !important;}
     .bajada{max-width:none;}
+  }
+</style>
+<style id="w5-evo">
+  /* ===== bloque 5 · la evolución: medidas y laboratorio en la ficha, laboratorio en la consulta, el grupo ===== */
+  .sec-ficha{font-size:1.2rem;margin:34px 0 0;}
+  .sec-ficha small{display:block;font-family:var(--mono);font-size:.9rem;font-weight:400;color:var(--muted);margin-top:4px;}
+  .tabla.evo-t{min-width:0;margin-top:12px;}
+  .tabla.evo-t th,.tabla.evo-t td{padding:12px 10px;vertical-align:top;}
+  .tabla.evo-t td:first-child{width:36%;}
+  .tabla.evo-t .nom{display:block;font-weight:600;line-height:1.3;}
+  .tabla.evo-t .ref,.tabla.evo-t .f{display:block;font-family:var(--mono);font-size:.9rem;color:var(--muted);margin-top:3px;line-height:1.35;}
+  .tabla.evo-t .v{font-family:var(--mono);font-weight:700;white-space:nowrap;}
+  .tabla.evo-t td.fuera .v{color:var(--coral-dark);}
+  .tabla.evo-t .marca{display:inline-block;margin-left:6px;padding:0 8px;border-radius:999px;background:#fde6df;color:var(--coral-dark);font-family:var(--mono);font-size:.9rem;font-weight:700;line-height:1.6;}
+  .tabla.evo-t .cambio .p{display:block;font-family:var(--mono);font-size:.9rem;color:var(--muted);margin-top:3px;}
+  .tabla.evo-t td.n{font-family:var(--mono);color:var(--texto);white-space:nowrap;}
+  .tabla.evo-grupo th{font-size:.9rem;}
+  .tabla.evo-grupo td:first-child{width:30%;}
+  .nota.leyenda{margin:10px 0 0;}
+  .tabla td small.tipo-ses{display:block;font-family:var(--mono);font-size:.9rem;color:var(--muted);margin-top:3px;}
+  .tabla tr.fila-antro small.tipo-ses{color:var(--coral-dark);}
+  .tabla td.sin-esc{color:var(--muted);}
+  #con-lab .lab-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0 18px;}
+  #con-lab .lab-grid input{width:100%;min-width:0;}
+  #con-lab .lab-grid .campo{margin-bottom:16px;display:flex;flex-direction:column;justify-content:flex-end;}
+  #con-lab #lab-lectura{min-height:0;margin:2px 0 16px;color:var(--texto);}
+  #con-lab #lab-lectura:empty{display:none;}
+  @media(max-width:640px){
+    /* en el celular cada fila es una tarjeta: el nombre arriba y los valores debajo, con su rótulo */
+    .tabla.evo-t,.tabla.evo-t tbody{display:block;}
+    .tabla.evo-t thead{display:none;}
+    .tabla.evo-t tr{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px 10px;padding:14px 0;border-bottom:1px solid var(--borde);}
+    .tabla.evo-grupo tr{grid-template-columns:repeat(2,minmax(0,1fr));}
+    .tabla.evo-t tbody tr:hover td{background:none;}
+    .tabla.evo-t td{display:block;border:0;padding:0 !important;width:auto !important;}
+    .tabla.evo-t td:first-child{grid-column:1/-1;}
+    .tabla.evo-t td[data-l]::before{content:attr(data-l);display:block;white-space:normal;line-height:1.3;font-family:var(--mono);font-size:.9rem;color:var(--coral-dark);margin-bottom:3px;}
+    .tabla.evo-t .marca{margin:3px 0 0;display:table;}
+    #con-lab .lab-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:0 12px;}
+    #con-lab .lab-grid .campo:first-child{grid-column:1/-1;}
+  }
+  @media print{
+    .sec-ficha{font-size:13pt;margin:6mm 0 0;break-after:avoid;}
+    .sec-ficha small{font-size:10pt;}
+    .tabla.evo-t{margin-top:2mm;}
+    .tabla.evo-t th,.tabla.evo-t td{padding:1.6mm 2mm;}
+    .tabla.evo-t .ref,.tabla.evo-t .f,.tabla.evo-t .marca,.tabla.evo-t .cambio .p,.tabla td small.tipo-ses,.tabla.evo-grupo th{font-size:10pt !important;}
+    .tabla.evo-t .marca{background:none;border:1px solid #c53a1e;}
+    .tabla.evo-t tr{break-inside:avoid;}
+    .sec-evo{break-inside:avoid;}
   }
 </style>
 </head>
@@ -581,7 +693,7 @@
 <section class="pantalla wrap oculto" id="p-inicio">
   <span class="kicker">Hola, <span id="saludo-nombre"></span></span>
   <h1>¿A quién atendés hoy?</h1>
-  <p class="bajada">Escribí tres letras de su nombre y se abre su ficha.</p>
+  <p class="bajada">Escribí dos letras de su nombre y tocalo en la lista.</p>
   <div class="caja">
     <div class="buscador">
       <input type="text" id="busca-paciente-ini" placeholder="Buscar paciente…" aria-label="Buscar paciente" autocomplete="off" oninput="filtrarPacientesIni(this.value)">
@@ -811,6 +923,30 @@
         <label class="campo">Calidad de sueño *<select id="c-sueno" data-req></select></label>
       </div>
     </div>
+    <div class="caja" id="con-lab">
+      <span class="sub">Laboratorio</span>
+      <div id="lab-cerrado">
+        <p class="nota" style="margin:0 0 14px;">¿Trajo análisis? Cargalos acá y quedan en su ficha, con la evolución.</p>
+        <button type="button" class="btn suave" onclick="abrirLabConsulta()">Cargar análisis</button>
+      </div>
+      <div id="lab-campos" class="oculto" oninput="leerLabEnVivo()">
+        <div class="lab-grid">
+          <label class="campo">Fecha del análisis<input type="date" id="lab-fecha"></label>
+          <label class="campo">Glucemia (mg/dL)<input type="number" step="1" min="0" inputmode="decimal" id="lab-glucose"></label>
+          <label class="campo">HbA1c (%)<input type="number" step="0.1" min="0" inputmode="decimal" id="lab-hba1c"></label>
+          <label class="campo">Colesterol total (mg/dL)<input type="number" step="1" min="0" inputmode="decimal" id="lab-total_cholesterol"></label>
+          <label class="campo">LDL (mg/dL)<input type="number" step="1" min="0" inputmode="decimal" id="lab-ldl"></label>
+          <label class="campo">HDL (mg/dL)<input type="number" step="1" min="0" inputmode="decimal" id="lab-hdl"></label>
+          <label class="campo">Triglicéridos (mg/dL)<input type="number" step="1" min="0" inputmode="decimal" id="lab-triglycerides"></label>
+          <label class="campo">Vitamina D (ng/mL)<input type="number" step="0.1" min="0" inputmode="decimal" id="lab-vitamin_d"></label>
+          <label class="campo">Presión sistólica (mmHg)<input type="number" step="1" min="0" inputmode="numeric" id="lab-bp_systolic"></label>
+          <label class="campo">Presión diastólica (mmHg)<input type="number" step="1" min="0" inputmode="numeric" id="lab-bp_diastolic"></label>
+        </div>
+        <p class="nota" id="lab-lectura" aria-live="polite"></p>
+        <label class="campo">Notas del análisis<input type="text" id="lab-notas" placeholder="opcional"></label>
+        <button type="button" class="enlace" onclick="cerrarLabConsulta()">No cargar análisis</button>
+      </div>
+    </div>
     <div class="caja">
       <span class="sub">Motivo y notas</span>
       <label class="campo">Motivo de consulta<input type="text" id="c-motivo" placeholder="Control, seguimiento, laboratorio…"></label>
@@ -958,8 +1094,9 @@
     </div>
     <div class="caja">
       <span class="sub">Micro hábitos para empezar</span>
-      <p class="bajada" style="margin-bottom:10px;font-size:1rem;">Lo primero que tiene que mejorar. Elegí de uno a tres.</p>
+      <p class="bajada" style="margin-bottom:10px;font-size:1rem;">Lo primero que tiene que mejorar. Elegí hasta tres.</p>
       <div class="chips" id="chips-habitos"></div>
+      <p class="aviso" id="hab-aviso"></p>
       <label class="campo" style="margin-top:22px;">Otro micro hábito u objetivo específico
         <input type="text" id="d-habito-libre" placeholder="Escribilo con tus palabras"></label>
     </div>
@@ -1031,7 +1168,7 @@
 <section class="pantalla wrap oculto" id="p-listado">
   <span class="kicker">Informe mensual</span>
   <h2>Consultas del mes</h2>
-  <p class="bajada">Cantidad de consultas y personas atendidas en el mes, en la empresa que tenés seleccionada arriba. Sin ningún dato clínico.</p>
+  <p class="bajada">Cantidad de consultas y personas atendidas en el mes, en la empresa que tenés seleccionada arriba. Sin datos clínicos.</p>
   <div class="caja">
     <div class="grid2">
       <label class="campo">Mes<input type="month" id="l-mes"></label>
@@ -1040,6 +1177,13 @@
     <p class="aviso" id="l-aviso"></p>
   </div>
   <div id="l-resultado"></div>
+  <div class="caja no-imprimir">
+    <span class="sub">Evolución del grupo</span>
+    <p class="nota" style="margin:0 0 14px;">Cómo cambiaron el laboratorio y las medidas de las personas de la empresa, del primer registro al último. Sin nombres, para mostrarle a la empresa.</p>
+    <button class="btn suave" onclick="cargarEvolucionGrupo()">Ver la evolución del grupo</button>
+    <p class="aviso" id="eg-aviso"></p>
+  </div>
+  <div id="eg-resultado"></div>
   <div class="nav-pasos"><button class="btn suave" onclick="irA('inicio')">Volver al inicio</button></div>
 </section>
 
@@ -2056,6 +2200,85 @@ function cambiarComida(dia, k){
   hoja.classList.remove("oculto"); document.body.classList.add("con-hoja");
   var b=hoja.querySelector(".opcion"); if(b) b.focus({preventScroll:true});
 }
+/* ===== bloque 5 · mandar el plan por mail (A20) ===== */
+function pintarEnvios(){
+  var p=$("plan-envios"); if(!p) return;
+  var l=(plan.envios && plan.envios.docId===plan.docId) ? plan.envios.l : [];
+  p.textContent = l.length ? "Mandado por mail: " + l.map(function(x){ return String(x.a||"")+" el "+fechaCorta(x.fecha); }).join(" · ") : "";
+}
+function htmlPlanParaMail(){
+  var raiz=document.querySelector("#plan-resultado .hoja > tbody > tr > td");
+  if(!raiz) return { html:"", texto:"" };
+  var ST={ h2:"margin:18px 0 8px;font-size:21px;line-height:1.3", h3:"margin:22px 0 8px;font-size:19px;line-height:1.3",
+    h4:"margin:12px 0 6px;font-size:14px;letter-spacing:1px;text-transform:uppercase;color:#c53a1e;font-weight:700",
+    p:"margin:0 0 8px;font-size:16px", li:"margin:0 0 5px;font-size:16px", caja:"margin:0 0 12px;padding:12px 14px;background:#fff6f3;border-radius:10px" };
+  var txt=[];
+  function plano(el){ return String(el.textContent||"").replace(/\s+/g," ").trim(); }
+  function nodo(el){
+    if(el.nodeType===3) return esc(el.textContent.replace(/\s+/g," "));
+    if(el.nodeType!==1) return "";
+    if(el.matches(".no-imprimir,.solo-edicion,button,svg,.ayuda-semana,.quitar,.res-cabecera h2,script,style")) return "";
+    var cs=getComputedStyle(el); if(cs.display==="none") return "";
+    var tag=el.tagName.toLowerCase(), hijos=[].map.call(el.childNodes, nodo).join("");
+    if(!hijos.replace(/&nbsp;|\s/g,"")) return "";
+    if(tag==="h2"||tag==="h3"){ txt.push("", plano(el).toUpperCase()); return '<'+tag+' style="'+ST[tag]+'">'+hijos+'</'+tag+'>'; }
+    if(/^h[4-6]$/.test(tag)){ txt.push(plano(el)); return '<p style="'+ST.h4+'">'+hijos+'</p>'; }
+    if(tag==="ul"||tag==="ol") return '<ul style="margin:0 0 8px;padding-left:20px">'+hijos+'</ul>';
+    if(tag==="li"){ txt.push("- "+plano(el)); return '<li style="'+ST.li+'">'+hijos+'</li>'; }
+    if(tag==="table") return '<table style="border-collapse:collapse;width:100%;margin:0 0 10px">'+hijos+'</table>';
+    if(tag==="thead"||tag==="tbody"||tag==="tfoot") return hijos;
+    if(tag==="tr"){ txt.push(plano(el)); return '<tr>'+hijos+'</tr>'; }
+    if(tag==="td"||tag==="th") return '<td style="padding:5px 6px;border-bottom:1px solid #f0ddd7;font-size:15px;vertical-align:top">'+hijos+'</td>';
+    if(tag==="b"||tag==="strong") return '<b>'+hijos+'</b>';
+    if(tag==="small") return '<span style="color:#6b7280;font-size:15px">'+hijos+'</span>';
+    if(tag==="br") return "<br>";
+    if(el.matches(".comida,.dia-menu,.grupo,.reco,.habito,.receta,.dato,.plato-bloque")) return '<div style="'+ST.caja+'">'+hijos+'</div>';
+    if(tag==="p"||el.matches(".tip,.bajada,.hora,.tipo,.dia-n,.mom")){ txt.push(plano(el)); return '<p style="'+ST.p+'">'+hijos+'</p>'; }
+    if(/^(block|grid|flex|list-item|table)$/.test(cs.display)) return '<div>'+hijos+'</div>';
+    return hijos;
+  }
+  var html=[].map.call(raiz.childNodes, nodo).join("");
+  return { html:html, texto:txt.join("\n").replace(/\n{3,}/g,"\n\n").trim() };
+}
+function abrirMandarPlan(){
+  if(!plan.docId){ avisar("Esperá a que el plan termine de guardarse y probá de nuevo.", 6000); return; }
+  if($("plan-resultado").classList.contains("editando")){ avisar("Primero guardá o cancelá los cambios de texto.", 5000); return; }
+  var h=$("hoja-mail");
+  if(!h){ h=document.createElement("div"); h.id="hoja-mail"; h.className="hoja-cambio"; h.setAttribute("role","dialog"); h.setAttribute("aria-modal","true");
+    h.addEventListener("click", function(e){ if(e.target===h) cerrarMandarPlan(); }); document.body.appendChild(h);
+    document.addEventListener("keydown", function(e){ if(e.key==="Escape" && $("hoja-mail") && !$("hoja-mail").classList.contains("oculto")) cerrarMandarPlan(); }); }
+  var ult=(plan.envios && plan.envios.docId===plan.docId && plan.envios.l.length) ? plan.envios.l[plan.envios.l.length-1].a : "";
+  var nom=plan.paciente ? nombreCompleto(plan.paciente) : "la persona", mail=ult || (plan.paciente && plan.paciente.email) || "";
+  h.innerHTML='<div class="hoja-caja"><div class="hoja-cab"><div><span class="kicker" style="margin:0">Plan alimentario</span><h3 style="margin:2px 0 0">Mandar por mail</h3></div>'+
+    '<button type="button" class="quitar-item" onclick="cerrarMandarPlan()" aria-label="Cerrar">×</button></div>'+
+    '<p class="nota" style="margin:0 0 14px">Le llega desde rosana@nuplan.com.ar con el plan completo, para leer en el teléfono o imprimir. A vos te llega una copia y queda anotado en el plan.</p>'+
+    '<label class="campo">Mail de '+esc(nom)+'<input type="email" id="pm-mail" value="'+esc(mail)+'" autocomplete="off" inputmode="email" autocapitalize="off" spellcheck="false"></label>'+
+    '<div class="botonera-gen" style="margin-top:0"><button type="button" class="btn" id="pm-ok" onclick="mandarPlan()">Mandarlo</button><button type="button" class="btn suave" onclick="cerrarMandarPlan()">Cancelar</button></div>'+
+    '<p class="aviso" id="pm-est"></p></div>';
+  h.classList.remove("oculto"); document.body.classList.add("con-hoja");
+  setTimeout(function(){ var i=$("pm-mail"); if(i){ i.focus(); } }, 60);
+}
+function cerrarMandarPlan(){ var h=$("hoja-mail"); if(h) h.classList.add("oculto"); document.body.classList.remove("con-hoja"); }
+async function mandarPlan(){
+  var m=$("pm-mail").value.trim().toLowerCase(), e=$("pm-est"), b=$("pm-ok");
+  if(!/^[^\s@<>"',;]+@[^\s@<>"',;]+\.[a-z]{2,}$/i.test(m)){ e.className="aviso error"; e.textContent="Revisá el mail: así no le va a llegar."; $("pm-mail").focus(); return; }
+  if(b.disabled) return;
+  b.disabled=true; e.className="aviso"; e.textContent="Mandando…";
+  var c=htmlPlanParaMail(), docId=plan.docId, pac=plan.paciente;
+  try{
+    var res=await fetch("/api/plan-mail",{ method:"POST", headers:await cabecerasIA(), body:JSON.stringify({ docId:docId, para:m, html:c.html, texto:c.texto }) });
+    var j=await res.json().catch(function(){ return {}; });
+    b.disabled=false;
+    if(!res.ok){ e.className="aviso error"; e.textContent=j.error||"No se pudo mandar. Probá de nuevo."; return; }
+    if(j.mail==="enviado"){
+      e.className="aviso"; e.textContent="Listo: le llegó a "+m+" y a vos la copia.";
+      if(!plan.envios || plan.envios.docId!==docId) plan.envios={ docId:docId, l:[] };
+      plan.envios.l.push(j.envio||{ a:m, fecha:new Date().toISOString() }); pintarEnvios();
+      if(pac && pac.id && !pac.email){ pac.email=m; try{ await sb.from("patients").update({ email:m }).eq("id", pac.id); }catch(err){} }
+    } else if(j.mail==="sin_config"){ e.className="aviso error"; e.textContent="Todavía no sale: falta que Javo configure los mails. Mientras, usá «Imprimir o guardar PDF»."; }
+    else { e.className="aviso error"; e.textContent="No salió. Probá de nuevo en un rato."; }
+  }catch(err){ b.disabled=false; e.className="aviso error"; e.textContent="Sin conexión. Probá de nuevo."; }
+}
 function cerrarCambio(){ var h=$("hoja-cambio"); if(h) h.classList.add("oculto"); document.body.classList.remove("con-hoja"); }
 async function elegirCambio(dia, k, id){
   var d=plan.resultado; if(!d||!d.weeklyMenu) return cerrarCambio();
@@ -2138,17 +2361,18 @@ function pintarPlan(d){
     h+='<div class="bloque-res"><h3>Lista de compras</h3><div class="grupos">'+Object.keys(NOMBRES_COMPRAS).map(function(k){
       return '<div class="grupo"><b>'+NOMBRES_COMPRAS[k]+'</b>'+edLista("shoppingList."+k, sl[k]||[])+'</div>';}).join("")+'</div></div>';
   }
-  var acciones='<div class="acciones-fijas no-imprimir"><div class="acciones-res" id="acciones-ver"><button class="btn" onclick="window.print()">Imprimir o guardar PDF</button>'+
+  var acciones='<div class="acciones-fijas no-imprimir"><div class="acciones-res" id="acciones-ver"><button class="btn" onclick="window.print()">Imprimir o guardar PDF</button><button class="btn suave" onclick="abrirMandarPlan()">Mandar por mail</button>'+
      '<button class="btn ghost" onclick="editarPlan()">Editar el plan</button>'+
      (plan.deGuardado
        ? '<button class="btn suave" onclick="nuevoPlanPara(plan.paciente)">Plan nuevo para esta paciente</button><button class="btn suave" onclick="abrirGuardados()">Volver a los guardados</button>'
        : '<button class="btn suave" onclick="irPaso(4)">Ajustar y volver a generar</button><button class="btn suave" onclick="otraPaciente()">Plan para otra paciente</button><button class="btn suave" onclick="irA(\'inicio\')">Volver al inicio</button>')+'</div>'+
      '<div class="acciones-res oculto" id="acciones-editar"><button class="btn" onclick="guardarEdicion()">Guardar cambios</button>'+
      '<button class="btn suave" onclick="cancelarEdicion()">Cancelar</button></div>'+
-     '<p class="aviso ok" id="plan-guardado"></p></div>';
+     '<p class="aviso ok" id="plan-guardado"></p><p class="aviso" id="plan-envios"></p></div>';
   h=avisosDelPlan(d)+acciones+hoja("Plan alimentario · "+nombreCompleto(plan.paciente), h, plan.docFecha);
   $("plan-resultado").classList.remove("editando");
   $("plan-resultado").innerHTML=h;
+  pintarEnvios();
 }
 
 /* =====================================================================
@@ -2635,7 +2859,7 @@ async function bibCopiar(id){
 /* =====================================================================
    FICHA DE LA PACIENTE · datos, evolución, consultas y planes en un lugar
    ===================================================================== */
-var ficha = { paciente:null, sesiones:[], docs:[] };
+var ficha = { paciente:null, sesiones:[], docs:[], labs:[], labsError:"" };
 var ESTADOS_PACIENTE = ["En Progreso","Objetivo Alcanzado","En Riesgo","Requiere Derivación"];
 async function filtrarPacientesIni(q){
   await cargarPacientes();
@@ -2657,11 +2881,12 @@ function imcDe(peso, talla){ return (peso>0&&talla>0) ? peso/Math.pow(talla/100,
 function categoriaImc(i){ return i==null?"" : i<18.5?"Bajo peso" : i<25?"Normal" : i<30?"Sobrepeso" : "Obesidad"; }
 async function abrirFicha(p){
   if(!p) return;
-  ficha.paciente=p; ficha.sesiones=[]; ficha.docs=[];
+  ficha.paciente=p; ficha.sesiones=[]; ficha.docs=[]; ficha.labs=[]; ficha.labsError="";
   irA("ficha"); cerrarCorregirNombre(); cerrarEditarDatos();
   $("fi-aviso").className="aviso"; $("fi-aviso").textContent="";
   pintarCabeceraFicha();
   $("ficha-cuerpo").innerHTML='<p class="aviso">Buscando sus consultas y planes…</p>';
+  var pl = Promise.resolve(sb.from("lab_results").select("*").eq("patient_id",p.id).order("lab_date",{ascending:true}).limit(200));
   var rs = await sb.from("sessions").select("*").eq("patient_id",p.id).order("session_date",{ascending:true}).order("created_at",{ascending:true}).limit(200);
   var rd = await sb.from("generated_documents").select("id,type,title,created_at").eq("patient_id",p.id).in("type",["meal_plan","recipes"]).order("created_at",{ascending:false}).limit(200);
   if(!ficha.paciente||ficha.paciente.id!==p.id) return;
@@ -2669,6 +2894,9 @@ async function abrirFicha(p){
   if(rd.error){ $("fi-aviso").className="aviso error"; $("fi-aviso").textContent="No se pudieron traer sus planes: "+errorLegible(rd.error); }
   ficha.sesiones=(rs.data||[]).slice().sort(function(a,b){ return String(a.session_date).localeCompare(String(b.session_date)) || String(a.created_at).localeCompare(String(b.created_at)); });
   ficha.docs=rd.data||[];
+  var rl = await pl.catch(function(e){ return { error:e }; });
+  if(!ficha.paciente||ficha.paciente.id!==p.id) return;
+  ficha.labs = rl.error ? [] : (rl.data||[]); ficha.labsError = rl.error ? errorLegible(rl.error) : "";
   pintarFicha();
 }
 function pintarCabeceraFicha(){
@@ -2704,12 +2932,14 @@ function pintarFicha(){
     '<span class="sub no-imprimir" style="margin-top:0;">Evolución · '+(ses.length?ses.length+" consulta"+(ses.length===1?"":"s")+" desde el "+fechaCorta(pri.session_date):"sin consultas todavía")+'</span>';
   cuerpo+='<div class="evo">'+grafico("Peso (kg)", conPeso.map(function(x){return {f:x.session_date, v:Number(x.weight)};}), "#e8472a")+
           grafico("Cintura (cm)", conCintura.map(function(x){return {f:x.session_date, v:Number(x.girth_waist)};}), "#c53a1e")+'</div>';
+  cuerpo+=fichaMedidasHTML(ses, talla)+fichaLabHTML();
   if(ses.length){
-    cuerpo+='<div class="tabla-scroll"><table class="tabla"><thead><tr><th>Fecha</th><th>Peso</th><th>Cintura</th><th>IMC</th><th>Adherencia</th><th>Energía</th><th>Sueño</th><th class="notas">Motivo / notas</th><th class="no-imprimir"></th></tr></thead><tbody>'+
+    cuerpo+='<h3 class="sec-ficha">Consultas<small>De la más nueva a la más vieja</small></h3><div class="tabla-scroll"><table class="tabla"><thead><tr><th>Fecha</th><th>Peso</th><th>Cintura</th><th>IMC</th><th>Adherencia</th><th>Energía</th><th>Sueño</th><th class="notas">Motivo / notas</th><th class="no-imprimir"></th></tr></thead><tbody>'+
       ses.slice().reverse().map(function(x){
-        var i=imcDe(Number(x.weight), Number(x.height>0?x.height:talla));
-        return '<tr><td class="mono">'+fechaCorta(x.session_date)+'</td><td class="mono">'+(x.weight>0?numeroAR(x.weight)+" kg":"—")+'</td><td class="mono">'+(x.girth_waist>0?numeroAR(x.girth_waist)+" cm":"—")+'</td><td class="mono">'+(i!=null?numeroAR(i.toFixed(1)):"—")+'</td>'+
-          '<td class="mono">'+(x.adherence!=null?x.adherence+"/5":"—")+'</td><td class="mono">'+(x.energy_level!=null?x.energy_level+"/5":"—")+'</td><td class="mono">'+(x.sleep_quality!=null?x.sleep_quality+"/5":"—")+'</td>'+
+        var i=imcDe(Number(x.weight), Number(x.height>0?x.height:talla)), antro=/antropometr/i.test(x.session_type||"");
+        return '<tr'+(antro?' class="fila-antro"':'')+'><td class="mono">'+fechaCorta(x.session_date)+'<small class="tipo-ses">'+(antro?"Antropometría":"Consulta")+'</small></td><td class="mono">'+(x.weight>0?numeroAR(x.weight)+" kg":"—")+'</td><td class="mono">'+(x.girth_waist>0?numeroAR(x.girth_waist)+" cm":"—")+'</td><td class="mono">'+(i!=null?numeroAR(i.toFixed(1)):"—")+'</td>'+
+          ((antro && x.adherence==null && x.energy_level==null && x.sleep_quality==null) ? '<td colspan="3" class="sin-esc">Solo medidas</td>' :
+          '<td class="mono">'+(x.adherence!=null?x.adherence+"/5":"—")+'</td><td class="mono">'+(x.energy_level!=null?x.energy_level+"/5":"—")+'</td><td class="mono">'+(x.sleep_quality!=null?x.sleep_quality+"/5":"—")+'</td>')+
           '<td class="notas">'+esc(recortar([x.consultation_reason,x.consultation_notes].filter(Boolean).join(" · "), 220))+'</td>'+
           '<td class="no-imprimir"><button type="button" class="btn chico suave" onclick="fichaCorregirConsulta(\''+x.id+'\')">Corregir</button></td></tr>';
       }).join("")+'</tbody></table></div>';
@@ -2718,6 +2948,7 @@ function pintarFicha(){
   }
   h+=hoja("Evolución · "+nombreCompleto(p), cuerpo);
   $("ficha-cuerpo").innerHTML=h;
+  rotularEvo($("ficha-cuerpo"));
 }
 /* gráfico de línea simple, sin librerías: imprime bien y se ve en el celular */
 function grafico(titulo, puntos, color){
@@ -2743,6 +2974,258 @@ function grafico(titulo, puntos, color){
   });
   s+='</svg>';
   return '<div class="graf"><span class="t">'+esc(titulo)+'</span>'+s+'</div>';
+}
+/* ===== bloque 5 · la evolución: laboratorio y medidas, primero / último / diferencia (A16, A17, B11, B19) ===== */
+var LAB_DEF=[
+  {k:"glucose", n:"Glucemia en ayunas", c:"Glucemia", u:"mg/dL", d:0, ref:"< 100", fuera:function(v){ return v>=100; }, r:[40,600]},
+  {k:"hba1c", n:"HbA1c", c:"HbA1c", u:"%", d:1, ref:"< 5,7", fuera:function(v){ return v>=5.7; }, r:[3,20]},
+  {k:"total_cholesterol", n:"Colesterol total", c:"Colesterol total", u:"mg/dL", d:0, ref:"< 200", fuera:function(v){ return v>=200; }, r:[50,500]},
+  {k:"ldl", n:"Colesterol LDL", c:"LDL", u:"mg/dL", d:0, ref:"< 100", fuera:function(v){ return v>=100; }, r:[10,400]},
+  {k:"hdl", n:"Colesterol HDL", c:"HDL", u:"mg/dL", d:0, sube:true, ref:function(sx){ return sx==="Masculino" ? "≥ 40" : "≥ 50"; }, fuera:function(v,sx){ return v<(sx==="Masculino"?40:50); }, r:[5,150]},
+  {k:"triglycerides", n:"Triglicéridos", c:"Triglicéridos", u:"mg/dL", d:0, ref:"< 150", fuera:function(v){ return v>=150; }, r:[20,2000]},
+  {k:"tg_hdl", n:"Relación TG/HDL", c:"TG/HDL", u:"", d:2, ref:"< 3,5", fuera:function(v){ return v>=3.5; }, calc:true},
+  {k:"vitamin_d", n:"Vitamina D", c:"Vitamina D", u:"ng/mL", d:1, sube:true, ref:"≥ 30", fuera:function(v){ return v<30; }, r:[2,150]},
+  {k:"bp_systolic", n:"Presión sistólica", c:"Presión sistólica", u:"mmHg", d:0, ref:"< 130", fuera:function(v){ return v>=130; }, r:[70,250]},
+  {k:"bp_diastolic", n:"Presión diastólica", c:"Presión diastólica", u:"mmHg", d:0, ref:"< 85", fuera:function(v){ return v>=85; }, r:[40,150]}
+];
+var PLIEGUES=[["fold_triceps","tríceps"],["fold_subscapular","subescapular"],["fold_biceps","bíceps"],["fold_iliac_crest","cresta ilíaca"],["fold_supraspinale","supraespinal"],["fold_abdominal","abdominal"],["fold_front_thigh","muslo anterior"],["fold_medial_calf","pantorrilla medial"]];
+function nPos(v){ if(v==null||v==="") return null; var n=Number(v); return (isFinite(n)&&n>0) ? n : null; }
+var MED_DEF=[
+  {n:"Peso", u:"kg", d:1, v:function(s){ return nPos(s.weight); }},
+  {n:"IMC", u:"", d:1, v:function(s,t){ var w=nPos(s.weight), h=nPos(s.height)||t; return (w&&h) ? w/Math.pow(h/100,2) : null; }},
+  {n:"Cintura", u:"cm", d:1, v:function(s){ return nPos(s.girth_waist); }},
+  {n:"Cadera", u:"cm", d:1, v:function(s){ return nPos(s.girth_hip); }},
+  {n:"Cintura / cadera", u:"", d:2, v:function(s){ var w=nPos(s.girth_waist), h=nPos(s.girth_hip); return (w&&h) ? w/h : null; }},
+  {n:"Perímetro umbilical", u:"cm", d:1, v:function(s){ return nPos(s.girth_umbilical); }},
+  {n:"Tórax", u:"cm", d:1, v:function(s){ return nPos(s.girth_chest); }},
+  {n:"Brazo relajado", u:"cm", d:1, v:function(s){ return nPos(s.girth_arm_relaxed); }},
+  {n:"Brazo flexionado", u:"cm", d:1, v:function(s){ return nPos(s.girth_arm_flexed); }},
+  {n:"Muslo medial", u:"cm", d:1, v:function(s){ return nPos(s.girth_thigh_mid); }},
+  {n:"Pantorrilla", u:"cm", d:1, v:function(s){ return nPos(s.girth_calf); }},
+  {n:"Cuello", u:"cm", d:1, v:function(s){ return nPos(s.girth_neck); }}
+];
+function labValor(row, def){
+  if(def.k==="tg_hdl"){ var t=nPos(row.triglycerides), h=nPos(row.hdl); return (t&&h) ? t/h : null; }
+  return nPos(row[def.k]);
+}
+function labRef(def, sx){ return typeof def.ref==="function" ? def.ref(sx) : def.ref; }
+function numFmt(v, d){ return numeroAR(Number(v).toFixed(d)); }
+function fechaCortita(f){ return fechaCorta(f).replace(/\/(\d\d)(\d\d)$/, "/$2"); }
+function porFecha(campo){ return function(a,b){ return String(a[campo]||"").slice(0,10).localeCompare(String(b[campo]||"").slice(0,10)) || String(a.created_at||"").localeCompare(String(b.created_at||"")); }; }
+function celdaEvo(x, def, sx){
+  var f = def && def.fuera ? def.fuera(x.v, sx) : false;
+  return '<td class="'+(f?"fuera":"")+'"><span class="v">'+numFmt(x.v, def.d)+'</span>'+(f?'<span class="marca">'+(def.sube?"bajo":"alto")+'</span>':"")+'<span class="f">'+fechaCortita(x.f)+'</span></td>';
+}
+function difTxt(a, b, d){
+  var x=b-a, min=0.5*Math.pow(10,-d);
+  if(Math.abs(x)<min) return { s:"igual", x:0 };
+  return { s:(x>0?"+":"−")+numFmt(Math.abs(x), d), x:x };
+}
+/* las medidas de la ficha: la primera y la última de cada una */
+function fichaMedidasHTML(ses, talla){
+  var filas=MED_DEF.map(function(def){
+    var pts=ses.map(function(s){ return { v:def.v(s, talla), f:s.session_date }; }).filter(function(x){ return x.v!=null; });
+    if(!pts.length) return "";
+    var a=pts[0], b=pts.length>1 ? pts[pts.length-1] : null, df=b ? difTxt(a.v, b.v, def.d) : null;
+    return '<tr><td><span class="nom">'+def.n+'</span>'+(def.u?'<span class="ref">'+def.u+'</span>':"")+'</td>'+celdaEvo(a, def)+(b?celdaEvo(b, def):'<td class="n">—</td>')+
+      '<td class="cambio">'+(df?'<span class="v">'+df.s+'</span>':'<span class="p">una sola medición</span>')+'</td></tr>';
+  });
+  // suma de pliegues: solo los que se midieron en la primera y en la última, para que se puedan comparar
+  var conPl=ses.filter(function(s){ return PLIEGUES.some(function(p){ return nPos(s[p[0]]); }); });
+  if(conPl.length){
+    var a=conPl[0], b=conPl.length>1 ? conPl[conPl.length-1] : null;
+    var com=PLIEGUES.filter(function(p){ return nPos(a[p[0]]) && (!b || nPos(b[p[0]])); });
+    if(com.length){
+      var suma=function(s){ return com.reduce(function(t,p){ return t+nPos(s[p[0]]); }, 0); }, def={d:1};
+      var sa=suma(a), sb2=b ? suma(b) : null, df=b ? difTxt(sa, sb2, 1) : null;
+      filas.push('<tr><td><span class="nom">Suma de '+com.length+' pliegue'+(com.length===1?"":"s")+'</span><span class="ref">mm · '+com.map(function(p){ return p[1]; }).join(", ")+'</span></td>'+
+        celdaEvo({v:sa, f:a.session_date}, def)+(b?celdaEvo({v:sb2, f:b.session_date}, def):'<td class="n">—</td>')+
+        '<td class="cambio">'+(df?'<span class="v">'+df.s+'</span>':'<span class="p">una sola medición</span>')+'</td></tr>');
+    }
+  }
+  var cuerpo=filas.join("");
+  var h='<h3 class="sec-ficha">Medidas<small>La primera y la última de cada una</small></h3>';
+  if(!cuerpo) return '<section class="sec-evo">'+h+'<p class="nota">Todavía no tiene medidas cargadas.</p></section>';
+  return '<section class="sec-evo">'+h+'<div class="tabla-scroll"><table class="tabla evo-t"><thead><tr><th>Medida</th><th>Primera</th><th>Última</th><th>Diferencia</th></tr></thead><tbody>'+cuerpo+'</tbody></table></div></section>';
+}
+/* en el celular cada celda lleva el rótulo de su columna (la cabecera de la tabla no se ve) */
+function rotularEvo(raiz){
+  (raiz||document).querySelectorAll("table.evo-t").forEach(function(t){
+    var ths=[].map.call(t.querySelectorAll("thead th"), function(th){ return th.textContent; });
+    t.querySelectorAll("tbody tr").forEach(function(tr){ [].forEach.call(tr.children, function(td, i){ if(i>0 && ths[i]) td.setAttribute("data-l", ths[i]); }); });
+  });
+}
+/* el laboratorio de la ficha: el primero y el último de cada valor, con la referencia */
+function fichaLabHTML(){
+  var p=ficha.paciente||{}, sx=p.sex, h='<h3 class="sec-ficha">Laboratorio';
+  if(ficha.labsError) return h+'</h3><p class="aviso error">No se pudo traer su laboratorio: '+esc(ficha.labsError)+'</p>';
+  var labs=(ficha.labs||[]).slice().sort(porFecha("lab_date"));
+  if(!labs.length) return h+'</h3><p class="nota">Todavía no tiene análisis cargados. Se cargan en la consulta, en «Laboratorio».</p>';
+  h+='<small>'+labs.length+' análisis · '+(labs.length>1 ? 'del '+fechaCorta(labs[0].lab_date)+' al '+fechaCorta(labs[labs.length-1].lab_date) : 'del '+fechaCorta(labs[0].lab_date))+'</small></h3>';
+  var filas=LAB_DEF.map(function(def){
+    var pts=labs.map(function(l){ return { v:labValor(l, def), f:l.lab_date }; }).filter(function(x){ return x.v!=null; });
+    if(!pts.length) return "";
+    var a=pts[0], b=pts.length>1 ? pts[pts.length-1] : null, c="";
+    if(b){
+      var df=difTxt(a.v, b.v, def.d), fa=def.fuera(a.v, sx), fb=def.fuera(b.v, sx);
+      var dice = fa&&!fb ? "entró en rango" : !fa&&fb ? "salió de rango" : df.x===0 ? "sin cambios" : ((def.sube ? df.x>0 : df.x<0) ? "mejoró" : "empeoró");
+      c='<span class="v">'+df.s+'</span><span class="p">'+dice+'</span>';
+    } else c='<span class="p">un solo valor</span>';
+    return '<tr><td><span class="nom">'+def.n+'</span><span class="ref">'+(def.u?def.u+" · ":"")+'ref. '+labRef(def, sx)+'</span></td>'+celdaEvo(a, def, sx)+(b?celdaEvo(b, def, sx):'<td class="n">—</td>')+'<td class="cambio">'+c+'</td></tr>';
+  }).join("");
+  return '<section class="sec-evo">'+h+'<div class="tabla-scroll"><table class="tabla evo-t"><thead><tr><th>Análisis</th><th>Primero</th><th>Último</th><th>Cambio</th></tr></thead><tbody>'+filas+'</tbody></table></div>'+
+    '<p class="nota leyenda">«alto» o «bajo»: fuera del valor de referencia.</p></section>';
+}
+
+/* ===== el laboratorio en la consulta (A17): mismas columnas que la app anterior (lab_results) ===== */
+function labCampos(){ return LAB_DEF.filter(function(d){ return !d.calc; }); }
+function abrirLabConsulta(){
+  $("lab-cerrado").classList.add("oculto"); $("lab-campos").classList.remove("oculto");
+  if(!$("lab-fecha").value) $("lab-fecha").value=$("c-fecha").value||"";
+  leerLabEnVivo(); $("lab-glucose").focus();
+}
+function cerrarLabConsulta(){
+  if(!con.labId) labCampos().concat([{k:"notas"}]).forEach(function(d){ var el=$("lab-"+d.k); if(el) el.value=""; });
+  $("lab-campos").classList.add("oculto"); $("lab-cerrado").classList.remove("oculto"); $("lab-lectura").textContent="";
+}
+function limpiarLabConsulta(){
+  cargarLabDeConsulta.n=(cargarLabDeConsulta.n||0)+1;
+  con.labId=null; con.labInicial=null;
+  labCampos().forEach(function(d){ $("lab-"+d.k).value=""; }); $("lab-notas").value=""; $("lab-fecha").value="";
+  $("lab-campos").classList.add("oculto"); $("lab-cerrado").classList.remove("oculto"); $("lab-lectura").textContent="";
+}
+function leerLabEnVivo(){
+  var sx=con.paciente&&con.paciente.sex, fila={}, fuera=[];
+  labCampos().forEach(function(d){ var v=nPos(String($("lab-"+d.k).value).replace(",", ".")); fila[d.k]=v; if(v!=null && d.fuera(v, sx)) fuera.push(d.c+" "+numFmt(v, d.d)+" ("+(d.sube?"bajo":"alto")+")"); });
+  var tg=LAB_DEF.filter(function(d){ return d.k==="tg_hdl"; })[0], r=labValor(fila, tg);
+  if(r!=null && tg.fuera(r)) fuera.push("TG/HDL "+numFmt(r, 2)+" (alto)");
+  $("lab-lectura").textContent=[r!=null ? "TG/HDL "+numFmt(r, 2)+"." : "", fuera.length ? "Fuera de referencia: "+fuera.join(", ")+"." : ""].filter(Boolean).join(" ");
+}
+function leerLabConsulta(){
+  if($("lab-campos").classList.contains("oculto")) return { fila:null, cambio:false };
+  var fila={}, hay=false;
+  var campos=labCampos();
+  for(var i=0;i<campos.length;i++){
+    var d=campos[i], el=$("lab-"+d.k), raw=String(el.value).trim().replace(",", ".");
+    if(raw===""){ fila[d.k]=null; continue; }
+    var v=Number(raw);
+    if(!isFinite(v) || v<d.r[0] || v>d.r[1]) return { error:"Revisá "+d.c+": "+raw.replace(".", ",")+" no parece un valor posible (va de "+numeroAR(d.r[0])+" a "+numeroAR(d.r[1])+(d.u?" "+d.u:"")+").", el:el };
+    fila[d.k]=/^bp_/.test(d.k) ? Math.round(v) : v; hay=true;
+  }
+  var notas=$("lab-notas").value.trim(); fila.notes=notas||null; if(notas) hay=true;
+  fila.lab_date=$("lab-fecha").value || $("c-fecha").value || new Date().toISOString().slice(0,10);
+  if(con.labId){
+    if(!hay) return { error:"Para borrar este análisis, hacelo desde Empresas e informes: su ficha, pestaña Laboratorio.", el:$("lab-glucose") };
+    return { fila:fila, cambio:JSON.stringify(fila)!==con.labInicial };
+  }
+  return { fila:hay ? fila : null, cambio:hay };
+}
+async function cargarLabDeConsulta(sid){
+  var n=cargarLabDeConsulta.n=(cargarLabDeConsulta.n||0)+1;
+  if(!sid) return;
+  var r=await sb.from("lab_results").select("*").eq("session_id", sid).order("created_at", {ascending:false}).limit(1);
+  if(n!==cargarLabDeConsulta.n || r.error || !r.data || !r.data[0]) return;
+  var l=r.data[0];
+  con.labId=l.id;
+  labCampos().forEach(function(d){ $("lab-"+d.k).value = l[d.k]!=null ? l[d.k] : ""; });
+  $("lab-notas").value=l.notes||""; $("lab-fecha").value=String(l.lab_date||"").slice(0,10);
+  abrirLabConsulta();
+  con.labInicial=JSON.stringify(leerLabConsulta().fila);
+}
+async function guardarLabConsulta(sid, lab){
+  if(!lab || !lab.fila || !lab.cambio) return "";
+  var fila=Object.assign({}, lab.fila), r;
+  try{
+    if(con.labId){
+      r=await sb.from("lab_results").update(fila).eq("id", con.labId).select("id");
+      if(!r.error && (!r.data || !r.data.length)) r={ error:{ message:"la app no permitió corregirlo" } };
+    } else {
+      Object.assign(fila, { patient_id:con.paciente.id, session_id:sid||null, created_by:usuario.id });
+      r=await sb.from("lab_results").insert(fila);
+    }
+  }catch(e){ r={ error:e }; }
+  if(r.error) return " Ojo: el laboratorio no se guardó ("+errorLegible(r.error)+"). Volvé a cargarlo con «Corregir esta consulta».";
+  return " Laboratorio del "+fechaCorta(fila.lab_date)+" guardado.";
+}
+
+/* ===== la evolución del grupo (B11): la empresa entera, sin nombres ===== */
+async function cargarEvolucionGrupo(){
+  var av=$("eg-aviso"), emp=empresa; av.className="aviso"; av.textContent="Buscando…"; $("eg-resultado").innerHTML=""; $("l-resultado").innerHTML="";
+  await cargarPacientes();
+  if(emp!==empresa) return;
+  if(pacientesError){ av.className="aviso error"; av.textContent="No se pudo leer la lista de personas: "+pacientesError; return; }
+  var ids=pacientes.map(function(p){ return p.id; }), sexo={}, talla={};
+  pacientes.forEach(function(p){ sexo[p.id]=p.sex; talla[p.id]=nPos(p.height); });
+  if(!ids.length){ av.textContent="Todavía no hay personas cargadas en "+emp+"."; return; }
+  var labs=[], ses=[];
+  for(var i=0;i<ids.length;i+=50){
+    var parte=ids.slice(i, i+50);
+    var rl=await sb.from("lab_results").select("patient_id, lab_date, created_at, glucose, hba1c, total_cholesterol, ldl, hdl, triglycerides, vitamin_d, bp_systolic, bp_diastolic").in("patient_id", parte).order("lab_date", {ascending:true}).limit(1000);
+    var rs=await sb.from("sessions").select("patient_id, session_date, created_at, weight, height, girth_waist").in("patient_id", parte).order("session_date", {ascending:true}).limit(1000);
+    if(rl.error || rs.error){ av.className="aviso error"; av.textContent="No se pudo leer: "+errorLegible(rl.error||rs.error); return; }
+    labs=labs.concat(rl.data||[]); ses=ses.concat(rs.data||[]);
+  }
+  if(emp!==empresa) return;
+  function agrupar(filas, campo){ var g={}; filas.slice().sort(porFecha(campo)).forEach(function(f){ (g[f.patient_id]=g[f.patient_id]||[]).push(f); }); return g; }
+  var gl=agrupar(labs, "lab_date"), gs=agrupar(ses, "session_date");
+  var conLab=Object.keys(gl).filter(function(k){ return gl[k].length>1; }).length;
+  // laboratorio: cada persona con dos valores o más, el primero contra el último
+  var filasLab=LAB_DEF.map(function(def){
+    var n=0, fi=0, ff=0, mej=0, suma=0;
+    Object.keys(gl).forEach(function(pid){
+      var pts=gl[pid].map(function(l){ return labValor(l, def); }).filter(function(v){ return v!=null; });
+      if(pts.length<2) return;
+      var a=pts[0], b=pts[pts.length-1], x=b-a; n++; suma+=x;
+      if(def.fuera(a, sexo[pid])) fi++; if(def.fuera(b, sexo[pid])) ff++;
+      if(Math.abs(x)>=0.5*Math.pow(10,-def.d) && (def.sube ? x>0 : x<0)) mej++;
+    });
+    if(!n) return "";
+    var prom=difTxt(0, suma/n, def.d);
+    return '<tr><td><span class="nom">'+def.n+'</span><span class="ref">'+(def.u?def.u+" · ":"")+'ref. '+(def.k==="hdl"?"≥ 50 mujeres, ≥ 40 varones":labRef(def))+'</span></td><td class="n">'+n+'</td><td class="n">'+fi+'</td><td class="n">'+ff+'</td><td class="n">'+mej+'</td><td class="n">'+prom.s+'</td></tr>';
+  }).join("");
+  // medidas: peso, IMC y cintura
+  var MG=[
+    {n:"Peso", u:"kg", d:1, v:function(s,pid){ return nPos(s.weight); }},
+    {n:"IMC", u:"", d:1, v:function(s,pid){ var w=nPos(s.weight), h=nPos(s.height)||talla[pid]; return (w&&h) ? w/Math.pow(h/100,2) : null; }},
+    {n:"Cintura", u:"cm", d:1, v:function(s,pid){ return nPos(s.girth_waist); }, riesgo:function(v,pid){ return v>=(sexo[pid]==="Masculino"?94:80); }}
+  ];
+  var conMed=0, riesgo={n:0, i:0, f:0};
+  var filasMed=MG.map(function(def){
+    var n=0, si=0, sf=0;
+    Object.keys(gs).forEach(function(pid){
+      var pts=gs[pid].map(function(s){ return def.v(s, pid); }).filter(function(v){ return v!=null; });
+      if(pts.length<2) return;
+      var a=pts[0], b=pts[pts.length-1]; n++; si+=a; sf+=b;
+      if(def.riesgo){ riesgo.n++; if(def.riesgo(a,pid)) riesgo.i++; if(def.riesgo(b,pid)) riesgo.f++; }
+    });
+    if(def.n==="Peso") conMed=n;
+    if(!n) return "";
+    return '<tr><td><span class="nom">'+def.n+'</span>'+(def.u?'<span class="ref">'+def.u+'</span>':"")+'</td><td class="n">'+n+'</td><td class="n">'+numFmt(si/n, def.d)+'</td><td class="n">'+numFmt(sf/n, def.d)+'</td><td class="n">'+difTxt(si/n, sf/n, def.d).s+'</td></tr>';
+  }).join("");
+  av.textContent="";
+  if(!filasLab && !filasMed){ $("eg-resultado").innerHTML='<div class="caja"><p style="margin:0;">Todavía nadie en '+esc(emp)+' tiene dos análisis o dos mediciones cargadas.</p></div>'; return; }
+  var h='<div class="caja"><h3>Evolución del grupo · '+esc(emp)+'</h3>'+
+    '<p class="nota">Cada persona cuenta una vez: su primer registro contra el último. Sin nombres.</p>'+
+    '<div class="grid3" style="margin-top:14px;">'+
+      '<div class="dato"><span class="l">Personas en la empresa</span><span class="v">'+ids.length+'</span></div>'+
+      '<div class="dato"><span class="l">Con dos análisis o más</span><span class="v">'+conLab+'</span></div>'+
+      '<div class="dato"><span class="l">Con dos mediciones o más</span><span class="v">'+conMed+'</span></div>'+
+    '</div>'+
+    (filasLab ? '<h3 class="sec-ficha">Laboratorio<small>Personas con dos análisis o más</small></h3><div class="tabla-scroll"><table class="tabla evo-t evo-grupo"><thead><tr><th>Análisis</th><th>Personas</th><th>Fuera de ref. al inicio</th><th>Fuera de ref. al final</th><th>Mejoraron</th><th>Cambio promedio</th></tr></thead><tbody>'+filasLab+'</tbody></table></div>' : '<p class="nota">Todavía nadie tiene dos análisis cargados.</p>')+
+    (filasMed ? '<h3 class="sec-ficha">Medidas<small>Personas con dos mediciones o más</small></h3><div class="tabla-scroll"><table class="tabla evo-t evo-grupo"><thead><tr><th>Medida</th><th>Personas</th><th>Promedio al inicio</th><th>Promedio al final</th><th>Cambio promedio</th></tr></thead><tbody>'+filasMed+'</tbody></table></div>'+
+      (riesgo.n ? '<p class="nota">Cintura por encima del valor de riesgo (80 cm mujeres, 94 cm varones): '+riesgo.i+' de '+riesgo.n+' al inicio, '+riesgo.f+' de '+riesgo.n+' en la última medición.</p>' : "") : "")+
+    '</div>';
+  $("eg-resultado").innerHTML=hoja("Evolución del grupo · "+emp, h)+'<div class="acciones-res"><button class="btn" onclick="window.print()">Imprimir o guardar PDF</button></div>';
+  rotularEvo($("eg-resultado"));
+}
+
+/* ===== el alta: nombre y apellido bien partidos (A33) ===== */
+function partirNombre(texto){
+  var w=capitalizar(texto||"").split(" ").filter(Boolean);
+  if(w.length<3) return { nombre:w[0]||"", apellido:w.slice(1).join(" "), dudoso:false };
+  var k=w.length-1;
+  while(k-1>=1 && PARTICULAS[w[k-1].toLowerCase()]) k--;
+  return { nombre:w.slice(0,k).join(" "), apellido:capitalizar(w.slice(k).join(" ")), dudoso:true };
 }
 function fichaNuevaConsulta(){ var p=ficha.paciente; if(!p) return; abrirConsulta(); conElegir(p); }
 function fichaNuevoPlan(){ if(ficha.paciente) nuevoPlanPara(ficha.paciente); }
@@ -2790,11 +3273,12 @@ async function guardarDatos(){
 }
 /* alta de paciente nueva (misma tabla y mismas columnas que la app) */
 function abrirAlta(texto){
-  var partes=capitalizar(texto||"").split(" ").filter(Boolean);
-  $("a-nombre").value=partes.shift()||""; $("a-apellido").value=partes.join(" ");
+  var partes=partirNombre(texto);
+  $("a-nombre").value=partes.nombre; $("a-apellido").value=partes.apellido;
   ["a-peso","a-talla","a-nacimiento","a-telefono","a-mail","a-area"].forEach(function(id){ $(id).value=""; });
   $("a-sexo").value="Femenino"; $("a-empresa").textContent=empresa||""; $("a-aviso").className="aviso"; $("a-aviso").innerHTML="";
-  irA("alta"); $($("a-nombre").value?"a-apellido":"a-nombre").focus();
+  if(partes.dudoso){ $("a-aviso").className="aviso"; $("a-aviso").textContent="Revisá dónde termina el nombre y empieza el apellido."; }
+  irA("alta"); $(partes.dudoso||!$("a-nombre").value?"a-nombre":"a-apellido").focus();
 }
 async function guardarAlta(fuerza){
   var av=$("a-aviso"); av.className="aviso"; av.innerHTML="";
@@ -2929,7 +3413,7 @@ async function abrirPlanGuardado(id){
   plan.pref = Object.assign({dietType:"Normal", intolerances:[], generalRecommendations:[], hideCalories:false}, inp.preferences||{});
   if(!Array.isArray(plan.pref.intolerances)) plan.pref.intolerances=[];
   plan.gen++; // si había un plan armándose, se guarda aparte y avisa; no pisa este
-  plan.resultado=repararPlato(normalizarPlan(d.output||{}), plan.metricas); plan.docId=d.id; plan.deGuardado=true; plan.docFecha=d.created_at;
+  plan.resultado=repararPlato(normalizarPlan(d.output||{}), plan.metricas); plan.docId=d.id; plan.deGuardado=true; plan.docFecha=d.created_at; plan.envios={ docId:d.id, l:(d.input&&Array.isArray(d.input.envios))?d.input.envios:[] };
   plan.plato = platoAutomaticoDe(plan.metricas); plan.plato = platoDelPlan(plan.resultado); // un plan hecho desde la app no trae plato: se calcula con su regla
   plan.platoManual = !!(plan.resultado.platePortions && plan.resultado.platePortions.manual);
   $("pasos-plan").classList.add("oculto");
@@ -3129,9 +3613,10 @@ async function conElegir(p){
   $("c-talla").value = (con.ultima&&con.ultima.height) ? con.ultima.height : (p.height||"");
   ["c-adherencia","c-hidratacion","c-actividad","c-frutas","c-energia","c-sueno"].forEach(function(id){ $(id).value=""; });
   $("c-aviso").textContent=""; $("c-imc").textContent="";
+  limpiarLabConsulta();
   $("c-peso").focus();
 }
-function conDeselegir(){ conElegir.n++; con.paciente=null; con.ultima=null; con.editandoId=null; con.editandoTipo=null; con.filaCargada=null; con.formInicial=null; sacarOpcionesExtra(); $("con-escalas").classList.remove("oculto"); $("con-editando-antro").classList.add("oculto"); $("con-elegido").classList.add("oculto"); $("con-form").classList.add("oculto"); $("busca-paciente-con").value=""; $("lista-pacientes-con").innerHTML=""; cerrarCorregirNombre(); }
+function conDeselegir(){ conElegir.n++; limpiarLabConsulta(); con.paciente=null; con.ultima=null; con.editandoId=null; con.editandoTipo=null; con.filaCargada=null; con.formInicial=null; sacarOpcionesExtra(); $("con-escalas").classList.remove("oculto"); $("con-editando-antro").classList.add("oculto"); $("con-elegido").classList.add("oculto"); $("con-form").classList.add("oculto"); $("busca-paciente-con").value=""; $("lista-pacientes-con").innerHTML=""; cerrarCorregirNombre(); }
 function conOtra(){ conDeselegir(); $("con-listo").classList.add("oculto"); $("busca-paciente-con").focus(); }
 function fechaCorta(iso){
   var t=String(iso||""); if(!t) return "";
@@ -3164,6 +3649,7 @@ function cargarConsultaEnFormulario(fila, id){
   $("con-listo").classList.add("oculto"); $("con-form").classList.remove("oculto"); $("c-aviso").textContent="";
   conCalcIMC(); window.scrollTo(0,0); $("c-peso").focus();
   con.formInicial=valoresConsulta();
+  limpiarLabConsulta(); cargarLabDeConsulta(id);
 }
 var CAMPOS_CONSULTA={ "c-fecha":"session_date","c-peso":"weight","c-talla":"height","c-cintura":"girth_waist","c-motivo":"consultation_reason","c-notas":"consultation_notes","c-adherencia":"adherence","c-hidratacion":"hydration","c-actividad":"physical_activity","c-frutas":"consumo_frutas_verduras","c-energia":"energy_level","c-sueno":"sleep_quality" };
 function valoresConsulta(){ var o={}; Object.keys(CAMPOS_CONSULTA).forEach(function(id){ o[id]=String($(id).value); }); return o; }
@@ -3182,6 +3668,8 @@ async function guardarConsulta(){
   var faltan=editando ? [] : Array.prototype.filter.call(document.querySelectorAll("#con-form [data-req]"), function(el){ return String(el.value).trim()===""; });
   if(faltan.length){ av.className="aviso error"; av.textContent="Completá los campos con asterisco."; faltan[0].focus(); return; }
   if(!con.paciente){ av.className="aviso error"; av.textContent="Elegí a la paciente."; return; }
+  var lab=leerLabConsulta();
+  if(lab.error){ av.className="aviso error"; av.textContent=lab.error; if(lab.el) lab.el.focus(); return; }
   var btn=$("btn-guardar-consulta"); if(btn.disabled) return; btn.disabled=true; av.textContent="Guardando…";
   function medida(id){ var v=parseFloat(String($(id).value).replace(",",".")); return v>0 ? v : null; }
   function escala(id){ var v=parseInt($(id).value,10); return isNaN(v) ? null : v; }
@@ -3207,9 +3695,9 @@ async function guardarConsulta(){
   else if(con.formInicial){
     var ahora=valoresConsulta();
     Object.keys(CAMPOS_CONSULTA).forEach(function(id){ if(ahora[id]===con.formInicial[id]) delete fila[CAMPOS_CONSULTA[id]]; });
-    if(!Object.keys(fila).length){ btn.disabled=false; av.className="aviso"; av.textContent="No cambiaste nada: queda como estaba."; return; }
+    if(!Object.keys(fila).length && !lab.cambio){ btn.disabled=false; av.className="aviso"; av.textContent="No cambiaste nada: queda como estaba."; return; }
   }
-  var r = editando ? await sb.from("sessions").update(fila).eq("id",editando).select("id") : await sb.from("sessions").insert(fila);
+  var r = (editando && !Object.keys(fila).length) ? { data:[{ id:editando }], error:null } : editando ? await sb.from("sessions").update(fila).eq("id",editando).select("id") : await sb.from("sessions").insert(fila);
   btn.disabled=false;
   if(r.error){ av.className="aviso error"; av.textContent="No se pudo guardar: "+errorLegible(r.error); return; }
   if(editando&&(!r.data||!r.data.length)){ av.className="aviso error"; av.textContent="La app no permitió corregir esta consulta. Corregila desde la ficha de la paciente en la app anterior."; return; }
@@ -3219,6 +3707,7 @@ async function guardarConsulta(){
     var q=await sb.from("sessions").select("id").eq("patient_id",con.paciente.id).order("created_at",{ascending:false}).limit(1).maybeSingle();
     if(q.data) id=q.data.id;
   }
+  var labTxt=await guardarLabConsulta(id, lab); limpiarLabConsulta();
   var tipo=editando ? (con.editandoTipo||"Consulta") : "Consulta";
   var completa=Object.assign({}, editando ? (con.filaCargada||{}) : {}, fila, {session_type:tipo});
   con.ultimaFila=completa; con.ultimaId=id; con.editandoId=null; con.editandoTipo=null; con.filaCargada=null; con.formInicial=null; sacarOpcionesExtra();
@@ -3231,7 +3720,7 @@ async function guardarConsulta(){
   var palabra=/antropometr/i.test(tipo) ? "Antropometría" : "Consulta";
   $("con-listo-titulo").textContent = editando ? palabra+" corregida" : "Consulta guardada";
   $("btn-volver-ficha").classList.toggle("oculto", !(ficha.paciente&&ficha.paciente.id===con.paciente.id));
-  $("con-listo-texto").textContent=[nombreCompleto(con.paciente), completa.weight!=null?numeroAR(completa.weight)+" kg":null, completa.adherence!=null?"adherencia "+completa.adherence+"/5":null].filter(Boolean).join(" · ")+" · "+(editando?"corregida en su ficha.":"guardada en su ficha.");
+  $("con-listo-texto").textContent=[nombreCompleto(con.paciente), completa.weight!=null?numeroAR(completa.weight)+" kg":null, completa.adherence!=null?"adherencia "+completa.adherence+"/5":null].filter(Boolean).join(" · ")+" · "+(editando?"corregida en su ficha.":"guardada en su ficha.")+labTxt;
   $("con-listo").classList.remove("oculto"); window.scrollTo(0,0);
 }
 function numeroAR(n){ return String(n).replace(".",","); }
@@ -3245,7 +3734,7 @@ async function cargarListado(){
   var partes=mes.split("-"), y=+partes[0], m=+partes[1];
   var desde=y+"-"+String(m).padStart(2,"0")+"-01";
   var sig=new Date(y,m,1); var hastaTxt=sig.getFullYear()+"-"+String(sig.getMonth()+1).padStart(2,"0")+"-01";
-  $("l-aviso").className="aviso"; $("l-aviso").textContent="Buscando…"; $("l-resultado").innerHTML="";
+  $("l-aviso").className="aviso"; $("l-aviso").textContent="Buscando…"; $("l-resultado").innerHTML=""; if($("eg-resultado")) $("eg-resultado").innerHTML="";
   var r=await sb.from("sessions").select("patient_id, session_date, patients(first_name, last_name)").eq("company",empresa).gte("session_date",desde).lt("session_date",hastaTxt).order("session_date",{ascending:true});
   if(r.error){ $("l-aviso").className="aviso error"; $("l-aviso").textContent="No se pudo leer: "+errorLegible(r.error); return; }
   // una visita = una paciente en una fecha: la consulta y la antropometría del mismo día cuentan una vez
@@ -3310,7 +3799,11 @@ window.addEventListener("beforeunload", function(e){
   armarChips("chips-fisio", FISIOLOGICAS, false, alCambiarCondiciones);
   armarChips("chips-clinicas", CLINICAS, false, recalcular);
   armarChips("chips-dieta", DIETAS, true); marcarChip("chips-dieta","Normal");
-  armarChips("chips-habitos", MICRO_HABITOS, false);
+  armarChips("chips-habitos", MICRO_HABITOS, false, function(){ var a=$("hab-aviso"); if(a) a.textContent=""; });
+  $("chips-habitos").addEventListener("click", function(e){
+    var b=e.target.closest(".chip"); if(!b || b.classList.contains("on")) return;
+    if($("chips-habitos").querySelectorAll(".chip.on").length>=3){ e.stopPropagation(); e.preventDefault(); var a=$("hab-aviso"); a.className="aviso error"; a.textContent="Hasta tres. Sacá uno para elegir otro."; }
+  }, true);
   armarChips("chips-reco", RECOMENDACIONES.map(function(r){ return r.chip; }), false);
   // las recomendaciones generales arrancan sin tildar: Ro elige cuáles van (cada una suma una hoja)
   armarChips("chips-dieta-rec", DIETAS, true); marcarChip("chips-dieta-rec","Normal");

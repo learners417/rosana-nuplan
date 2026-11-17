@@ -41,7 +41,7 @@ export function mailNuPlan({ kicker = "Programa NuPlan", titulo, parrafos = [], 
 }
 
 // { ok: true, id } · { sinConfig: true } · { ok: false, status, error }
-export async function mandarMail({ para, asunto, html, texto }) {
+export async function mandarMail({ para, copia = [], asunto, html, texto }) {
   const clave = process.env.RESEND_API_KEY || "";
   if (!clave) {
     registrar("mail_sin_config", { asunto });
@@ -51,7 +51,7 @@ export async function mandarMail({ para, asunto, html, texto }) {
     const r = await fetch("https://api.resend.com/emails", {
       method: "POST",
       headers: { Authorization: `Bearer ${clave}`, "Content-Type": "application/json" },
-      body: JSON.stringify({ from: DE(), to: [para], subject: asunto, html, text: texto }),
+      body: JSON.stringify(Object.assign({ from: DE(), to: [para], subject: asunto, html, text: texto }, copia && copia.length ? { cc: copia } : {})),
       signal: AbortSignal.timeout(15000),
     });
     const j = await r.json().catch(() => ({}));

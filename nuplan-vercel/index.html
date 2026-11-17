@@ -147,6 +147,11 @@
         #root main [role="tablist"], #root main .flex.border-b:has(> button + button + button){overflow-x:auto;flex-wrap:nowrap;scrollbar-width:none;}
         #root main [role="tablist"] > *, #root main .flex.border-b:has(> button + button + button) > button{flex:0 0 auto;}
       }
+      /* B14 · las pestañas de la ficha entran enteras en el celular: dos por fila */
+      @media (max-width: 640px) {
+        div.inline-flex.overflow-x-auto.max-w-full.rounded-2xl { display: grid !important; grid-template-columns: 1fr 1fr; width: 100%; overflow: visible; }
+        div.inline-flex.overflow-x-auto.max-w-full.rounded-2xl > button { justify-content: center; min-height: 48px; }
+      }
     </style>
     <!-- Planes y recetarios se hacen solo en Herramientas (decisión del 29/10/26): los botones de acá llevan allá. -->
     <script>

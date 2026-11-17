@@ -1582,7 +1582,8 @@ function msjCuando(ts){
   return f === hoy ? "hoy " + h : f === hoyISO(new Date(Date.now() - 86400000)) ? "ayer " + h : fechaLinda(f);
 }
 function msjCargar(){
-  if(!S.cuenta || esRosana() || !SB || MSJ.cargando) return;
+  if(!S.cuenta || esRosana() || !SB) return;
+  if(MSJ.cargando){ MSJ.otra = true; return; }
   MSJ.cargando = true;
   Promise.resolve(SB.from("programa_mensajes").select("id, de, texto, creado, leido").order("creado", { ascending: true }).limit(300))
     .then(function(r){
@@ -1591,7 +1592,8 @@ function msjCargar(){
       else { MSJ.l = r.data || []; MSJ.falta = false }
       marcarNav();
       if(document.querySelector('[data-p="rosana"].on')) msjPintar();
-    }, function(){ MSJ.cargando = false });
+      if(MSJ.otra){ MSJ.otra = false; msjCargar(); }
+    }, function(){ MSJ.cargando = false; if(MSJ.otra){ MSJ.otra = false; msjCargar(); } });
 }
 function msjPintar(){
   var c = $id("msjCard"); if(!c) return;

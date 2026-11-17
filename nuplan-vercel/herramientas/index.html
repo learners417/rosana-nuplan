@@ -832,6 +832,29 @@
     #fo-cartel .fo-c-l{font-size:11pt;color:#6b7280;margin-top:6mm;}
     @page{margin:0;}
   }
+  /* ===== U4 · importar desde Excel ===== */
+  .im-pasos .caja{margin-bottom:0;}
+  .im-pasos{margin-bottom:18px;}
+  .im-subir{position:relative;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+  .im-subir input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;font-size:16px;}
+  .im-subir:focus-within{outline:3px solid var(--accent);outline-offset:2px;}
+  .im-tiles{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:0 0 14px;}
+  @media(min-width:900px){.im-tiles{grid-template-columns:repeat(4,minmax(0,1fr));}}
+  .tabla.im-t{min-width:0;}
+  .tabla.im-t tr.mal td{background:#fff1ec;}
+  .tabla.im-t tr.dup td{color:var(--muted);}
+  .im-ok{font-weight:700;color:var(--coral-dark);}
+  .im-err{color:var(--coral-dark);}
+  .im-dup{color:var(--muted);}
+  .tabla.im-t small{color:var(--muted);font-size:.9rem;}
+  /* ===== U4 · empresas ===== */
+  .em-card{background:var(--surface);border:1px solid var(--borde);border-radius:var(--r-xl);padding:18px 20px;min-width:0;}
+  .em-card.actual{border-color:var(--coral);box-shadow:var(--sombra);}
+  .em-dis{margin:12px 0 0;}
+  .ficha-borrar{margin-top:18px;padding-top:14px;border-top:1px solid var(--borde);display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;}
+  .ficha-borrar p{margin:0;color:var(--muted);font-size:.95rem;max-width:520px;}
+  .btn.peligro{background:var(--surface);color:var(--coral-dark);border:1px solid var(--coral);}
+  .btn.peligro:hover{background:var(--tinte);}
 </style>
 <script src="/assets/qrcode-generator-1.4.4.js"></script>
 </head>
@@ -909,6 +932,8 @@
     <button class="tarjeta" onclick="abrirInformeEmpresa()"><span class="ico"><svg class="i" aria-hidden="true"><use href="#i-informe"/></svg></span><span class="tx"><h3>Informe para la empresa</h3><p>Participación, energía, hábitos y riesgo del grupo. Sin nombres.</p></span><svg class="i chev" aria-hidden="true"><use href="#i-chev"/></svg></button>
     <button class="tarjeta" onclick="abrirListado()"><span class="ico"><svg class="i" aria-hidden="true"><use href="#i-informe"/></svg></span><span class="tx"><h3>Consultas del mes</h3><p>Quién se atendió en el mes, con nombre. Sin datos clínicos.</p></span><svg class="i chev" aria-hidden="true"><use href="#i-chev"/></svg></button>
     <button class="tarjeta" onclick="abrirFormularios()"><span class="ico"><svg class="i" aria-hidden="true"><use href="#i-informe"/></svg></span><span class="tx"><h3>Formularios con QR</h3><p>Un link por feria o evento. Las respuestas, para revisar y dar de alta.</p><p class="ini-n oculto" id="ini-forms-n"></p></span><svg class="i chev" aria-hidden="true"><use href="#i-chev"/></svg></button>
+    <button class="tarjeta" onclick="abrirImportar()"><span class="ico"><svg class="i" aria-hidden="true"><use href="#i-informe"/></svg></span><span class="tx"><h3>Importar desde Excel</h3><p>La planilla de la feria o cualquier Excel. Ves qué entra antes de guardar.</p></span><svg class="i chev" aria-hidden="true"><use href="#i-chev"/></svg></button>
+    <button class="tarjeta" onclick="abrirEmpresas()"><span class="ico"><svg class="i" aria-hidden="true"><use href="#i-empresa"/></svg></span><span class="tx"><h3>Empresas</h3><p>Agregar una empresa o feria, su diseño de informe y cuántas personas tiene.</p></span><svg class="i chev" aria-hidden="true"><use href="#i-chev"/></svg></button>
     <button class="tarjeta" onclick="abrirRecomendaciones()"><span class="ico"><svg class="i" aria-hidden="true"><use href="#i-reco"/></svg></span><span class="tx"><h3>Recomendaciones</h3><p>Fibra, hidratación y ultraprocesados, para imprimir.</p></span><svg class="i chev" aria-hidden="true"><use href="#i-chev"/></svg></button>
     <a class="tarjeta" href="/empresas" style="text-decoration:none;"><span class="ico"><svg class="i" aria-hidden="true"><use href="#i-empresa"/></svg></span><span class="tx"><h3>Empresas e informes</h3><p>Antropometría, importar Excel, formularios e informe de Swiss.</p></span><svg class="i chev" aria-hidden="true"><use href="#i-chev"/></svg></a>
   </div>
@@ -1180,6 +1205,61 @@
   <div class="nav-pasos"><button class="btn suave" onclick="irA('inicio')">Volver al inicio</button></div>
 </section>
 
+<!-- ============ IMPORTAR DESDE EXCEL (unificación U4) ============ -->
+<section class="pantalla wrap oculto" id="p-import">
+  <span class="kicker">Importar desde Excel</span>
+  <h2>Cargar una planilla en <span id="im-empresa"></span></h2>
+  <p class="bajada">La planilla de la feria, o cualquier Excel o CSV con nombre, apellido y sexo. Antes de guardar ves fila por fila qué entra y qué no.</p>
+  <div class="grid2 im-pasos">
+    <div class="caja">
+      <span class="sub">1 · Para la feria</span>
+      <p style="margin:0 0 14px;">Bajá la planilla de <span id="im-emp-2"></span>: trae a las personas que ya están (hoja «Consultas») y una hoja para las nuevas. Se completa sin internet.</p>
+      <button class="btn suave ancho" id="btn-im-planilla" onclick="imBajarPlanilla()">Bajar la planilla</button>
+    </div>
+    <div class="caja">
+      <span class="sub">2 · Subir el archivo</span>
+      <p style="margin:0 0 14px;">Excel (.xlsx o .xls) o CSV. Nada se guarda hasta que lo confirmes.</p>
+      <label class="btn ancho im-subir">Elegir el archivo<input type="file" id="im-archivo" accept=".xlsx,.xls,.csv" onchange="imElegir(this)"></label>
+      <p class="nota mono" id="im-nombre" style="margin:10px 0 0;"></p>
+    </div>
+  </div>
+  <p class="aviso" id="im-aviso"></p>
+  <div class="caja oculto" id="im-ia">
+    <span class="sub">Las columnas no son las de la planilla</span>
+    <p style="margin:0 0 8px;">El archivo tiene su propio orden. La IA puede decir qué columna es cada dato (nombre, mail, peso…) sin inventar nada: lo que no esté en el archivo queda vacío.</p>
+    <p class="nota" style="margin:0 0 4px;">Columnas: <span id="im-ia-cols"></span></p>
+    <p class="nota" style="margin:0 0 14px;">Filas: <span id="im-ia-n"></span> · Solo se mandan los títulos y el tipo de dato de cada columna, nunca los datos de las personas.</p>
+    <div class="nav-pasos" style="justify-content:flex-start;"><button class="btn" id="btn-im-ia" onclick="imConIA()">Ordenarlo con IA</button><button class="btn suave" onclick="imReiniciar()">Elegir otro archivo</button></div>
+  </div>
+  <div id="im-revision" class="oculto">
+    <p class="nota oculto" id="im-modo">Columnas ordenadas con IA: revisá que los nombres y los datos estén en su lugar.</p>
+    <div id="im-tablas"></div>
+    <div class="nav-pasos"><button class="btn suave" onclick="imReiniciar()">Cancelar</button><button class="btn" id="btn-im-cargar" onclick="imCargar()">Cargar</button></div>
+  </div>
+  <div class="nav-pasos oculto" id="im-listo" style="justify-content:flex-start;"><button class="btn" onclick="abrirInformeEmpresa()">Ver el informe de la empresa</button><button class="btn suave" onclick="imReiniciar()">Cargar otra planilla</button></div>
+  <div class="nav-pasos"><button class="btn suave" onclick="irA('inicio')">Volver al inicio</button></div>
+</section>
+
+<!-- ============ EMPRESAS (unificación U4) ============ -->
+<section class="pantalla wrap oculto" id="p-empresas">
+  <span class="kicker">Empresas</span>
+  <h2>Empresas, ferias y eventos</h2>
+  <p class="bajada">Las que tenés, cuántas personas tiene cada una y con qué diseño sale su informe. La que elegís arriba es con la que trabajás.</p>
+  <div class="im-tiles" id="em-tiles"></div>
+  <div class="nav-pasos" style="justify-content:flex-start;margin:0 0 16px;"><button class="btn" onclick="emNueva()">Nueva empresa</button></div>
+  <div class="caja oculto" id="em-nueva">
+    <span class="sub">Nueva empresa</span>
+    <label class="campo">Nombre<input type="text" id="em-nombre" placeholder="Swiss Medical" autocomplete="off" maxlength="80" onkeydown="if(event.key==='Enter')emCrear()"></label>
+    <div class="campo"><span class="an-et">Tipo</span><div class="an-pills" id="em-tipo"><button type="button" data-v="fija" onclick="emTipo('fija')">Fija</button><button type="button" data-v="feria" onclick="emTipo('feria')">Feria o evento</button></div></div>
+    <p class="nota">Fija: una empresa con su programa (informe por mes). Feria o evento: una sola vez (informe del evento).</p>
+    <p class="aviso" id="em-n-aviso"></p>
+    <div class="nav-pasos"><button class="btn suave" onclick="document.getElementById('em-nueva').classList.add('oculto')">Cancelar</button><button class="btn" id="btn-em-crear" onclick="emCrear()">Guardar la empresa</button></div>
+  </div>
+  <p class="aviso" id="em-aviso"></p>
+  <div class="fo-lista" id="em-lista"></div>
+  <div class="nav-pasos"><button class="btn suave" onclick="irA('inicio')">Volver al inicio</button></div>
+</section>
+
 <section class="pantalla wrap oculto" id="p-ficha">
   <span class="kicker no-imprimir">Ficha de la paciente</span>
   <div class="caja no-imprimir" id="ficha-caja">
@@ -1212,12 +1292,14 @@
       <label class="campo">Área / sector<input type="text" id="fd-area" autocomplete="off"></label>
       <label class="campo">Teléfono<input type="tel" id="fd-telefono" autocomplete="off"></label>
       <label class="campo">Mail<input type="email" id="fd-mail" autocomplete="off"></label>
+      <label class="campo">Empresa<select id="fd-empresa"></select></label>
     </div>
     <p class="aviso" id="fd-aviso"></p>
     <div class="nav-pasos">
       <button class="btn suave" onclick="cerrarEditarDatos()">Cancelar</button>
       <button class="btn" id="btn-datos" onclick="guardarDatos()">Guardar los datos</button>
     </div>
+    <div class="ficha-borrar"><p>Borrar a esta persona borra su ficha, sus consultas y su laboratorio. No se puede deshacer.</p><button type="button" class="btn suave peligro" id="btn-fd-borrar" onclick="fichaBorrarPersona()">Borrar a esta persona</button></div>
   </div>
   <div id="ficha-cuerpo"></div>
   <div class="nav-pasos no-imprimir">
@@ -1874,7 +1956,7 @@ function hayCambiosSinGuardar(){
 }
 function irA(nombre, forzar){
   if(!forzar && nombre!=="planes" && hayCambiosSinGuardar() && !confirm("Tenés cambios sin guardar en el plan. ¿Salir igual y perderlos?")) return false;
-  ["login","clave","inicio","consulta","planes","recetario","listado","recomendaciones","guardados","ficha","alta","biblioteca","programa","consultante","antro","empinf","forms"].forEach(function(p){ $("p-"+p).classList.toggle("oculto", p!==nombre); });
+  ["login","clave","inicio","consulta","planes","recetario","listado","recomendaciones","guardados","ficha","alta","biblioteca","programa","consultante","antro","empinf","forms","import","empresas"].forEach(function(p){ $("p-"+p).classList.toggle("oculto", p!==nombre); });
   if(nombre==="inicio" && typeof foContarInicio==="function") foContarInicio();
   window.scrollTo(0,0);
   return true;
@@ -1965,7 +2047,7 @@ async function salir(){
   usuario=null; perfil=null; limpiarTodo(); $("barra-sesion").classList.add("oculto"); irA("login", true);
 }
 async function cargarEmpresas(){
-  var r = await sb.from("companies").select("id, name, type, brand_template").order("type",{ascending:true}).order("name",{ascending:true});
+  var r = await sb.from("companies").select("id, name, type, brand_template, created_at").order("type",{ascending:true}).order("name",{ascending:true});
   if(r.error) r = await sb.from("companies").select("id, name, type").order("type",{ascending:true}).order("name",{ascending:true});
   if(r.error) return {error:r.error};
   empresas = r.data||[];
@@ -3344,7 +3426,7 @@ function pintarFicha(){
           ((antro && x.adherence==null && x.energy_level==null && x.sleep_quality==null) ? '<td colspan="3" class="sin-esc">Solo medidas</td>' :
           '<td class="mono">'+(x.adherence!=null?x.adherence+"/5":"—")+'</td><td class="mono">'+(x.energy_level!=null?x.energy_level+"/5":"—")+'</td><td class="mono">'+(x.sleep_quality!=null?x.sleep_quality+"/5":"—")+'</td>')+
           '<td class="notas">'+esc(recortar([x.consultation_reason,x.consultation_notes].filter(Boolean).join(" · "), 220))+'</td>'+
-          '<td class="no-imprimir">'+(antro?'<button type="button" class="btn chico suave" onclick="fichaInformeAntro(\''+x.id+'\')">Informe</button> ':'')+'<button type="button" class="btn chico suave" onclick="fichaCorregirConsulta(\''+x.id+'\')">Corregir</button></td></tr>';
+          '<td class="no-imprimir">'+(antro?'<button type="button" class="btn chico suave" onclick="fichaInformeAntro(\''+x.id+'\')">Informe</button> ':'')+'<button type="button" class="btn chico suave" onclick="fichaCorregirConsulta(\''+x.id+'\')">Corregir</button> <button type="button" class="btn chico suave" onclick="fichaBorrarConsulta(\''+x.id+'\')" aria-label="Borrar la consulta del '+fechaCorta(x.session_date)+'">Borrar</button></td></tr>';
       }).join("")+'</tbody></table></div>';
   } else {
     cuerpo+='<div class="caja"><p style="margin:0 0 16px;font-size:1.1rem;">Todavía no tiene consultas cargadas.</p><button class="btn" onclick="fichaNuevaConsulta()">Cargar la primera consulta</button></div>';
@@ -4438,6 +4520,381 @@ async function foContarInicio(){
   }catch(e){}
 }
 
+/* =====================================================================
+   IMPORTAR DESDE EXCEL (unificación · bloque U4) · la planilla de la feria y cualquier Excel o CSV.
+   Las mismas reglas que la app anterior (hojas «Pacientes Nuevos» y «Consultas», columnas, duplicados,
+   tandas de 50, import_batches), adentro de NuPlan y con la revisión fila por fila antes de guardar.
+   ===================================================================== */
+var IM = { archivo:"", nuevos:[], consultas:[], modo:"oficial", crudo:null, mapa:{}, n:0 };
+var IM_NUEVOS = ["Nombre","Apellido","Email","WhatsApp","Fecha Nacimiento (dd/mm/aaaa)","Sexo (Femenino / Masculino)","Departamento","Peso Inicial (kg)","Altura (cm)","Fecha 1ra Consulta (dd/mm/aaaa)","Adherencia (1-5)","Hidratación (Sí/No)","Actividad Física (≤150 min / +150 min)","Frutas y Verduras (1-5)","Energía (1-5)","Sueño (1-5)"];
+var IM_NUEVOS_ANCHO = [14,16,26,18,28,24,16,16,12,28,16,18,34,22,12,12];
+var IM_CONSULTAS = ["ID Paciente","Nombre","Apellido","Fecha Consulta (dd/mm/aaaa)","Peso (kg)","Altura (cm)","Cintura (cm)","Adherencia (1-5)","Hidratación (Sí/No)","Actividad Física (≤150 min / +150 min)","Frutas y Verduras (1-5)","Energía (1-5)","Sueño (1-5)","Estado (En Progreso / Objetivo Alcanzado / En Riesgo)","Logros","Dificultades"];
+var IM_CONSULTAS_ANCHO = [38,14,16,26,10,10,12,16,18,34,22,12,12,42,30,30];
+
+/* ---------- SheetJS se carga solo cuando hace falta (es pesado) ---------- */
+function imLibreria(){
+  if(window.XLSX) return Promise.resolve(window.XLSX);
+  if(imLibreria.p) return imLibreria.p;
+  imLibreria.p=new Promise(function(ok, mal){ var s=document.createElement("script"); s.src="/assets/xlsx-0.18.5.full.min.js"; s.onload=function(){ ok(window.XLSX); }; s.onerror=function(){ imLibreria.p=null; mal(new Error("no se pudo cargar el lector de Excel")); }; document.head.appendChild(s); });
+  return imLibreria.p;
+}
+
+/* ---------- lectura de valores (las mismas reglas que la app anterior) ---------- */
+function imTxt(v){ if(v==null) return null; var t=String(v).trim(); return t===""?null:t; }
+function imNum(v){ if(v==null||v==="") return null; if(typeof v==="number") return isFinite(v)?v:null; var n=Number(String(v).replace(",",".").trim()); return isFinite(n)?n:null; }
+function imEsc5(v){ var n=imNum(v); if(n==null) return null; n=Math.round(n); return n>=1&&n<=5?n:null; }
+function imFecha(v){
+  if(v==null||v==="") return null;
+  if(typeof v==="number"){ var d=new Date((v-25569)*864e5); return isNaN(d.getTime())?null:d.toISOString().slice(0,10); }
+  if(v instanceof Date) return isNaN(v.getTime())?null:v.toISOString().slice(0,10);
+  var t=String(v).trim(); if(/^\d{4}-\d{2}-\d{2}/.test(t)) return t.slice(0,10);
+  var m=t.match(/^(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{2,4})$/); if(!m) return null;
+  var a=+m[1], b=+m[2], y=+m[3]; if(y<100) y+=2000; if(a<1||a>31||b<1||b>12) return null;
+  var f=new Date(Date.UTC(y,b-1,a)); return isNaN(f.getTime())?null:f.toISOString().slice(0,10);
+}
+function imSexo(v){ var t=imTxt(v); if(!t) return null; var r=t.toLowerCase(); return (r==="f"||r==="femenino"||r==="mujer")?"Femenino":(r==="m"||r==="masculino"||r==="hombre"||r==="varón"||r==="varon")?"Masculino":null; }
+function imSiNo(v){ if(v==null||v==="") return null; if(typeof v==="boolean") return v; var t=String(v).trim().toLowerCase(); return ["sí","si","yes","y","1","true","verdadero"].indexOf(t)>=0?true:["no","n","0","false","falso"].indexOf(t)>=0?false:null; }
+function imEstado(v){ var t=imTxt(v); if(!t) return null; var r=t.toLowerCase(); return r.indexOf("progres")>=0?"En Progreso":(r.indexOf("alcanz")>=0||r.indexOf("logr")>=0)?"Objetivo Alcanzado":r.indexOf("riesg")>=0?"En Riesgo":null; }
+function imActividad(v){ var t=imTxt(v); if(!t) return null; var r=t.toLowerCase(); return (t.indexOf("+150")>=0||r.indexOf("mas de")>=0||r.indexOf("más de")>=0)?"+150 min":(t.indexOf("≤150")>=0||t.indexOf("<=150")>=0||r.indexOf("menos")>=0)?"≤150 min":null; }
+function imMail(v){ var t=imTxt(v); return t&&/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(t)?t:null; }
+function imNorm(s){ return String(s).toLowerCase().replace(/\s+/g," ").trim(); }
+function imColumnas(fila, nombres){ var m={}; nombres.forEach(function(n){ var k=imNorm(n); for(var i=0;i<fila.length;i++){ var c=imTxt(fila[i]); if(c&&imNorm(c)===k){ m[n]=i; break; } } }); return m; }
+function imParecida(fila){ var m=imColumnas(fila, IM_NUEVOS); return ["Nombre","Apellido","Sexo (Femenino / Masculino)"].every(function(k){ return k in m; }) && Object.keys(m).length/IM_NUEVOS.length>=.6; }
+
+/* una persona nueva (de la planilla o de lo que ordenó la IA) */
+function imPersona(o, i){
+  var e=[], nom=imTxt(o.first_name), ape=imTxt(o.last_name), sx=imSexo(o.sex), p=imNum(o.initial_weight), t=imNum(o.height);
+  if(!nom) e.push("falta el nombre"); if(!ape) e.push("falta el apellido"); if(!sx) e.push("sexo: poné «Femenino» o «Masculino»");
+  if(p!=null&&(p<20||p>300)) e.push("peso fuera de rango ("+numeroAR(p)+" kg)");
+  if(t!=null&&(t<80||t>250)) e.push("talla fuera de rango ("+numeroAR(t)+" cm)");
+  return { fila:i, errores:e, dup:false, ver:[imTxt(o.first_name)||"", imTxt(o.last_name)||""].join(" ").trim()||"—", d: e.length ? null : { first_name:capitalizar(nom), last_name:capitalizar(ape), email:imMail(o.email), phone:imTxt(o.phone), birth_date:imFecha(o.birth_date), sex:sx, area:imTxt(o.area), initial_weight:p, height:t,
+    first_session_date:imFecha(o.first_session_date), adherence:imEsc5(o.adherence), hydration:imSiNo(o.hydration), physical_activity:imActividad(o.physical_activity), consumo_frutas_verduras:imEsc5(o.consumo_frutas_verduras), energy_level:imEsc5(o.energy_level), sleep_quality:imEsc5(o.sleep_quality) } };
+}
+function imHoja(libro, prueba){ var n=libro.SheetNames.filter(prueba)[0]; return n ? XLSX.utils.sheet_to_json(libro.Sheets[n], {header:1, raw:true, defval:null}) : null; }
+function imLeerNuevos(libro){
+  var a=imHoja(libro, function(h){ h=h.toLowerCase(); return h.indexOf("pacientes nuevos")>=0 || h.indexOf("nuevos")>=0; });
+  if(!a) return { filas:[], falta:true, errores:[] };
+  if(!a.length) return { filas:[], falta:false, errores:["la hoja está vacía"] };
+  var m=imColumnas(a[0], IM_NUEVOS), err=[];
+  ["Nombre","Apellido","Sexo (Femenino / Masculino)"].forEach(function(k){ if(!(k in m)) err.push("falta la columna «"+k+"»"); });
+  var g=function(f,k){ return k in m ? f[m[k]] : null; }, filas=[];
+  for(var i=1;i<a.length;i++){
+    var f=a[i]; if(!f||f.every(function(x){ return x==null||x===""; })) continue;
+    filas.push(imPersona({ first_name:g(f,"Nombre"), last_name:g(f,"Apellido"), email:g(f,"Email"), phone:g(f,"WhatsApp"), birth_date:g(f,"Fecha Nacimiento (dd/mm/aaaa)"), sex:g(f,"Sexo (Femenino / Masculino)"), area:g(f,"Departamento"), initial_weight:g(f,"Peso Inicial (kg)"), height:g(f,"Altura (cm)"),
+      first_session_date:g(f,"Fecha 1ra Consulta (dd/mm/aaaa)"), adherence:g(f,"Adherencia (1-5)"), hydration:g(f,"Hidratación (Sí/No)"), physical_activity:g(f,"Actividad Física (≤150 min / +150 min)"), consumo_frutas_verduras:g(f,"Frutas y Verduras (1-5)"), energy_level:g(f,"Energía (1-5)"), sleep_quality:g(f,"Sueño (1-5)") }, i+1));
+  }
+  return { filas:filas, falta:false, errores:err };
+}
+function imLeerConsultas(libro){
+  var a=imHoja(libro, function(h){ return h.toLowerCase().trim()==="consultas"; });
+  if(!a) return { filas:[], falta:true, errores:[] };
+  if(!a.length) return { filas:[], falta:false, errores:["la hoja está vacía"] };
+  var m=imColumnas(a[0], IM_CONSULTAS), err=[];
+  ["Nombre","Apellido","Fecha Consulta (dd/mm/aaaa)"].forEach(function(k){ if(!(k in m)) err.push("falta la columna «"+k+"»"); });
+  var g=function(f,k){ return k in m ? f[m[k]] : null; }, filas=[];
+  for(var i=1;i<a.length;i++){
+    var f=a[i]; if(!f||f.every(function(x){ return x==null||x===""; })) continue;
+    var e=[], id=imTxt(g(f,"ID Paciente")), nom=imTxt(g(f,"Nombre")), ape=imTxt(g(f,"Apellido")), fe=imFecha(g(f,"Fecha Consulta (dd/mm/aaaa)")), p=imNum(g(f,"Peso (kg)")), t=imNum(g(f,"Altura (cm)"));
+    // una fila de la planilla sin ningún dato de la consulta es una persona que no vino: no es un error
+    var vacia=[ "Fecha Consulta (dd/mm/aaaa)","Peso (kg)","Cintura (cm)","Adherencia (1-5)","Hidratación (Sí/No)","Actividad Física (≤150 min / +150 min)","Frutas y Verduras (1-5)","Energía (1-5)","Sueño (1-5)","Logros","Dificultades" ].every(function(k){ var v=g(f,k); return v==null||v===""; });
+    if(vacia) continue;
+    if(!nom) e.push("falta el nombre"); if(!ape) e.push("falta el apellido"); if(!fe) e.push("falta la fecha de la consulta o no se entiende");
+    if(p!=null&&(p<20||p>300)) e.push("peso fuera de rango ("+numeroAR(p)+" kg)");
+    if(t!=null&&(t<80||t>250)) e.push("talla fuera de rango ("+numeroAR(t)+" cm)");
+    filas.push({ fila:i+1, errores:e, ver:[nom||"", ape||""].join(" ").trim()||"—", verFecha:fe, d: e.length ? null : { patient_id:id, first_name:nom, last_name:ape, session_date:fe, weight:p, height:t, waist:imNum(g(f,"Cintura (cm)")), adherence:imEsc5(g(f,"Adherencia (1-5)")), hydration:imSiNo(g(f,"Hidratación (Sí/No)")), physical_activity:imActividad(g(f,"Actividad Física (≤150 min / +150 min)")),
+      consumo_frutas_verduras:imEsc5(g(f,"Frutas y Verduras (1-5)")), energy_level:imEsc5(g(f,"Energía (1-5)")), sleep_quality:imEsc5(g(f,"Sueño (1-5)")), status:imEstado(g(f,"Estado (En Progreso / Objetivo Alcanzado / En Riesgo)")), achievements:imTxt(g(f,"Logros")), difficulties:imTxt(g(f,"Dificultades")) } });
+  }
+  return { filas:filas, falta:false, errores:err };
+}
+/* quién ya está (por mail o por nombre, apellido y fecha de nacimiento) y a quién va cada consulta */
+function imMarcarDuplicados(filas, ya){
+  var mails={}, claves={};
+  ya.forEach(function(p){ if(p.email) mails[String(p.email).toLowerCase()]=true; claves[plano(p.first_name)+"|"+plano(p.last_name)+"|"+(p.birth_date||"")]=true; });
+  filas.forEach(function(r){ if(!r.d) return; if(r.d.email&&mails[r.d.email.toLowerCase()]){ r.dup=true; return; } if(claves[plano(r.d.first_name)+"|"+plano(r.d.last_name)+"|"+(r.d.birth_date||"")]) r.dup=true; });
+}
+function imVincular(consultas, gente){
+  var porId={}, porNom={};
+  gente.forEach(function(p){ porId[p.id]=p; var k=plano(p.first_name)+"|"+plano(p.last_name); (porNom[k]=porNom[k]||[]).push(p); });
+  consultas.forEach(function(r){
+    if(!r.d) return;
+    if(r.d.patient_id && porId[r.d.patient_id]){ r.quien=porId[r.d.patient_id]; return; }
+    var l=porNom[plano(r.d.first_name)+"|"+plano(r.d.last_name)]||[];
+    if(l.length===1){ r.d.patient_id=l[0].id; r.quien=l[0]; }
+    else if(!l.length){ r.errores.push("no está en "+empresa+" ni en las personas nuevas de la planilla"); r.d=null; }
+    else { r.errores.push("hay "+l.length+" personas con ese nombre: poné el ID de la planilla"); r.d=null; }
+  });
+}
+
+/* ---------- la pantalla ---------- */
+function abrirImportar(){
+  if(!irA("import")) return;
+  $("im-empresa").textContent=empresa||""; $("im-emp-2").textContent=empresa||"";
+  imReiniciar();
+}
+function imReiniciar(){
+  IM.archivo=""; IM.nuevos=[]; IM.consultas=[]; IM.modo="oficial"; IM.crudo=null; IM.mapa={};
+  $("im-archivo").value=""; $("im-nombre").textContent="";
+  $("im-ia").classList.add("oculto"); $("im-revision").classList.add("oculto"); $("im-listo").classList.add("oculto");
+  $("im-aviso").className="aviso"; $("im-aviso").textContent="";
+  imLibreria().catch(function(){});
+}
+async function imElegir(input){
+  var f=input.files&&input.files[0]; if(!f) return;
+  var av=$("im-aviso"), n=++IM.n; av.className="aviso"; av.textContent="Leyendo "+f.name+"…";
+  $("im-ia").classList.add("oculto"); $("im-revision").classList.add("oculto"); $("im-listo").classList.add("oculto");
+  IM.archivo=f.name; $("im-nombre").textContent=f.name;
+  try{
+    await imLibreria();
+    var libro=/\.csv$/i.test(f.name) ? XLSX.read(await f.text(), {type:"string", cellDates:false}) : XLSX.read(await f.arrayBuffer(), {type:"array", cellDates:false});
+    if(n!==IM.n) return;
+    var nu=imLeerNuevos(libro), co=imLeerConsultas(libro);
+    var okN=!nu.falta && !nu.errores.length && nu.filas.length, okC=!co.falta && !co.errores.length && co.filas.length;
+    if(okN||okC){ await imPreparar(okN?nu.filas:[], okC?co.filas:[], "oficial"); return; }
+    var hojas=[nu,co].filter(function(x){ return !x.falta && x.errores.length; });
+    var h1=libro.SheetNames[0]; if(!h1){ av.className="aviso error"; av.textContent="El archivo no tiene hojas que se puedan leer."; return; }
+    var a=XLSX.utils.sheet_to_json(libro.Sheets[h1], {header:1, raw:true, defval:null}).filter(function(r){ return Array.isArray(r) && r.some(function(x){ return x!=null&&x!==""; }); });
+    if(a.length<2){ av.className="aviso error"; av.textContent=hojas.length?"La planilla tiene un problema: "+hojas[0].errores.join(", ")+".":"El archivo está vacío o solo tiene los títulos."; return; }
+    IM.crudo={ headers:a[0], rows:a.slice(1) };
+    if(imParecida(a[0])){ libro.Sheets["Pacientes Nuevos"]=libro.Sheets[h1]; if(libro.SheetNames.indexOf("Pacientes Nuevos")<0) libro.SheetNames.push("Pacientes Nuevos"); await imPreparar(imLeerNuevos(libro).filas, [], "oficial"); return; }
+    av.textContent="";
+    $("im-ia-cols").textContent=a[0].map(function(x){ return imTxt(x)||"(sin título)"; }).join(" · ");
+    $("im-ia-n").textContent=a.length-1;
+    $("im-ia").classList.remove("oculto");
+  }catch(e){ av.className="aviso error"; av.textContent="No se pudo leer el archivo: "+(e&&e.message||e); }
+}
+async function imConIA(){
+  var b=$("btn-im-ia"), av=$("im-aviso"); if(!IM.crudo||b.disabled) return;
+  b.disabled=true; av.className="aviso"; av.textContent="Ordenando las columnas…";
+  try{
+    var r=await fetch("/api/normalize-excel", { method:"POST", headers:await cabecerasIA(), body:JSON.stringify(IM.crudo) });
+    var j=await r.json().catch(function(){ return {}; });
+    if(!r.ok || j.error) throw new Error(j.error||("HTTP "+r.status));
+    IM.mapa=j.column_mapping||{};
+    await imPreparar((j.rows||[]).map(function(o,i){ return imPersona(o||{}, i+2); }), [], "ia");
+    $("im-ia").classList.add("oculto");
+  }catch(e){ av.className="aviso error"; av.textContent="No se pudo ordenar con IA: "+(e&&e.message||e); }
+  b.disabled=false;
+}
+async function imPreparar(nuevos, consultas, modo){
+  var av=$("im-aviso");
+  var r=await sb.from("patients").select("id, email, first_name, last_name, birth_date").eq("company", empresa);
+  if(r.error){ av.className="aviso error"; av.textContent="No se pudo leer quién está en "+empresa+": "+errorLegible(r.error); return; }
+  var ya=r.data||[];
+  imMarcarDuplicados(nuevos, ya);
+  var gente=ya.slice();
+  nuevos.forEach(function(x, i){ if(x.d && !x.dup) gente.push({ id:"__nueva_"+i+"__", first_name:x.d.first_name, last_name:x.d.last_name }); });
+  imVincular(consultas, gente);
+  IM.nuevos=nuevos; IM.consultas=consultas; IM.modo=modo;
+  av.textContent="";
+  imPintar();
+}
+function imPintar(){
+  var N=IM.nuevos, C=IM.consultas;
+  var nOk=N.filter(function(x){ return x.d && !x.dup; }).length, nErr=N.filter(function(x){ return x.errores.length; }).length, nDup=N.filter(function(x){ return x.dup; }).length;
+  var cOk=C.filter(function(x){ return x.d; }).length, cErr=C.filter(function(x){ return x.errores.length; }).length;
+  $("im-modo").classList.toggle("oculto", IM.modo!=="ia");
+  var h='';
+  if(N.length){
+    h+='<h3 class="sec-ficha">Personas nuevas</h3><div class="im-tiles">'+
+      '<div class="ei-tile"><span class="l">En la planilla</span><span class="v">'+N.length+'</span></div>'+
+      '<div class="ei-tile"><span class="l">Entran</span><span class="v">'+nOk+'</span></div>'+
+      '<div class="ei-tile"><span class="l">Ya estaban</span><span class="v">'+nDup+'</span><span class="s">no se cargan de nuevo</span></div>'+
+      '<div class="ei-tile"><span class="l">Con errores</span><span class="v">'+nErr+'</span><span class="s">no se cargan</span></div></div>'+
+      '<div class="tabla-scroll"><table class="tabla evo-t im-t"><thead><tr><th>Fila</th><th>Persona</th><th>Qué pasa</th></tr></thead><tbody>'+
+      N.map(function(x){ var nom=x.d?x.d.first_name+" "+x.d.last_name:x.ver; var st=x.errores.length?'<span class="im-err">'+esc(x.errores.join(" · "))+'</span>':x.dup?'<span class="im-dup">Ya está en '+esc(empresa)+': se omite</span>':'<span class="im-ok">Entra</span>'+(x.d.first_session_date||x.d.initial_weight!=null||x.d.energy_level!=null?' <small>con su primera consulta</small>':''); return '<tr class="'+(x.errores.length?'mal':x.dup?'dup':'')+'"><td class="mono">'+x.fila+'</td><td>'+esc(nom)+'</td><td>'+st+'</td></tr>'; }).join("")+'</tbody></table></div>';
+  }
+  if(C.length){
+    h+='<h3 class="sec-ficha">Consultas</h3><div class="im-tiles">'+
+      '<div class="ei-tile"><span class="l">En la planilla</span><span class="v">'+C.length+'</span></div>'+
+      '<div class="ei-tile"><span class="l">Entran</span><span class="v">'+cOk+'</span></div>'+
+      '<div class="ei-tile"><span class="l">Con errores</span><span class="v">'+cErr+'</span><span class="s">no se cargan</span></div></div>'+
+      '<div class="tabla-scroll"><table class="tabla evo-t im-t"><thead><tr><th>Fila</th><th>Persona</th><th>Fecha</th><th>Qué pasa</th></tr></thead><tbody>'+
+      C.map(function(x){ var nom=x.quien?nombreCompleto(x.quien):(x.d?x.d.first_name+" "+x.d.last_name:x.ver); return '<tr class="'+(x.errores.length?'mal':'')+'"><td class="mono">'+x.fila+'</td><td>'+esc(nom)+'</td><td class="mono">'+(x.verFecha?fechaCorta(x.verFecha):"—")+'</td><td>'+(x.errores.length?'<span class="im-err">'+esc(x.errores.join(" · "))+'</span>':'<span class="im-ok">Entra</span>'+(x.d.status?' <small>estado: '+esc(x.d.status.toLowerCase())+'</small>':''))+'</td></tr>'; }).join("")+'</tbody></table></div>';
+  }
+  if(!N.length && !C.length) h='<p>No hay filas para cargar en la planilla.</p>';
+  $("im-tablas").innerHTML=h;
+  if(typeof rotularEvo==="function") rotularEvo($("im-tablas"));
+  var total=nOk+cOk, b=$("btn-im-cargar");
+  b.textContent=total ? "Cargar "+[nOk?nOk+(nOk===1?" persona":" personas"):"", cOk?cOk+(cOk===1?" consulta":" consultas"):""].filter(Boolean).join(" y ")+" en "+empresa : "No hay nada para cargar";
+  b.disabled=!total;
+  $("im-revision").classList.remove("oculto");
+  $("im-revision").scrollIntoView({block:"start"});
+}
+function imTandas(a, n){ var r=[]; for(var i=0;i<a.length;i+=n) r.push(a.slice(i,i+n)); return r; }
+async function imCargar(){
+  var b=$("btn-im-cargar"), av=$("im-aviso"), emp=empresa; if(b.disabled) return;
+  b.disabled=true; av.className="aviso"; av.textContent="Cargando…";
+  var rb=await sb.from("import_batches").insert([{ company:emp, nutritionist_id:usuario.id, filename:IM.archivo }]).select("id").single();
+  if(rb.error){ b.disabled=false; av.className="aviso error"; av.textContent="No se pudo empezar la carga: "+errorLegible(rb.error); return; }
+  var lote=rb.data.id, hoy=new Date().toISOString().slice(0,10), ahora=new Date().toISOString();
+  var entran=IM.nuevos.filter(function(x){ return x.d && !x.dup; }), pn=0, omit=IM.nuevos.length-entran.length, ids={}, fallas=[];
+  for(var t=0, tandas=imTandas(entran, 50); t<tandas.length; t++){
+    var tanda=tandas[t];
+    var rp=await sb.from("patients").insert(tanda.map(function(x){ var d=x.d; return { first_name:d.first_name, last_name:d.last_name, email:d.email, phone:d.phone, birth_date:d.birth_date, sex:d.sex, area:d.area||"Sin especificar", initial_weight:d.initial_weight, height:d.height, status:"En Progreso", company:emp, created_by:usuario.id, import_batch_id:lote, imported_at:ahora }; })).select("id");
+    if(rp.error){ omit+=tanda.length; fallas.push(errorLegible(rp.error)); continue; }
+    pn+=(rp.data||[]).length;
+    var primeras=(rp.data||[]).map(function(p, i){ var x=tanda[i], d=x.d; ids["__nueva_"+IM.nuevos.indexOf(x)+"__"]=p.id;
+      return { patient_id:p.id, nutritionist_id:usuario.id, session_date:d.first_session_date||hoy, company:emp, session_type:"Consulta", weight:d.initial_weight, height:d.height, adherence:d.adherence, hydration:d.hydration, physical_activity:d.physical_activity, consumo_frutas_verduras:d.consumo_frutas_verduras, energy_level:d.energy_level, sleep_quality:d.sleep_quality }; })
+      .filter(function(s){ return s.weight!=null || s.adherence!=null || s.consumo_frutas_verduras!=null || s.energy_level!=null || s.sleep_quality!=null || s.hydration!=null || s.physical_activity!=null; });
+    if(primeras.length){ var rs=await sb.from("sessions").insert(primeras); if(rs.error) fallas.push(errorLegible(rs.error)); }
+  }
+  var cons=IM.consultas.filter(function(x){ return x.d; }).map(function(x){ var pid=x.d.patient_id; if(pid&&/^__nueva_/.test(pid)) pid=ids[pid]||null; return { x:x, pid:pid }; }).filter(function(o){ return o.pid; });
+  var pc=0, omitC=IM.consultas.length-cons.length;
+  for(var u=0, tc=imTandas(cons, 50); u<tc.length; u++){
+    var tt=tc[u];
+    var rc=await sb.from("sessions").insert(tt.map(function(o){ var d=o.x.d; return { patient_id:o.pid, nutritionist_id:usuario.id, session_date:d.session_date, company:emp, session_type:"Consulta", weight:d.weight, height:d.height, girth_waist:d.waist, adherence:d.adherence, hydration:d.hydration, physical_activity:d.physical_activity, consumo_frutas_verduras:d.consumo_frutas_verduras, energy_level:d.energy_level, sleep_quality:d.sleep_quality, laboratorio_alterado:null, consultation_notes:[d.achievements,d.difficulties].filter(Boolean).join("\n---\n")||null }; })).select("id, patient_id");
+    if(rc.error){ omitC+=tt.length; fallas.push(errorLegible(rc.error)); continue; }
+    pc+=(rc.data||[]).length;
+    for(var k=0;k<tt.length;k++){ var o=tt[k]; if(o.x.d.status && o.x.quien && !/^__nueva_/.test(o.x.quien.id)) await sb.from("patients").update({ status:o.x.d.status }).eq("id", o.pid); }
+  }
+  await sb.from("import_batches").update({ rows_inserted:pn+pc, rows_skipped:omit+omitC }).eq("id", lote);
+  b.disabled=false; pacientes=[];
+  var partes=[]; if(pn) partes.push(pn+(pn===1?" persona":" personas")); if(pc) partes.push(pc+(pc===1?" consulta":" consultas"));
+  $("im-revision").classList.add("oculto");
+  av.className=partes.length?"aviso ok":"aviso error";
+  av.textContent=partes.length ? "Listo: "+partes.join(" y ")+" cargadas en "+emp+"."+((omit+omitC)?" "+(omit+omitC)+" filas no se cargaron (errores o ya estaban).":"")+(fallas.length?" Hubo un problema con una parte: "+fallas[0]+".":"") : "No se cargó nada. "+(fallas[0]||"Revisá los errores de la planilla.");
+  $("im-listo").classList.toggle("oculto", !partes.length);
+  $("im-archivo").value="";
+}
+
+/* ---------- la planilla para la feria: sin internet, se completa y después se sube acá ---------- */
+async function imBajarPlanilla(){
+  var b=$("btn-im-planilla"), av=$("im-aviso"); if(b.disabled) return;
+  b.disabled=true; av.className="aviso"; av.textContent="Armando la planilla…";
+  try{
+    await imLibreria();
+    var r=await sb.from("patients").select("id, first_name, last_name, email, initial_weight, height").eq("company", empresa).order("last_name",{ascending:true});
+    if(r.error) throw new Error(errorLegible(r.error));
+    var libro=XLSX.utils.book_new();
+    var c=XLSX.utils.aoa_to_sheet([IM_CONSULTAS].concat((r.data||[]).map(function(p){ return [p.id, p.first_name, p.last_name, "", "", p.height||"", "", "", "", "", "", "", "", "En Progreso", "", ""]; })));
+    c["!cols"]=IM_CONSULTAS_ANCHO.map(function(w){ return {wch:w}; }); XLSX.utils.book_append_sheet(libro, c, "Consultas");
+    var nn=XLSX.utils.aoa_to_sheet([IM_NUEVOS]); nn["!cols"]=IM_NUEVOS_ANCHO.map(function(w){ return {wch:w}; }); XLSX.utils.book_append_sheet(libro, nn, "Pacientes Nuevos");
+    var hoy=new Date().toLocaleDateString("es-AR",{day:"2-digit",month:"2-digit",year:"numeric"}).replace(/\//g,"-");
+    XLSX.writeFile(libro, "NuPlan_Feria_"+foSlug(empresa)+"_"+hoy+".xlsx");
+    av.className="aviso ok"; av.textContent="Planilla bajada: "+(r.data||[]).length+" personas de "+empresa+" en la hoja «Consultas» y la hoja «Pacientes Nuevos» para las que se suman.";
+  }catch(e){ av.className="aviso error"; av.textContent="No se pudo armar la planilla: "+(e&&e.message||e); }
+  b.disabled=false;
+}
+
+/* =====================================================================
+   EMPRESAS (unificación · bloque U4) · alta, tipo, diseño del informe y baja de empresas, adentro de NuPlan.
+   Y en la ficha: cambiar de empresa, borrar una consulta y borrar a una persona (todo o nada, como la app anterior).
+   ===================================================================== */
+var EM = { tipo:"fija", n:0, cuentas:{} };
+function emEsFeria(e){ return /feria|evento/i.test(String(e&&e.type||"")); }
+async function abrirEmpresas(){
+  if(!irA("empresas")) return;
+  $("em-nueva").classList.add("oculto"); $("em-aviso").className="aviso"; $("em-aviso").textContent="";
+  await emCargar();
+}
+async function emCargar(){
+  var n=++EM.n, av=$("em-aviso");
+  $("em-lista").innerHTML='<p class="nota">Cargando…</p>';
+  var r=await cargarEmpresas(); if(n!==EM.n) return;
+  if(r&&r.error){ $("em-lista").innerHTML=""; av.className="aviso error"; av.textContent="No se pudieron leer las empresas: "+errorLegible(r.error); return; }
+  // cuántas personas tiene cada una (una cuenta por empresa: sin el tope de 1000 filas)
+  var cuentas={};
+  await Promise.all((empresas||[]).map(async function(e){ var q=await sb.from("patients").select("id",{count:"exact", head:true}).eq("company", e.name); cuentas[e.name]=q.error?null:(q.count||0); }));
+  if(n!==EM.n) return;
+  EM.cuentas=cuentas; emPintar();
+}
+function emPintar(){
+  var l=empresas||[], tot=0, fijas=0, ferias=0;
+  l.forEach(function(e){ tot+=EM.cuentas[e.name]||0; if(emEsFeria(e)) ferias++; else fijas++; });
+  $("em-tiles").innerHTML='<div class="ei-tile"><span class="l">Empresas</span><span class="v">'+l.length+'</span></div><div class="ei-tile"><span class="l">Fijas</span><span class="v">'+fijas+'</span></div><div class="ei-tile"><span class="l">Ferias o eventos</span><span class="v">'+ferias+'</span></div><div class="ei-tile"><span class="l">Personas</span><span class="v">'+tot+'</span></div>';
+  if(!l.length){ $("em-lista").innerHTML='<div class="fo-vacio"><p><b>No hay empresas.</b></p><p>Agregá la primera con «Nueva empresa».</p></div>'; return; }
+  $("em-lista").innerHTML=l.map(function(e){
+    var c=EM.cuentas[e.name], actual=e.name===empresa, tpl=e.brand_template||"default";
+    return '<article class="em-card'+(actual?' actual':'')+'">'+
+      '<div class="fo-card-t"><h3>'+esc(e.name)+'</h3><span class="fo-chip'+(emEsFeria(e)?'':' gris')+'">'+(emEsFeria(e)?'Feria o evento':'Fija')+'</span></div>'+
+      '<p class="fo-meta">'+(c==null?'—':c+(c===1?' persona':' personas'))+(e.created_at?' · desde el '+new Date(e.created_at).toLocaleDateString("es-AR",{day:"2-digit",month:"2-digit",year:"numeric"}):'')+(actual?' · <b class="fo-pend">es la que tenés elegida</b>':'')+'</p>'+
+      '<label class="campo em-dis">Diseño del informe<select aria-label="Diseño del informe de '+esc(e.name)+'" onchange="emDiseno('+JSON.stringify(e.id).replace(/"/g,"&quot;")+', this)"><option value="default"'+(tpl==="default"?' selected':'')+'>NuPlan</option><option value="swiss_medical"'+(tpl==="swiss_medical"?' selected':'')+'>WellnessLab · Swiss Medical</option></select></label>'+
+      '<div class="fo-acc">'+(actual?'':'<button type="button" class="btn chico" onclick="emTrabajar('+JSON.stringify(e.name).replace(/"/g,"&quot;")+')">Trabajar en esta</button>')+
+      '<button type="button" class="btn chico suave fo-borrar" onclick="emBorrar('+JSON.stringify(e.id).replace(/"/g,"&quot;")+')"'+(c?' aria-describedby="em-n-'+e.id+'"':'')+'>Borrar</button></div>'+
+      (c?'<p class="nota" id="em-n-'+e.id+'" style="margin:8px 0 0;">Para borrarla, primero pasá a sus personas a otra empresa (desde la ficha, «Editar datos»).</p>':'')+
+    '</article>';
+  }).join("");
+}
+function emBuscar(id){ return (empresas||[]).filter(function(e){ return String(e.id)===String(id); })[0]||null; }
+function emNueva(){ $("em-nueva").classList.remove("oculto"); $("em-nombre").value=""; EM.tipo="fija"; emPintarTipo(); $("em-n-aviso").className="aviso"; $("em-n-aviso").textContent=""; setTimeout(function(){ $("em-nombre").focus(); }, 30); }
+function emTipo(t){ EM.tipo=t; emPintarTipo(); }
+function emPintarTipo(){ document.querySelectorAll("#em-tipo button").forEach(function(b){ var on=b.dataset.v===EM.tipo; b.classList.toggle("on", on); b.setAttribute("aria-pressed", on?"true":"false"); }); }
+async function emCrear(){
+  var av=$("em-n-aviso"), nom=$("em-nombre").value.trim().replace(/\s+/g," "), b=$("btn-em-crear");
+  av.className="aviso"; av.textContent="";
+  if(!nom){ av.className="aviso error"; av.textContent="Poné el nombre de la empresa."; $("em-nombre").focus(); return; }
+  if((empresas||[]).some(function(e){ return plano(e.name)===plano(nom); })){ av.className="aviso error"; av.textContent="Ya hay una empresa con ese nombre."; return; }
+  if(b.disabled) return; b.disabled=true; av.textContent="Guardando…";
+  var r=await sb.from("companies").insert({ name:nom, type:EM.tipo }).select("id, name, type, created_at, brand_template").single();
+  b.disabled=false;
+  if(r.error){ av.className="aviso error"; av.textContent=/duplicate|23505/i.test(String(r.error.message||r.error.code||""))?"Ya hay una empresa con ese nombre.":"No se pudo guardar: "+errorLegible(r.error); return; }
+  $("em-nueva").classList.add("oculto");
+  await emCargar();
+  var a=$("em-aviso"); a.className="aviso ok"; a.innerHTML="Listo: «"+esc(nom)+"» ya está. <button type=\"button\" class=\"enlace\" onclick=\"emTrabajar("+JSON.stringify(nom).replace(/"/g,"&quot;")+")\">Trabajar en esta</button>";
+}
+async function emDiseno(id, sel){
+  var e=emBuscar(id), av=$("em-aviso"); if(!e) return;
+  var antes=e.brand_template||"default", v=sel.value;
+  var r=await sb.from("companies").update({ brand_template:v }).eq("id", e.id).select("id");
+  if(r.error||!r.data||!r.data.length){ sel.value=antes; av.className="aviso error"; av.textContent="No se pudo cambiar el diseño: "+(r.error?errorLegible(r.error):"tu usuario no tiene permiso para cambiar empresas."); return; }
+  e.brand_template=v; av.className="aviso ok"; av.textContent="Listo: los informes de "+e.name+" salen con el diseño "+(v==="swiss_medical"?"WellnessLab · Swiss Medical":"NuPlan")+".";
+}
+function emTrabajar(nombre){ $("empresa").value=nombre; cambiarEmpresa(nombre); }
+async function emBorrar(id){
+  var e=emBuscar(id), av=$("em-aviso"); if(!e) return;
+  var q=await sb.from("patients").select("id",{count:"exact", head:true}).eq("company", e.name);
+  if(q.error){ av.className="aviso error"; av.textContent="No se pudo revisar si tiene personas: "+errorLegible(q.error); return; }
+  if(q.count){ av.className="aviso error"; av.textContent="«"+e.name+"» todavía tiene "+q.count+(q.count===1?" persona":" personas")+". Pasalas a otra empresa (desde su ficha, «Editar datos») antes de borrarla."; return; }
+  if(!confirm("¿Borrar la empresa «"+e.name+"»? No tiene personas. No se puede deshacer.")) return;
+  var r=await sb.from("companies").delete().eq("id", e.id).select("id");
+  if(r.error||!r.data||!r.data.length){ av.className="aviso error"; av.textContent="No se pudo borrar: "+(r.error?errorLegible(r.error):"tu usuario no tiene permiso."); return; }
+  var eraLaActual=e.name===empresa;
+  await emCargar();
+  if(eraLaActual && empresas.length){ empresa=empresas[0].name; try{ localStorage.setItem(CLAVE_EMPRESA, empresa); }catch(x){} $("empresa").value=empresa; pacientes=[]; }
+  av.className="aviso ok"; av.textContent="Empresa «"+e.name+"» borrada.";
+}
+
+/* ---------- en la ficha: la empresa, borrar una consulta, borrar a la persona ---------- */
+function fdLlenarEmpresas(p){
+  var s=$("fd-empresa"); if(!s) return; s.innerHTML="";
+  var l=(empresas||[]).map(function(e){ return e.name; }); if(p.company && l.indexOf(p.company)<0) l.unshift(p.company);
+  l.forEach(function(n){ var o=document.createElement("option"); o.value=n; o.textContent=n; s.appendChild(o); });
+  s.value=p.company||empresa||"";
+}
+async function fichaBorrarConsulta(id){
+  var p=ficha.paciente, f=ficha.sesiones.filter(function(x){ return x.id===id; })[0], av=$("fi-aviso"); if(!p||!f) return;
+  var antro=/antropometr/i.test(f.session_type||"");
+  if(!confirm("¿Borrar la "+(antro?"antropometría":"consulta")+" del "+fechaCorta(f.session_date)+" de "+nombreCompleto(p)+"? También se borra el laboratorio cargado en esa consulta. No se puede deshacer.")) return;
+  var rl=await sb.from("lab_results").delete().eq("session_id", id);
+  if(rl.error && !/session_id|column/i.test(String(rl.error.message||""))){ av.className="aviso error"; av.textContent="No se pudo borrar: "+errorLegible(rl.error); return; }
+  var r=await sb.from("sessions").delete().eq("id", id).select("id");
+  if(r.error||!r.data||!r.data.length){ av.className="aviso error"; av.textContent="No se pudo borrar: "+(r.error?errorLegible(r.error):"la app no lo permitió."); return; }
+  await abrirFicha(p);
+  $("fi-aviso").className="aviso ok"; $("fi-aviso").textContent=(antro?"Antropometría":"Consulta")+" del "+fechaCorta(f.session_date)+" borrada.";
+}
+async function fichaBorrarPersona(){
+  var p=ficha.paciente, av=$("fd-aviso"); if(!p) return;
+  var nom=nombreCompleto(p);
+  if(!confirm("¿Borrar a "+nom+" de "+(p.company||empresa)+"? Se borran su ficha, sus consultas y su laboratorio. Los planes guardados quedan con su nombre. No se puede deshacer.")) return;
+  var b=$("btn-fd-borrar"); b.disabled=true; av.className="aviso"; av.textContent="Borrando…";
+  // 1) todo junto con la función de la base (turno5.sql); 2) sin ella: primero lo que traba, después las consultas y la ficha
+  var r=await sb.rpc("borrar_paciente", { p_id:p.id }), err=null;
+  if(r.error){
+    var sinFuncion=/PGRST202|Could not find the function|404/i.test(String(r.error.code||"")+" "+String(r.error.message||""))||r.status===404;
+    if(!sinFuncion) err=r.error;
+    else {
+      var a=await sb.from("lab_results").delete().eq("patient_id", p.id); if(a.error) err=a.error;
+      if(!err){ var f=await sb.from("form_responses").update({ patient_id:null }).eq("patient_id", p.id); if(f.error && f.status!==404) err=f.error; }
+      if(!err){ var s=await sb.from("sessions").delete().eq("patient_id", p.id); if(s.error) err=s.error; }
+      if(!err){ var d=await sb.from("patients").delete().eq("id", p.id).select("id"); if(d.error) err=d.error; else if(!d.data||!d.data.length) err={ message:"la app no permitió borrar la ficha" }; }
+    }
+  }
+  b.disabled=false;
+  if(err){ av.className="aviso error"; av.textContent="No se pudo borrar: "+errorLegible(err); return; }
+  pacientes=pacientes.filter(function(x){ return x.id!==p.id; }); ficha.paciente=null;
+  irA("inicio", true); avisar("Listo: se borró la ficha de "+nom+".", 5000);
+}
+
 function fichaNuevaConsulta(){ var p=ficha.paciente; if(!p) return; abrirConsulta(); conElegir(p); }
 function fichaNuevoPlan(){ if(ficha.paciente) nuevoPlanPara(ficha.paciente); }
 function fichaRecetario(){ var p=ficha.paciente; if(!p) return; abrirRecetario(); recElegirPaciente(p); }
@@ -4457,7 +4914,7 @@ function abrirEditarDatos(){
   $("fd-nacimiento").value=p.birth_date?String(p.birth_date).slice(0,10):""; $("fd-sexo").value=p.sex||"Femenino"; sel.value=p.status||"En Progreso";
   $("fd-talla").value=p.height!=null?p.height:""; $("fd-peso").value=p.initial_weight!=null?p.initial_weight:"";
   $("fd-area").value=p.area&&p.area!=="Sin especificar"?p.area:""; $("fd-telefono").value=p.phone||""; $("fd-mail").value=p.email||"";
-  $("fd-aviso").className="aviso"; $("fd-aviso").textContent="";
+  $("fd-aviso").className="aviso"; $("fd-aviso").textContent=""; fdLlenarEmpresas(p);
   cerrarCorregirNombre(); $("panel-datos").classList.remove("oculto"); $("fd-nombre").focus();
 }
 function cerrarEditarDatos(){ $("panel-datos").classList.add("oculto"); }
@@ -4473,6 +4930,7 @@ async function guardarDatos(){
     height: isNaN(talla)?null:talla, initial_weight: isNaN(peso)?null:peso,
     area: $("fd-area").value.trim()||"Sin especificar", phone: $("fd-telefono").value.trim()||null, email: $("fd-mail").value.trim()||null
   };
+  var nuevaEmp=$("fd-empresa")&&$("fd-empresa").value; if(nuevaEmp && nuevaEmp!==p.company) cambios.company=nuevaEmp;
   $("btn-datos").disabled=true; av.textContent="Guardando…";
   var r=await sb.from("patients").update(cambios).eq("id",p.id).select("id");
   $("btn-datos").disabled=false;
@@ -4481,7 +4939,8 @@ async function guardarDatos(){
   Object.assign(p, cambios); pacientes.forEach(function(x){ if(x.id===p.id) Object.assign(x, cambios); });
   aplicarNombreLocal(p);
   cerrarEditarDatos(); pintarCabeceraFicha(); pintarFicha();
-  $("fi-aviso").className="aviso ok"; $("fi-aviso").textContent="Datos guardados en la app.";
+  $("fi-aviso").className="aviso ok"; $("fi-aviso").textContent=cambios.company?"Datos guardados. Ahora está en "+cambios.company+".":"Datos guardados en la app.";
+  if(cambios.company) pacientes=pacientes.filter(function(x){ return x.id!==p.id; });
 }
 /* alta de paciente nueva (misma tabla y mismas columnas que la app) */
 function abrirAlta(texto){

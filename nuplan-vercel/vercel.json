@@ -16,5 +16,11 @@
       "destination": "/herramientas/",
       "permanent": false
     }
+  ],
+  "crons": [
+    {
+      "path": "/api/alertas",
+      "schedule": "0 12 * * *"
+    }
   ]
 }

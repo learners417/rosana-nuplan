@@ -372,12 +372,22 @@ img[data-ruta]{background:var(--line2);min-height:120px}
 .dfoto{width:100%;max-width:280px;border-radius:12px;display:block;margin-top:10px}
 .com .dborrar{background:none;border:none;color:var(--mut);font-size:1.4rem;cursor:pointer;min-width:44px;min-height:44px;line-height:1}
 </style>
+<style id="v4">
+.msjHilo{display:flex;flex-direction:column;gap:10px;margin-top:6px}
+.msj{max-width:88%;border-radius:16px;padding:12px 15px}
+.msj small{display:block;font-family:var(--mono);font-size:1rem;color:var(--cord);margin-bottom:4px}
+.msj p{margin:0;font-size:1.04rem;line-height:1.5;white-space:pre-wrap;overflow-wrap:anywhere}
+.msj.ro{background:var(--bg);align-self:flex-start;border:1px solid var(--line2)}
+.msj.yo{background:var(--okbg);align-self:flex-end}
+.msj.nuevo{box-shadow:inset 0 0 0 2px var(--cor)}
+#msjCard h3{margin-bottom:8px}
+</style>
 </head><body>
 
 <div class="splash" id="splash" style="display:none">
   <p class="logo"><span class="pt"><svg class="i" aria-hidden="true"><use href="#i-marca"/></svg></span>NuPlan</p>
   <div id="spPaso1">
-    <h1 id="spT">Bienvenida.</h1>
+    <h1 id="spT">Hola.</h1>
     <p class="sub" id="spSub">Esto es tu acompa&ntilde;amiento de 90 d&iacute;as con Rosana. Se abre un d&iacute;a por vez.</p>
     <div class="campoG" id="spNomG" hidden>
       <label for="iNom">Tu nombre y apellido</label>
@@ -503,6 +513,13 @@ img[data-ruta]{background:var(--line2);min-height:120px}
     <h2>Rosana</h2>
     <p class="sub">Tu nutricionista. Escribile cuando lo necesites.</p>
     <div id="ckAviso"></div>
+    <div class="card chico" id="msjCard">
+      <h3>Mensajes con Rosana</h3>
+      <div id="msjL"></div>
+      <div class="campoG" id="msjG" style="margin:14px 0 10px"><label for="msjT">Tu mensaje</label><textarea id="msjT" rows="3" placeholder="Escribile lo que necesites…"></textarea></div>
+      <button class="btn1" id="msjB">Mandarle</button>
+      <p class="est" id="msjE"></p>
+    </div>
     <div class="bt">
       <a class="lleno" id="aWsp" target="_blank" rel="noopener">Escribirle por WhatsApp</a>
       <button onclick="irCheckin()"><span class="ic"><svg class="i" aria-hidden="true"><use href="#i-mail"/></svg></span>Mandarle c&oacute;mo vengo</button>
@@ -640,8 +657,8 @@ var ONB = [
     { k:"hora", l:"¿A qué hora?", tipo:"hora", req:"Elegí la hora: sin hora todavía no es un acuerdo." } ] }
 ];
 var HERR = [{"t": "Paso 1 · NUTRIR", "d": 1, "q": "El video de teoría y el escaneo de tus 4 dimensiones", "u": "https://metodo.nuplan.com.ar/n"}, {"t": "Tu heladera, hoy", "d": 1, "q": "Una foto, tal cual está", "u": "", "dd": 1}, {"t": "Las cinco preguntas de NUTRIR", "d": 2, "q": "Sin corregirte", "u": "", "dd": 2}, {"t": "El diario de comida y emoción", "d": 4, "q": "En la pestaña Diario, una vez por día. Lo probás los días 4 y 5, y desde el día 8 va todos los días", "u": ""}, {"t": "Lo que estuviste alimentando", "d": 6, "q": "Qué tapabas y qué querés empezar a nutrir", "u": "", "dd": 6}, {"t": "El mapa de tus disparadores", "d": 8, "q": "Qué, cuándo y dónde", "u": "", "dd": 8}, {"t": "Tu acuerdo con tu forma de comer", "d": 9, "q": "Sin retarte", "u": "", "dd": 9}, {"t": "Tu objetivo", "d": 10, "q": "Concreto, con cuánto te importa y cuánta confianza tenés", "u": "", "dd": 10}, {"t": "La balanza", "d": 11, "q": "Las ventajas y desventajas del cambio", "u": "", "dd": 11}, {"t": "Tu paso chico", "d": 12, "q": "Con día y hora", "u": "", "dd": 12}, {"t": "Paso 2 · UNIR", "d": 15, "q": "El video de teoría", "u": "https://metodo.nuplan.com.ar/u"}, {"t": "Las cinco preguntas de UNIR", "d": 15, "q": "La raíz que hay debajo del hambre", "u": "", "dd": 15}, {"t": "El semáforo del hambre", "d": 16, "q": "Verde, amarillo o rojo, con tu diario", "u": "", "dd": 16}, {"t": "La pausa de 90 segundos", "d": 17, "q": "Con reloj y respiración. Usala cada vez que la necesites", "u": "", "dd": 17}, {"t": "Tu rueda de la alimentación", "d": 19, "q": "Los diez ejes, del 0 al 10", "u": "", "dd": 19}, {"t": "Aliados y saboteadores", "d": 24, "q": "Lo que te decís y lo que te podrías decir", "u": "", "dd": 24}, {"t": "Paso 3 &middot; PERSONALIZAR", "d": 29, "q": "Video, cinco preguntas, tu rueda de alimentaci&oacute;n, la lista &laquo;s&iacute; quiero&raquo; y la carta al plan", "u": "https://metodo.nuplan.com.ar/p"}, {"t": "Tu plan de la semana", "d": 33, "q": "Eleg&iacute;s lo que te gusta y se arma tu semana, con las porciones de Rosana", "u": "", "dd": 33}, {"t": "Paso 4 &middot; LIBERAR", "d": 43, "q": "Video, cinco preguntas, tu protocolo de deslices, reescribir la voz y la carta al d&iacute;a que abandonaste", "u": "https://metodo.nuplan.com.ar/l"}, {"t": "Paso 5 &middot; ACTIVAR", "d": 57, "q": "Video, cinco preguntas, tu tablero de evidencia, la lista de pruebas y la carta a tu yo que dudaba", "u": "https://metodo.nuplan.com.ar/a"}, {"t": "Paso 6 &middot; NATURALIZAR", "d": 71, "q": "Video, cinco preguntas, tu manual de autonom&iacute;a, el plan para las semanas dif&iacute;ciles y tu carta final", "u": "https://metodo.nuplan.com.ar/n-3944"}];
-var IA   = {"sabe": ["En qu&eacute; d&iacute;a va y en qu&eacute; letra del m&eacute;todo est&aacute;", "Qu&eacute; ejercicios ya complet&oacute; y cu&aacute;les todav&iacute;a no abri&oacute;", "Lo que ella misma escribi&oacute; en cada ejercicio, textual", "Su diario de comida y emoci&oacute;n de los &uacute;ltimos siete d&iacute;as", "Su mapa de disparadores, su protocolo y su manual, cuando ya existen", "Lo que Rosana le contest&oacute; en los check-in anteriores"], "como": ["Siempre la devuelve a lo que ella misma escribi&oacute;, no a un consejo general", "No inventa t&eacute;cnicas: usa la del m&eacute;todo que corresponde a la letra en la que est&aacute;", "Si pregunta por un paso que todav&iacute;a no abri&oacute;, se lo dice y no se adelanta", "Contesta corto y hablado, como lo dir&iacute;a Rosana en voz alta", "Nunca felicita de m&aacute;s ni dramatiza un mal d&iacute;a"], "no": ["Cualquier cosa cl&iacute;nica: s&iacute;ntomas, medicaci&oacute;n, patolog&iacute;as, estudios", "N&uacute;meros de ning&uacute;n tipo: ni de lo que come ni de su cuerpo", "Cambiar su plan o sus porciones", "Diagn&oacute;sticos de ning&uacute;n tipo, ni nutricionales ni psicol&oacute;gicos", "Opinar sobre lo que le dijo otro profesional"], "deriva": ["Cualquier pregunta cl&iacute;nica &rarr; <b>&laquo;esto lo vemos con Rosana&raquo;</b> y le llega el aviso en el momento", "Se&ntilde;ales de malestar fuerte o de da&ntilde;o &rarr; mensaje de contenci&oacute;n, los tel&eacute;fonos de ayuda, y aviso urgente a Rosana", "Se&ntilde;ales de trastorno alimentario &rarr; corta el tema, no da ning&uacute;n n&uacute;mero ni consejo, y avisa", "Pedido de cambiar el plan &rarr; lo anota y se lo deja a Rosana para la pr&oacute;xima sesi&oacute;n"]};
-var MAILS= [{"a": "Cuando arranca", "t": "Arranc&oacute; el programa", "q": "Todo lo que contó en el comienzo: quién es, su objetivo con sus palabras, su cuerpo hoy, cómo come, lo que le gusta, su salud, por qué está acá y a qué hora se comprometió a abrir la app."}, {"a": "Todos los d&iacute;as", "t": "Diario &middot; d&iacute;a N", "q": "Una carga por día, desde el día 8: la comida que eligió contar, a qué hora, qué la llevó a comer y si sacó foto. Si no te lo manda ese día, te llega solo la próxima vez que abre la app."}, {"a": "Cuando termina un ejercicio", "t": "Ejercicio · día N", "q": "Lo que escribió en el ejercicio de ese día, textual. Las fotos quedan en su cuenta: las ves en NuPlan → Programa."}, {"a": "D&iacute;as 14, 28, 42, 56, 70 y 84", "t": "Check-in &middot; d&iacute;a N", "q": "Cómo viene (muy bien, bien, más o menos o le está costando), lo que te cuenta con sus palabras, lo que necesita de vos y sus números: días hechos, días con diario, fotos y ejercicios mandados."}, {"a": "Cuando hace falta", "t": "La IA deriv&oacute; una pregunta", "q": "Lo que te pregunt&oacute; a vos sin saberlo: algo cl&iacute;nico, un pedido de cambiar el plan, o una se&ntilde;al que la IA no sigue sola. Con lo que le contest&oacute; mientras tanto."}];
+var IA   = {"sabe": ["En qué día va, en qué letra del método está y qué le toca hacer hoy", "Qué ejercicios ya se le abrieron", "Lo que escribió en sus últimos ocho ejercicios, textual (con sus check-in)", "Su diario de los últimos tres días con cargas", "Su objetivo y por qué está acá, con sus palabras", "Las últimas seis preguntas que le hizo y lo que le contestó", "No ve tus mensajes con ella ni lo que hablan en las sesiones"], "como": ["Siempre la devuelve a lo que ella misma escribi&oacute;, no a un consejo general", "No inventa t&eacute;cnicas: usa la del m&eacute;todo que corresponde a la letra en la que est&aacute;", "Si pregunta por un paso que todav&iacute;a no abri&oacute;, se lo dice y no se adelanta", "Contesta corto y hablado, como lo dir&iacute;a Rosana en voz alta", "Nunca felicita de m&aacute;s ni dramatiza un mal d&iacute;a"], "no": ["Cualquier cosa cl&iacute;nica: s&iacute;ntomas, medicaci&oacute;n, patolog&iacute;as, estudios", "N&uacute;meros de ning&uacute;n tipo: ni de lo que come ni de su cuerpo", "Cambiar su plan o sus porciones", "Diagn&oacute;sticos de ning&uacute;n tipo, ni nutricionales ni psicol&oacute;gicos", "Opinar sobre lo que le dijo otro profesional"], "deriva": ["Cualquier pregunta cl&iacute;nica &rarr; <b>&laquo;esto lo vemos con Rosana&raquo;</b> y le llega el aviso en el momento", "Se&ntilde;ales de malestar fuerte o de da&ntilde;o &rarr; mensaje de contenci&oacute;n, los tel&eacute;fonos de ayuda, y aviso urgente a Rosana", "Se&ntilde;ales de trastorno alimentario &rarr; corta el tema, no da ning&uacute;n n&uacute;mero ni consejo, y avisa", "Pedido de cambiar el plan &rarr; lo anota y se lo deja a Rosana para la pr&oacute;xima sesi&oacute;n"]};
+var MAILS= [{"a": "Cuando arranca", "t": "Arranc&oacute; el programa", "q": "Todo lo que contó en el comienzo: quién es, su objetivo con sus palabras, su cuerpo hoy, cómo come, lo que le gusta, su salud, por qué está acá y a qué hora se comprometió a abrir la app."}, {"a": "Todos los d&iacute;as", "t": "Diario &middot; d&iacute;a N", "q": "Una carga por día, desde el día 8: la comida que eligió contar, a qué hora, qué la llevó a comer y si sacó foto. Si no te lo manda ese día, te llega solo la próxima vez que abre la app."}, {"a": "Cuando termina un ejercicio", "t": "Ejercicio · día N", "q": "Lo que escribió en el ejercicio de ese día, textual. Las fotos quedan en su cuenta: las ves en NuPlan → Programa."}, {"a": "D&iacute;as 14, 28, 42, 56, 70 y 84", "t": "Check-in &middot; d&iacute;a N", "q": "Cómo viene (muy bien, bien, más o menos o le está costando), lo que te cuenta con sus palabras, lo que necesita de vos y sus números: días hechos, días con diario, fotos y ejercicios mandados."}, {"a": "Cuando hace falta", "t": "La IA deriv&oacute; una pregunta", "q": "Lo que te pregunt&oacute; a vos sin saberlo: algo cl&iacute;nico, un pedido de cambiar el plan, o una se&ntilde;al que la IA no sigue sola. Con lo que le contest&oacute; mientras tanto."}, {"a": "Cuando te escribe", "t": "Mensaje de …", "q": "Lo que te escribió en la pestaña Rosana. Le contestás desde NuPlan → Programa, y le llega a su app y a su mail."}, {"a": "Una vez por día, si hace falta", "t": "Sin cargar hace 2 días", "q": "Las consultantes que llevan 2 días sin cargar nada, con el día en que van. Una vez por cada vez que se frenan."}];
 
 /* ============ CONFIGURACION ============ */
 var CFG = {
@@ -1053,7 +1070,7 @@ function arrancarApp(){
   }
   document.getElementById("aWsp").href = waRosana();
   pintarHoy(); pintarGrilla(); pintarChat(); marcarNav(); pintarModo(); pintarCola(); pintarBanner();
-  mandarDiasPendientes();
+  mandarDiasPendientes(); msjCargar();
   var ic = document.getElementById("iChat");
   if(ic && !ic.value && S.borrador.chat) ic.value = S.borrador.chat;
   if(esRosana()){ irR("programa") }
@@ -1065,7 +1082,7 @@ function marcarNav(){
   var faltaCk = !!ckPendiente();
   document.querySelectorAll("#navC button").forEach(function(b){
     var v = b.getAttribute("data-ir"), vie = b.querySelector(".pt");
-    var hay = (v==="diario" && faltaDiario) || (v==="rosana" && faltaCk);
+    var hay = (v==="diario" && faltaDiario) || (v==="rosana" && (faltaCk || msjSinLeer() > 0));
     if(hay && !vie){ var s=document.createElement("span"); s.className="pt"; b.style.position="relative"; b.appendChild(s) }
     if(!hay && vie) vie.remove();
   });
@@ -1528,6 +1545,7 @@ function pintarRosana(){
       ". Tu recorrido queda guardado ahí: si cambiás de teléfono, entrás con el mismo mail y sigue todo.";
     document.getElementById("estCuenta").textContent = "";
   }
+  msjPintar(); msjCargar();
   marcarNav();
 }
 function mandarCheckin(){
@@ -1551,6 +1569,66 @@ function mandarCheckin(){
     e.textContent = textoEnvio(r);
     e.className = "est bien";
   }, { t:"ck", d:d }, "ck" + d);
+}
+
+/* ============ MENSAJES CON ROSANA (bloque 4) ============
+   Un hilo con Rosana en la pestaña Rosana. Lo que escribe queda en su cuenta y a Rosana le llega
+   por mail; lo que Rosana contesta desde NuPlan le aparece acá (con el punto en la pestaña) y por mail. */
+var MSJ = { l: null, cargando: false, falta: false };
+function msjSinLeer(){ return (MSJ.l || []).filter(function(m){ return m.de === "rosana" && !m.leido }).length }
+function msjCuando(ts){
+  var d = new Date(ts); if(isNaN(d)) return "";
+  var h = p2(d.getHours()) + ":" + p2(d.getMinutes()), f = hoyISO(d), hoy = hoyISO();
+  return f === hoy ? "hoy " + h : f === hoyISO(new Date(Date.now() - 86400000)) ? "ayer " + h : fechaLinda(f);
+}
+function msjCargar(){
+  if(!S.cuenta || esRosana() || !SB || MSJ.cargando) return;
+  MSJ.cargando = true;
+  Promise.resolve(SB.from("programa_mensajes").select("id, de, texto, creado, leido").order("creado", { ascending: true }).limit(300))
+    .then(function(r){
+      MSJ.cargando = false;
+      if(!r || r.error){ MSJ.falta = !!(r && r.error && /programa_mensajes|schema cache|does not exist|PGRST205/i.test(String(r.error.message || r.error.code || ""))); }
+      else { MSJ.l = r.data || []; MSJ.falta = false }
+      marcarNav();
+      if(document.querySelector('[data-p="rosana"].on')) msjPintar();
+    }, function(){ MSJ.cargando = false });
+}
+function msjPintar(){
+  var c = $id("msjCard"); if(!c) return;
+  c.hidden = esRosana(); if(esRosana()) return;
+  var L = $id("msjL"), G = $id("msjG"), B = $id("msjB"), T = $id("msjT");
+  var solo = function(t){ L.innerHTML = '<p class="sub" style="margin:0">' + t + '</p>'; G.hidden = true; B.hidden = true };
+  if(!S.cuenta) return solo("Para escribirle por acá, guardá tu recorrido con tu mail. Mientras, escribile por WhatsApp.");
+  if(MSJ.falta) return solo("Los mensajes por acá se activan en unos días. Mientras, escribile por WhatsApp.");
+  G.hidden = false; B.hidden = false;
+  var l = MSJ.l || [];
+  L.innerHTML = l.length ? '<div class="msjHilo">' + l.map(function(m){ var ro = m.de === "rosana";
+      return '<div class="msj ' + (ro ? "ro" : "yo") + (ro && !m.leido ? " nuevo" : "") + '"><small>' + (ro ? "Rosana" : "Vos") + " · " + esc(msjCuando(m.creado)) + '</small><p>' + esc(m.texto) + '</p></div>' }).join("") + '</div>'
+    : '<p class="sub" style="margin:0">' + (MSJ.l ? "Escribile lo que necesites: le llega a su mail y te contesta por acá." : "Trayendo tus mensajes…") + '</p>';
+  if(!T.value && S.borrador.msj) T.value = S.borrador.msj;
+  if(msjSinLeer() && SB){
+    Promise.resolve(SB.rpc("programa_mensajes_leidos", {})).then(function(r){
+      if(r && r.error) return;
+      (MSJ.l || []).forEach(function(m){ if(m.de === "rosana" && !m.leido) m.leido = new Date().toISOString() });
+      marcarNav();
+    }, function(){});
+  }
+}
+function msjMandar(){
+  var T = $id("msjT"), B = $id("msjB"), E = $id("msjE"), v = T.value.trim();
+  if(!v){ E.textContent = "Escribí tu mensaje."; E.className = "est mal"; T.focus(); return }
+  if(B.disabled || !S.cuenta || !SB) return;
+  B.disabled = true; E.textContent = "Mandando…"; E.className = "est";
+  Promise.resolve(SB.from("programa_mensajes").insert({ consultante: S.cuenta.id, de: "ella", texto: v }).select("id, de, texto, creado, leido").single())
+    .then(function(r){
+      B.disabled = false;
+      if(!r || r.error || !r.data){ E.textContent = "No se pudo mandar. Revisá tu conexión y probá de nuevo: lo que escribiste sigue ahí."; E.className = "est mal"; return }
+      MSJ.l = (MSJ.l || []).concat([r.data]); T.value = ""; delete S.borrador.msj; guardarLocal();
+      mandar("Mensaje de " + (S.nombre || "una consultante"), "Te escribió", [{ t:"Su mensaje", l:[{ k:"", v:v }] },
+        { t:"Para contestarle", l:[{ k:"", v:"Entrá a NuPlan → Programa → " + (S.nombre || "su nombre") + ". Lo que le contestes le llega a su app y a su mail." }] }], null, null, "msj-" + r.data.id);
+      msjPintar();
+      E.textContent = "Listo, le llegó a Rosana. Te contesta por acá y te avisa por mail."; E.className = "est bien";
+    }, function(){ B.disabled = false; E.textContent = "No se pudo mandar. Revisá tu conexión y probá de nuevo: lo que escribiste sigue ahí."; E.className = "est mal" });
 }
 
 /* ============ LINEA DE TIEMPO ============ */
@@ -2644,7 +2722,7 @@ function abrirEntrada(modo, paso2){
   var m = ENTRADA.modo = modo || "nuevo";
   ENTRADA.pendiente = false; ENTRADA.sesion = null;
   $id("spT").textContent = m === "guardar" ? "Guardá tu recorrido." : m === "volver" ? "Volvé a entrar." : m === "nombre" ? "¿Cómo te llamás?"
-    : m === "trayendo" ? "Trayendo tu recorrido…" : "Bienvenida.";
+    : m === "trayendo" ? "Trayendo tu recorrido…" : "Hola.";
   $id("spSub").textContent = m === "guardar" ? "Ahora está solo en este teléfono. Con tu mail queda guardado en tu cuenta: lo ves desde cualquier teléfono, y Rosana también."
     : m === "volver" ? "Cada tanto hay que volver a entrar. Lo que cargaste sigue guardado."
     : m === "nombre" ? "Así te habla la app, y Rosana sabe quién sos."
@@ -2658,7 +2736,7 @@ function abrirEntrada(modo, paso2){
   $id("bCodigo").hidden = m === "trayendo";
   $id("bCodigo").disabled = false;
   if(m === "nombre") $id("iNom").value = S.nombre || "";
-  else $id("iMail").value = (S.login && S.login.mail) || (m === "volver" && S.cuenta ? S.cuenta.email : S.email) || "";
+  else $id("iMail").value = (S.login && S.login.mail) || (m === "volver" && S.cuenta ? S.cuenta.email : S.email) || mailDelLink() || "";
   $id("estSplash").textContent = ""; $id("estSplash").className = "est";
   $id("spLocalP").hidden = true;
   $id("spPaso1").hidden = !!paso2; $id("spPaso2").hidden = !paso2;
@@ -2841,6 +2919,7 @@ function continuarEntrada(){
   });
 }
 function seguirDespuesDeEntrar(){
+  if(!S.nombre && S.cuenta && SB && !ENTRADA.altaVista){ ENTRADA.altaVista = true; buscarAlta().then(seguirDespuesDeEntrar); return }
   if(!S.nombre){ abrirEntrada("nombre"); return }
   if(!S.onb.listo){ ONB_I = Math.max(0, Math.min(S.onbPaso || 0, ONB.length - 1)); pintarOnb(); mostrar("onbo"); return }
   mostrar("app"); arrancarApp();
@@ -2857,6 +2936,19 @@ function seguirSinCuenta(){
   S.email = S.email || mail; S.inicio = S.inicio || hoyISO();
   guardar();
   seguirDespuesDeEntrar();
+}
+/* bloque 4: si Rosana la dio de alta, su nombre ya está (no se lo vuelve a preguntar) */
+function buscarAlta(){
+  var mail = String((S.cuenta && S.cuenta.email) || "").toLowerCase();
+  var q = Promise.resolve(SB.from("programa_altas").select("nombre").eq("email", mail).limit(1)).then(function(r){
+    var n = r && !r.error && r.data && r.data[0] && String(r.data[0].nombre || "").trim();
+    if(n && !S.nombre){ S.nombre = n; guardar() }
+  }, function(){});
+  return Promise.race([q, new Promise(function(ok){ setTimeout(ok, 5000) })]);
+}
+function mailDelLink(){
+  try { var m = new URLSearchParams(location.search).get("m") || "";
+    return /^[^\s@<>"',;]+@[^\s@<>"',;]+\.[a-z]{2,}$/i.test(m) ? m.toLowerCase() : "" } catch(e){ return "" }
 }
 /* Qué pantalla mostrar al abrir la app: no espera a internet. */
 function decidirPantalla(){
@@ -2907,6 +2999,8 @@ document.getElementById("bCodigo").onclick = function(){ pedirCodigo(false) };
 ["iMail","iNom"].forEach(function(id){ document.getElementById(id).addEventListener("keydown", function(e){
   if(e.key === "Enter"){ e.preventDefault(); pedirCodigo(false) } }) });
 document.getElementById("bEntrar").onclick = verificarCodigo;
+document.getElementById("msjB").onclick = msjMandar;
+document.getElementById("msjT").addEventListener("input", function(){ S.borrador.msj = this.value; guardarLocal() });
 document.getElementById("iCod").addEventListener("keydown", function(e){ if(e.key === "Enter"){ e.preventDefault(); verificarCodigo() } });
 document.getElementById("bReenviar").onclick = function(){ pedirCodigo(true) };
 document.getElementById("bOtroMail").onclick = function(){ S.login = null; guardarLocal(); abrirEntrada(ENTRADA.modo) };

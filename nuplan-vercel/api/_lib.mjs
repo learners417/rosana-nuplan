@@ -794,3 +794,24 @@ export async function firmarFotos(rutas, segundos = 3600) {
   }
   return urls;
 }
+
+
+// ---------------------------------------------------------------------------
+// Bloque 4 · pedidos a la base con la sesión de quien llama (la base decide qué
+// puede) o con la clave de servicio (solo el servidor: el aviso diario a Ro).
+// ---------------------------------------------------------------------------
+export function supabaseConToken(ruta, token, opciones = {}) {
+  return consultarSupabase(ruta, token, opciones);
+}
+export async function restServicio(ruta, opciones = {}) {
+  const clave = claveServicio();
+  if (!clave) return { sinClave: true };
+  const r = await fetch(`${SUPABASE_URL}${ruta}`, {
+    ...opciones,
+    headers: cabecerasServicio({ "Content-Type": "application/json", ...(opciones.headers || {}) }),
+    signal: AbortSignal.timeout(10000),
+  });
+  const texto = await r.text();
+  if (!r.ok) throw new Error(`${ruta.split("?")[0]} respondió ${r.status}: ${texto.slice(0, 200)}`);
+  return { datos: texto ? JSON.parse(texto) : null };
+}

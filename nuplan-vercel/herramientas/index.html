@@ -283,6 +283,20 @@
   .prog-fotos img{width:100%;aspect-ratio:1;object-fit:cover;display:block;background:var(--tinte-2);}
   .prog-fotos figcaption{font-family:var(--mono);font-size:.9rem;color:var(--coral-dark);padding:6px 8px;}
   .prog-vacio{color:var(--muted);margin:0;}
+  .prog-alta{display:flex;flex-direction:column;align-items:flex-start;gap:8px;}
+  .prog-alta>div{width:100%;}
+  .prog-alta h3{margin:0 0 6px;}
+  .prog-alta .campo input{width:100%;}
+  .prog-pend{cursor:default;}
+  .prog-pend:hover{transform:none;box-shadow:var(--sombra);border-color:var(--borde);}
+  .prog-nuevo{background:var(--coral) !important;color:#fff;font-weight:700;}
+  .msj-hilo{display:flex;flex-direction:column;gap:10px;}
+  .msj{max-width:88%;border-radius:16px;padding:12px 15px;}
+  .msj small{display:block;font-family:var(--mono);font-size:.9rem;color:var(--coral-dark);margin-bottom:4px;}
+  .msj p{margin:0;white-space:pre-wrap;overflow-wrap:anywhere;}
+  .msj-ella{background:var(--bg);align-self:flex-start;}
+  .msj-ro{background:var(--tinte);align-self:flex-end;}
+  #pc-msj textarea{width:100%;font:inherit;font-weight:400;font-size:1rem;border:1.5px solid var(--borde);border-radius:var(--r-lg);padding:12px 14px;margin-top:8px;background:var(--surface);color:var(--ink);}
   @media(max-width:640px){ .prog-sec{padding:20px 18px;} .prog-item{padding:18px;} }
   .enlace{background:none;border:none;color:var(--coral-dark);font:inherit;font-weight:700;cursor:pointer;padding:10px 2px;min-height:44px;text-decoration:underline;text-underline-offset:3px;}
   .solo-imprimir{display:none !important;}
@@ -622,6 +636,20 @@
   <span class="kicker">Programa de 90 días</span>
   <h2>Tus consultantes</h2>
   <p class="bajada">Cada una entra a su app con su mail. Acá ves en qué día va y todo lo que carga: diario, ejercicios, notas y fotos.</p>
+  <div class="caja prog-alta">
+    <button type="button" class="btn" id="prog-alta-abrir" onclick="altaAbrir()">Dar de alta a una consultante</button>
+    <div id="prog-alta-form" class="oculto">
+      <h3>Dar de alta a una consultante</h3>
+      <p class="nota" style="margin-top:0">Le llega un mail con el link a su app. Entra con su mail y un código, sin contraseña.</p>
+      <label class="campo">Nombre y apellido<input type="text" id="alta-nombre" autocomplete="off"></label>
+      <label class="campo">Mail<input type="email" id="alta-mail" autocomplete="off" inputmode="email" autocapitalize="off" spellcheck="false"></label>
+      <div class="nav-pasos" style="margin-top:0">
+        <button type="button" class="btn suave" onclick="altaCerrar()">Cancelar</button>
+        <button type="button" class="btn" id="alta-ok" onclick="altaGuardar()">Darla de alta y mandarle el acceso</button>
+      </div>
+      <p class="aviso" id="alta-est"></p>
+    </div>
+  </div>
   <div class="caja">
     <div class="buscador">
       <input type="text" id="prog-busca" placeholder="Buscar por nombre o mail…" autocomplete="off" oninput="pintarPrograma()">
@@ -2291,7 +2319,7 @@ var EJERCICIOS_SUELTOS = [
    PROGRAMA DE 90 DÍAS (Turno 3) · lo que cargan las consultantes en /mi-plan/.
    Solo lectura. La base se lo muestra solo al equipo (perfil habilitado).
    ===================================================================== */
-var prog = { lista:null, actual:null, n:0 };
+var prog = { lista:null, actual:null, n:0, altas:null, sinLeer:{}, faltaSQL4:false };
 var PIXEL_VACIO = "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7";
 function progDia(inicio){
   if(!inicio) return 1;
@@ -2329,28 +2357,123 @@ async function abrirPrograma(recargar){
     return;
   }
   prog.lista=r.data||[];
+  await progExtras();
+  if(n!==prog.n) return;
   pintarPrograma();
 }
 function pintarPrograma(){
   if(!prog.lista) return;
   var q=String($("prog-busca").value||"").toLowerCase().trim();
-  if(!prog.lista.length){
+  var coincide=function(nombre, mail){ return !q || String(nombre||"").toLowerCase().indexOf(q)>-1 || String(mail||"").toLowerCase().indexOf(q)>-1; };
+  var mails={}; prog.lista.forEach(function(x){ var e=String((x.resumen||{}).email||"").toLowerCase(); if(e) mails[e]=1; });
+  var pend=(prog.altas||[]).filter(function(a){ return !mails[a.email] && coincide(a.nombre, a.email); });
+  var l=prog.lista.filter(function(x){ var r=x.resumen||{}; return coincide(r.nombre, r.email); });
+  if(!prog.lista.length && !(prog.altas||[]).length){
     $("prog-est").textContent="";
-    $("prog-lista").innerHTML='<div class="caja"><p class="prog-vacio">Todavía no hay consultantes con cuenta. Cuando una entra con su mail a <b>'+esc(location.origin)+'/mi-plan/</b>, aparece acá.</p></div>';
+    $("prog-lista").innerHTML='<div class="caja"><p class="prog-vacio">Todavía no hay consultantes. Dala de alta arriba: le llega el mail con el acceso y, cuando entra, aparece acá.</p></div>';
     return;
   }
-  var l=prog.lista.filter(function(x){ var r=x.resumen||{};
-    return !q || String(r.nombre||"").toLowerCase().indexOf(q)>-1 || String(r.email||"").toLowerCase().indexOf(q)>-1; });
-  $("prog-est").textContent = l.length + (l.length===1 ? " consultante" : " consultantes") + (q ? " con «"+$("prog-busca").value.trim()+"»" : "");
-  $("prog-lista").innerHTML=l.map(function(x){
-    var r=x.resumen||{}, d=progDia(r.inicio);
+  $("prog-est").textContent = l.length + (l.length===1 ? " consultante" : " consultantes") +
+    (pend.length ? " · " + pend.length + (pend.length===1 ? " alta sin entrar todavía" : " altas sin entrar todavía") : "") +
+    (q ? " con «"+$("prog-busca").value.trim()+"»" : "");
+  $("prog-lista").innerHTML=pend.map(function(a){
+    return '<div class="prog-item prog-pend"><b>'+esc(a.nombre)+'</b><span class="prog-mail">'+esc(a.email)+'</span>'+
+      '<span class="prog-dia">Alta del '+esc(progFecha(String(a.creado||"").slice(0,10)))+' · todavía no entró</span>'+
+      '<button type="button" class="btn suave chico" data-reenviar="'+esc(a.email)+'">Mandarle el acceso de nuevo</button></div>';
+  }).join("")+l.map(function(x){
+    var r=x.resumen||{}, d=progDia(r.inicio), nl=prog.sinLeer[x.user_id]||0;
     return '<button type="button" class="prog-item" data-u="'+esc(x.user_id)+'">'+
       '<b>'+esc(r.nombre||"Sin nombre")+'</b><span class="prog-mail">'+esc(r.email||"")+'</span>'+
       '<span class="prog-dia">Día '+d+' de 90 · '+progLetra(d)+' · '+esc(progHace(x.actualizado))+'</span>'+
-      '<span class="prog-cifras"><span>'+(+r.dias_diario||0)+' días con diario</span><span>'+(+r.ejercicios||0)+' ejercicios</span>'+
+      '<span class="prog-cifras">'+(nl ? '<span class="prog-nuevo">'+nl+(nl===1 ? ' mensaje sin leer' : ' mensajes sin leer')+'</span>' : '')+
+      '<span>'+(+r.dias_diario||0)+' días con diario</span><span>'+(+r.ejercicios||0)+' ejercicios</span>'+
       '<span>'+(+r.fotos||0)+' fotos</span><span>'+(+r.checkins||0)+' check-in</span></span></button>';
   }).join("");
-  $("prog-lista").querySelectorAll(".prog-item").forEach(function(b){ b.onclick=function(){ abrirConsultante(b.getAttribute("data-u")); }; });
+  $("prog-lista").querySelectorAll(".prog-item[data-u]").forEach(function(b){ b.onclick=function(){ abrirConsultante(b.getAttribute("data-u")); }; });
+  $("prog-lista").querySelectorAll("[data-reenviar]").forEach(function(b){ b.onclick=async function(){
+    var a=(prog.altas||[]).filter(function(x){ return x.email===b.getAttribute("data-reenviar"); })[0]; if(!a || b.disabled) return;
+    b.disabled=true; var r=await altaMandar(a.nombre, a.email); b.disabled=false; avisar(r.texto, 12000); }; });
+}
+/* ===== bloque 4 · altas y mensajes ===== */
+async function progExtras(){
+  var a, m;
+  try{ a=await sb.from("programa_altas").select("email, nombre, creado, mail_enviado").order("creado",{ascending:false}).limit(500); }catch(e){ a={error:e}; }
+  try{ m=await sb.from("programa_mensajes").select("consultante").eq("de","ella").is("leido",null).limit(2000); }catch(e){ m={error:e}; }
+  prog.faltaSQL4=!!(a.error && /programa_altas|schema cache|does not exist|PGRST205/i.test(String(a.error.message||a.error.code||"")));
+  prog.altas=a.error ? [] : (a.data||[]);
+  prog.sinLeer={};
+  (m.error ? [] : (m.data||[])).forEach(function(x){ prog.sinLeer[x.consultante]=(prog.sinLeer[x.consultante]||0)+1; });
+}
+function altaAbrir(){
+  $("prog-alta-form").classList.remove("oculto"); $("prog-alta-abrir").classList.add("oculto");
+  var e=$("alta-est"); e.className=prog.faltaSQL4 ? "aviso error" : "aviso";
+  e.textContent=prog.faltaSQL4 ? "Falta correr el SQL del bloque 4 en Supabase. Avisale a Javo." : "";
+  $("alta-nombre").focus();
+}
+function altaCerrar(){
+  $("prog-alta-form").classList.add("oculto"); $("prog-alta-abrir").classList.remove("oculto");
+  $("alta-nombre").value=""; $("alta-mail").value=""; $("alta-est").textContent="";
+}
+async function altaMandar(nombre, email){
+  try{
+    var res=await fetch("/api/alta",{ method:"POST", headers:await cabecerasIA(), body:JSON.stringify({ nombre:nombre, email:email }) });
+    var j=await res.json().catch(function(){ return {}; });
+    if(!res.ok) return { ok:false, texto:j.error||"No se pudo dar de alta. Probá de nuevo." };
+    var nom=String(nombre).split(" ")[0];
+    return { ok:true, link:j.link, texto: j.mail==="enviado" ? "Listo: el alta de "+nom+" quedó guardada y le llegó el mail con el acceso."
+      : j.mail==="sin_config" ? "El alta de "+nom+" quedó guardada, pero el mail todavía no sale: falta que Javo configure los mails. Mientras, mandale este link por WhatsApp: "+j.link
+      : "El alta de "+nom+" quedó guardada, pero el mail no salió. Probá «Mandarle el acceso de nuevo» en un rato." };
+  }catch(e){ return { ok:false, texto:"Sin conexión. Probá de nuevo." }; }
+}
+async function altaGuardar(){
+  var n=$("alta-nombre").value.replace(/\s+/g," ").trim(), m=$("alta-mail").value.trim().toLowerCase(), e=$("alta-est"), b=$("alta-ok");
+  if(n.length<2){ e.className="aviso error"; e.textContent="Escribí su nombre y apellido."; $("alta-nombre").focus(); return; }
+  if(!/^[^\s@<>"',;]+@[^\s@<>"',;]+\.[a-z]{2,}$/i.test(m)){ e.className="aviso error"; e.textContent="Revisá el mail: así no le va a llegar."; $("alta-mail").focus(); return; }
+  if(b.disabled) return;
+  b.disabled=true; e.className="aviso"; e.textContent="Guardando el alta…";
+  var r=await altaMandar(n, m);
+  b.disabled=false; e.className=r.ok ? "aviso" : "aviso error"; e.textContent=r.texto;
+  if(r.ok){ $("alta-nombre").value=""; $("alta-mail").value=""; await progExtras(); pintarPrograma(); }
+}
+function progMsj(x, nom){
+  var ro=x.de==="rosana";
+  return '<div class="msj '+(ro ? "msj-ro" : "msj-ella")+'"><small>'+(ro ? "Vos" : esc(nom||"Ella"))+' · '+esc(progHace(x.creado))+'</small><p>'+esc(x.texto)+'</p></div>';
+}
+function progMensajes(ms, nom){
+  if(ms && ms.error){
+    var falta=/programa_mensajes|schema cache|does not exist|PGRST205/i.test(String(ms.error.message||ms.error.code||""));
+    return progSec("Mensajes", progVacio(falta ? "Los mensajes se activan cuando Javo corra el SQL del bloque 4." : "No se pudieron cargar los mensajes."));
+  }
+  var l=(ms&&ms.data)||[];
+  return '<div class="prog-sec" id="pc-msj"><h3>Mensajes</h3><div class="msj-hilo">'+l.map(function(x){ return progMsj(x, nom); }).join("")+'</div>'+
+    (l.length ? '' : progVacio("Todavía no se escribieron. Lo que le mandes le llega a su app y a su mail."))+
+    '<label class="campo" style="margin:16px 0 0">Tu mensaje<textarea id="pc-msj-t" rows="3" placeholder="Escribile…"></textarea></label>'+
+    '<div class="nav-pasos" style="margin-top:12px"><button type="button" class="btn" id="pc-msj-b">Mandarle</button></div><p class="aviso" id="pc-msj-e"></p></div>';
+}
+function progMsjCablear(uid, nom){
+  var b=$("pc-msj-b"); if(!b) return;
+  b.onclick=async function(){
+    var t=$("pc-msj-t"), e=$("pc-msj-e"), v=t.value.trim();
+    if(!v){ e.className="aviso error"; e.textContent="Escribí el mensaje."; return; }
+    if(b.disabled) return;
+    b.disabled=true; e.className="aviso"; e.textContent="Mandando…";
+    try{
+      var res=await fetch("/api/mensaje",{ method:"POST", headers:await cabecerasIA(), body:JSON.stringify({ consultante:uid, texto:v }) });
+      var j=await res.json().catch(function(){ return {}; });
+      b.disabled=false;
+      if(!res.ok){ e.className="aviso error"; e.textContent=j.error||"No se pudo mandar. Probá de nuevo."; return; }
+      t.value="";
+      var hilo=document.querySelector("#pc-msj .msj-hilo"), vac=document.querySelector("#pc-msj .prog-vacio");
+      if(vac) vac.remove();
+      if(hilo) hilo.insertAdjacentHTML("beforeend", progMsj({ de:"rosana", texto:v, creado:(j.mensaje&&j.mensaje.creado)||new Date().toISOString() }, nom));
+      e.className="aviso";
+      e.textContent= j.mail==="enviado" ? "Listo: le llegó a su app y a su mail." : j.mail==="sin_config" ? "Le llegó a su app. El aviso por mail sale cuando Javo configure los mails."
+        : j.mail==="sin_mail" ? "Le llegó a su app." : "Le llegó a su app, pero el aviso por mail no salió.";
+    }catch(err){ b.disabled=false; e.className="aviso error"; e.textContent="Sin conexión. Probá de nuevo."; }
+  };
+  if(prog.sinLeer[uid]){
+    Promise.resolve(sb.rpc("programa_mensajes_leidos",{ p_consultante:uid })).then(function(r){ if(!r || !r.error) prog.sinLeer[uid]=0; }, function(){});
+  }
 }
 function progSec(t, cuerpo){ return '<div class="prog-sec"><h3>'+esc(t)+'</h3>'+cuerpo+'</div>'; }
 function progPar(k, v){ return '<div class="prog-par">'+(k?'<small>'+esc(k)+'</small>':'')+'<p>'+esc(v)+'</p></div>'; }
@@ -2371,10 +2494,14 @@ async function abrirConsultante(uid){
   $("pc-nombre").textContent=E.nombre||R.nombre||"Sin nombre";
   var ini=progFecha(E.inicio||R.inicio);
   $("pc-bajada").textContent=[E.email||R.email||"", ini ? "empezó el "+ini : "", "última actividad: "+progHace(r.data.actualizado)].filter(Boolean).join(" · ");
+  var ms; try{ ms=await sb.from("programa_mensajes").select("id, de, texto, creado, leido").eq("consultante", uid).order("creado",{ascending:true}).limit(300); }catch(e){ ms={error:e}; }
+  if(n!==prog.n || prog.actual!==uid) return;
+  var nomC=String(E.nombre||R.nombre||"").split(" ")[0];
   var h="";
   var onb=Array.isArray(E.onbTexto) ? E.onbTexto : [];
   var obj=onb.filter(function(x){ return x && /^Tu objetivo, con tus palabras$/.test(String(x.k||"")); })[0];
   if(obj) h+=progSec("Su objetivo, con sus palabras", progPar("", obj.v));
+  h+=progMensajes(ms, nomC);
   h+=progSec("Lo que contó antes de empezar", onb.length ? onb.map(function(x){ return progPar(x&&x.k, x&&x.v); }).join("") : progVacio("Todavía no completó el comienzo."));
   var dias=Object.keys(E.diario||{}).filter(function(f){ return Array.isArray(E.diario[f]) && E.diario[f].length; }).sort().reverse().slice(0,7);
   h+=progSec("Su diario · los últimos 7 días con comidas", dias.length ? dias.map(function(f){
@@ -2395,6 +2522,7 @@ async function abrirConsultante(uid){
   var cks=Object.keys(E.checkins||{}).filter(function(k){ return E.checkins[k]===true; }).sort(function(a,b){ return a-b; });
   h+=progSec("Check-in", cks.length ? progVacio("Te mandó su resumen "+(cks.length===1 ? "el día "+cks[0] : "los días "+cks.join(", "))+".") : progVacio("Todavía no mandó ningún check-in."));
   $("pc-cuerpo").innerHTML=h;
+  progMsjCablear(uid, nomC);
   progFotos(n, uid);
 }
 async function progFotos(n, uid){

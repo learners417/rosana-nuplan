@@ -644,6 +644,66 @@
     .sec-evo{break-inside:avoid;}
   }
 </style>
+<style id="u1-antro">
+  /* ===== unificación U1 · antropometría ===== */
+  .an-grid{display:grid;grid-template-columns:minmax(0,1fr);gap:0 22px;align-items:start;}
+  @media(min-width:1000px){ .an-grid{grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);} .an-res-caja{position:sticky;top:calc(var(--barra,64px) + 14px);} }
+  .an-campos{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 14px;}
+  @media(min-width:640px){ .an-campos{grid-template-columns:repeat(3,minmax(0,1fr));} }
+  .an-campos .campo{display:flex;flex-direction:column;justify-content:flex-end;}
+  .an-et{display:block;font-weight:600;margin-bottom:8px;}
+  .an-pills{display:flex;flex-wrap:wrap;gap:8px;}
+  .an-pills button{min-height:48px;padding:0 18px;border-radius:999px;border:1px solid var(--borde);background:var(--surface);font:inherit;font-weight:600;color:var(--texto);cursor:pointer;}
+  .an-pills button.on{background:var(--coral);border-color:var(--coral);color:#fff;}
+  input.an-raro{border-color:var(--coral-dark) !important;background:#fdeeea !important;}
+  #an-res .an-k{font-family:var(--mono);font-size:.9rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--coral-dark);margin:18px 0 8px;}
+  #an-res .an-k:first-child{margin-top:0;}
+  .an-t{width:100%;border-collapse:collapse;}
+  .an-t td{padding:9px 6px;border-bottom:1px solid var(--borde);vertical-align:middle;}
+  .an-t td:first-child{font-weight:600;padding-left:0;}
+  .an-t td.mono{font-family:var(--mono);white-space:nowrap;}
+  .an-t td.an-cc{text-align:right;padding-right:0;}
+  .an-t .an-pct{font-family:var(--mono);}
+  .an-t small,.an-tabla small{font-size:.9rem;color:var(--muted);}
+  .an-barra{display:flex;height:16px;border-radius:999px;overflow:hidden;background:var(--borde);margin:0 0 12px;}
+  .an-barra i{display:block;height:100%;}
+  .an-barra .an-g{background:#f6a29a;} .an-barra .an-m{background:#e8472a;} .an-barra .an-h{background:#c53a1e;} .an-barra .an-r{background:#e5d5d0;}
+  .an-ley{display:flex;flex-wrap:wrap;gap:6px 16px;margin:-4px 0 10px;font-family:var(--mono);font-size:.9rem;color:var(--muted);}
+  .an-ley i{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:6px;vertical-align:-1px;}
+  .an-ley .an-g{background:#f6a29a;} .an-ley .an-m{background:#e8472a;} .an-ley .an-h{background:#c53a1e;} .an-ley .an-r{background:#e5d5d0;}
+  .an-cal{display:inline-block;padding:2px 10px;border-radius:999px;font-size:.9rem;font-weight:700;background:#fff1ec;color:var(--coral-dark);white-space:nowrap;}
+  .an-cal.an-amejorar,.an-cal.an-regular{background:#fde6df;}
+  .an-datos{display:flex;flex-wrap:wrap;gap:8px 22px;margin:0 0 6px;font-size:1.05rem;}
+  .an-datos b{font-family:var(--mono);font-size:.9rem;color:var(--coral-dark);margin-right:6px;font-weight:700;}
+  .an-barra-imp{height:34px;margin:12px 0 6px;}
+  .an-barra-imp i{display:flex;align-items:center;justify-content:center;overflow:hidden;}
+  .an-barra-imp i span{display:none;font-style:normal;font-family:var(--mono);font-weight:700;color:#1a1a1a;white-space:nowrap;padding:0 4px;}
+  .an-barra-imp .an-m span,.an-barra-imp .an-h span{color:#fff;}
+  .tabla.an-tabla{min-width:0;margin-top:10px;}
+  .tabla.an-tabla td{padding:11px 10px;}
+  .an-val p{margin:0 0 10px;line-height:1.55;}
+  .an-metodo{margin-top:16px;}
+  .hoja-cab-swiss{display:flex;justify-content:space-between;align-items:center;gap:16px;border-bottom:2px solid #e2231a !important;}
+  .hoja-cab-swiss img{height:40px;width:auto;}
+  .hoja-cab-swiss span{text-align:right;line-height:1.4;}
+  @media(max-width:640px){
+    .tabla.an-tabla td:empty{display:none;}
+    .an-t td.mono{white-space:normal;}
+    .an-t .an-pct{display:block;}
+    .an-cal{white-space:normal;}
+  }
+  @media print{
+    .an-ley-imp{display:none !important;}
+    .an-barra-imp i span{display:block;}
+    .an-barra-imp{height:9mm;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+    .an-barra-imp i span{font-size:10pt;}
+    .tabla.an-tabla td,.tabla.an-tabla th{padding:1.6mm 2mm;}
+    .tabla.an-tabla small,.an-datos b,.an-cal{font-size:10pt !important;}
+    .an-cal{background:none !important;border:1px solid #c53a1e;}
+    .hoja-cab-swiss img{height:12mm;}
+    #p-antro .tabla-scroll,#p-antro .an-val{break-inside:avoid;}
+  }
+</style>
 </head>
 <body>
 
@@ -704,6 +764,7 @@
   <div class="grupo-t">Con una paciente</div>
   <div class="tarjetas">
     <button class="tarjeta" onclick="abrirConsulta()"><span class="ico"><svg class="i" aria-hidden="true"><use href="#i-consulta"/></svg></span><span class="tx"><h3>Nueva consulta</h3><p>Peso, cintura, adherencia, energía y sueño.</p></span><svg class="i chev" aria-hidden="true"><use href="#i-chev"/></svg></button>
+    <button class="tarjeta" onclick="abrirAntro()"><span class="ico"><svg class="i" aria-hidden="true"><use href="#i-pasos"/></svg></span><span class="tx"><h3>Antropometría</h3><p>Pliegues, perímetros, composición corporal y su informe.</p></span><svg class="i chev" aria-hidden="true"><use href="#i-chev"/></svg></button>
     <button class="tarjeta" onclick="abrirPlanes()"><span class="ico"><svg class="i" aria-hidden="true"><use href="#i-plato"/></svg></span><span class="tx"><h3>Plan alimentario</h3><p>El plato, el menú de la semana y las compras.</p></span><svg class="i chev" aria-hidden="true"><use href="#i-chev"/></svg></button>
     <button class="tarjeta" onclick="abrirRecetario()"><span class="ico"><svg class="i" aria-hidden="true"><use href="#i-receta"/></svg></span><span class="tx"><h3>Recetario</h3><p>Las recetas que elijas, listas para imprimir.</p></span><svg class="i chev" aria-hidden="true"><use href="#i-chev"/></svg></button>
     <button class="tarjeta" onclick="abrirGuardados()"><span class="ico"><svg class="i" aria-hidden="true"><use href="#i-carpeta"/></svg></span><span class="tx"><h3>Planes guardados</h3><p>Abrir, imprimir o corregir planes ya hechos.</p></span><svg class="i chev" aria-hidden="true"><use href="#i-chev"/></svg></button>
@@ -810,6 +871,94 @@
 </section>
 
 <!-- ============ FICHA DE LA PACIENTE ============ -->
+<!-- ============ ANTROPOMETRÍA (unificación U1) ============ -->
+<section class="pantalla wrap oculto" id="p-antro">
+  <span class="kicker no-imprimir">Antropometría</span>
+  <h2 class="no-imprimir" id="an-titulo">Antropometría</h2>
+  <p class="bajada no-imprimir">Pliegues, perímetros y diámetros. Con peso y talla ya se guarda; con las 17 medidas sale la composición corporal completa y el informe.</p>
+  <div class="caja no-imprimir" id="an-quien">
+    <div class="buscador" id="an-buscar">
+      <input type="text" id="busca-paciente-an" placeholder="Buscar paciente…" aria-label="Buscar paciente" autocomplete="off" oninput="filtrarPacientesAn(this.value)">
+      <ul class="resultados" id="lista-pacientes-an"></ul>
+    </div>
+    <div class="elegido oculto" id="an-elegido" style="margin-top:0;">
+      <div><b id="an-nombre"></b><small id="an-datos"></small></div>
+      <div class="botonera"><button class="btn chico suave" onclick="anDeselegir()">Cambiar</button></div>
+    </div>
+  </div>
+  <div id="an-form" class="oculto no-imprimir">
+    <div class="an-grid">
+      <div class="an-col" oninput="anActualizar()">
+        <div class="caja">
+          <span class="sub">La medición</span>
+          <div class="an-campos">
+            <label class="campo">Fecha<input type="date" id="an-fecha" onchange="anCambioFecha()"></label>
+            <label class="campo">Edad<input type="number" min="10" max="99" inputmode="numeric" id="an-edad" placeholder="años"></label>
+          </div>
+          <div class="campo"><span class="an-et">Sexo</span><div class="an-pills" id="an-sexo"><button type="button" data-v="Femenino" onclick="anElegirPildora('sexo','Femenino')">Mujer</button><button type="button" data-v="Masculino" onclick="anElegirPildora('sexo','Masculino')">Varón</button></div></div>
+          <div class="campo"><span class="an-et">Actividad física</span><div class="an-pills" id="an-act"><button type="button" data-v="Activa" onclick="anElegirPildora('act','Activa')">Activa · 150 min o más por semana</button><button type="button" data-v="Sedentaria" onclick="anElegirPildora('act','Sedentaria')">Sedentaria</button></div></div>
+          <p class="nota" id="an-grupo" style="margin:4px 0 0;"></p>
+        </div>
+        <div class="caja">
+          <span class="sub">Peso y talla</span>
+          <div class="an-campos">
+            <label class="campo">Peso (kg)<input type="number" step="0.1" min="0" inputmode="decimal" id="an-weight"></label>
+            <label class="campo">Talla (cm)<input type="number" step="0.1" min="0" inputmode="decimal" id="an-height"></label>
+          </div>
+        </div>
+        <div class="caja">
+          <span class="sub">Pliegues (mm)</span>
+          <div class="an-campos">
+            <label class="campo">Tríceps<input type="number" step="0.1" min="0" inputmode="decimal" id="an-fold_triceps"></label>
+            <label class="campo">Subescapular<input type="number" step="0.1" min="0" inputmode="decimal" id="an-fold_subscapular"></label>
+            <label class="campo">Cresta ilíaca<input type="number" step="0.1" min="0" inputmode="decimal" id="an-fold_iliac_crest"></label>
+            <label class="campo">Abdominal<input type="number" step="0.1" min="0" inputmode="decimal" id="an-fold_abdominal"></label>
+            <label class="campo">Muslo anterior<input type="number" step="0.1" min="0" inputmode="decimal" id="an-fold_front_thigh"></label>
+            <label class="campo">Pantorrilla medial<input type="number" step="0.1" min="0" inputmode="decimal" id="an-fold_medial_calf"></label>
+          </div>
+        </div>
+        <div class="caja">
+          <span class="sub">Perímetros (cm)</span>
+          <div class="an-campos">
+            <label class="campo">Brazo relajado<input type="number" step="0.1" min="0" inputmode="decimal" id="an-girth_arm_relaxed"></label>
+            <label class="campo">Tórax<input type="number" step="0.1" min="0" inputmode="decimal" id="an-girth_chest"></label>
+            <label class="campo">Cintura<input type="number" step="0.1" min="0" inputmode="decimal" id="an-girth_waist"></label>
+            <label class="campo">Umbilical<input type="number" step="0.1" min="0" inputmode="decimal" id="an-girth_umbilical"></label>
+            <label class="campo">Cadera<input type="number" step="0.1" min="0" inputmode="decimal" id="an-girth_hip"></label>
+            <label class="campo">Muslo medial<input type="number" step="0.1" min="0" inputmode="decimal" id="an-girth_thigh_mid"></label>
+            <label class="campo">Pantorrilla<input type="number" step="0.1" min="0" inputmode="decimal" id="an-girth_calf"></label>
+          </div>
+        </div>
+        <div class="caja">
+          <span class="sub">Diámetros (cm)</span>
+          <div class="an-campos">
+            <label class="campo">Fémur<input type="number" step="0.1" min="0" inputmode="decimal" id="an-diam_femur"></label>
+            <label class="campo">Muñeca<input type="number" step="0.1" min="0" inputmode="decimal" id="an-diam_wrist"></label>
+          </div>
+        </div>
+        <p class="aviso" id="an-aviso"></p>
+        <div class="nav-pasos">
+          <button class="btn suave" onclick="if(an.paciente&&ficha.paciente&&ficha.paciente.id===an.paciente.id){abrirFicha(an.paciente)}else{irA('inicio')}">Cancelar</button>
+          <button class="btn" id="btn-an-guardar" onclick="anGuardar()">Guardar y ver el informe</button>
+        </div>
+      </div>
+      <aside class="an-col an-res-caja"><div class="caja" id="an-res" aria-live="polite"></div></aside>
+    </div>
+  </div>
+  <div id="an-listo" class="oculto">
+    <div class="caja no-imprimir" style="border-color:var(--accent);background:var(--tinte);">
+      <h3 style="margin:0 0 6px;">Listo</h3>
+      <p style="margin:0;" id="an-listo-msj">El informe, listo para imprimir.</p>
+    </div>
+    <div id="an-informe"></div>
+    <div class="acciones-res no-imprimir">
+      <button class="btn" onclick="window.print()">Imprimir o guardar PDF</button>
+      <button class="btn suave" onclick="anCorregirListo()">Corregir la medición</button>
+      <button class="btn suave" onclick="anVolverFicha()">Ir a su ficha</button>
+    </div>
+  </div>
+</section>
+
 <section class="pantalla wrap oculto" id="p-ficha">
   <span class="kicker no-imprimir">Ficha de la paciente</span>
   <div class="caja no-imprimir" id="ficha-caja">
@@ -817,6 +966,7 @@
       <div><b id="fi-nombre"></b><small id="fi-datos"></small></div>
       <div class="botonera">
         <button class="btn chico" onclick="fichaNuevaConsulta()">Nueva consulta</button>
+        <button class="btn chico" onclick="fichaAntro()">Antropometría</button>
         <button class="btn chico" onclick="fichaNuevoPlan()">Plan nuevo</button>
         <button class="btn chico suave" onclick="fichaRecetario()">Recetario</button>
         <button class="btn chico suave" onclick="fichaGuardados()">Planes guardados</button>
@@ -1503,7 +1653,7 @@ function hayCambiosSinGuardar(){
 }
 function irA(nombre, forzar){
   if(!forzar && nombre!=="planes" && hayCambiosSinGuardar() && !confirm("Tenés cambios sin guardar en el plan. ¿Salir igual y perderlos?")) return false;
-  ["login","clave","inicio","consulta","planes","recetario","listado","recomendaciones","guardados","ficha","alta","biblioteca","programa","consultante"].forEach(function(p){ $("p-"+p).classList.toggle("oculto", p!==nombre); });
+  ["login","clave","inicio","consulta","planes","recetario","listado","recomendaciones","guardados","ficha","alta","biblioteca","programa","consultante","antro"].forEach(function(p){ $("p-"+p).classList.toggle("oculto", p!==nombre); });
   window.scrollTo(0,0);
   return true;
 }
@@ -1593,7 +1743,8 @@ async function salir(){
   usuario=null; perfil=null; limpiarTodo(); $("barra-sesion").classList.add("oculto"); irA("login", true);
 }
 async function cargarEmpresas(){
-  var r = await sb.from("companies").select("id, name, type").order("type",{ascending:true}).order("name",{ascending:true});
+  var r = await sb.from("companies").select("id, name, type, brand_template").order("type",{ascending:true}).order("name",{ascending:true});
+  if(r.error) r = await sb.from("companies").select("id, name, type").order("type",{ascending:true}).order("name",{ascending:true});
   if(r.error) return {error:r.error};
   empresas = r.data||[];
   var guardada=null; try{ guardada=localStorage.getItem(CLAVE_EMPRESA); }catch(e){}
@@ -2971,7 +3122,7 @@ function pintarFicha(){
           ((antro && x.adherence==null && x.energy_level==null && x.sleep_quality==null) ? '<td colspan="3" class="sin-esc">Solo medidas</td>' :
           '<td class="mono">'+(x.adherence!=null?x.adherence+"/5":"—")+'</td><td class="mono">'+(x.energy_level!=null?x.energy_level+"/5":"—")+'</td><td class="mono">'+(x.sleep_quality!=null?x.sleep_quality+"/5":"—")+'</td>')+
           '<td class="notas">'+esc(recortar([x.consultation_reason,x.consultation_notes].filter(Boolean).join(" · "), 220))+'</td>'+
-          '<td class="no-imprimir"><button type="button" class="btn chico suave" onclick="fichaCorregirConsulta(\''+x.id+'\')">Corregir</button></td></tr>';
+          '<td class="no-imprimir">'+(antro?'<button type="button" class="btn chico suave" onclick="fichaInformeAntro(\''+x.id+'\')">Informe</button> ':'')+'<button type="button" class="btn chico suave" onclick="fichaCorregirConsulta(\''+x.id+'\')">Corregir</button></td></tr>';
       }).join("")+'</tbody></table></div>';
   } else {
     cuerpo+='<div class="caja"><p style="margin:0 0 16px;font-size:1.1rem;">Todavía no tiene consultas cargadas.</p><button class="btn" onclick="fichaNuevaConsulta()">Cargar la primera consulta</button></div>';
@@ -3257,6 +3408,262 @@ function partirNombre(texto){
   while(k-1>=1 && PARTICULAS[w[k-1].toLowerCase()]) k--;
   return { nombre:w.slice(0,k).join(" "), apellido:capitalizar(w.slice(k).join(" ")), dudoso:true };
 }
+/* =====================================================================
+   ANTROPOMETRÍA (unificación · bloque U1) · la medición completa, adentro de NuPlan.
+   Mismas columnas que la app anterior (sessions, session_type "Antropometría"), mismas fórmulas
+   (Jackson-Pollock 4 pliegues, Lee para músculo, von Döbeln-Rocha para hueso, Würch para residual)
+   y el mismo grupo de referencia; con dos mejoras: guarda con lo que haya (peso y talla alcanzan)
+   y el músculo y el hueso se califican al revés que la grasa (más es mejor).
+   ===================================================================== */
+var AN_CAMPOS = {
+  base: [["weight","Peso","kg"],["height","Talla","cm"]],
+  pliegues: [["fold_triceps","Tríceps"],["fold_subscapular","Subescapular"],["fold_iliac_crest","Cresta ilíaca"],["fold_abdominal","Abdominal"],["fold_front_thigh","Muslo anterior"],["fold_medial_calf","Pantorrilla medial"]],
+  perimetros: [["girth_arm_relaxed","Brazo relajado"],["girth_chest","Tórax"],["girth_waist","Cintura"],["girth_umbilical","Umbilical"],["girth_hip","Cadera"],["girth_thigh_mid","Muslo medial"],["girth_calf","Pantorrilla"]],
+  diametros: [["diam_femur","Fémur"],["diam_wrist","Muñeca"]]
+};
+var AN_TODOS = [].concat(AN_CAMPOS.base, AN_CAMPOS.pliegues, AN_CAMPOS.perimetros, AN_CAMPOS.diametros).map(function(c){ return c[0]; });
+var AN_RANGO = { weight:[25,300], height:[120,230], fold:[2,70], girth:[15,200], diam:[3,15] };
+var AN_REF = {"Masculino":{"Activa - 16 a 18 años":{fatMassKg:[14.2,2.8],muscleMassKg:[30,2.5],boneMassKg:[10.8,.7],fatSuperior:[30.1,2.8],fatMedia:[39.8,3.1],fatInferior:[30.1,3],chestCm:[96.2,5.1],waistCm:[78.4,6.2],hipCm:[94.5,5.3]},"Activa - 19 a 30 años":{fatMassKg:[16.8,2.9],muscleMassKg:[31,2.2],boneMassKg:[11.4,.8],fatSuperior:[29.5,2.7],fatMedia:[40.5,3.2],fatInferior:[30,2.9],chestCm:[98.5,5.3],waistCm:[82.1,6.5],hipCm:[97.2,5.2]},"Activa - 31 a 50 años":{fatMassKg:[20,3.3],muscleMassKg:[31.5,2.1],boneMassKg:[11.9,.8],fatSuperior:[29.9,2.9],fatMedia:[40.9,3.3],fatInferior:[29.2,3.1],chestCm:[101.4,5.5],waistCm:[85.9,6.8],hipCm:[100.3,5.4]},"Activa - Mayor de 50 años":{fatMassKg:[23.5,3.5],muscleMassKg:[29.8,2.3],boneMassKg:[11.2,.9],fatSuperior:[31.2,3.1],fatMedia:[41.5,3.4],fatInferior:[27.3,3],chestCm:[103.2,5.8],waistCm:[90.2,7],hipCm:[101.8,5.6]},"Sedentaria - 16 a 18 años":{fatMassKg:[18.5,3.2],muscleMassKg:[27.5,2.4],boneMassKg:[10.5,.7],fatSuperior:[31.5,3],fatMedia:[40,3.2],fatInferior:[28.5,3.1],chestCm:[97.5,5.5],waistCm:[83.2,6.8],hipCm:[96,5.5]},"Sedentaria - 19 a 30 años":{fatMassKg:[21,3.4],muscleMassKg:[28.5,2.3],boneMassKg:[11,.8],fatSuperior:[30.8,2.9],fatMedia:[41.2,3.3],fatInferior:[28,3],chestCm:[100,5.6],waistCm:[87.5,7],hipCm:[98.8,5.5]},"Sedentaria - 31 a 50 años":{fatMassKg:[25,3.6],muscleMassKg:[29,2.2],boneMassKg:[11.5,.8],fatSuperior:[32,3],fatMedia:[41.8,3.4],fatInferior:[26.2,3.1],chestCm:[104,6],waistCm:[93,7.2],hipCm:[103,5.8]},"Sedentaria - Mayor de 50 años":{fatMassKg:[28,3.8],muscleMassKg:[27.5,2.4],boneMassKg:[10.8,.9],fatSuperior:[33.5,3.2],fatMedia:[42.2,3.5],fatInferior:[24.3,3],chestCm:[106.5,6.2],waistCm:[97.5,7.5],hipCm:[104.5,6]}},"Femenino":{"Activa - 16 a 18 años":{fatMassKg:[15.8,2.5],muscleMassKg:[20.5,1.8],boneMassKg:[8.5,.6],fatSuperior:[28.5,2.6],fatMedia:[38,3],fatInferior:[33.5,3.2],chestCm:[84.5,4.8],waistCm:[68.5,5.5],hipCm:[90,5]},"Activa - 19 a 30 años":{fatMassKg:[17.5,2.8],muscleMassKg:[21,1.9],boneMassKg:[8.9,.7],fatSuperior:[28,2.5],fatMedia:[38.5,3.1],fatInferior:[33.5,3.1],chestCm:[86.2,4.9],waistCm:[70.8,5.8],hipCm:[92.5,5.2]},"Activa - 31 a 50 años":{fatMassKg:[20.5,3],muscleMassKg:[21.5,2],boneMassKg:[9.2,.7],fatSuperior:[29,2.7],fatMedia:[39,3.2],fatInferior:[32,3],chestCm:[88.5,5.1],waistCm:[74,6],hipCm:[95,5.3]},"Activa - Mayor de 50 años":{fatMassKg:[24,3.2],muscleMassKg:[20.5,2.1],boneMassKg:[8.8,.8],fatSuperior:[30.5,2.9],fatMedia:[39.8,3.3],fatInferior:[29.7,3],chestCm:[91,5.3],waistCm:[79,6.3],hipCm:[97.5,5.5]},"Sedentaria - 16 a 18 años":{fatMassKg:[20,3],muscleMassKg:[18.5,1.7],boneMassKg:[8.2,.6],fatSuperior:[30,2.8],fatMedia:[38.5,3.1],fatInferior:[31.5,3.2],chestCm:[86,5],waistCm:[73,6],hipCm:[92.5,5.2]},"Sedentaria - 19 a 30 años":{fatMassKg:[22.5,3.2],muscleMassKg:[19,1.8],boneMassKg:[8.6,.7],fatSuperior:[30.5,2.8],fatMedia:[39.2,3.2],fatInferior:[30.3,3.1],chestCm:[88.5,5.2],waistCm:[76.5,6.2],hipCm:[95,5.4]},"Sedentaria - 31 a 50 años":{fatMassKg:[26,3.4],muscleMassKg:[19.5,1.9],boneMassKg:[8.9,.7],fatSuperior:[31.5,3],fatMedia:[40,3.3],fatInferior:[28.5,3],chestCm:[91.5,5.4],waistCm:[81.5,6.5],hipCm:[98,5.6]},"Sedentaria - Mayor de 50 años":{fatMassKg:[29.5,3.6],muscleMassKg:[18.5,2],boneMassKg:[8.5,.8],fatSuperior:[33,3.1],fatMedia:[40.8,3.4],fatInferior:[26.2,3],chestCm:[94,5.6],waistCm:[86.5,6.8],hipCm:[100.5,5.8]}}};
+var an = { paciente:null, editandoId:null, fila:null, previa:null, sexo:"Femenino", edad:null, actividad:"Sedentaria", ultima:null, n:0 };
+
+function anNum(v){ if(v==null||v==="") return null; var n=parseFloat(String(v).replace(",", ".")); return isFinite(n)&&n>0 ? n : null; }
+function anFmt(v, d){ return v==null||!isFinite(v) ? "—" : numeroAR(Number(v).toFixed(d==null?1:d)); }
+function anGrupoEdad(e){ return e==null ? "31 a 50 años" : e<=18 ? "16 a 18 años" : e<=30 ? "19 a 30 años" : e<=50 ? "31 a 50 años" : "Mayor de 50 años"; }
+function anGrupo(){ return an.actividad+" - "+anGrupoEdad(an.edad); }
+/* «mujeres sedentarias de 31 a 50 años» */
+function anGrupoTexto(grupo, sexo){ var g=String(grupo||"").split(" - "), act=/^Activa/.test(g[0]||""), v=sexo==="Masculino"; return (v?"varones ":"mujeres ")+(act?(v?"activos":"activas"):(v?"sedentarios":"sedentarias"))+(g[1]?" "+(/^Mayor/.test(g[1])?"mayores de 50 años":"de "+g[1]):""); }
+/* la edad que tenía el día de la medición */
+function anEdadEn(nac, fecha){ if(!nac) return null; var a=String(nac).slice(0,10).split("-").map(Number), f=fecha?String(fecha).slice(0,10).split("-").map(Number):null; if(!f||f.length<3){ var h=new Date(); f=[h.getFullYear(),h.getMonth()+1,h.getDate()]; } var e=f[0]-a[0]; if(f[1]<a[1]||(f[1]===a[1]&&f[2]<a[2])) e--; return e; }
+function anRef(sexo, grupo){ var t=AN_REF[sexo]||AN_REF.Femenino; return t[grupo]||t[an.actividad+" - 31 a 50 años"]||t["Sedentaria - 31 a 50 años"]; }
+/* califica contra la referencia: en grasa, menos es mejor; en músculo y hueso, más es mejor */
+function anCalif(v, ref, masEsMejor){
+  if(v==null||!ref) return "";
+  var m=ref[0], s=ref[1], x=masEsMejor ? 2*m-v : v;
+  return x<m-1.5*s ? "Excelente" : x<m-.5*s ? "Muy buena" : x<=m+.5*s ? "Buena" : x<=m+1.5*s ? "Regular" : "A mejorar";
+}
+function anRegion(v, ref){ if(v==null||!ref) return ""; var m=ref[0], s=ref[1]; return v<m-.5*s ? "Menor que la referencia" : v<=m+.5*s ? "Similar a la referencia" : v<=m+1.5*s ? "Algo mayor que la referencia" : "Mayor que la referencia"; }
+function anImcCat(i){ return i==null?"":i<18.5?"Bajo peso":i<25?"Normal":i<30?"Sobrepeso":i<35?"Obesidad grado I":i<40?"Obesidad grado II":"Obesidad grado III"; }
+function anIccCat(v, sexo){ if(v==null) return ""; return sexo==="Masculino" ? (v<.9?"Normal":v<1?"Riesgo moderado":"Riesgo elevado") : (v<.85?"Normal":v<.9?"Riesgo moderado":"Riesgo elevado"); }
+function anCinturaCat(v, sexo){ if(v==null) return ""; var a=sexo==="Masculino"?94:80, b=sexo==="Masculino"?102:88; return v<a?"Sin riesgo":v<b?"Riesgo aumentado":"Riesgo muy aumentado"; }
+/* el cálculo: cada componente sale solo si están sus medidas */
+function anCalcular(m, sexo, edad){
+  var g=function(k){ return anNum(m[k]); }, r={ faltan:{} }, P=g("weight"), T=g("height");
+  var tri=g("fold_triceps"), sub=g("fold_subscapular"), ili=g("fold_iliac_crest"), abd=g("fold_abdominal"), mus=g("fold_front_thigh"), pan=g("fold_medial_calf");
+  if(P&&T){ r.imc=P/Math.pow(T/100,2); }
+  var e=edad!=null?edad:40;
+  if(P&&tri&&sub&&ili&&abd){
+    var S=tri+sub+ili+abd, pct=sexo==="Masculino" ? .29288*S-.0005*S*S+.15845*e-5.76377 : .29669*S-.00043*S*S+.02963*e+1.4072;
+    pct=Math.max(5, Math.min(60, pct)); r.fatPct=pct; r.fatMassKg=P*pct/100;
+  } else r.faltan.grasa=true;
+  if(T&&g("diam_femur")&&g("diam_wrist")){ r.boneMassKg=3.02*Math.pow(Math.pow(T/100,2)*(g("diam_femur")/100)*(g("diam_wrist")/100)*400, .712); } else r.faltan.hueso=true;
+  if(P) r.residualMassKg=P*(sexo==="Masculino"?.241:.209);
+  if(T&&g("girth_thigh_mid")&&mus&&g("girth_arm_relaxed")&&tri&&g("girth_calf")&&pan){
+    // Lee y col. (2000): la talla en metros multiplica la suma; brazo 0,00744, muslo 0,00088, pantorrilla 0,00441
+    var CAG=g("girth_arm_relaxed")-Math.PI*(tri/10), CTG=g("girth_thigh_mid")-Math.PI*(mus/10), CCG=g("girth_calf")-Math.PI*(pan/10);
+    var D=(T/100)*(.00744*CAG*CAG+.00088*CTG*CTG+.00441*CCG*CCG)+(sexo==="Masculino"?2.4:0)-.048*e+7.8;
+    r.muscleMassKg=Math.max(5, D);
+  } else r.faltan.musculo=true;
+  if(P){ ["fatMassKg","muscleMassKg","boneMassKg","residualMassKg"].forEach(function(k){ if(r[k]!=null) r[k.replace("Kg","Pct").replace("MassPct","Pct")]=r[k]/P*100; }); }
+  if(tri&&sub&&ili&&abd&&mus&&pan){ var F=tri+sub+ili+abd+mus+pan; r.suma6=F; r.fatSuperior=(tri+sub)/F*100; r.fatMedia=(ili+abd)/F*100; r.fatInferior=(mus+pan)/F*100; }
+  else r.faltan.region=true;
+  var ci=g("girth_waist"), ca=g("girth_hip"); if(ci&&ca) r.icc=ci/ca;
+  r.cintura=ci; r.umbilical=g("girth_umbilical"); r.torax=g("girth_chest"); r.cadera=ca;
+  return r;
+}
+
+/* ---------- abrir, elegir, cargar ---------- */
+function abrirAntro(p, fila){
+  if(!irA("antro")) return;
+  cargarPacientes();
+  $("an-listo").classList.add("oculto"); $("an-aviso").className="aviso"; $("an-aviso").textContent="";
+  if(p) anElegir(p, fila||null); else { anDeselegir(); setTimeout(function(){ $("busca-paciente-an").focus(); }, 30); }
+}
+async function filtrarPacientesAn(q){
+  await cargarPacientes();
+  var ul=$("lista-pacientes-an"); ul.innerHTML="";
+  if(q.trim().length<2) return;
+  if(sinResultados(ul,q)) return;
+  var hits=pacientes.filter(function(p){ return coincide(p,q); }).slice(0,12);
+  if(!hits.length){ ul.innerHTML='<li><span>Nadie con ese nombre en '+esc(empresa)+'</span></li>'; return; }
+  hits.forEach(function(p){ var li=document.createElement("li"); li.innerHTML='<span>'+esc(nombreCompleto(p))+'</span><small>'+esc(p.status||"")+'</small>'; li.onclick=function(){ anElegir(p); }; ul.appendChild(li); });
+}
+function anDeselegir(){
+  an.n++; an.paciente=null; an.editandoId=null; an.fila=null; an.previa=null;
+  $("an-elegido").classList.add("oculto"); $("an-form").classList.add("oculto"); $("an-buscar").classList.remove("oculto");
+  $("busca-paciente-an").value=""; $("lista-pacientes-an").innerHTML=""; $("an-titulo").textContent="Antropometría";
+}
+async function anElegir(p, fila){
+  var n=++an.n;
+  an.paciente=p; an.editandoId=fila?fila.id:null; an.fila=fila||null; an.previa=null;
+  an.sexo=p.sex==="Masculino"?"Masculino":"Femenino";
+  an.edad=p.birth_date?anEdadEn(p.birth_date, fila&&fila.session_date):null;
+  var gr=String((fila&&fila.activity_group)||"");
+  an.actividad=/^Activa/.test(gr)?"Activa":"Sedentaria";
+  $("an-buscar").classList.add("oculto"); $("lista-pacientes-an").innerHTML="";
+  $("an-nombre").textContent=nombreCompleto(p);
+  $("an-datos").textContent=[an.edad!=null?an.edad+" años":"sin fecha de nacimiento", an.sexo==="Masculino"?"varón":"mujer", p.area&&p.area!=="Sin especificar"?p.area:null].filter(Boolean).join(" · ");
+  $("an-elegido").classList.remove("oculto"); $("an-form").classList.remove("oculto"); $("an-listo").classList.add("oculto");
+  $("an-titulo").textContent=fila?"Corregir la antropometría del "+fechaCorta(fila.session_date):"Nueva antropometría";
+  $("btn-an-guardar").textContent=fila?"Guardar cambios":"Guardar y ver el informe";
+  var hoy=new Date(); $("an-fecha").value=fila?String(fila.session_date).slice(0,10):hoy.getFullYear()+"-"+String(hoy.getMonth()+1).padStart(2,"0")+"-"+String(hoy.getDate()).padStart(2,"0");
+  $("an-edad").value=an.edad!=null?an.edad:"";
+  AN_TODOS.forEach(function(k){ var el=$("an-"+k); if(el) el.value=fila&&fila[k]!=null&&Number(fila[k])>0?fila[k]:""; });
+  anPintarPildoras(); anActualizar();
+  // la anterior, para comparar (y la talla, si ya la tenía)
+  var r=await sb.from("sessions").select("*").eq("patient_id",p.id).eq("session_type","Antropometría").order("session_date",{ascending:false}).order("created_at",{ascending:false}).limit(10);
+  if(n!==an.n) return;
+  var l=(r.data||[]).filter(function(x){ return !fila || (x.id!==fila.id && String(x.session_date)<=String(fila.session_date)); });
+  an.previa=l[0]||null;
+  if(!fila && !$("an-height").value){ var t=(an.previa&&an.previa.height)||p.height; if(t) $("an-height").value=t; }
+  if(!fila && an.previa && an.previa.activity_group){ an.actividad=/^Activa/.test(an.previa.activity_group)?"Activa":"Sedentaria"; anPintarPildoras(); }
+  anActualizar();
+  setTimeout(function(){ var el=$(fila?"an-weight":"an-weight"); if(el) el.focus(); }, 30);
+}
+function anPintarPildoras(){
+  document.querySelectorAll("#an-sexo button").forEach(function(b){ b.classList.toggle("on", b.dataset.v===an.sexo); });
+  document.querySelectorAll("#an-act button").forEach(function(b){ b.classList.toggle("on", b.dataset.v===an.actividad); });
+}
+function anElegirPildora(cual, v){ if(cual==="sexo") an.sexo=v; else an.actividad=v; anPintarPildoras(); anActualizar(); }
+function anCambioFecha(){ if(an.paciente&&an.paciente.birth_date){ var e=anEdadEn(an.paciente.birth_date, $("an-fecha").value); if(e!=null){ an.edad=e; $("an-edad").value=e; } } anActualizar(); }
+function anMedidas(){ var m={}; AN_TODOS.forEach(function(k){ var el=$("an-"+k); m[k]=el?el.value:""; }); return m; }
+
+/* ---------- el panel en vivo ---------- */
+function anBarra(r, imp){
+  var l=[["Grasa",r.fatPct,"g"],["Músculo",r.musclePct,"m"],["Hueso",r.bonePct,"h"],["Residual",r.residualPct,"r"]].filter(function(x){ return x[1]!=null; });
+  var tot=l.reduce(function(a,x){ return a+x[1]; }, 0)||1;
+  return '<div class="an-barra'+(imp?' an-barra-imp':'')+'">'+l.map(function(x){ return '<i class="an-'+x[2]+'" style="width:'+(x[1]/tot*100).toFixed(1)+'%" title="'+x[0]+' '+anFmt(x[1])+' %">'+(imp?'<span>'+x[0]+' '+anFmt(x[1])+' %</span>':'')+'</i>'; }).join("")+'</div>'+
+    '<p class="an-ley'+(imp?' an-ley-imp':'')+'">'+l.map(function(x){ return '<span><i class="an-'+x[2]+'"></i>'+x[0]+(imp?' '+anFmt(x[1])+' %':'')+'</span>'; }).join("")+'</p>';
+}
+function anFila(et, v, u, d, ref, cal, extra){
+  return '<tr><td>'+et+'</td><td class="mono">'+anFmt(v,d)+(v!=null&&u?' <small>'+u+'</small>':'')+(extra?'<small class="an-pct"> · '+extra+'</small>':'')+'</td><td class="an-cc">'+(cal?'<span class="an-cal an-'+cal.replace(/\s/g,"").toLowerCase()+'">'+cal+'</span>':'')+'</td></tr>';
+}
+function anActualizar(){
+  var e=anNum($("an-edad").value); an.edad=e!=null?Math.round(e):an.edad;
+  var m=anMedidas(), r=anCalcular(m, an.sexo, an.edad), ref=anRef(an.sexo, anGrupo());
+  $("an-grupo").textContent="Se compara con "+anGrupoTexto(anGrupo(), an.sexo)+".";
+  var faltan=AN_TODOS.filter(function(k){ return !anNum(m[k]); }).length;
+  var h='<p class="an-k">Composición corporal</p>';
+  if(r.fatMassKg==null && r.muscleMassKg==null && r.boneMassKg==null){
+    h+='<p class="nota">Cargá peso, talla, los cuatro primeros pliegues y los dos diámetros para ver la composición.</p>';
+  } else {
+    h+=anBarra(r, false);
+    h+='<table class="an-t"><tbody>'+
+      anFila("Grasa", r.fatMassKg, "kg", 1, ref.fatMassKg, anCalif(r.fatMassKg, ref.fatMassKg), r.fatPct!=null?anFmt(r.fatPct)+" %":"")+
+      anFila("Músculo", r.muscleMassKg, "kg", 1, ref.muscleMassKg, anCalif(r.muscleMassKg, ref.muscleMassKg, true), r.musclePct!=null?anFmt(r.musclePct)+" %":"")+
+      anFila("Hueso", r.boneMassKg, "kg", 1, ref.boneMassKg, anCalif(r.boneMassKg, ref.boneMassKg, true), r.bonePct!=null?anFmt(r.bonePct)+" %":"")+
+      anFila("Residual", r.residualMassKg, "kg", 1, null, "", r.residualPct!=null?anFmt(r.residualPct)+" %":"")+'</tbody></table>';
+  }
+  h+='<p class="an-k">Índices</p><table class="an-t"><tbody>'+
+    '<tr><td>IMC</td><td class="mono">'+anFmt(r.imc)+'</td><td class="an-cc">'+anImcCat(r.imc)+'</td></tr>'+
+    '<tr><td>Cintura</td><td class="mono">'+anFmt(r.cintura)+(r.cintura?' <small>cm</small>':'')+'</td><td class="an-cc">'+anCinturaCat(r.cintura, an.sexo)+'</td></tr>'+
+    '<tr><td>Cintura / cadera</td><td class="mono">'+anFmt(r.icc,2)+'</td><td class="an-cc">'+anIccCat(r.icc, an.sexo)+'</td></tr>'+
+    (r.suma6!=null?'<tr><td>Suma de 6 pliegues</td><td class="mono">'+anFmt(r.suma6)+' <small>mm</small></td><td></td></tr>':'')+'</tbody></table>';
+  if(an.previa){
+    var rp=anCalcular(an.previa, an.sexo, an.edad), dif=function(a,b,d){ if(a==null||b==null) return ""; var x=a-b; return Math.abs(x)<.05?"igual":(x>0?"+":"−")+anFmt(Math.abs(x),d); };
+    h+='<p class="an-k">Desde la anterior · '+fechaCorta(an.previa.session_date)+'</p><table class="an-t"><tbody>'+
+      [["Peso",anNum(m.weight),anNum(an.previa.weight),"kg"],["Grasa",r.fatMassKg,rp.fatMassKg,"kg"],["Músculo",r.muscleMassKg,rp.muscleMassKg,"kg"],["Cintura",r.cintura,anNum(an.previa.girth_waist),"cm"],["Suma de 6 pliegues",r.suma6,rp.suma6,"mm"]].filter(function(x){ return x[1]!=null&&x[2]!=null; })
+      .map(function(x){ return '<tr><td>'+x[0]+'</td><td class="mono">'+anFmt(x[2])+' → '+anFmt(x[1])+' <small>'+x[3]+'</small></td><td class="mono an-cc">'+dif(x[1],x[2])+'</td></tr>'; }).join("")+'</tbody></table>';
+  }
+  h+='<p class="nota" style="margin-top:12px;">'+(faltan?faltan+" de 17 medidas sin cargar. Se guarda igual con lo que haya.":"Las 17 medidas cargadas.")+'</p>';
+  $("an-res").innerHTML=h;
+  AN_TODOS.forEach(function(k){ var el=$("an-"+k); if(!el) return; var v=anNum(el.value), t=k.split("_")[0], rg=AN_RANGO[k]||AN_RANGO[t]; el.classList.toggle("an-raro", !!(v&&rg&&(v<rg[0]||v>rg[1]))); });
+}
+
+/* ---------- guardar ---------- */
+async function anGuardar(){
+  var av=$("an-aviso"); av.className="aviso"; av.textContent="";
+  if(!an.paciente){ av.className="aviso error"; av.textContent="Elegí a la persona."; return; }
+  var m=anMedidas(), fila={}, raro=null;
+  AN_TODOS.forEach(function(k){ var v=anNum(m[k]); fila[k]=v; var t=k.split("_")[0], rg=AN_RANGO[k]||AN_RANGO[t]; if(v&&rg&&(v<rg[0]||v>rg[1])&&!raro) raro=k; });
+  if(!fila.weight||!fila.height){ av.className="aviso error"; av.textContent="Peso y talla son lo mínimo para guardar."; $(fila.weight?"an-height":"an-weight").focus(); return; }
+  if(raro && !an.confirmoRaro){ av.className="aviso error"; av.innerHTML='Revisá '+esc(etiquetaAn(raro))+': '+esc(numeroAR(fila[raro]))+' no parece una medida posible. <button type="button" class="enlace" onclick="an.confirmoRaro=true;anGuardar()">Está bien así, guardar</button>'; $("an-"+raro).focus(); return; }
+  an.confirmoRaro=false;
+  var fecha=$("an-fecha").value||new Date().toISOString().slice(0,10);
+  Object.assign(fila, { session_date:fecha, activity_group:anGrupo() });
+  var b=$("btn-an-guardar"); if(b.disabled) return; b.disabled=true; av.textContent="Guardando…";
+  var r, id=an.editandoId;
+  if(id){ r=await sb.from("sessions").update(fila).eq("id",id).select("*"); if(!r.error&&(!r.data||!r.data.length)) r={error:{message:"la app no permitió corregir esta medición"}}; }
+  else {
+    Object.assign(fila, { patient_id:an.paciente.id, nutritionist_id:usuario.id, company:empresa, session_type:"Antropometría", modality:"Presencial" });
+    r=await sb.from("sessions").insert(fila).select("*");
+  }
+  b.disabled=false;
+  if(r.error){ av.className="aviso error"; av.textContent="No se pudo guardar: "+errorLegible(r.error); return; }
+  var guardada=(r.data&&r.data[0])||Object.assign({}, an.fila||{}, fila);
+  if(!guardada.id){ var q=await sb.from("sessions").select("*").eq("patient_id",an.paciente.id).eq("session_type","Antropometría").order("created_at",{ascending:false}).limit(1); guardada=(q.data&&q.data[0])||guardada; }
+  if(an.edad!=null && !an.paciente.birth_date) av.textContent="";
+  an.ultima=guardada; an.editandoId=guardada.id||null; an.fila=guardada;
+  $("an-form").classList.add("oculto");
+  await anMostrarInforme(an.paciente, guardada);
+  $("an-listo-msj").textContent=(id?"Antropometría corregida":"Antropometría guardada")+" en la ficha de "+nombreCompleto(an.paciente)+".";
+}
+function etiquetaAn(k){ var t=[].concat(AN_CAMPOS.base, AN_CAMPOS.pliegues, AN_CAMPOS.perimetros, AN_CAMPOS.diametros).filter(function(c){ return c[0]===k; })[0]; return t?t[1].toLowerCase():k; }
+
+/* ---------- el informe antropométrico ---------- */
+function anPlantilla(){ var e=(empresas||[]).filter(function(x){ return x.name===empresa; })[0]; return (e&&e.brand_template)||"default"; }
+function anHoja(titulo, cuerpo, fecha){
+  if(anPlantilla()!=="swiss_medical") return hoja(titulo, cuerpo, fecha);
+  var hoy=(fecha?new Date(fecha):new Date()).toLocaleDateString("es-AR",{day:"2-digit",month:"2-digit",year:"numeric"});
+  return '<table class="hoja hoja-swiss"><thead><tr><td><div class="hoja-cab hoja-cab-swiss"><img src="/assets/wellness-lab-swiss-medical-CLaBxUud.png" alt="WellnessLab · Swiss Medical"><span>Lic. Rosana Roldán · M.N. 3884<br>'+esc(titulo)+' · '+hoy+'</span></div></td></tr></thead>'+
+    '<tfoot><tr><td><div class="hoja-pie"><span>Lic. Rosana Roldán &middot; Nutricionista</span><span>NuPlan&trade;</span></div></td></tr></tfoot><tbody><tr><td>'+cuerpo+'</td></tr></tbody></table>';
+}
+function anValoracion(r, ref, sexo, grupo){
+  var t=[], c=function(x){ return x?x.toLowerCase():""; };
+  if(r.fatMassKg!=null) t.push("La masa grasa es "+anFmt(r.fatMassKg)+" kg ("+anFmt(r.fatPct)+" %): "+c(anCalif(r.fatMassKg, ref.fatMassKg))+" frente a la referencia.");
+  if(r.muscleMassKg!=null) t.push("La masa muscular es "+anFmt(r.muscleMassKg)+" kg: "+c(anCalif(r.muscleMassKg, ref.muscleMassKg, true))+".");
+  if(r.boneMassKg!=null) t.push("El peso óseo es "+anFmt(r.boneMassKg)+" kg: "+c(anCalif(r.boneMassKg, ref.boneMassKg, true))+".");
+  if(r.fatSuperior!=null) t.push("La grasa se reparte "+anFmt(r.fatSuperior)+" % arriba, "+anFmt(r.fatMedia)+" % en la zona media y "+anFmt(r.fatInferior)+" % abajo. La zona media es "+c(anRegion(r.fatMedia, ref.fatMedia))+".");
+  var ix=[]; if(r.imc!=null) ix.push("IMC "+anFmt(r.imc)+" ("+c(anImcCat(r.imc))+")"); if(r.cintura!=null) ix.push("cintura "+anFmt(r.cintura)+" cm ("+c(anCinturaCat(r.cintura, sexo))+")"); if(r.icc!=null) ix.push("cintura/cadera "+anFmt(r.icc,2)+" ("+c(anIccCat(r.icc, sexo))+")");
+  if(ix.length) t.push("Índices: "+ix.join(", ")+".");
+  return t;
+}
+async function anMostrarInforme(p, fila){
+  irA("antro", true);
+  var sexo=p.sex==="Masculino"?"Masculino":"Femenino", edad=p.birth_date?anEdadEn(p.birth_date, fila.session_date):an.edad, grupo=fila.activity_group||"Sedentaria - "+anGrupoEdad(edad);
+  var r=anCalcular(fila, sexo, edad), ref=anRef(sexo, grupo);
+  // la anterior y el laboratorio fuera de rango
+  var rs=await sb.from("sessions").select("*").eq("patient_id",p.id).eq("session_type","Antropometría").lt("session_date", String(fila.session_date).slice(0,10)).order("session_date",{ascending:false}).limit(1);
+  var prev=(rs.data&&rs.data[0])||null, rp=prev?anCalcular(prev, sexo, edad):null;
+  var rl=await sb.from("lab_results").select("*").eq("patient_id",p.id).order("lab_date",{ascending:false}).limit(1);
+  var lab=(rl.data&&rl.data[0])||null, fuera=[];
+  if(lab && typeof LAB_DEF!=="undefined") LAB_DEF.forEach(function(d){ var v=labValor(lab,d); if(v!=null&&d.fuera(v, sexo)) fuera.push(d.n+" "+numFmt(v,d.d)+(d.u?" "+d.u:"")); });
+  var fila2=function(et, v, u, d, rf, cal, pct){ return '<tr><td>'+et+'</td><td class="mono">'+anFmt(v,d)+(v!=null&&u?' '+u:'')+'</td><td class="mono">'+(pct!=null?anFmt(pct)+' %':'')+'</td><td class="mono">'+(rf?anFmt(rf[0])+' ± '+anFmt(rf[1]):'—')+'</td><td>'+(cal||'')+'</td></tr>'; };
+  var cuerpo='<div class="res-cabecera cabecera-doc"><div><h2>Evaluación antropométrica</h2><p class="bajada">'+esc(nombreCompleto(p))+' · '+fechaCorta(fila.session_date)+(edad!=null?' · '+edad+' años':'')+' · '+(sexo==="Masculino"?"varón":"mujer")+'</p></div></div>'+
+    '<div class="an-datos"><span><b>Peso</b> '+anFmt(anNum(fila.weight))+' kg</span><span><b>Talla</b> '+anFmt(anNum(fila.height))+' cm</span><span><b>IMC</b> '+anFmt(r.imc)+'</span><span><b>Referencia</b> '+esc(anGrupoTexto(grupo, sexo))+'</span></div>'+
+    '<h3 class="sec-ficha">Composición corporal</h3>'+
+    ((r.fatMassKg!=null||r.muscleMassKg!=null)?anBarra(r, true):'')+
+    '<div class="tabla-scroll"><table class="tabla evo-t an-tabla"><thead><tr><th>Componente</th><th>Valor</th><th>%</th><th>Referencia</th><th>Calificación</th></tr></thead><tbody>'+
+      fila2("Masa grasa", r.fatMassKg, "kg", 1, ref.fatMassKg, anCalif(r.fatMassKg, ref.fatMassKg), r.fatPct)+
+      fila2("Masa muscular", r.muscleMassKg, "kg", 1, ref.muscleMassKg, anCalif(r.muscleMassKg, ref.muscleMassKg, true), r.musclePct)+
+      fila2("Peso óseo", r.boneMassKg, "kg", 1, ref.boneMassKg, anCalif(r.boneMassKg, ref.boneMassKg, true), r.bonePct)+
+      fila2("Masa residual", r.residualMassKg, "kg", 1, null, "", r.residualPct)+'</tbody></table></div>'+
+    '<h3 class="sec-ficha">Índices de riesgo</h3><div class="tabla-scroll"><table class="tabla evo-t an-tabla"><thead><tr><th>Índice</th><th>Valor</th><th>Referencia</th><th>Lectura</th></tr></thead><tbody>'+
+      '<tr><td>Índice de masa corporal</td><td class="mono">'+anFmt(r.imc)+'</td><td class="mono">18,5 a 24,9</td><td>'+anImcCat(r.imc)+'</td></tr>'+
+      '<tr><td>Cintura</td><td class="mono">'+anFmt(r.cintura)+(r.cintura?' cm':'')+'</td><td class="mono">'+(sexo==="Masculino"?"< 94":"< 80")+' cm</td><td>'+anCinturaCat(r.cintura, sexo)+'</td></tr>'+
+      '<tr><td>Cintura / cadera</td><td class="mono">'+anFmt(r.icc,2)+'</td><td class="mono">'+(sexo==="Masculino"?"< 0,90":"< 0,85")+'</td><td>'+anIccCat(r.icc, sexo)+'</td></tr>'+
+      (r.umbilical?'<tr><td>Perímetro umbilical</td><td class="mono">'+anFmt(r.umbilical)+' cm</td><td class="mono">'+(sexo==="Masculino"?"< 94":"< 80")+' cm</td><td>'+anCinturaCat(r.umbilical, sexo)+'</td></tr>':'')+'</tbody></table></div>'+
+    (r.fatSuperior!=null?'<h3 class="sec-ficha">Dónde está la grasa</h3><div class="tabla-scroll"><table class="tabla evo-t an-tabla"><thead><tr><th>Zona</th><th>%</th><th>Referencia</th><th>Lectura</th></tr></thead><tbody>'+
+      [["Superior (tríceps y subescapular)",r.fatSuperior,ref.fatSuperior],["Media (cresta ilíaca y abdominal)",r.fatMedia,ref.fatMedia],["Inferior (muslo y pantorrilla)",r.fatInferior,ref.fatInferior]].map(function(x){ return '<tr><td>'+x[0]+'</td><td class="mono">'+anFmt(x[1])+' %</td><td class="mono">'+anFmt(x[2][0])+' ± '+anFmt(x[2][1])+'</td><td>'+anRegion(x[1],x[2])+'</td></tr>'; }).join("")+'</tbody></table></div>':'')+
+    '<h3 class="sec-ficha">Perímetros</h3><div class="tabla-scroll"><table class="tabla evo-t an-tabla"><thead><tr><th>Perímetro</th><th>Medido</th><th>Referencia</th><th>Diferencia</th></tr></thead><tbody>'+
+      [["Tórax",r.torax,ref.chestCm],["Cintura",r.cintura,ref.waistCm],["Cadera",r.cadera,ref.hipCm]].filter(function(x){ return x[1]!=null; }).map(function(x){ var d=x[1]-x[2][0]; return '<tr><td>'+x[0]+'</td><td class="mono">'+anFmt(x[1])+' cm</td><td class="mono">'+anFmt(x[2][0])+' cm</td><td class="mono">'+(d>0?"+":d<0?"−":"")+anFmt(Math.abs(d))+' cm</td></tr>'; }).join("")+'</tbody></table></div>'+
+    (rp?'<h3 class="sec-ficha">Desde la medición anterior<small>'+fechaCorta(prev.session_date)+'</small></h3><div class="tabla-scroll"><table class="tabla evo-t an-tabla"><thead><tr><th>Medida</th><th>Antes</th><th>Ahora</th><th>Diferencia</th></tr></thead><tbody>'+
+      [["Peso",anNum(prev.weight),anNum(fila.weight),"kg"],["Masa grasa",rp.fatMassKg,r.fatMassKg,"kg"],["Masa muscular",rp.muscleMassKg,r.muscleMassKg,"kg"],["Cintura",anNum(prev.girth_waist),r.cintura,"cm"],["Suma de 6 pliegues",rp.suma6,r.suma6,"mm"]].filter(function(x){ return x[1]!=null&&x[2]!=null; })
+      .map(function(x){ var d=x[2]-x[1]; return '<tr><td>'+x[0]+'</td><td class="mono">'+anFmt(x[1])+' '+x[3]+'</td><td class="mono">'+anFmt(x[2])+' '+x[3]+'</td><td class="mono">'+(Math.abs(d)<.05?"igual":(d>0?"+":"−")+anFmt(Math.abs(d))+" "+x[3])+'</td></tr>'; }).join("")+'</tbody></table></div>':'')+
+    '<h3 class="sec-ficha">Valoración</h3><div class="an-val">'+anValoracion(r, ref, sexo, grupo).map(function(x){ return '<p>'+esc(x)+'</p>'; }).join("")+
+      (fuera.length?'<p><b>Laboratorio del '+fechaCorta(lab.lab_date)+' fuera de referencia:</b> '+esc(fuera.join(", "))+'.</p>':'')+'</div>'+
+    '<p class="nota an-metodo">Grasa: Jackson y Pollock (4 pliegues). Músculo: Lee y col., 2000. Hueso: von Döbeln modificada por Rocha. Residual: Würch. Referencia: media ± desvío de personas del mismo sexo, edad y actividad.</p>';
+  $("an-informe").innerHTML=anHoja("Evaluación antropométrica · "+nombreCompleto(p), cuerpo, fila.session_date ? String(fila.session_date).slice(0,10)+"T12:00:00" : null);
+  if(typeof rotularEvo==="function") rotularEvo($("an-informe"));
+  $("an-listo").classList.remove("oculto"); $("an-form").classList.add("oculto");
+  an.listoP=p; an.listoFila=fila;
+  window.scrollTo(0,0);
+}
+function anCorregirListo(){ if(an.listoP&&an.listoFila){ abrirAntro(an.listoP, an.listoFila); } }
+function anVolverFicha(){ if(an.listoP) abrirFicha(an.listoP); }
+/* desde la ficha */
+function fichaAntro(){ if(ficha.paciente) abrirAntro(ficha.paciente); }
+function fichaInformeAntro(id){ var f=ficha.sesiones.filter(function(x){ return x.id===id; })[0]; if(f&&ficha.paciente){ an.listoP=ficha.paciente; anMostrarInforme(ficha.paciente, f); } }
+
 function fichaNuevaConsulta(){ var p=ficha.paciente; if(!p) return; abrirConsulta(); conElegir(p); }
 function fichaNuevoPlan(){ if(ficha.paciente) nuevoPlanPara(ficha.paciente); }
 function fichaRecetario(){ var p=ficha.paciente; if(!p) return; abrirRecetario(); recElegirPaciente(p); }
@@ -3264,6 +3671,7 @@ function fichaGuardados(){ if(!ficha.paciente) return; gua.paciente=ficha.pacien
 function fichaBiblioteca(){ if(ficha.paciente) abrirBiblioteca(ficha.paciente); }
 async function fichaCorregirConsulta(id){
   var p=ficha.paciente, fila=ficha.sesiones.filter(function(x){ return x.id===id; })[0]; if(!p||!fila) return;
+  if(/antropometr/i.test(fila.session_type||"")){ abrirAntro(p, fila); return; }
   abrirConsulta(); await conElegir(p); cargarConsultaEnFormulario(fila, id);
 }
 /* editar datos de la ficha (tabla patients) */
@@ -3655,6 +4063,7 @@ function fechaCorta(iso){
 }
 /* carga una consulta guardada en el formulario para corregirla */
 function cargarConsultaEnFormulario(fila, id){
+  if(/antropometr/i.test((fila&&fila.session_type)||"")){ var pa=con.paciente||ficha.paciente; if(pa){ abrirAntro(pa, Object.assign({}, fila, {id:id})); return; } }
   con.editandoId=id; con.editandoTipo=fila.session_type||"Consulta"; con.filaCargada=fila;
   // un valor guardado que el formulario no ofrece (planillas viejas) se muestra igual, así no se pierde
   [["c-actividad",fila.physical_activity],["c-adherencia",fila.adherence],["c-frutas",fila.consumo_frutas_verduras],["c-energia",fila.energy_level],["c-sueno",fila.sleep_quality]].forEach(function(par){

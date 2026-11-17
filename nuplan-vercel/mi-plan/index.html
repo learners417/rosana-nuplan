@@ -382,6 +382,62 @@ img[data-ruta]{background:var(--line2);min-height:120px}
 .msj.nuevo{box-shadow:inset 0 0 0 2px var(--cor)}
 #msjCard h3{margin-bottom:8px}
 </style>
+<style id="b6">
+/* bloque 6 · días 29 a 90 y el cierre */
+.ejcard .ejk{display:block;font-family:var(--mono);font-size:.95rem;color:var(--mut);margin-top:8px}
+.ejcard .ejv{display:block;font-size:1.04rem;line-height:1.5;color:var(--ink);white-space:pre-line}
+.ejcard .ejv.vac{color:var(--mut)}
+.tl .ev p{white-space:pre-line}
+.sld input[type=range]{min-height:44px;font-size:16px}
+.ejemb{display:block;width:100%;height:760px;border:0;border-radius:var(--r4);background:var(--bg);margin:4px 0 18px;overflow:hidden}
+.galeria{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:0 0 18px}
+.galeria figure{margin:0}
+.galeria img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:var(--r3);display:block}
+.galeria figcaption{font-family:var(--mono);font-size:.95rem;color:var(--cord);margin-top:4px}
+.tab{margin-top:6px}
+.tabf{display:grid;grid-template-columns:1fr;gap:4px 8px;padding:10px 0;border-bottom:1px solid var(--line2)}
+.tabf:last-of-type{border-bottom:0}
+.tabk{font-weight:700;color:var(--ink);font-size:1.04rem}
+.tabf{grid-template-columns:minmax(0,1fr) 2.2em;align-items:center}
+.tabf .tabk{grid-column:1/-1}
+.tabb{display:block;height:12px;border-radius:99px;background:#fbe3dc;overflow:hidden}
+.tabb i{display:block;height:100%;background:var(--ac);border-radius:99px}
+.tabb.hoy i{background:var(--cor)}
+.tabn{font-family:var(--mono);font-size:1rem;font-weight:700;color:var(--ink);text-align:right}
+.tabd{grid-column:1/-1;font-family:var(--mono);font-size:1rem;color:var(--cord)}
+.tabl{display:flex;gap:18px;margin:10px 0 0;font-family:var(--mono);font-size:.95rem;color:var(--mut)}
+.tabl i{display:inline-block;width:14px;height:10px;border-radius:99px;margin-right:6px;vertical-align:middle}
+.tabl .c1{background:var(--ac)}.tabl .c2{background:var(--cor)}
+.manual{background:var(--sup);border:1px solid var(--ac);border-radius:var(--r4);padding:20px 20px 8px;margin:0 0 16px}
+.manual .mt{font-family:var(--mono);font-size:.95rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--cord);margin:0 0 10px}
+.manual ol{margin:0;padding-left:1.4em}
+.manual li{font-size:1.1rem;line-height:1.5;color:var(--ink);margin:0 0 12px}
+.carta{background:var(--sup);border:1px solid var(--ac);border-left:5px solid var(--cor);border-radius:var(--r4);padding:20px;margin:0 0 18px}
+.carta .ct{font-family:var(--mono);font-size:.95rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--cord);margin:0 0 10px}
+.carta .cx{font-size:1.12rem;line-height:1.65;color:var(--ink);white-space:pre-line;margin:0}
+.carta .cf{font-family:var(--mono);font-size:.95rem;color:var(--mut);margin:12px 0 0}
+.carta.vacia .cx{color:var(--body)}
+.ad{display:grid;grid-template-columns:1fr;gap:12px;margin:0 0 18px}
+.adc{background:var(--sup);border:1px solid var(--line2);border-radius:var(--r4);padding:16px}
+.adc.hoy{border-color:var(--cor)}
+.adc .adt{font-family:var(--mono);font-size:.95rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--cord);margin:0 0 6px}
+.adc .ejk{display:block;font-family:var(--mono);font-size:.95rem;color:var(--mut);margin-top:8px}
+.adc p{font-size:1.04rem;line-height:1.55;color:var(--ink);margin:2px 0 0;white-space:pre-line}
+.adc p.vac{color:var(--mut)}
+@media(min-width:700px){.ad{grid-template-columns:1fr 1fr}.galeria{grid-template-columns:repeat(3,minmax(0,1fr))}}
+#impManual{display:none}
+@media print{
+  body.imp-manual > *:not(#impManual){display:none !important}
+  body.imp-manual{background:#fff !important}
+  body.imp-manual #impManual{display:block !important;font-family:var(--sans);color:#1a1a1a;padding:14mm 16mm}
+  #impManual .imH{display:flex;justify-content:space-between;font-family:var(--mono);font-size:10pt;color:#c53a1e;border-bottom:2px solid #e8472a;padding-bottom:3mm;margin-bottom:10mm}
+  #impManual h1{font-size:26pt;color:#e8472a;margin:0 0 8mm;font-weight:700}
+  #impManual ol{padding-left:1.2em;margin:0}
+  #impManual li{font-size:16pt;line-height:1.45;margin:0 0 7mm}
+  #impManual .imP{font-family:var(--mono);font-size:10pt;color:#6b7280;margin-top:12mm}
+  @page{margin:0}
+}
+</style>
 </head><body>
 
 <div class="splash" id="splash" style="display:none">
@@ -1605,7 +1661,7 @@ function msjPintar(){
   G.hidden = false; B.hidden = false;
   var l = MSJ.l || [];
   L.innerHTML = l.length ? '<div class="msjHilo">' + l.map(function(m){ var ro = m.de === "rosana";
-      return '<div class="msj ' + (ro ? "ro" : "yo") + (ro && !m.leido ? " nuevo" : "") + '"><small>' + (ro ? "Rosana" : "Vos") + " · " + esc(msjCuando(m.creado)) + '</small><p>' + esc(m.texto) + '</p></div>' }).join("") + '</div>'
+      return '<div class="msj ' + (ro ? "ro" : "yo") + (ro && !m.leido ? " nuevo" : "") + '"><small>' + (ro ? "Rosana" : "Vos") + " · " + esc(msjCuando(m.creado)) + (/^\[\[carta\]\]/.test(String(m.texto || "")) ? " · tu carta de graduación" : "") + '</small><p>' + esc(String(m.texto || "").replace(/^\[\[carta\]\]\s*/, "")) + '</p></div>' }).join("") + '</div>'
     : '<p class="sub" style="margin:0">' + (MSJ.l ? "Escribile lo que necesites: le llega a su mail y te contesta por acá." : "Trayendo tus mensajes…") + '</p>';
   if(!T.value && S.borrador.msj) T.value = S.borrador.msj;
   if(msjSinLeer() && SB){
@@ -1644,6 +1700,12 @@ function pintarLinea(){
     if(l.length) ev.push({ d: diaDeFecha(f), t:"diario", v: l.length + " comidas", f:f });
   });
   Object.keys(S.checkins).forEach(function(d){ ev.push({ d:+d, t:"check-in", v:"Le mandó su resumen a Rosana" }) });
+  Object.keys(S.ej || {}).forEach(function(k){
+    var d = +String(k).replace(/\D/g, ""), st = S.ej[k], x = d ? dia(d) : null; if(!x || !st) return;
+    var t = (st.envio && st.envio.bl) ? st.envio.bl.map(function(b){ return b.l.map(function(y){ return (y.k ? y.k + ": " : "") + y.v }).join("\n") }).join("\n") : "";
+    if(!t){ var a = []; Object.keys(st.v || {}).forEach(function(c){ var v = st.v[c]; if(Array.isArray(v)) v = v.join(", "); if(typeof v === "string" && v.trim()) a.push(v.trim()) }); t = a.join("\n") }
+    if(t) ev.push({ d:d, t: llano(x.x || x.a).toLowerCase(), v: t.length > 600 ? t.slice(0, 599) + "…" : t });
+  });
   var q = String(S.onb.trajo || S.onb["o4_0"] || "").trim(), ob = String(S.onb.objetivo || "").trim();
   if(ob) ev.push({ d:0, t:"tu objetivo", v:ob });
   if(q) ev.push({ d:0, t:"antes de empezar", v:q });
@@ -2152,6 +2214,420 @@ function pausaPregunta(){
     };
   });
 }
+
+/* ============ BLOQUE 6 · los días 29 a 90 adentro de la app (C09, C10) ============
+   Cada día tiene su ejercicio, lo que escribe le llega a Rosana con «Mandárselo a Rosana», y lo que
+   escribió antes vuelve a aparecer cuando lo necesita. El cierre (85 a 90) existe de verdad: la carta
+   de Rosana, la línea de tiempo con todo, el antes y el después, el manual para imprimir, qué sigue
+   y el informe final. Barca, zona de equilibrio y parte glotona se hacen adentro, en su día. */
+(function(){
+  var V = function(p){ return "https://metodo.nuplan.com.ar/" + p };
+  var D = {
+    29:{ a:"Mirar el video de PERSONALIZAR y contestar sus cinco preguntas", x:"Las cinco preguntas de PERSONALIZAR", xp:"P3 &middot; PERSONALIZAR", u:V("p"), un:"el video de PERSONALIZAR", ej:"", k:"preguntasP" },
+    30:{ a:"Volver a completar tu rueda de la alimentación: con ella se arma tu plan", x:"Tu rueda, un mes después", xp:"P3 &middot; PERSONALIZAR", u:"", un:"", k:"rueda" },
+    31:{ a:"Armar tu lista «sí quiero»: lo que querés que esté sí o sí", x:"La lista «sí quiero»", xp:"P3 &middot; PERSONALIZAR", u:"", un:"", k:"siQuiero" },
+    32:{ a:"Escribir tu carta al plan que abandonaste", x:"Carta al plan que abandonaste", xp:"P3 &middot; PERSONALIZAR", u:"", un:"", k:"cartaPlan" },
+    35:{ a:"Primer día con tu plan: cargar tu diario y contar cómo te fue", x:"Tu primer día con el plan", xp:"P3 &middot; PERSONALIZAR", k:"primerDia" },
+    36:{ a:"Hacer el ejercicio «tu plan en tu semana real»", x:"Tu plan en tu semana real", xp:"P3 &middot; PERSONALIZAR", u:"", un:"", k:"semanaReal" },
+    37:{ a:"Mirar tu semana que viene y marcar los dos días más difíciles", x:"Tus dos días difíciles", k:"diasDificiles" },
+    38:{ a:"Decidir qué vas a hacer esos dos días, por escrito", x:"Lo que vas a hacer esos días", k:"diasPlan" },
+    39:{ a:"Dejar algo listo la noche anterior, una sola cosa", x:"Algo listo desde la noche", k:"nocheAntes" },
+    40:{ a:"Sacarle una foto a una comida del plan hecha por vos", x:"Una comida del plan, hecha por vos", k:"foto" },
+    41:{ a:"Anotar cuánto tiempo real te llevó hoy", x:"El tiempo real", k:"tiempoReal" },
+    43:{ a:"Mirar el video de LIBERAR y contestar sus cinco preguntas", x:"Las cinco preguntas de LIBERAR", xp:"P4 &middot; LIBERAR", u:V("l"), un:"el video de LIBERAR", ej:"", k:"preguntasL" },
+    44:{ a:"Armar tu protocolo de deslices: qué hacés los primeros diez minutos", x:"Tu protocolo de deslices", xp:"P4 &middot; LIBERAR", u:"", un:"", k:"protocolo" },
+    45:{ a:"Leer tu protocolo en voz alta", x:"Tu protocolo, en voz alta", k:"protocoloVoz" },
+    46:{ a:"Hacer «reescribí la voz»: cómo te hablás cuando algo no sale", x:"Reescribí la voz", xp:"P4 &middot; LIBERAR", u:"", un:"", k:"voz" },
+    47:{ a:"Conocer a tu monstruo de la gula: ponerle nombre al hambre que no viene de la panza", x:"Tu monstruo de la gula", xp:"P4 &middot; LIBERAR", k:"monstruo" },
+    48:{ a:"Escribir tu carta al día que abandonaste", x:"Carta al día que abandonaste", xp:"P4 &middot; LIBERAR", u:"", un:"", k:"cartaDia" },
+    49:{ a:"Releer tu acuerdo de la semana 2 y ver si sigue siendo tuyo", x:"Tu acuerdo, siete semanas después", k:"acuerdoOtraVez" },
+    50:{ a:"Cargar tu diario y, si hubo un desliz, usar tu protocolo y anotarlo", x:"Si hubo desliz, tu protocolo", k:"desliz" },
+    51:{ a:"Escribir qué pasó después de usar tu protocolo", x:"Después del protocolo", k:"despues" },
+    52:{ a:"Elegir un disparador de tu mapa y sacarlo del medio, físicamente", x:"Un disparador menos", k:"sacarDisparador" },
+    53:{ a:"Sacarle una foto a ese cambio en tu casa", x:"La foto del cambio", k:"foto" },
+    54:{ a:"El plato de lo que sí hiciste: hablarte amable y reconocer lo que sí hiciste", x:"El plato de lo que sí hiciste", xp:"P4 &middot; LIBERAR", k:"plato" },
+    55:{ a:"Anotar en qué se diferencia esta semana de la semana 1", x:"Esta semana y la primera", k:"semana1" },
+    57:{ a:"Mirar el video de ACTIVAR y contestar sus cinco preguntas", x:"Las cinco preguntas de ACTIVAR", xp:"P5 &middot; ACTIVAR", u:V("a"), un:"el video de ACTIVAR", ej:"", k:"preguntasA" },
+    58:{ a:"Armar tu tablero de evidencia: cómo estabas al empezar y cómo estás hoy", x:"Tu tablero de evidencia", xp:"P5 &middot; ACTIVAR", u:"", un:"", k:"tablero" },
+    59:{ a:"Empezar tu lista de pruebas: qué podés señalar que antes no pasaba", x:"La lista de pruebas", xp:"P5 &middot; ACTIVAR", u:"", un:"", k:"pruebas" },
+    60:{ a:"Mirar tus fotos de estos dos meses, una al lado de la otra", x:"Tus fotos, una al lado de la otra", k:"fotos" },
+    61:{ a:"Cargar tu diario y compararlo con tu primer día de diario", x:"Tu diario, antes y ahora", k:"diarioAntes" },
+    62:{ a:"Escribir tu carta a tu yo que dudaba", x:"Carta a tu yo que dudaba", xp:"P5 &middot; ACTIVAR", u:"", un:"", k:"cartaDuda" },
+    63:{ a:"Leer tu informe de evidencia completo", x:"Tu informe de evidencia", xp:"P5 &middot; ACTIVAR", k:"informe" },
+    64:{ a:"Hacer el día completo sin abrir la app hasta la noche", x:"Un día sin la app", k:"sinApp" },
+    65:{ a:"Empezar la barca de las acciones: dos minutos cada noche, toda la semana", x:"La barca de las acciones", xp:"P5 &middot; ACTIVAR", k:"barca" },
+    66:{ a:"Elegir una cosa que ya no te cuesta y sumarla a tus pruebas", x:"Una prueba más", k:"unaPrueba" },
+    67:{ a:"Elegir un día difícil para probarte a propósito: salida, reunión, lo que sea", x:"Tu día difícil, a propósito", k:"diaDificil" },
+    68:{ a:"Contar cómo te fue en ese día, con una foto si querés", x:"Cómo te fue", k:"comoFue" },
+    69:{ a:"Hacer la zona de equilibrio con lo que te negás y después comés de más", x:"Zona de equilibrio", xp:"P5 &middot; ACTIVAR", k:"equilibrio" },
+    71:{ a:"Mirar el video de NATURALIZAR y contestar sus cinco preguntas", x:"Las cinco preguntas de NATURALIZAR", xp:"P6 &middot; NATURALIZAR", u:V("n-3944"), un:"el video de NATURALIZAR", ej:"", k:"preguntasNat" },
+    72:{ a:"Escribir las cinco reglas de tu manual de autonomía", x:"Tu manual de autonomía", xp:"P6 &middot; NATURALIZAR", u:"", un:"", k:"manual" },
+    73:{ a:"Armar tu plan para las semanas difíciles", x:"El plan para las semanas difíciles", xp:"P6 &middot; NATURALIZAR", u:"", un:"", k:"semanasDificiles" },
+    74:{ a:"Anotar tus señales de alarma: qué pasa cuando te estás yendo", x:"Tus señales de alarma", k:"alarmas" },
+    75:{ a:"Cargar tu diario y anotar qué regla usás sin darte cuenta", x:"La regla que ya es tuya", k:"reglaSola" },
+    76:{ a:"Pulir tu manual: sacar lo que no es tuyo", x:"Tu manual, pulido", k:"manualPulir" },
+    77:{ a:"Imprimir tu manual o ponerlo donde lo veas", x:"Tu manual, a la vista", k:"manualVista" },
+    78:{ a:"Reconciliarte con tu parte glotona: lo que te da placer, con día y a conciencia", x:"Reconciliate con tu parte glotona", xp:"P6 &middot; NATURALIZAR", k:"glotona" },
+    79:{ a:"Mirar tu línea de tiempo completa", x:"Tu línea de tiempo", k:"linea" },
+    80:{ a:"Volver a leer lo que escribiste antes de empezar", x:"Lo que escribiste antes de empezar", k:"antes" },
+    81:{ a:"Escribir tu carta a tu yo del día 1", x:"Carta a tu yo del día 1", xp:"P6 &middot; NATURALIZAR", u:"", un:"", k:"cartaYo1" },
+    82:{ a:"Anotar qué te llevás, en una frase", x:"Lo que te llevás", k:"teLlevas" },
+    83:{ a:"Grabarte un audio de un minuto con el teléfono, para escucharlo cuando lo necesites", x:"Un minuto para vos", k:"audio" },
+    85:{ a:"Tu carta de graduación. Rosana te la escribe y te queda guardada acá.", x:"Tu carta de graduación", k:"cartaRo" },
+    86:{ a:"Tu línea de tiempo: las fotos, los diarios y tus respuestas de los 84 días, en una sola pantalla.", x:"Tus 84 días", k:"linea" },
+    87:{ a:"El antes y el después en tus palabras: lo que escribiste antes de empezar, al lado de tu carta del día 81.", x:"El antes y el después", k:"antesDespues" },
+    88:{ a:"Tu manual, en limpio: tus cinco reglas listas para imprimir.", x:"Tu manual, en limpio", k:"manualVista" },
+    89:{ a:"Qué sigue: elegís si seguís por tu cuenta, con seguimiento mensual o con un acompañamiento nuevo.", x:"Qué sigue", k:"queSigue" },
+    90:{ a:"El cierre: le mandás tu informe final a Rosana. La app queda abierta y tu diario sigue disponible.", x:"Tu informe final", k:"final" }
+  };
+  BASE.forEach(function(b){ var c = D[b.d]; if(c) Object.keys(c).forEach(function(k){ b[k] = c[k] }); if(b.d >= 78) b.fo = "Cerrar y seguir por tu cuenta" });
+  /* la pestaña NuPlan: las herramientas nuevas abren su día */
+  [["Las cinco preguntas de PERSONALIZAR",29,"Lo que pide tu plan para ser tuyo"],["La lista «sí quiero»",31,"Lo que tiene que estar sí o sí"],["Tu protocolo de deslices",44,"Tres pasos escritos antes de que haga falta"],
+   ["Tu monstruo de la gula",47,"Ponerle nombre al hambre que no viene de la panza"],["El plato de lo que sí hiciste",54,"Hablarte amable y reconocer lo que sí hiciste"],
+   ["Tu tablero de evidencia",58,"Cómo estabas al empezar y cómo estás hoy"],["La lista de pruebas",59,"Lo que antes no pasaba"],["La barca de las acciones",65,"Dos minutos cada noche"],
+   ["Zona de equilibrio",69,"El punto del medio con lo que te negás"],["Tu manual de autonomía",72,"Tus cinco reglas"],["El plan para las semanas difíciles",73,"Señal, lo primero y lo que no hacés"],
+   ["Reconciliate con tu parte glotona",78,"Lo que te da placer, con día y a conciencia"]].forEach(function(h){ HERR.push({ t:h[0], d:h[1], q:h[2], u:"", dd:h[1] }) });
+  HERR.sort(function(a, b){ return a.d - b.d });
+})();
+
+/* lo que escribió otro día, sin crear nada */
+function ejV(d){ var s = S.ej[ejK(d)]; return (s && s.v) || {} }
+function ejTxt(d, c){ var v = ejV(d)[c]; return ejLleno(v) ? String(v) : "" }
+function tarjeta(titulo, filas, vacio){
+  filas = (filas || []).filter(function(f){ return f && ejLleno(f[1]) });
+  return '<div class="ejcard"><b>' + titulo + '</b>' + (filas.length ? filas.map(function(f){
+    return (f[0] ? '<span class="ejk">' + esc(f[0]) + '</span>' : '') + '<span class="ejv">' + esc(f[1]) + '</span>' }).join("") : '<span class="ejv vac">' + (vacio || "Todavía no lo escribiste. Podés hacerlo igual.") + '</span>') + '</div>';
+}
+function lineas(t){ return String(t || "").split(/\n+/).map(function(x){ return x.replace(/^[\s\-•·*\d.)]+/, "").trim() }).filter(Boolean) }
+/* el manual vigente: el pulido del día 76 o, si no, el del 72 */
+function manualReglas(){
+  var p = ejV(76), o = ejV(72), r = [];
+  for(var i = 0; i < 5; i++){ var v = ejLleno(p["c" + i]) ? p["c" + i] : o["c" + i]; if(ejLleno(v)) r.push(String(v).trim()) }
+  return r;
+}
+function pruebasTodas(){
+  var l = lineas(ejTxt(59, "c0")).concat(lineas(ejTxt(66, "c0")));
+  return l.filter(function(x, i){ return l.indexOf(x) === i });
+}
+var TAB_IND = [["e","Energía","sin energía","con energía"],["s","Sueño","duermo mal","duermo bien"],["h","Humor","de mal humor","de buen humor"],["r","Comer con hambre real","casi nunca","casi siempre"]];
+function tableroFilas(){
+  var v = ejV(58), l = [];
+  TAB_IND.forEach(function(t){ if(typeof v[t[0] + "0"] === "number" && typeof v[t[0] + "1"] === "number") l.push({ k:t[1], a:v[t[0] + "0"], b:v[t[0] + "1"] }) });
+  if(ejLleno(v.otro) && typeof v.o0 === "number" && typeof v.o1 === "number") l.push({ k:String(v.otro).trim(), a:v.o0, b:v.o1 });
+  return l;
+}
+function tableroHTML(){
+  var l = tableroFilas();
+  if(!l.length) return '<p class="sub">Tu tablero del día 58 todavía está vacío. Si lo armás, aparece acá.</p>';
+  return '<div class="tab">' + l.map(function(x){ var dif = x.b - x.a;
+    return '<div class="tabf"><span class="tabk">' + esc(x.k) + '</span><span class="tabb"><i style="width:' + (x.a * 10) + '%"></i></span><span class="tabn">' + x.a + '</span>' +
+      '<span class="tabb hoy"><i style="width:' + (x.b * 10) + '%"></i></span><span class="tabn">' + x.b + '</span><span class="tabd">' + (dif > 0 ? "+" + dif : dif < 0 ? "−" + (-dif) : "igual") + '</span></div>' }).join("") +
+    '<p class="tabl"><span><i class="c1"></i>Al empezar</span><span><i class="c2"></i>Hoy</span></p></div>';
+}
+function cartaRo(){
+  var l = (MSJ.l || []).filter(function(m){ return m.de === "rosana" && /^\[\[carta\]\]/.test(String(m.texto || "")) });
+  return l.length ? { t: String(l[l.length - 1].texto).replace(/^\[\[carta\]\]\s*/, ""), f: l[l.length - 1].creado } : null;
+}
+function embebido(id, ruta, titulo){
+  var n = encodeURIComponent(String(S.nombre || "").trim().slice(0, 60));
+  return '<p class="sub">Lo hacés acá mismo. Al final tocás «Mandárselo a Rosana» dentro del ejercicio y le llega a ella. Lo que escribas queda guardado en tu teléfono.</p>' +
+    '<iframe class="ejemb" data-emb="' + id + '" title="' + escA(titulo) + '" src="' + ruta + '?embed=1' + (n ? "&nombre=" + n : "") + '" scrolling="no"></iframe>';
+}
+window.addEventListener("message", function(e){
+  var d = e.data; if(!d || typeof d !== "object" || !d.np || e.origin !== location.origin) return;
+  document.querySelectorAll("iframe.ejemb").forEach(function(f){
+    if(e.source !== f.contentWindow) return;
+    if(d.np === "alto" && d.h > 200 && d.h < 20000) f.style.height = Math.ceil(d.h) + "px";
+    if(d.np === "arriba"){ var r = f.getBoundingClientRect(); if(r.top < 0) f.scrollIntoView({ block:"start", behavior:"smooth" }) }
+  });
+});
+function imprimirManual(){
+  var r = manualReglas(); if(!r.length) return;
+  var c = document.getElementById("impManual");
+  if(!c){ c = document.createElement("div"); c.id = "impManual"; document.body.appendChild(c) }
+  c.innerHTML = '<div class="imH"><span>NuPlan&trade; · Lic. Rosana Roldán</span><span>' + esc(S.nombre || "") + '</span></div><h1>Mi manual de autonomía</h1>' +
+    '<ol>' + r.map(function(x){ return '<li>' + esc(x) + '</li>' }).join("") + '</ol><p class="imP">Escrito por mí, con el Método NuPlan.</p>';
+  document.body.classList.add("imp-manual");
+  var fin = function(){ document.body.classList.remove("imp-manual"); window.removeEventListener("afterprint", fin) };
+  window.addEventListener("afterprint", fin);
+  window.print();
+  setTimeout(fin, 1500);
+}
+function manualHTML(){
+  var r = manualReglas();
+  if(!r.length) return '<p class="sub">Tu manual todavía está vacío: se escribe el día 72. Cuando lo tengas, aparece acá listo para imprimir.</p>';
+  return '<div class="manual"><p class="mt">Mi manual de autonomía</p><ol>' + r.map(function(x){ return '<li>' + esc(x) + '</li>' }).join("") + '</ol></div>' +
+    '<div class="bt" style="margin-bottom:18px"><button type="button" onclick="imprimirManual()"><span class="ic"><svg class="i" aria-hidden="true"><use href="#i-linea"/></svg></span>Imprimir o guardar PDF</button></div>';
+}
+
+/* --- las preguntas y los ejercicios de escribir --- */
+Object.assign(FORMS, {
+  preguntasP: { t:"Las cinco preguntas de PERSONALIZAR", i:"Primero el video. Después contestá sin corregirte: con esto se arma un plan que sea tuyo.", c:[
+    { l:"¿Qué planes o maneras de comer probaste antes, y qué hizo que los dejaras?" },
+    { l:"¿Qué comidas no pueden faltar en tu semana para que la sientas tuya?" },
+    { l:"¿Cómo son tus horarios de verdad: cuándo comés, dónde y con quién?" },
+    { l:"¿Cuánto tiempo tenés de verdad para cocinar en un día común?" },
+    { l:"Si tu plan tuviera que entrar en tu peor semana, ¿qué tendría que tener sí o sí?" } ] },
+  siQuiero: { t:"La lista «sí quiero»", i:"Un plan que no tiene lo que te gusta no dura. Acá va lo que querés que esté sí o sí. Una cosa por renglón.", c:[
+    { l:"Comidas que querés que estén sí o sí", p:"Las milanesas de los domingos\nUn café con algo rico a la tarde", r:4 },
+    { l:"Momentos que querés cuidar", p:"Comer en la mesa con mis hijos", r:3 },
+    { l:"Lo que necesitás para que te resulte práctico", p:"Cosas que se cocinen en 15 minutos", r:3 } ] },
+  cartaPlan: { t:"Carta al plan que abandonaste", i:"Pensá en el último plan que dejaste. Escribile una carta: qué te dio, qué te pidió que no podías sostener y qué te llevás. Sin culpa: dejarlo también te enseñó algo.", c:[
+    { l:"Tu carta", p:"Querido plan:\n…", r:7 } ] },
+  primerDia: { t:"Tu primer día con el plan", i:"Primero cargá tu diario de hoy, como siempre. Después contá cómo te fue con el plan.", pre:function(){ return '<div class="bt" style="margin-bottom:18px"><button type="button" onclick="irComoElla(\'diario\')"><span class="ic"><svg class="i" aria-hidden="true"><use href="#i-diario"/></svg></span>Ir a mi diario</button></div>' }, c:[
+    { l:"¿Qué salió como lo pensaste?" },
+    { l:"¿Qué te costó o tuviste que cambiar?" } ] },
+  semanaReal: { t:"Tu plan en tu semana real", i:"Un plan sirve si entra en la semana que tenés, no en la ideal. Mirá tu semana y anotá lo que la complica y cómo lo resolvés.", c:[
+    { l:"¿Qué días comés afuera o con poco tiempo?" },
+    { l:"¿Qué comida del plan te sirve para esos días?" },
+    { l:"¿Qué podés dejar listo el fin de semana para que la semana sea más fácil?" },
+    { l:"¿Qué del plan no entra en tu semana real y hay que cambiar?" } ] },
+  diasPlan: { t:"Lo que vas a hacer esos días", i:"Por escrito y con detalle: qué vas a comer, a qué hora y qué vas a dejar resuelto antes.", pre:function(){ var v = ejV(37);
+    return tarjeta("Los días que marcaste ayer", [["", (v.dias || []).join(" y ")], ["Por qué", v.c0]], "Ayer no marcaste los días. Pensá en los dos más difíciles de tu semana.") }, c:[
+    { l:"El primer día difícil: qué vas a hacer" },
+    { l:"El segundo día difícil: qué vas a hacer" } ] },
+  nocheAntes: { t:"Algo listo desde la noche", i:"Una sola cosa, chica, que le haga más fácil el día a tu yo de mañana.", c:[
+    { l:"¿Qué vas a dejar listo esta noche?", p:"Las verduras cortadas para el almuerzo" },
+    { l:"Mañana, cuando lo uses: ¿qué cambió en tu día?" } ] },
+  tiempoReal: { t:"El tiempo real", i:"Sin juzgarlo: cuánto tiempo de verdad te llevó hoy comer según tu plan, contando comprar, cocinar y comer.", c:[
+    { l:"¿Cuánto tiempo te llevó, más o menos?", tipo:"text", p:"Unos 40 minutos en todo el día" },
+    { l:"¿Qué podría llevarte menos tiempo la semana que viene?" } ] },
+  preguntasL: { t:"Las cinco preguntas de LIBERAR", i:"Primero el video. Después contestá sin corregirte: un desliz es un dato, no un veredicto.", c:[
+    { l:"La última vez que comiste algo fuera de tu plan, ¿qué pasó después: seguiste, frenaste o largaste todo?" },
+    { l:"¿Qué te dijiste en ese momento? Escribí la frase tal cual sonó en tu cabeza." },
+    { l:"¿Cuántas veces un mal día se convirtió en una mala semana? ¿Qué lo hizo crecer?" },
+    { l:"¿Qué le dirías a alguien que querés si te contara que le pasó lo mismo?" },
+    { l:"¿Qué necesitarías tener escrito de antemano para seguir como si nada al día siguiente?" } ] },
+  protocolo: { t:"Tu protocolo de deslices", i:"Tres pasos que escribís hoy, con calma, para el momento en que comas algo fuera de tu plan. Cuando llegue ese momento no tenés que pensar: tenés que leer.", c:[
+    { l:"La frase de culpa que te decís después de un desliz", p:"Ya está, lo arruiné todo" },
+    { g:"Tu protocolo", l:"Paso 1 · Qué me voy a decir", p:"Un desliz es un dato, no un veredicto" },
+    { l:"Paso 2 · Qué no voy a hacer", p:"No me voy a saltear la próxima comida" },
+    { l:"Paso 3 · Cuál es mi próxima comida normal", p:"La cena, como estaba en mi plan" } ] },
+  protocoloVoz: { t:"Tu protocolo, en voz alta", i:"Leelo en voz alta, despacio, dos veces. Escucharte decirlo hace que el día que lo necesites ya te suene conocido.", pre:function(){ var v = ejV(44);
+    return tarjeta("Tu protocolo", [["Paso 1", v.c1], ["Paso 2", v.c2], ["Paso 3", v.c3]], "Todavía no escribiste tu protocolo: está en el día 44.") }, c:[
+    { l:"¿Cómo te sonó? ¿Hay algo que cambiarías?" } ] },
+  voz: { t:"Reescribí la voz", i:"Hay una voz que habla fuerte cuando algo no sale. Acá la escuchás y la reescribís.", c:[
+    { l:"Cuando algo no te sale con la comida, ¿qué te decís? Tal cual suena.", p:"Siempre lo mismo, no tengo fuerza de voluntad" },
+    { l:"¿De quién es esa voz? ¿A quién te suena?" },
+    { l:"¿Qué le dirías a alguien que querés si le pasara lo mismo?" },
+    { l:"Tu frase nueva: la que te vas a decir la próxima vez", p:"Hoy no salió. Mañana tengo mi próxima comida." } ] },
+  monstruo: { t:"Tu monstruo de la gula", i:"El hambre que no viene de la panza es como un monstruo: aparece, pide, insiste. Si lo conocés, lo ves venir. Dibujalo con palabras.", c:[
+    { l:"¿Cómo se llama tu monstruo?", tipo:"text", p:"El de las 6 de la tarde" },
+    { l:"¿Cuándo aparece? Hora, lugar, qué estaba pasando." },
+    { l:"¿Qué te pide que comas?" },
+    { l:"¿Qué te dice para convencerte?", p:"Te lo merecés, fue un día largo" },
+    { l:"Cuando aparece, ¿qué necesitás de verdad?", p:"Descansar, hablar con alguien, cortar un rato" },
+    { l:"¿Qué le vas a contestar la próxima vez?" } ] },
+  cartaDia: { t:"Carta al día que abandonaste", i:"Pensá en el día en que largaste lo que venías haciendo. Escribile a ese día: qué estaba pasando, qué necesitabas y qué harías distinto hoy, con lo que ya sabés.", c:[
+    { l:"Tu carta", p:"Querido día que abandoné:\n…", r:7 } ] },
+  acuerdoOtraVez: { t:"Tu acuerdo, siete semanas después", i:"Leé lo que acordaste con tu forma de comer en la semana 2.", pre:function(){ var v = ejV(9), t = [];
+    Object.keys(v).forEach(function(c){ if(ejLleno(v[c]) && typeof v[c] !== "number") t.push(["", Array.isArray(v[c]) ? v[c].join(", ") : v[c]]) });
+    return tarjeta("Tu acuerdo del día 9", t, "No encontramos tu acuerdo del día 9. Escribí el que tenés hoy.") }, c:[
+    { l:"¿Sigue siendo tuyo? ¿Qué cambiarías?" },
+    { l:"Tu acuerdo, como lo dirías hoy" } ] },
+  desliz: { t:"Si hubo desliz, tu protocolo", i:"Primero cargá tu diario. Si hoy comiste algo fuera de tu plan, abrí tu protocolo y seguilo paso por paso.", pre:function(){ var v = ejV(44);
+    return tarjeta("Tu protocolo", [["Paso 1", v.c1], ["Paso 2", v.c2], ["Paso 3", v.c3]], "Tu protocolo está en el día 44.") }, c:[
+    { l:"¿Hubo un desliz hoy? ¿Qué pasó?", p:"Hoy no hubo / Sí: a la tarde…" },
+    { l:"Si lo hubo: ¿usaste tu protocolo? ¿Qué paso te costó más?" } ] },
+  despues: { t:"Después del protocolo", i:"Lo que pasa después de un desliz es lo que cambia la historia.", c:[
+    { l:"¿Qué pasó en las horas siguientes?" },
+    { l:"¿En qué se diferenció de otras veces?" } ] },
+  sacarDisparador: { t:"Un disparador menos", i:"Mirá tu mapa de disparadores y elegí uno que puedas sacar del medio con las manos: cambiar algo de lugar, no comprarlo, otro camino a casa.", pre:function(){ var v = ejV(8), t = [];
+    Object.keys(v).forEach(function(c){ if(ejLleno(v[c]) && typeof v[c] !== "number") t.push(["", Array.isArray(v[c]) ? v[c].join(", ") : v[c]]) });
+    return tarjeta("Tu mapa del día 8", t.slice(0, 6), "Tu mapa de disparadores está en el día 8.") }, c:[
+    { l:"¿Qué disparador elegiste?" },
+    { l:"¿Qué hiciste para sacarlo del medio?" } ] },
+  plato: { t:"El plato de lo que sí hiciste", i:"Hoy no se mira lo que faltó. Se llena un plato con lo que sí hiciste esta semana, por chico que sea, y te lo decís en voz amable.", c:[
+    { l:"Tres cosas que sí hiciste esta semana", p:"Desayuné en la mesa\nUsé mi protocolo el martes\nDejé la fruta a la vista", r:4 },
+    { l:"¿Cómo te lo dirías con una voz amable?", p:"Esta semana hice cosas que hace un mes no hacía." },
+    { l:"¿Qué le dirías a alguien que querés si hubiera hecho lo mismo?" } ] },
+  semana1: { t:"Esta semana y la primera", i:"Volvé a tu primera semana.", pre:function(){ return tarjeta("Tu primera semana en una frase (día 7)", [["", ejTxt(7, "c0") || ejTxt(7, "c1")]], "No escribiste la frase del día 7.") }, c:[
+    { l:"¿En qué se diferencia esta semana de la primera?" },
+    { l:"¿Qué hacés hoy sin esfuerzo que antes te costaba?" } ] },
+  preguntasA: { t:"Las cinco preguntas de ACTIVAR", i:"Primero el video. Después contestá sin corregirte: la duda no se calla con ganas, se calla con datos.", c:[
+    { l:"Cuando aparece la duda, ¿qué te dice? Escribí la frase tal cual." },
+    { l:"¿En qué momentos aparece más? Cansancio, después de un desliz, cuando alguien opina…" },
+    { l:"¿Qué hacés hoy que hace dos meses no hacías?" },
+    { l:"¿Cómo está tu energía comparada con la del día 1?" },
+    { l:"¿Qué dato te haría falta ver para creerte que cambiaste?" } ] },
+  pruebas: { t:"La lista de pruebas", i:"Pruebas concretas, de las que se pueden señalar: cosas que hoy pasan y antes no. Una por renglón. La vas a releer cuando aparezca la duda.", c:[
+    { l:"Tus pruebas", p:"Llego a la tarde con energía\nCeno en la mesa y sin el celular\nDejé de picar mientras cocino", r:6 } ] },
+  diarioAntes: { t:"Tu diario, antes y ahora", i:"Primero cargá tu diario de hoy. Después compará con tu primer día de diario.", pre:function(){
+    var f = Object.keys(S.diario || {}).sort().filter(function(x){ return (S.diario[x] || []).length })[0], l = f ? S.diario[f] : [];
+    var t = l.slice(0, 4).map(function(c){ return [c.hora || "", [c.que || "", c.hambre || ""].filter(Boolean).join(" · ")] });
+    return tarjeta(f ? "Tu primer día de diario (" + f.split("-").reverse().join("/") + ")" : "Tu primer día de diario", t, "No encontramos tu primer día de diario.") +
+      '<div class="bt" style="margin-bottom:18px"><button type="button" onclick="irComoElla(\'diario\')"><span class="ic"><svg class="i" aria-hidden="true"><use href="#i-diario"/></svg></span>Ir a mi diario</button></div>' }, c:[
+    { l:"¿Qué cambió entre ese día y hoy?" } ] },
+  cartaDuda: { t:"Carta a tu yo que dudaba", i:"Escribile a la persona que al principio dudaba de que esto fuera a funcionar. Contale lo que pasó, con tus pruebas.", c:[
+    { l:"Tu carta", p:"Hola. Ya sé que dudabas…", r:7 } ] },
+  informe: { t:"Tu informe de evidencia", i:"Tu tablero y tus pruebas, juntos. Leelo entero, despacio.", pre:function(){
+    var p = pruebasTodas();
+    return '<div class="ejcard"><b>Tu tablero</b>' + tableroHTML() + '</div>' + tarjeta("Tus pruebas", p.map(function(x){ return ["", x] }), "Tu lista de pruebas está en el día 59.") }, c:[
+    { l:"¿Qué dato te sorprende más?" },
+    { l:"La frase que te vas a decir cuando aparezca la duda", p:"Tengo pruebas: llego a la tarde con energía." } ] },
+  sinApp: { t:"Un día sin la app", i:"Hoy no abras la app hasta la noche. Hacé tu día como venís haciéndolo y a la noche volvé acá.", c:[
+    { l:"¿Cómo fue el día sin mirar la app?" },
+    { l:"¿Qué hiciste sin pensarlo?" } ] },
+  unaPrueba: { t:"Una prueba más", i:"Algo que antes te costaba y hoy sale solo. Se suma a tu lista de pruebas.", pre:function(){ var p = lineas(ejTxt(59, "c0"));
+    return tarjeta("Tu lista hasta hoy", p.map(function(x){ return ["", x] }), "Tu lista de pruebas está en el día 59.") }, c:[
+    { l:"Tu prueba nueva", r:2 } ] },
+  diaDificil: { t:"Tu día difícil, a propósito", i:"Elegí una situación que antes te sacaba del plan y andá con tu plan. Sin día y hora todavía no es un acuerdo: es una intención.", c:[
+    { l:"¿Qué situación elegiste?", p:"El cumpleaños de mi hermana" },
+    { l:"¿Qué día y a qué hora?", tipo:"text", p:"Sábado a las 21" },
+    { l:"¿Qué vas a hacer para que salga como querés?" } ] },
+  comoFue: { t:"Cómo te fue", i:"Contá cómo te fue en tu día difícil. Si querés, sumá una foto de ese momento.", pre:function(){ var v = ejV(67);
+    return tarjeta("Lo que elegiste", [["Situación", v.c0], ["Cuándo", v.c1]], "Ayer no elegiste la situación. Contá igual cómo te fue en un día difícil.") +
+      '<div class="bt" style="margin-bottom:18px"><button type="button" onclick="pedirFoto({k:\'d68\',cb:function(){abrirDia(68,1)}})"><span class="ic"><svg class="i" aria-hidden="true"><use href="#i-foto"/></svg></span>' + (fotoK("d68") ? "Cambiar la foto" : "Sumar una foto") + '</button></div>' +
+      (fotoK("d68") ? fotoImg(fotoK("d68"), "ejfoto", "Tu día difícil") : "") }, c:[
+    { l:"¿Cómo te fue?" },
+    { l:"¿Qué aprendiste que te sirve para la próxima?" } ] },
+  preguntasNat: { t:"Las cinco preguntas de NATURALIZAR", i:"Primero el video. Después contestá sin corregirte: lo que escribas hoy es la base de tus reglas.", c:[
+    { l:"¿Qué cosas hacés hoy sin pensarlo que al principio te costaban?" },
+    { l:"¿Qué regla de otros todavía cargás y no es tuya?" },
+    { l:"¿Qué te pasa en las semanas difíciles y qué te ayudó a salir?" },
+    { l:"¿Qué querés que siga igual cuando termine el programa?" },
+    { l:"¿Qué le dirías a la persona que empezó el día 1?" } ] },
+  manual: { t:"Tu manual de autonomía", i:"Cinco reglas tuyas, escritas por vos, para seguir cuando el programa termine. Cortas, en primera persona y que se puedan cumplir.", c:[
+    { l:"Regla 1", tipo:"text", p:"Desayuno en la mesa, aunque sea cinco minutos" },
+    { l:"Regla 2", tipo:"text" }, { l:"Regla 3", tipo:"text" }, { l:"Regla 4", tipo:"text" }, { l:"Regla 5", tipo:"text" } ] },
+  semanasDificiles: { t:"El plan para las semanas difíciles", i:"Las semanas difíciles van a llegar. El plan se escribe antes, cuando estás bien.", c:[
+    { l:"Tu señal de alerta: ¿cómo te das cuenta de que la semana se está poniendo difícil?" },
+    { l:"Lo primero que hacés cuando aparece esa señal" },
+    { l:"Lo que no hacés, pase lo que pase" } ] },
+  alarmas: { t:"Tus señales de alarma", i:"Las cosas chicas que pasan antes de irte: lo que dejás de hacer, lo que empezás a decirte.", c:[
+    { l:"¿Qué dejás de hacer cuando te estás yendo?" },
+    { l:"¿Qué te empezás a decir?" },
+    { l:"¿Quién te puede avisar, y cómo?" } ] },
+  reglaSola: { t:"La regla que ya es tuya", i:"Primero cargá tu diario. Después mirá tu manual y fijate cuál usaste hoy sin darte cuenta.", pre:function(){ var r = manualReglas();
+    return tarjeta("Tu manual", r.map(function(x, i){ return [(i + 1) + ".", x] }), "Tu manual está en el día 72.") }, c:[
+    { l:"¿Qué regla usaste hoy sin pensarlo? ¿En qué momento?" } ] },
+  antes: { t:"Lo que escribiste antes de empezar", i:"Esto escribiste antes del día 1. Leelo despacio.", pre:function(){ var o = S.onb || {};
+    return tarjeta("Antes de empezar", [["Tu objetivo", o.objetivo], ["Qué te trajo", o.trajo], ["Qué esperabas", Array.isArray(o.espera) ? o.espera.join(", ") : o.espera]], "No encontramos lo que escribiste al empezar.") }, c:[
+    { l:"¿Qué te pasa al leerlo hoy?" },
+    { l:"¿Qué de eso ya es distinto?" } ] },
+  cartaYo1: { t:"Carta a tu yo del día 1", i:"Escribile a la persona que empezó el día 1. Contale lo que viene, lo que le va a costar y lo que va a encontrar.", c:[
+    { l:"Tu carta", p:"Hola. Te escribo desde el día 81…", r:8 } ] },
+  teLlevas: { t:"Lo que te llevás", i:"Una sola frase. La que te gustaría releer dentro de un año.", c:[
+    { l:"Lo que me llevo", r:2 } ] },
+  audio: { t:"Un minuto para vos", i:"Grabate un audio de un minuto con la app de notas de voz de tu teléfono. Hablale a la persona que vas a ser en una semana difícil. Guardalo donde lo encuentres rápido.", c:[
+    { l:"¿Qué te dijiste? Tres renglones para acordarte", r:3 },
+    { l:"¿Dónde lo guardaste?", tipo:"text", p:"En mis notas de voz, con el nombre «Escuchame»" } ] }
+});
+
+/* --- los ejercicios con algo más que escribir --- */
+Object.assign(EJC, {
+  diasDificiles: {
+    falta: "Marcá los dos días.",
+    html: function(d, st){
+      return '<p class="sub">Mirá tu semana que viene. ¿Qué dos días se te complican más con la comida?</p>' +
+        pildoras("dias", "Elegí dos", ["Lunes","Martes","Miércoles","Jueves","Viernes","Sábado","Domingo"], true, 2, st) +
+        campo("c0", "¿Por qué esos dos?", "Los martes tengo reunión hasta tarde…", 2, "", st) },
+    bloq: function(d, st){ var a = st.v.dias || []; if(!a.length) return [];
+      var l = [{ k:"Días", v: a.join(" y ") }]; if(ejLleno(st.v.c0)) l.push({ k:"Por qué", v: st.v.c0 });
+      return [{ t:"Sus dos días difíciles", l:l }] } },
+  foto: {
+    falta: "Sacá la foto o escribí una línea.",
+    html: function(d, st){ var f = fotoK("d" + d), q = d === 40 ? "¿Qué comida es y cómo te salió?" : "¿Qué cambiaste y dónde?";
+      return '<p class="sub">' + (d === 40 ? "Una comida de tu plan, hecha por vos. No tiene que salir perfecta: tiene que ser tuya." : "El cambio que hiciste para sacar un disparador del medio. Que se vea.") + '</p>' +
+        (f ? fotoImg(f, "ejfoto", "La foto del día " + d) : "") +
+        '<div class="bt" style="margin-bottom:18px"><button type="button" onclick="pedirFoto({k:\'d' + d + '\',cb:function(){abrirDia(' + d + ',1)}})"><span class="ic"><svg class="i" aria-hidden="true"><use href="#i-foto"/></svg></span>' + (f ? "Cambiar la foto" : "Sacar la foto") + '</button></div>' +
+        campo("c0", q, "", 2, "", st) },
+    bloq: function(d, st){ var f = fotoK("d" + d), l = [];
+      if(f) l.push({ k:"La foto", v: S.cuenta ? "La sacó. La ves en NuPlan → Programa." : "La sacó. Queda guardada en su teléfono." });
+      if(ejLleno(st.v.c0)) l.push({ k: d === 40 ? "La comida" : "El cambio", v: st.v.c0 });
+      return l.length ? [{ t: d === 40 ? "Una comida del plan, hecha por ella" : "La foto del cambio", l:l }] : [] } },
+  tablero: {
+    falta: "Mové al menos un indicador al empezar y hoy.",
+    html: function(d, st){
+      var h = '<p class="sub">Cuatro indicadores, del 0 al 10: cómo estabas cuando empezaste y cómo estás hoy. Si querés, sumá uno tuyo. Son tus datos para cuando aparezca la duda.</p>';
+      TAB_IND.forEach(function(t){ h += '<p class="ejg">' + t[1] + '</p>' + deslizador(t[0] + "0", "Al empezar", t[2], t[3], st) + deslizador(t[0] + "1", "Hoy", t[2], t[3], st) });
+      h += '<p class="ejg">Uno tuyo (si querés)</p>' + campo("otro", "¿Qué otro indicador querés mirar?", "Cuántas veces como sin apuro", 0, "text", st) +
+        deslizador("o0", "Al empezar", "nada", "mucho", st) + deslizador("o1", "Hoy", "nada", "mucho", st);
+      return h + '<div id="tabV">' + tableroHTML() + '</div>' },
+    upd: function(d, st){ var t = document.getElementById("tabV"); if(t) t.innerHTML = tableroHTML() },
+    bloq: function(d, st){ var l = tableroFilas().map(function(x){ return { k:x.k, v:"al empezar " + x.a + " · hoy " + x.b } });
+      return l.length ? [{ t:"Su tablero de evidencia (0 a 10)", l:l }] : [] } },
+  fotos: {
+    falta: "Escribí qué ves.",
+    html: function(d, st){
+      var f = (S.fotos || []).slice().sort(function(a, b){ return (a.d || 0) - (b.d || 0) });
+      var g = f.length ? '<div class="galeria">' + f.map(function(x){ return '<figure>' + fotoImg(x, "", "Foto del día " + x.d) + '<figcaption>Día ' + esc(x.d) + '</figcaption></figure>' }).join("") + '</div>'
+        : '<p class="sub">Todavía no tenés fotos guardadas. Igual podés escribir lo que ves en tu camino.</p>';
+      setTimeout(function(){ if(typeof cargarFotos === "function") cargarFotos() }, 0);
+      return '<p class="sub">Todas tus fotos de estos dos meses, de la primera a la última.</p>' + g + campo("c0", "Mirándolas juntas, ¿qué ves?", "", 3, "", st) },
+    bloq: function(d, st){ return ejLleno(st.v.c0) ? [{ t:"Sus fotos, una al lado de la otra", l:[{ k:"Lo que ve", v: st.v.c0 }, { k:"Fotos", v: String((S.fotos || []).length) }] }] : [] } },
+  barca: { html: function(d, st){ return embebido("barca", "/barca/", "La barca de las acciones") } },
+  equilibrio: { html: function(d, st){ return embebido("equilibrio", "/zona-de-equilibrio/", "Zona de equilibrio") } },
+  glotona: { html: function(d, st){ return embebido("glotona", "/parte-glotona/", "Reconciliate con tu parte glotona") } },
+  manualPulir: {
+    falta: "Escribí al menos una regla.",
+    html: function(d, st){
+      var o = ejV(72); for(var i = 0; i < 5; i++){ if(st.v["c" + i] == null && ejLleno(o["c" + i])) st.v["c" + i] = o["c" + i] }
+      var h = '<p class="sub">Leé tus reglas del día 72. Sacá lo que no es tuyo, cambiá lo que no podés cumplir y dejalas como las vas a usar.</p>';
+      for(var j = 0; j < 5; j++) h += campo("c" + j, "Regla " + (j + 1), "", 0, "text", st);
+      return h },
+    bloq: function(d, st){ var l = []; for(var i = 0; i < 5; i++) if(ejLleno(st.v["c" + i])) l.push({ k:"Regla " + (i + 1), v: st.v["c" + i] });
+      return l.length ? [{ t:"Su manual de autonomía, pulido", l:l }] : [] } },
+  manualVista: {
+    html: function(d, st){
+      return manualHTML() + (d === 77 ? pildoras("donde", "¿Dónde lo vas a tener a la vista?", ["En la heladera","En el espejo","En el celular","En la agenda","En otro lugar"], false, 0, st) : "") },
+    bloq: function(d, st){ var r = manualReglas(); if(d === 77 && !st.v.donde) return [];
+      var l = r.map(function(x, i){ return { k:"Regla " + (i + 1), v:x } }); if(st.v.donde) l.push({ k:"Dónde lo tiene", v: st.v.donde });
+      return l.length ? [{ t:"Su manual a la vista", l:l }] : [] } },
+  linea: {
+    falta: "Escribí qué ves.",
+    html: function(d, st){
+      return '<p class="sub">Todo lo que fuiste cargando: tus fotos, tus diarios, tus check-in y lo que escribiste en cada ejercicio, día por día.</p>' +
+        '<div class="bt" style="margin-bottom:18px"><button type="button" onclick="irComoElla(\'linea\')"><span class="ic"><svg class="i" aria-hidden="true"><use href="#i-linea"/></svg></span>Abrir mi línea de tiempo</button></div>' +
+        campo("c0", d === 86 ? "Después de recorrer tus 84 días, ¿qué ves?" : "¿Qué te llama la atención al verla entera?", "", 3, "", st) },
+    bloq: function(d, st){ return ejLleno(st.v.c0) ? [{ t:"Su línea de tiempo", l:[{ k:"Lo que ve", v: st.v.c0 }] }] : [] } },
+  antesDespues: {
+    falta: "Escribí qué cambió.",
+    html: function(d, st){ var o = S.onb || {}, c = ejTxt(81, "c0");
+      return '<p class="sub">A la izquierda, lo que escribiste antes de empezar. A la derecha, tu carta del día 81.</p><div class="ad">' +
+        '<div class="adc"><p class="adt">Antes</p>' + [["Tu objetivo", o.objetivo], ["Qué te trajo", o.trajo]].filter(function(x){ return ejLleno(x[1]) }).map(function(x){ return '<span class="ejk">' + x[0] + '</span><p>' + esc(x[1]) + '</p>' }).join("") + (ejLleno(o.objetivo) || ejLleno(o.trajo) ? "" : '<p class="vac">No lo encontramos.</p>') + '</div>' +
+        '<div class="adc hoy"><p class="adt">Después</p>' + (c ? '<p>' + esc(c) + '</p>' : '<p class="vac">Tu carta del día 81 todavía no está escrita.</p>') + '</div></div>' +
+        campo("c0", "¿Qué cambió, con tus palabras?", "", 3, "", st) },
+    bloq: function(d, st){ return ejLleno(st.v.c0) ? [{ t:"Su antes y después", l:[{ k:"Lo que cambió", v: st.v.c0 }] }] : [] } },
+  cartaRo: {
+    falta: "Cuando llegue tu carta, vas a poder contestarle desde acá.",
+    html: function(d, st){
+      if(S.cuenta && !MSJ.l && !MSJ.cargando) setTimeout(function(){ msjCargar() }, 0);
+      var c = cartaRo();
+      return c ? '<div class="carta"><p class="ct">Tu carta de graduación</p><p class="cx">' + esc(c.t) + '</p><p class="cf">Rosana · ' + esc(msjCuando(c.f)) + '</p></div>' +
+          campo("c0", "Si querés contestarle, escribile acá", "", 3, "", st)
+        : '<div class="carta vacia"><p class="ct">Tu carta de graduación</p><p class="cx">Rosana la está escribiendo para vos. Cuando la mande, aparece acá y te llega a tu mail.</p></div>' },
+    bloq: function(d, st){ return ejLleno(st.v.c0) ? [{ t:"Su respuesta a tu carta de graduación", l:[{ k:"", v: st.v.c0 }] }] : [] } },
+  queSigue: {
+    falta: "Elegí cómo seguís.",
+    html: function(d, st){
+      return '<p class="sub">El programa termina, tu camino sigue. Elegí cómo querés seguir: le llega a Rosana y te escribe.</p>' +
+        pildoras("como", "¿Cómo seguís?", ["Por mi cuenta, con mi manual","Con seguimiento mensual con Rosana","Con un acompañamiento nuevo"], false, 0, st) +
+        campo("c0", "¿Algo que quieras decirle sobre cómo seguir?", "", 2, "", st) },
+    bloq: function(d, st){ if(!st.v.como) return []; var l = [{ k:"Cómo sigue", v: st.v.como }]; if(ejLleno(st.v.c0)) l.push({ k:"Lo que agrega", v: st.v.c0 });
+      return [{ t:"Qué sigue", l:l }] } },
+  final: {
+    falta: "Escribí unas líneas para Rosana.",
+    html: function(d, st){
+      var r = manualReglas(), p = pruebasTodas(), o = S.onb || {};
+      return '<p class="sub">Esto es lo que le llega a Rosana: tu objetivo del principio, tu tablero, tus pruebas, tu manual y lo que quieras decirle. La app queda abierta para que la consultes, y tu diario sigue disponible.</p>' +
+        tarjeta("Tu objetivo al empezar", [["", o.objetivo]], "No lo encontramos.") +
+        '<div class="ejcard"><b>Tu tablero</b>' + tableroHTML() + '</div>' +
+        tarjeta("Tus pruebas", p.map(function(x){ return ["", x] }), "Tu lista de pruebas está en el día 59.") +
+        tarjeta("Tu manual", r.map(function(x, i){ return [(i + 1) + ".", x] }), "Tu manual está en el día 72.") +
+        campo("c0", "Unas líneas para Rosana", "Gracias por…", 4, "", st) },
+    bloq: function(d, st){
+      if(!ejLleno(st.v.c0)) return [];
+      var o = S.onb || {}, b = [];
+      if(ejLleno(o.objetivo)) b.push({ t:"Su objetivo al empezar", l:[{ k:"", v:o.objetivo }] });
+      var tf = tableroFilas(); if(tf.length) b.push({ t:"Su tablero (0 a 10)", l: tf.map(function(x){ return { k:x.k, v:"al empezar " + x.a + " · hoy " + x.b } }) });
+      var p = pruebasTodas(); if(p.length) b.push({ t:"Sus pruebas", l: p.map(function(x){ return { k:"", v:x } }) });
+      var r = manualReglas(); if(r.length) b.push({ t:"Su manual de autonomía", l: r.map(function(x, i){ return { k:"Regla " + (i + 1), v:x } }) });
+      var fr = ejTxt(82, "c0"); if(fr) b.push({ t:"Lo que se lleva", l:[{ k:"", v:fr }] });
+      var qs = ejV(89).como; if(qs) b.push({ t:"Cómo sigue", l:[{ k:"", v:qs }] });
+      b.push({ t:"Unas líneas para vos", l:[{ k:"", v: st.v.c0 }] });
+      return b } }
+});
 
 /* --- motor --- */
 function ejHTML(d){

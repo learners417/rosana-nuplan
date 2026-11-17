@@ -56,20 +56,30 @@ export async function POST(req) {
     nombre = String((f && f.resumen && f.resumen.nombre) || "");
   }
   let mail = "sin_mail";
+  const esCarta = /^\[\[carta\]\]/.test(texto);
+  const cuerpo = texto.replace(/^\[\[carta\]\]\s*/, "");
   if (MAIL_OK.test(email)) {
     const primero = nombre.split(" ")[0] || "";
     const link = `${APP()}/mi-plan/?m=${encodeURIComponent(email)}`;
     const r = await mandarMail({
       para: email,
-      asunto: "Rosana te contestó",
-      html: mailNuPlan({
+      asunto: esCarta ? "Tu carta de graduación" : "Rosana te contestó",
+      html: mailNuPlan(esCarta ? {
+        titulo: primero ? `${primero}, tu carta de graduación` : "Tu carta de graduación",
+        parrafos: ["Rosana te escribió esta carta para cerrar tus 90 días:"],
+        cita: cuerpo,
+        boton: { texto: "Verla en mi app", url: link },
+        pie: "Te queda guardada en tu app, en el día 85.",
+      } : {
         titulo: primero ? `${primero}, te contestó Rosana` : "Te contestó Rosana",
         parrafos: ["Esto es lo que te escribió:"],
         cita: texto,
         boton: { texto: "Contestarle desde mi app", url: link },
         pie: "Lo tenés también en tu app, en la pestaña Rosana.",
       }),
-      texto: `${primero ? primero + ", te" : "Te"} contestó Rosana:\n\n${texto}\n\nContestale desde tu app: ${link}`,
+      texto: esCarta
+        ? `${primero ? primero + ", t" : "T"}u carta de graduación, de Rosana:\n\n${cuerpo}\n\nLa tenés en tu app: ${link}`
+        : `${primero ? primero + ", te" : "Te"} contestó Rosana:\n\n${texto}\n\nContestale desde tu app: ${link}`,
     });
     mail = r.ok ? "enviado" : r.sinConfig ? "sin_config" : "error";
   }

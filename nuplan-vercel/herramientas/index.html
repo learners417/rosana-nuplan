@@ -2661,7 +2661,7 @@ async function altaGuardar(){
 }
 function progMsj(x, nom){
   var ro=x.de==="rosana";
-  return '<div class="msj '+(ro ? "msj-ro" : "msj-ella")+'"><small>'+(ro ? "Vos" : esc(nom||"Ella"))+' · '+esc(progHace(x.creado))+'</small><p>'+esc(x.texto)+'</p></div>';
+  return '<div class="msj '+(ro ? "msj-ro" : "msj-ella")+'"><small>'+(ro ? "Vos" : esc(nom||"Ella"))+' · '+esc(progHace(x.creado))+(/^\[\[carta\]\]/.test(String(x.texto||""))?' · carta de graduación':'')+'</small><p>'+esc(String(x.texto||"").replace(/^\[\[carta\]\]\s*/,""))+'</p></div>';
 }
 function progMensajes(ms, nom){
   if(ms && ms.error){
@@ -2674,7 +2674,36 @@ function progMensajes(ms, nom){
     '<label class="campo" style="margin:16px 0 0">Tu mensaje<textarea id="pc-msj-t" rows="3" placeholder="Escribile…"></textarea></label>'+
     '<div class="nav-pasos" style="margin-top:12px"><button type="button" class="btn" id="pc-msj-b">Mandarle</button></div><p class="aviso" id="pc-msj-e"></p></div>';
 }
+/* bloque 6 · la carta de graduación: Ro la escribe acá, a la consultante le aparece en su día 85 y le llega al mail */
+function progCarta(ms, nom){
+  if(ms && ms.error) return "";
+  var l=((ms&&ms.data)||[]).filter(function(x){ return x.de==="rosana" && /^\[\[carta\]\]/.test(String(x.texto||"")); }), ya=l.length?l[l.length-1]:null;
+  var primero=String(nom||"").split(" ")[0];
+  return '<div class="prog-sec" id="pc-carta"><h3>Carta de graduación</h3>'+
+    '<p class="nota" style="margin:0 0 12px">Le aparece en su app el día 85 y le llega a su mail. Escribila con tus palabras: qué viste en estos 90 días y lo que se lleva.</p>'+
+    (ya?'<p class="nota" style="margin:0 0 12px"><b>Ya se la mandaste</b> '+esc(progHace(ya.creado))+'. Si mandás otra, en la app le queda la última.</p>':'')+
+    '<label class="campo" style="margin:0">Tu carta<textarea id="pc-carta-t" rows="7" placeholder="'+esc((primero?primero+", ":"")+"llegaste al final de estos 90 días…")+'"></textarea></label>'+
+    '<div class="nav-pasos" style="margin-top:12px"><button type="button" class="btn" id="pc-carta-b">Mandarle la carta</button></div><p class="aviso" id="pc-carta-e"></p></div>';
+}
+function progCartaCablear(uid){
+  var b=$("pc-carta-b"); if(!b) return;
+  b.onclick=async function(){
+    var t=$("pc-carta-t"), e=$("pc-carta-e"), v=t.value.trim();
+    if(v.length<20){ e.className="aviso error"; e.textContent="Escribí la carta: unas líneas por lo menos."; return; }
+    if(b.disabled) return;
+    b.disabled=true; e.className="aviso"; e.textContent="Mandando…";
+    try{
+      var res=await fetch("/api/mensaje",{ method:"POST", headers:await cabecerasIA(), body:JSON.stringify({ consultante:uid, texto:"[[carta]]\n"+v }) });
+      var j=await res.json().catch(function(){ return {}; });
+      b.disabled=false;
+      if(!res.ok){ e.className="aviso error"; e.textContent=j.error||"No se pudo mandar. Probá de nuevo."; return; }
+      t.value=""; e.className="aviso ok";
+      e.textContent = j.mail==="enviado" ? "Listo: le aparece en su app y le llegó a su mail." : j.mail==="sin_config" ? "Listo: le aparece en su app. El mail sale cuando Javo configure los mails." : "Listo: le aparece en su app.";
+    }catch(err){ b.disabled=false; e.className="aviso error"; e.textContent="Sin conexión. Probá de nuevo."; }
+  };
+}
 function progMsjCablear(uid, nom){
+  progCartaCablear(uid);
   var b=$("pc-msj-b"); if(!b) return;
   b.onclick=async function(){
     var t=$("pc-msj-t"), e=$("pc-msj-e"), v=t.value.trim();
@@ -2726,6 +2755,7 @@ async function abrirConsultante(uid){
   var obj=onb.filter(function(x){ return x && /^Tu objetivo, con tus palabras$/.test(String(x.k||"")); })[0];
   if(obj) h+=progSec("Su objetivo, con sus palabras", progPar("", obj.v));
   h+=progMensajes(ms, nomC);
+  h+=progCarta(ms, nomC);
   h+=progSec("Lo que contó antes de empezar", onb.length ? onb.map(function(x){ return progPar(x&&x.k, x&&x.v); }).join("") : progVacio("Todavía no completó el comienzo."));
   var dias=Object.keys(E.diario||{}).filter(function(f){ return Array.isArray(E.diario[f]) && E.diario[f].length; }).sort().reverse().slice(0,7);
   h+=progSec("Su diario · los últimos 7 días con comidas", dias.length ? dias.map(function(f){

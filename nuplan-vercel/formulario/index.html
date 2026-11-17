@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="es"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#fff6f3">
+<meta name="robots" content="noindex,nofollow">
+<title>Formulario &middot; NuPlan&trade;</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#fff6f3;--sup:#fff;--ink:#1a1a1a;--body:#3f3f46;--mut:#6b7280;--line:#f0ddd7;--cor:#e8472a;--corl:#f47a62;--ac:#f6a29a;--cord:#c53a1e;--tinte:#fff1ec;
+ --sans:'DM Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;--mono:'Space Mono',ui-monospace,monospace;--r3:.75rem;--r4:1rem;--r5:1.5rem;
+ --sombra:0 1px 2px rgba(26,26,26,.04),0 10px 30px -14px rgba(197,58,30,.18)}
+html{-webkit-text-size-adjust:100%;background:var(--bg)}
+body{font-family:var(--sans);background:var(--bg);color:var(--ink);font-size:18px;line-height:1.55;-webkit-font-smoothing:antialiased;min-height:100vh}
+.wrap{max-width:620px;margin:0 auto;padding:22px 16px 48px}
+.marca{display:flex;align-items:center;gap:10px;font-weight:800;font-size:1.15rem;letter-spacing:-.03em;margin:0 0 22px}
+.marca i{width:30px;height:30px;border-radius:9px;background:var(--cor);color:#fff;display:grid;place-items:center;font-style:normal;font-family:var(--mono);font-size:1rem}
+.k{font-family:var(--mono);font-size:1rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--cord);margin:0 0 8px}
+h1{font-size:1.8rem;line-height:1.2;letter-spacing:-.02em;margin:0 0 10px}
+.baj{color:var(--body);margin:0 0 22px}
+.caja{background:var(--sup);border:1px solid var(--line);border-radius:var(--r5);padding:20px;box-shadow:var(--sombra)}
+.campo{margin:0 0 20px}
+.campo:last-of-type{margin-bottom:8px}
+.et{display:block;font-weight:700;margin:0 0 8px;line-height:1.35}
+.et b{color:var(--cord);margin-left:4px}
+input,select,textarea{width:100%;font:inherit;font-size:17px;color:var(--ink);background:var(--bg);border:1.5px solid var(--line);border-radius:var(--r3);padding:11px 14px;min-height:48px}
+textarea{min-height:110px;resize:vertical}
+input:focus,select:focus,textarea:focus{outline:3px solid var(--ac);outline-offset:1px;border-color:var(--cor)}
+.pills{display:flex;gap:8px;flex-wrap:wrap}
+.pills button{flex:1 1 0;min-width:48px;min-height:48px;font:inherit;font-weight:700;color:var(--ink);background:var(--bg);border:1.5px solid var(--line);border-radius:var(--r3);cursor:pointer}
+.pills button[aria-pressed="true"]{background:var(--cor);border-color:var(--cor);color:#fff}
+.pills button:focus-visible{outline:3px solid var(--ac);outline-offset:2px}
+.esc{display:flex;justify-content:space-between;font-family:var(--mono);font-size:.9rem;color:var(--mut);margin-top:6px}
+.err{display:none;color:var(--cord);font-weight:700;font-size:.95rem;margin-top:6px}
+.campo.mal .err{display:block}
+.campo.mal input,.campo.mal select,.campo.mal textarea{border-color:var(--cor)}
+.btn{display:flex;align-items:center;justify-content:center;width:100%;min-height:54px;font:inherit;font-weight:700;font-size:1.05rem;color:#fff;background:var(--cor);border:0;border-radius:var(--r4);cursor:pointer;margin-top:18px}
+.btn:disabled{opacity:.6}
+.aviso{margin-top:12px;color:var(--cord);font-weight:700}
+.pie{text-align:center;color:var(--mut);font-size:.95rem;margin-top:18px}
+.fin{text-align:center;padding:30px 22px}
+.fin .ic{width:64px;height:64px;border-radius:50%;background:var(--tinte);border:1px solid var(--ac);display:grid;place-items:center;margin:0 auto 16px;color:var(--cord);font-size:1.8rem;font-weight:700}
+.fin h2{font-size:1.5rem;margin:0 0 8px}
+.fin p{color:var(--body);margin:0 0 6px}
+.oculto{display:none !important}
+.cargando{text-align:center;color:var(--mut);padding:40px 0}
+</style>
+</head><body>
+<main class="wrap">
+  <div class="marca"><i>N</i><span>NuPlan&trade;</span></div>
+  <p class="cargando" id="cargando">Cargando el formulario…</p>
+  <div class="oculto" id="no">
+    <div class="caja fin"><div class="ic" aria-hidden="true">!</div><h2>Este formulario ya no está activo</h2><p>El link venció o lo cerraron. Si te falta completarlo, pedile uno nuevo a tu nutricionista.</p></div>
+  </div>
+  <div class="oculto" id="listo">
+    <div class="caja fin"><div class="ic" aria-hidden="true">✓</div><h2>Listo, lo recibimos</h2><p>Rosana lo va a leer antes de tu consulta.</p><p>Ya podés cerrar esta página.</p></div>
+  </div>
+  <div class="oculto" id="form-caja">
+    <p class="k">Antes de tu consulta</p>
+    <h1 id="titulo"></h1>
+    <p class="baj" id="desc"></p>
+    <form class="caja" id="form" novalidate>
+      <div id="campos"></div>
+      <button class="btn" type="submit" id="enviar">Enviar</button>
+      <p class="aviso oculto" id="aviso" role="alert"></p>
+    </form>
+    <p class="pie">Tus respuestas le llegan solo a Rosana Roldán. No se comparten con nadie.</p>
+  </div>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.97.0/dist/umd/supabase.js"></script>
+<script>
+/* Formulario público (unificación · U6): el mismo link de siempre (/public/form/<slug>), así los QR impresos siguen
+   andando, sin depender de la app anterior. Lee el formulario activo y guarda la respuesta en form_responses. */
+var SUPABASE_URL = "https://askebcmhmhmwtfklyxuf.supabase.co";
+var SUPABASE_KEY = "sb_publishable_bx_WMZGN85wAslrgjrfJWw_CwsL-YeS";
+function $(id){ return document.getElementById(id); }
+function esc(s){ return String(s==null?"":s).replace(/[&<>"']/g, function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]; }); }
+var F=null, V={}, enviando=false;
+var m=location.pathname.match(/^\/public\/form\/([^\/]+)\/?$/), slug=m?decodeURIComponent(m[1]):"";
+function mostrar(id){ ["cargando","no","listo","form-caja"].forEach(function(x){ $(x).classList.toggle("oculto", x!==id); }); }
+async function iniciar(){
+  if(!slug || !window.supabase){ mostrar("no"); return; }
+  var sb=window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY, { auth:{ persistSession:false, autoRefreshToken:false } });
+  window.sbF=sb;
+  try{
+    var r=await sb.from("forms").select("id, slug, company, title, description, fields, expires_at, is_active").eq("slug", slug).eq("is_active", true).limit(1);
+    var f=r.data&&r.data[0];
+    if(r.error || !f || (f.expires_at && new Date(f.expires_at).getTime()<Date.now())){ mostrar("no"); return; }
+    F=f; pintar(); mostrar("form-caja");
+  }catch(e){ mostrar("no"); }
+}
+function pintar(){
+  document.title=F.title+" · NuPlan";
+  $("titulo").textContent=F.title; $("desc").textContent=F.description||"Completalo desde tu celular. Son unos 2 minutos.";
+  $("campos").innerHTML=(F.fields||[]).map(function(c, i){
+    var id="c-"+i, req=c.required?'<b aria-hidden="true">*</b>':'', ctrl="";
+    if(c.type==="textarea") ctrl='<textarea id="'+id+'" data-k="'+esc(c.key)+'" placeholder="'+esc(c.placeholder||"")+'"></textarea>';
+    else if(c.type==="select") ctrl='<select id="'+id+'" data-k="'+esc(c.key)+'"><option value="">Elegí una opción</option>'+(c.options||[]).map(function(o){ return '<option value="'+esc(o)+'">'+esc(o)+'</option>'; }).join("")+'</select>';
+    else if(c.type==="yesno") ctrl='<div class="pills" role="group" aria-labelledby="'+id+'-l">'+[["Sí",true],["No",false]].map(function(o){ return '<button type="button" aria-pressed="false" data-k="'+esc(c.key)+'" data-v="'+o[1]+'">'+o[0]+'</button>'; }).join("")+'</div>';
+    else if(c.type==="rating1to5") ctrl='<div class="pills" role="group" aria-labelledby="'+id+'-l">'+[1,2,3,4,5].map(function(n){ return '<button type="button" aria-pressed="false" data-k="'+esc(c.key)+'" data-v="'+n+'">'+n+'</button>'; }).join("")+'</div>';
+    else ctrl='<input id="'+id+'" data-k="'+esc(c.key)+'" type="'+(["email","tel","date"].indexOf(c.type)>=0?c.type:"text")+'"'+(c.type==="number"?' inputmode="decimal" autocomplete="off"':'')+(c.type==="email"?' autocomplete="email"':'')+(c.type==="tel"?' autocomplete="tel"':'')+' placeholder="'+esc(c.placeholder||"")+'">';
+    return '<div class="campo" data-campo="'+esc(c.key)+'"><label class="et" id="'+id+'-l"'+(c.type==="yesno"||c.type==="rating1to5"?'':' for="'+id+'"')+'>'+esc(c.label)+req+'</label>'+ctrl+'<p class="err" id="'+id+'-e"></p></div>';
+  }).join("");
+  $("campos").addEventListener("click", function(e){
+    var b=e.target.closest(".pills button"); if(!b) return;
+    var k=b.dataset.k, v=b.dataset.v==="true"?true:b.dataset.v==="false"?false:Number(b.dataset.v);
+    V[k]=v; b.parentNode.querySelectorAll("button").forEach(function(x){ x.setAttribute("aria-pressed", x===b?"true":"false"); });
+    b.closest(".campo").classList.remove("mal");
+  });
+  $("campos").addEventListener("input", function(e){ var el=e.target.closest("[data-k]"); if(el) el.closest(".campo").classList.remove("mal"); });
+}
+function leer(){
+  (F.fields||[]).forEach(function(c){
+    if(c.type==="yesno"||c.type==="rating1to5") return;
+    var el=document.querySelector('[data-k="'+c.key+'"]'); if(!el) return;
+    var v=el.value.trim();
+    if(c.type==="number"){ var n=v===""?null:Number(v.replace(",", ".")); V[c.key]=isFinite(n)&&v!==""?n:(v===""?null:"__malo__"); }
+    else V[c.key]=v;
+  });
+}
+function validar(){
+  var malos=[];
+  (F.fields||[]).forEach(function(c, i){
+    var v=V[c.key], msj="";
+    if(c.required && (v==null || v==="")) msj="Completá este dato.";
+    else if(c.type==="email" && v && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(v))) msj="Revisá el mail: falta algo.";
+    else if(c.type==="number" && v==="__malo__") msj="Poné solo el número (por ejemplo, 64,5).";
+    var caja=document.querySelector('[data-campo="'+c.key+'"]');
+    caja.classList.toggle("mal", !!msj); $("c-"+i+"-e").textContent=msj;
+    if(msj) malos.push(caja);
+  });
+  if(malos.length){ var el=malos[0].querySelector("input,select,textarea,button"); malos[0].scrollIntoView({block:"center"}); if(el) el.focus({preventScroll:true}); }
+  return !malos.length;
+}
+$("form").addEventListener("submit", async function(e){
+  e.preventDefault(); if(!F||enviando) return;
+  leer(); if(!validar()) return;
+  enviando=true; var b=$("enviar"), av=$("aviso"); b.disabled=true; b.textContent="Enviando…"; av.classList.add("oculto");
+  var datos={}; (F.fields||[]).forEach(function(c){ if(V[c.key]!==undefined && V[c.key]!=="") datos[c.key]=V[c.key]; });
+  try{
+    var r=await window.sbF.from("form_responses").insert({ form_id:F.id, data:datos, user_agent:navigator.userAgent.slice(0,300) });
+    if(r.error) throw r.error;
+    mostrar("listo"); window.scrollTo(0,0);
+  }catch(err){
+    enviando=false; b.disabled=false; b.textContent="Enviar";
+    av.textContent="No se pudo enviar. Revisá tu conexión y tocá «Enviar» de nuevo: lo que escribiste sigue acá."; av.classList.remove("oculto");
+  }
+});
+iniciar();
+</script>
+</body></html>

@@ -6,13 +6,31 @@
   },
   "rewrites": [
     {
-      "source": "/((?!api/|assets/|herramientas).*)",
+      "source": "/public/:path*",
+      "destination": "/formulario/index.html"
+    },
+    {
+      "source": "/respaldo-empresas",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/respaldo-empresas/:path*",
       "destination": "/index.html"
     }
   ],
   "redirects": [
     {
       "source": "/",
+      "destination": "/herramientas/",
+      "permanent": false
+    },
+    {
+      "source": "/empresas",
+      "destination": "/herramientas/",
+      "permanent": false
+    },
+    {
+      "source": "/empresas/:path*",
       "destination": "/herramientas/",
       "permanent": false
     }

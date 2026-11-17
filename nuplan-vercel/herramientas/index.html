@@ -703,7 +703,137 @@
     .hoja-cab-swiss img{height:12mm;}
     #p-antro .tabla-scroll,#p-antro .an-val{break-inside:avoid;}
   }
+  /* ===== U2 · informe para la empresa ===== */
+  #ei-modos{margin:6px 0 16px;}
+  .ei-cab{margin:0 0 22px;}
+  .ei-cab .ei-k{font-family:var(--mono);font-size:.9rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--coral-dark);display:block;margin-bottom:6px;}
+  .ei-cab h2{margin:0 0 4px;}
+  .ei-cab .bajada{margin:0;}
+  .ei-tiles{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:0 0 22px;}
+  @media(min-width:900px){.ei-tiles{grid-template-columns:repeat(3,minmax(0,1fr));}}
+  .ei-tile{background:var(--surface);border:1px solid var(--borde);border-radius:var(--r-xl);padding:16px 18px;min-width:0;}
+  .ei-tile .l{display:block;font-family:var(--mono);font-size:.9rem;color:var(--coral-dark);margin-bottom:6px;}
+  .ei-tile .v{display:block;font-family:var(--mono);font-size:2.1rem;font-weight:700;line-height:1.1;color:var(--ink,#1a1a1a);}
+  .ei-tile .v small{font-size:1rem;color:var(--muted);font-weight:400;margin-left:2px;}
+  .ei-tile .s{display:block;font-size:.95rem;color:var(--muted);margin-top:6px;line-height:1.35;}
+  .ei-tile .m{display:block;font-family:var(--mono);font-size:.9rem;color:var(--muted);margin-top:4px;}
+  .ei-lectura{background:var(--surface);border:1px solid var(--accent);border-left:5px solid var(--coral);border-radius:var(--r-xl);padding:18px 20px;margin:0 0 8px;}
+  .ei-lectura h3{margin:0 0 8px;font-size:1.05rem;}
+  .ei-lectura p{margin:0 0 8px;font-size:1.04rem;line-height:1.55;}
+  .ei-lectura p:last-child{margin-bottom:0;}
+  .ei-habs{display:grid;grid-template-columns:minmax(0,1fr);gap:14px;}
+  @media(min-width:900px){.ei-habs{grid-template-columns:repeat(2,minmax(0,1fr));gap:16px 28px;}}
+  .ei-hab-t{display:flex;justify-content:space-between;gap:12px;align-items:baseline;}
+  .ei-hab-t b{font-size:1rem;}
+  .ei-hab-v{font-family:var(--mono);font-weight:700;font-size:1.15rem;color:var(--coral-dark);white-space:nowrap;}
+  .ei-hab-b{position:relative;height:12px;border-radius:99px;background:#fbe3dc;margin:6px 0 6px;}
+  .ei-hab-b i{display:block;height:100%;border-radius:99px;background:var(--coral);}
+  .ei-hab-b u{position:absolute;top:-4px;bottom:-4px;width:2px;background:var(--ink,#1a1a1a);border-radius:2px;text-decoration:none;}
+  .ei-hab-n{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;font-family:var(--mono);font-size:.9rem;color:var(--muted);}
+  .ei-hab-n .ok{color:var(--coral-dark);font-weight:700;}
+  .ei-ap{margin:0 0 18px;}
+  .ei-ap-t{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;margin:0 0 6px;}
+  .ei-ap-t span{font-family:var(--mono);font-size:.9rem;color:var(--muted);}
+  .ei-ap-b{display:flex;height:30px;border-radius:var(--r-lg,.75rem);overflow:hidden;background:#f3e9e6;}
+  .ei-ap-b i{display:flex;align-items:center;justify-content:center;min-width:0;font-style:normal;}
+  .ei-ap-b i span{font-family:var(--mono);font-size:.9rem;font-weight:700;color:#1a1a1a;white-space:nowrap;overflow:hidden;padding:0 4px;}
+  .ei-ap-b i.c2 span,.ei-ap-b i.c3 span{color:#fff;}
+  .ei-ap .c0{background:#e5d5d0;} .ei-ap .c1{background:#f6a29a;} .ei-ap .c2{background:#e8472a;} .ei-ap .c3{background:#c53a1e;}
+  .ei-ap-l{display:flex;flex-wrap:wrap;gap:6px 18px;margin:8px 0 0;font-size:.95rem;color:var(--muted);}
+  .ei-ap-l i{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:6px;vertical-align:-1px;}
+  .ei-ap-l b{color:var(--ink,#1a1a1a);font-family:var(--mono);}
+  .tabla.ei-t{min-width:0;}
+  .ei-mini{display:inline-block;width:70px;height:8px;border-radius:99px;background:#fbe3dc;margin-right:8px;vertical-align:1px;overflow:hidden;}
+  .ei-mini i{display:block;height:100%;background:var(--coral);}
+  .ei-baja{font-family:var(--mono);color:var(--coral-dark);font-weight:700;margin-left:4px;}
+  .ei-meses{display:block;width:100%;height:auto;max-width:720px;margin:6px 0 4px;}
+  .ei-gl{stroke:#eadad5;stroke-width:1;}
+  .ei-gt{font-family:var(--mono);font-size:13px;fill:#6b7280;}
+  .ei-gv{font-family:var(--mono);font-size:13px;font-weight:700;fill:#c53a1e;}
+  .ei-gb{fill:#e8472a;}
+  @media(max-width:640px){
+    .ei-tile .v{font-size:1.7rem;}
+    .ei-mini{display:none;}
+  }
+  @media print{
+    #ei-informe .ei-tiles{grid-template-columns:none;grid-auto-flow:column;grid-auto-columns:1fr;gap:2.5mm;margin-bottom:4mm;}
+    #ei-informe .ei-tile{padding:2.5mm 3mm;border-radius:3mm;break-inside:avoid;}
+    #ei-informe .ei-tile .v{font-size:18pt;}
+    #ei-informe .ei-tile .l{margin-bottom:1mm;}
+    #ei-informe .ei-tile .s{margin-top:1mm;line-height:1.25;}
+    #ei-informe .ei-cab{margin:0 0 4mm;}
+    #ei-informe .ei-cab h2{font-size:20pt;}
+    #ei-informe .sec-ficha{margin:5mm 0 2mm;}
+    #ei-informe .nota{margin:1mm 0 2mm;}
+    #ei-informe .ei-ap{margin:0 0 3mm;}
+    #ei-informe .ei-ap-b{height:7mm;}
+    #ei-informe .ei-hab-b{margin:1.2mm 0;}
+    #ei-informe .ei-tile .l,#ei-informe .ei-tile .s,#ei-informe .ei-tile .m,#ei-informe .ei-hab-n,#ei-informe .ei-ap-t span,#ei-informe .ei-ap-l,#ei-informe .ei-ap-b i span,#ei-informe .nota{font-size:10pt !important;}
+    #ei-informe .ei-lectura{padding:4mm 5mm;break-inside:avoid;}
+    #ei-informe .ei-lectura p{font-size:11pt;margin:0 0 1.2mm;line-height:1.4;}
+    #ei-informe .ei-lectura h3{margin:0 0 1.5mm;}
+    #ei-informe .ei-habs{grid-template-columns:1fr 1fr;gap:4mm 8mm;}
+    #ei-informe .ei-hab,#ei-informe .ei-ap{break-inside:avoid;}
+    #ei-informe .ei-meses{max-width:125mm;break-inside:avoid;}
+    #ei-informe .tabla.ei-t td,#ei-informe .tabla.ei-t th{padding:1.6mm 2mm;font-size:10pt;}
+    #ei-informe .sec-ficha{break-after:avoid;}
+    .ei-hab-b,.ei-ap-b,.ei-mini,.ei-ap-l i{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  }
+  /* ===== U3 · formularios con QR ===== */
+  .tarjeta .ini-n{margin:6px 0 0;font-family:var(--mono);font-size:.9rem;font-weight:700;color:var(--coral-dark);}
+  .fo-tabs{margin:0 0 14px;}
+  .fo-n{display:inline-flex;align-items:center;justify-content:center;min-width:26px;height:26px;padding:0 7px;margin-left:6px;border-radius:99px;background:var(--coral);color:#fff;font-family:var(--mono);font-size:.9rem;font-weight:700;}
+  .an-pills button.on .fo-n{background:#fff;color:var(--coral-dark);}
+  .fo-lista{display:grid;grid-template-columns:minmax(0,1fr);gap:14px;}
+  @media(min-width:900px){.fo-lista{grid-template-columns:repeat(2,minmax(0,1fr));}}
+  .fo-card{background:var(--surface);border:1px solid var(--accent);border-radius:var(--r-xl);padding:18px 20px;min-width:0;box-shadow:var(--sombra);}
+  .fo-card.apagado{border-color:var(--borde);box-shadow:none;}
+  .fo-card.apagado h3{color:var(--muted);}
+  .fo-card-t{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;}
+  .fo-card-t h3{margin:0;font-size:1.15rem;min-width:0;overflow-wrap:anywhere;}
+  .fo-chip{flex-shrink:0;font-family:var(--mono);font-size:.9rem;font-weight:700;color:var(--coral-dark);background:var(--tinte);border:1px solid var(--accent);border-radius:99px;padding:3px 10px;white-space:nowrap;}
+  .fo-chip.gris{color:var(--muted);background:var(--bg);border-color:var(--borde);}
+  .fo-desc{margin:8px 0 0;color:var(--muted);}
+  .fo-link{margin:10px 0 0;font-size:.95rem;color:var(--texto);background:var(--bg);border-radius:var(--r-md);padding:8px 10px;overflow-wrap:anywhere;}
+  .fo-meta{margin:8px 0 0;font-size:.95rem;color:var(--muted);}
+  .fo-pend{font-weight:700;color:var(--coral-dark);}
+  .fo-acc{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px;}
+  .fo-acc .btn{min-height:44px;}
+  .fo-borrar{margin-left:auto;}
+  .fo-vacio{background:var(--surface);border:1px dashed var(--accent);border-radius:var(--r-xl);padding:20px;list-style:none;}
+  .fo-vacio p{margin:0 0 6px;} .fo-vacio p:last-child{margin:0;}
+  .fo-qr-g{display:grid;grid-template-columns:minmax(0,1fr);gap:18px;align-items:center;}
+  @media(min-width:700px){.fo-qr-g{grid-template-columns:240px minmax(0,1fr);}}
+  .fo-qr-svg{display:block;width:100%;max-width:240px;height:auto;border-radius:var(--r-lg);border:1px solid var(--borde);}
+  .fo-qr-link{overflow-wrap:anywhere;font-size:.95rem;margin:0;}
+  .fo-b-g{display:grid;grid-template-columns:minmax(0,1fr);gap:16px;align-items:start;}
+  @media(min-width:900px){.fo-b-g{grid-template-columns:minmax(0,5fr) minmax(0,7fr);}}
+  .fo-resp{list-style:none;margin:0;padding:0;display:grid;gap:8px;}
+  .fo-r{display:block;width:100%;text-align:left;background:var(--surface);border:1px solid var(--borde);border-radius:var(--r-lg);padding:12px 16px;min-height:44px;cursor:pointer;font:inherit;color:inherit;}
+  .fo-r:hover,.fo-r:focus-visible{border-color:var(--coral);}
+  .fo-r-n{display:block;font-weight:700;}
+  .fo-r-f{display:block;font-size:.95rem;color:var(--muted);margin-top:2px;}
+  .fo-d-campos{margin:0;display:grid;gap:0;}
+  .fo-d-f{display:grid;grid-template-columns:minmax(0,2fr) minmax(0,3fr);gap:10px;padding:8px 0;border-bottom:1px solid var(--borde);}
+  .fo-d-f dt{color:var(--muted);font-size:.95rem;}
+  .fo-d-f dd{margin:0;overflow-wrap:anywhere;}
+  @media(max-width:640px){.fo-d-f{grid-template-columns:minmax(0,1fr);gap:2px;}}
+  .fo-quien{margin:14px 0 0;font-weight:700;color:var(--coral-dark);}
+  #fo-cartel{display:none;}
+  @media print{
+    body.imp-cartel > *:not(#fo-cartel){display:none !important;}
+    body.imp-cartel{background:#fff !important;}
+    body.imp-cartel #fo-cartel{display:block !important;text-align:center;font-family:var(--body);color:#1a1a1a;padding:14mm 18mm;}
+    #fo-cartel .fo-c-cab{font-family:var(--mono);font-size:11pt;color:#c53a1e;border-bottom:2px solid #e8472a;padding-bottom:3mm;margin-bottom:10mm;text-align:left;}
+    #fo-cartel h1{font-size:30pt;color:#e8472a;margin:0 0 5mm;}
+    #fo-cartel .fo-c-b{font-size:16pt;margin:0 0 8mm;}
+    #fo-cartel .fo-c-qr .fo-qr-svg{width:110mm;max-width:none;margin:0 auto;border:0;}
+    #fo-cartel .fo-c-pasos{display:inline-block;text-align:left;font-size:15pt;margin:8mm 0 4mm;padding-left:1.2em;}
+    #fo-cartel .fo-c-l{font-size:11pt;color:#6b7280;margin-top:6mm;}
+    @page{margin:0;}
+  }
 </style>
+<script src="/assets/qrcode-generator-1.4.4.js"></script>
 </head>
 <body>
 
@@ -776,7 +906,9 @@
   </div>
   <div class="grupo-t">Empresas</div>
   <div class="tarjetas">
-    <button class="tarjeta" onclick="abrirListado()"><span class="ico"><svg class="i" aria-hidden="true"><use href="#i-informe"/></svg></span><span class="tx"><h3>Informe mensual</h3><p>Consultas del mes, por empresa.</p></span><svg class="i chev" aria-hidden="true"><use href="#i-chev"/></svg></button>
+    <button class="tarjeta" onclick="abrirInformeEmpresa()"><span class="ico"><svg class="i" aria-hidden="true"><use href="#i-informe"/></svg></span><span class="tx"><h3>Informe para la empresa</h3><p>Participación, energía, hábitos y riesgo del grupo. Sin nombres.</p></span><svg class="i chev" aria-hidden="true"><use href="#i-chev"/></svg></button>
+    <button class="tarjeta" onclick="abrirListado()"><span class="ico"><svg class="i" aria-hidden="true"><use href="#i-informe"/></svg></span><span class="tx"><h3>Consultas del mes</h3><p>Quién se atendió en el mes, con nombre. Sin datos clínicos.</p></span><svg class="i chev" aria-hidden="true"><use href="#i-chev"/></svg></button>
+    <button class="tarjeta" onclick="abrirFormularios()"><span class="ico"><svg class="i" aria-hidden="true"><use href="#i-informe"/></svg></span><span class="tx"><h3>Formularios con QR</h3><p>Un link por feria o evento. Las respuestas, para revisar y dar de alta.</p><p class="ini-n oculto" id="ini-forms-n"></p></span><svg class="i chev" aria-hidden="true"><use href="#i-chev"/></svg></button>
     <button class="tarjeta" onclick="abrirRecomendaciones()"><span class="ico"><svg class="i" aria-hidden="true"><use href="#i-reco"/></svg></span><span class="tx"><h3>Recomendaciones</h3><p>Fibra, hidratación y ultraprocesados, para imprimir.</p></span><svg class="i chev" aria-hidden="true"><use href="#i-chev"/></svg></button>
     <a class="tarjeta" href="/empresas" style="text-decoration:none;"><span class="ico"><svg class="i" aria-hidden="true"><use href="#i-empresa"/></svg></span><span class="tx"><h3>Empresas e informes</h3><p>Antropometría, importar Excel, formularios e informe de Swiss.</p></span><svg class="i chev" aria-hidden="true"><use href="#i-chev"/></svg></a>
   </div>
@@ -957,6 +1089,95 @@
       <button class="btn suave" onclick="anVolverFicha()">Ir a su ficha</button>
     </div>
   </div>
+</section>
+
+<!-- ============ INFORME PARA LA EMPRESA (unificación U2) ============ -->
+<section class="pantalla wrap oculto" id="p-empinf">
+  <span class="kicker no-imprimir" id="ei-titulo">Informe para la empresa</span>
+  <h2 class="no-imprimir">Cómo está el grupo de <span id="ei-empresa"></span></h2>
+  <p class="bajada no-imprimir">Datos de grupo, sin nombres, listos para mandarle a la empresa. Cada persona cuenta una vez, con su último dato.</p>
+  <div class="caja no-imprimir">
+    <div id="ei-periodo">
+      <span class="an-et">El período</span>
+      <div class="an-pills" id="ei-modos">
+        <button type="button" data-v="mes" onclick="eiModo('mes')">Un mes</button><button type="button" data-v="rango" onclick="eiModo('rango')">Entre dos fechas</button><button type="button" data-v="todo" onclick="eiModo('todo')">Todo el historial</button>
+      </div>
+      <div class="grid2" id="ei-c-mes"><label class="campo">Mes<input type="month" id="ei-mes"></label></div>
+      <div class="grid2 oculto" id="ei-c-rango"><label class="campo">Desde<input type="date" id="ei-desde"></label><label class="campo">Hasta<input type="date" id="ei-hasta"></label></div>
+    </div>
+    <p class="nota oculto" id="ei-feria" style="margin:0 0 14px;">Es una feria o evento: el informe toma todas las consultas del evento.</p>
+    <div class="grid2">
+      <label class="campo">Diseño del informe<select id="ei-diseno" onchange="eiCambiarDiseno(this.value)"><option value="default">NuPlan</option><option value="swiss_medical">WellnessLab · Swiss Medical</option></select></label>
+      <div class="campo" style="display:flex;align-items:flex-end;"><button class="btn ancho" id="btn-ei" onclick="armarInformeEmpresa()">Armar el informe</button></div>
+    </div>
+    <p class="aviso" id="ei-aviso"></p>
+  </div>
+  <div id="ei-informe"></div>
+  <div class="acciones-res no-imprimir oculto" id="ei-acciones">
+    <button class="btn" onclick="eiImprimir()">Imprimir o guardar PDF</button>
+    <button class="btn suave" onclick="irA('inicio')">Volver al inicio</button>
+  </div>
+</section>
+
+<!-- ============ FORMULARIOS CON QR (unificación U3) ============ -->
+<section class="pantalla wrap oculto" id="p-forms">
+  <span class="kicker">Formularios con QR</span>
+  <h2>Formularios antes de la consulta · <span id="fo-empresa"></span></h2>
+  <p class="bajada">Un link y un QR por feria o evento. Cada persona lo completa desde su celular y la respuesta te queda acá para revisarla y darla de alta.</p>
+  <div class="an-pills fo-tabs" id="fo-tabs" role="tablist">
+    <button type="button" role="tab" data-v="forms" onclick="foTab('forms')">Formularios</button><button type="button" role="tab" data-v="bandeja" onclick="foTab('bandeja')">Para revisar <span class="fo-n oculto" id="fo-tab-n"></span></button>
+  </div>
+  <p class="aviso" id="fo-aviso"></p>
+
+  <div id="fo-p-forms">
+    <div class="nav-pasos" style="justify-content:flex-start;margin:0 0 16px;"><button class="btn" onclick="foNuevo()">Nuevo formulario</button></div>
+    <div class="caja oculto" id="fo-nuevo">
+      <span class="sub">Nuevo formulario para <span id="fo-n-emp"></span></span>
+      <label class="campo">Nombre<input type="text" id="fo-titulo" placeholder="Feria Pampa · junio 2026" autocomplete="off" maxlength="120"></label>
+      <label class="campo">Texto de bienvenida (opcional)<textarea id="fo-descripcion" rows="2" placeholder="Completá este formulario antes de tu consulta."></textarea></label>
+      <label class="campo">Vence el (opcional)<input type="date" id="fo-vence"></label>
+      <p class="nota">Pide nombre, mail, fecha de nacimiento, peso, talla, hábitos (agua, actividad, frutas y verduras, sueño, energía) y el objetivo. Después de la fecha de vencimiento, el link deja de recibir respuestas.</p>
+      <p class="aviso" id="fo-n-aviso"></p>
+      <div class="nav-pasos"><button class="btn suave" onclick="foCancelarNuevo()">Cancelar</button><button class="btn" id="btn-fo-crear" onclick="foCrear()">Crear y ver el QR</button></div>
+    </div>
+    <div class="caja fo-qr oculto" id="fo-qr">
+      <span class="sub">El QR</span>
+      <h3 id="fo-qr-t" style="margin:0 0 6px;"></h3>
+      <p class="nota" id="fo-qr-msj" style="margin:0 0 14px;"></p>
+      <div class="fo-qr-g">
+        <div id="fo-qr-img"></div>
+        <div>
+          <p class="mono fo-qr-link" id="fo-qr-link"></p>
+          <div class="fo-acc">
+            <button type="button" class="btn chico" onclick="foCartel()">Imprimir el cartel</button>
+            <button type="button" class="btn chico suave" onclick="foBajarQR()">Bajar el QR (PNG)</button>
+            <button type="button" class="btn chico suave" onclick="foCopiar(FO.qr.id)">Copiar link</button>
+            <button type="button" class="btn chico suave" onclick="document.getElementById('fo-qr').classList.add('oculto')">Cerrar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="fo-lista" id="fo-lista"></div>
+  </div>
+
+  <div id="fo-p-bandeja" class="oculto">
+    <div class="an-pills" id="fo-estados">
+      <button type="button" data-v="pending" class="on" aria-pressed="true" onclick="foEstado('pending')">Para revisar</button><button type="button" data-v="processed" aria-pressed="false" onclick="foEstado('processed')">Dadas de alta</button><button type="button" data-v="discarded" aria-pressed="false" onclick="foEstado('discarded')">Descartadas</button>
+    </div>
+    <p class="aviso" id="fo-b-aviso"></p>
+    <div class="fo-b-g">
+      <ul class="fo-resp" id="fo-resp"></ul>
+      <div class="caja fo-detalle oculto" id="fo-detalle">
+        <h3 id="fo-d-nom" style="margin:0 0 4px;"></h3>
+        <p class="nota" id="fo-d-sub" style="margin:0 0 14px;"></p>
+        <dl class="fo-d-campos" id="fo-d-campos"></dl>
+        <p class="fo-quien" id="fo-d-quien"></p>
+        <p class="aviso" id="fo-d-aviso"></p>
+        <div class="nav-pasos" id="fo-d-acc"><button class="btn suave" onclick="foDescartar()">Descartar</button><button class="btn" id="btn-fo-alta" onclick="foDarDeAlta()">Dar de alta</button></div>
+      </div>
+    </div>
+  </div>
+  <div class="nav-pasos"><button class="btn suave" onclick="irA('inicio')">Volver al inicio</button></div>
 </section>
 
 <section class="pantalla wrap oculto" id="p-ficha">
@@ -1653,7 +1874,8 @@ function hayCambiosSinGuardar(){
 }
 function irA(nombre, forzar){
   if(!forzar && nombre!=="planes" && hayCambiosSinGuardar() && !confirm("Tenés cambios sin guardar en el plan. ¿Salir igual y perderlos?")) return false;
-  ["login","clave","inicio","consulta","planes","recetario","listado","recomendaciones","guardados","ficha","alta","biblioteca","programa","consultante","antro"].forEach(function(p){ $("p-"+p).classList.toggle("oculto", p!==nombre); });
+  ["login","clave","inicio","consulta","planes","recetario","listado","recomendaciones","guardados","ficha","alta","biblioteca","programa","consultante","antro","empinf","forms"].forEach(function(p){ $("p-"+p).classList.toggle("oculto", p!==nombre); });
+  if(nombre==="inicio" && typeof foContarInicio==="function") foContarInicio();
   window.scrollTo(0,0);
   return true;
 }
@@ -3664,6 +3886,558 @@ function anVolverFicha(){ if(an.listoP) abrirFicha(an.listoP); }
 function fichaAntro(){ if(ficha.paciente) abrirAntro(ficha.paciente); }
 function fichaInformeAntro(id){ var f=ficha.sesiones.filter(function(x){ return x.id===id; })[0]; if(f&&ficha.paciente){ an.listoP=ficha.paciente; anMostrarInforme(ficha.paciente, f); } }
 
+/* =====================================================================
+   INFORME PARA LA EMPRESA (unificación · bloque U2) · lo que en la app anterior era el «Dashboard» impreso,
+   ahora adentro de NuPlan y pensado para quien lo recibe (Recursos Humanos, WellnessLab): datos de grupo,
+   sin nombres, cada persona cuenta una vez. Mes, período o todo el historial; en las ferias, el evento.
+   ===================================================================== */
+var EI = { modo:"mes", n:0, ultimo:null };
+var EI_RIESGO = [
+  ["imc","IMC de 30 o más"], ["cintura","Cintura por encima de la referencia"], ["glucemia","Glucemia de 100 o más"], ["hba1c","HbA1c de 5,7 % o más"],
+  ["colesterol","Colesterol total de 200 o más"], ["ldl","LDL de 100 o más"], ["hdl","HDL bajo"], ["tg","Triglicéridos de 150 o más"],
+  ["tg_hdl","Relación TG/HDL de 3,5 o más"], ["pa","Presión de 130/85 o más"]
+];
+var EI_MESES = ["ene","feb","mar","abr","may","jun","jul","ago","sep","oct","nov","dic"];
+
+function eiNum(v){ if(v==null||v==="") return null; var n=Number(v); return isFinite(n)&&n>0 ? n : null; }
+function eiPct(a, b){ return b ? Math.round(a/b*100) : 0; }
+function eiF(v, d){ return numeroAR(Number(v).toFixed(d==null?1:d)); }
+function eiFecha(iso){ var p=String(iso).slice(0,10).split("-"); return p[2]+"/"+p[1]+"/"+p[0]; }
+function eiHoyISO(){ var h=new Date(); return h.getFullYear()+"-"+String(h.getMonth()+1).padStart(2,"0")+"-"+String(h.getDate()).padStart(2,"0"); }
+function eiEmpresa(){ return (empresas||[]).filter(function(x){ return x.name===empresa; })[0]||null; }
+function eiEsFeria(){ var e=eiEmpresa(); return !!e && /feria|evento/i.test(String(e.type||"")); }
+
+/* ---------- la pantalla ---------- */
+function abrirInformeEmpresa(){
+  if(!irA("empinf")) return;
+  var feria=eiEsFeria(), e=eiEmpresa();
+  $("ei-titulo").textContent=feria?"Informe del evento":"Informe para la empresa";
+  $("ei-empresa").textContent=empresa||"";
+  $("ei-periodo").classList.toggle("oculto", feria);
+  $("ei-feria").classList.toggle("oculto", !feria);
+  if(!$("ei-mes").value){ var h=new Date(); $("ei-mes").value=h.getFullYear()+"-"+String(h.getMonth()+1).padStart(2,"0"); }
+  var sel=$("ei-diseno"); sel.value=(e&&e.brand_template)||"default"; sel.disabled=!e;
+  $("ei-aviso").className="aviso"; $("ei-aviso").textContent="";
+  $("ei-informe").innerHTML=""; $("ei-acciones").classList.add("oculto");
+  eiPintarModo();
+}
+function eiModo(m){ EI.modo=m; eiPintarModo(); }
+function eiPintarModo(){
+  document.querySelectorAll("#ei-modos button").forEach(function(b){ var on=b.dataset.v===EI.modo; b.classList.toggle("on", on); b.setAttribute("aria-pressed", on?"true":"false"); });
+  $("ei-c-mes").classList.toggle("oculto", EI.modo!=="mes");
+  $("ei-c-rango").classList.toggle("oculto", EI.modo!=="rango");
+}
+function eiRango(){
+  if(eiEsFeria() || EI.modo==="todo") return { desde:null, hasta:null, txt:eiEsFeria()?"Todo el evento":"Todo el historial", frase:"En total" };
+  if(EI.modo==="mes"){
+    var v=$("ei-mes").value; if(!/^\d{4}-\d{2}$/.test(v)) return { error:"Elegí el mes." };
+    var a=+v.slice(0,4), m=+v.slice(5,7), u=new Date(a, m, 0).getDate();
+    var nom=["enero","febrero","marzo","abril","mayo","junio","julio","agosto","septiembre","octubre","noviembre","diciembre"][m-1];
+    return { desde:v+"-01", hasta:v+"-"+String(u).padStart(2,"0"), txt:nom.charAt(0).toUpperCase()+nom.slice(1)+" de "+a, frase:"En "+nom+" de "+a, mes:true };
+  }
+  var d=$("ei-desde").value||null, h=$("ei-hasta").value||null;
+  if(!d && !h) return { error:"Poné desde cuándo y hasta cuándo (o una de las dos)." };
+  if(d && h && d>h) return { error:"La fecha de inicio es posterior a la de fin." };
+  return { desde:d, hasta:h, txt:(d?"Del "+eiFecha(d):"Desde el inicio")+(h?" al "+eiFecha(h):" a hoy"), frase:d&&h?"Entre el "+eiFecha(d)+" y el "+eiFecha(h):d?"Desde el "+eiFecha(d):"Hasta el "+eiFecha(h) };
+}
+async function eiCambiarDiseno(v){
+  var e=eiEmpresa(), av=$("ei-aviso"); if(!e) return;
+  var antes=e.brand_template||"default"; av.className="aviso"; av.textContent="Guardando el diseño…";
+  var r=await sb.from("companies").update({ brand_template:v }).eq("id", e.id).select("id");
+  if(r.error || !r.data || !r.data.length){ $("ei-diseno").value=antes; av.className="aviso error"; av.textContent="No se pudo cambiar el diseño: "+(r.error?errorLegible(r.error):"tu usuario no tiene permiso para cambiar empresas."); return; }
+  e.brand_template=v; av.className="aviso ok";
+  av.textContent="Listo: los informes de "+e.name+" salen con el diseño "+(v==="swiss_medical"?"WellnessLab · Swiss Medical":"NuPlan")+".";
+  if(EI.ultimo) eiPintar(EI.ultimo);
+}
+
+/* ---------- traer todo (por tandas: de a 50 personas y de a 1000 filas) ---------- */
+async function eiTraer(tabla, campos, ids, orden){
+  var todo=[];
+  for(var i=0;i<ids.length;i+=50){
+    var parte=ids.slice(i,i+50);
+    for(var desde=0, v=0; v<50; v++, desde+=1000){
+      var r=await sb.from(tabla).select(campos).in("patient_id", parte).order(orden,{ascending:true}).range(desde, desde+999);
+      if(r.error) return { error:r.error };
+      todo=todo.concat(r.data||[]);
+      if(!r.data || r.data.length<1000) break;
+    }
+  }
+  return { data:todo };
+}
+
+/* ---------- el riesgo de cada persona (los mismos criterios que la app anterior) ---------- */
+function eiFactores(sx, peso, talla, cintura, lab){
+  var f=[], v=sx==="Masculino";
+  if(peso&&talla && peso/Math.pow(talla/100,2)>=30) f.push("imc");
+  if(cintura && cintura>(v?94:80)) f.push("cintura");
+  if(lab){
+    var g=function(k){ return eiNum(lab[k]); };
+    if(g("glucose")>=100) f.push("glucemia");
+    if(g("hba1c")>=5.7) f.push("hba1c");
+    if(g("total_cholesterol")>=200) f.push("colesterol");
+    if(g("ldl")>=100) f.push("ldl");
+    if(g("hdl") && g("hdl")<(v?40:50)) f.push("hdl");
+    if(g("triglycerides")>=150) f.push("tg");
+    if(g("triglycerides")&&g("hdl") && g("triglycerides")/g("hdl")>=3.5) f.push("tg_hdl");
+    if(g("bp_systolic")>=130 || g("bp_diastolic")>=85) f.push("pa");
+  }
+  return f;
+}
+function eiActividadOk(a){ return a==="+150 min" || a==="3-4 días" || a==="5+ días"; }
+
+/* ---------- armar ---------- */
+async function armarInformeEmpresa(){
+  var av=$("ei-aviso"), rg=eiRango(), emp=empresa, n=++EI.n;
+  av.className="aviso"; av.textContent="";
+  if(rg.error){ av.className="aviso error"; av.textContent=rg.error; return; }
+  av.textContent="Armando el informe…"; $("ei-informe").innerHTML=""; $("ei-acciones").classList.add("oculto");
+  await cargarPacientes();
+  if(n!==EI.n || emp!==empresa) return;
+  if(pacientesError){ av.className="aviso error"; av.textContent="No se pudo leer la lista de personas: "+pacientesError; return; }
+  var ps=pacientes.slice(), ids=ps.map(function(p){ return p.id; });
+  if(!ids.length){ av.textContent="Todavía no hay personas cargadas en "+emp+"."; return; }
+  var rs=await eiTraer("sessions","patient_id, session_date, created_at, session_type, weight, height, girth_waist, adherence, hydration, physical_activity, consumo_frutas_verduras, energy_level, sleep_quality", ids, "session_date");
+  var rl=await eiTraer("lab_results","patient_id, lab_date, created_at, glucose, hba1c, total_cholesterol, ldl, hdl, triglycerides, vitamin_d, bp_systolic, bp_diastolic", ids, "lab_date");
+  if(n!==EI.n || emp!==empresa) return;
+  if(rs.error||rl.error){ av.className="aviso error"; av.textContent="No se pudo leer: "+errorLegible(rs.error||rl.error); return; }
+  var d=eiCalcular(ps, rs.data, rl.data, rg, eiEsFeria());
+  d.empresa=emp; d.rango=rg; d.feria=eiEsFeria();
+  EI.ultimo=d;
+  av.textContent="";
+  if(d.pob.length<5 && d.pob.length>0){ av.className="aviso"; av.textContent="Ojo: con menos de 5 personas, los datos de grupo pueden dejar reconocer a alguien. Revisalo antes de mandarlo."; }
+  eiPintar(d);
+}
+
+function eiCalcular(ps, ses, labs, rg, feria){
+  var desde=rg.desde, hasta=rg.hasta||eiHoyISO();
+  var hastaOk=function(f){ return String(f||"").slice(0,10)<=hasta; }, enPer=function(f){ f=String(f||"").slice(0,10); return (!desde||f>=desde) && f<=hasta; };
+  var gs={}, gl={}, P={};
+  ps.forEach(function(p){ P[p.id]=p; });
+  ses.slice().sort(porFecha("session_date")).forEach(function(s){ if(P[s.patient_id] && hastaOk(s.session_date)) (gs[s.patient_id]=gs[s.patient_id]||[]).push(s); });
+  labs.slice().sort(porFecha("lab_date")).forEach(function(l){ if(P[l.patient_id] && hastaOk(l.lab_date)) (gl[l.patient_id]=gl[l.patient_id]||[]).push(l); });
+  var sesPer=ses.filter(function(s){ return P[s.patient_id] && enPer(s.session_date); });
+  var atendidas={}; sesPer.forEach(function(s){ atendidas[s.patient_id]=true; });
+  var pob=Object.keys(atendidas);
+  var d={ total:ps.length, pob:pob, consultas:sesPer.length, antros:sesPer.filter(function(s){ return /antropometr/i.test(s.session_type||""); }).length };
+  d.nuevas=ps.filter(function(p){ return p.created_at && enPer(p.created_at); }).length;
+  // el último dato de cada persona hasta el final del período
+  var ult=function(pid, f){ var l=gs[pid]||[]; for(var i=l.length-1;i>=0;i--){ var v=f(l[i]); if(v!=null) return v; } return null; };
+  var pri=function(pid, f){ var l=gs[pid]||[]; for(var i=0;i<l.length;i++){ var v=f(l[i]); if(v!=null) return v; } return null; };
+  var esc5=function(k){ return function(s){ var v=Number(s[k]); return s[k]!=null&&s[k]!==""&&v>=1&&v<=5 ? v : null; }; };
+  var talla=function(pid){ return ult(pid, function(s){ return eiNum(s.height); }) || eiNum(P[pid].height); };
+  var peso=function(s){ return eiNum(s.weight); }, cint=function(s){ return eiNum(s.girth_waist); };
+  // hábitos
+  function habito(f, ok){ var n=0, si=0; pob.forEach(function(pid){ var v=ult(pid, f); if(v==null) return; n++; if(ok(v)) si++; }); return { n:n, si:si, pct:eiPct(si,n) }; }
+  function prom(f){ var n=0, s=0; pob.forEach(function(pid){ var v=ult(pid, f); if(v==null) return; n++; s+=v; }); return { n:n, v:n?s/n:null }; }
+  d.hab={
+    agua: habito(function(s){ return s.hydration===true||s.hydration===false ? s.hydration : null; }, function(v){ return v===true; }),
+    frutas: habito(esc5("consumo_frutas_verduras"), function(v){ return v>=4; }),
+    actividad: habito(function(s){ return s.physical_activity||null; }, eiActividadOk),
+    energia: habito(esc5("energy_level"), function(v){ return v>=4; }),
+    sueno: habito(esc5("sleep_quality"), function(v){ return v>=4; })
+  };
+  d.energia=prom(esc5("energy_level")); d.sueno=prom(esc5("sleep_quality")); d.adherencia=prom(esc5("adherence"));
+  // composición: IMC y cintura
+  d.imc={ n:0, bajo:0, normal:0, sobre:0, obes:0 }; d.cin={ n:0, ok:0, aum:0, muy:0 };
+  pob.forEach(function(pid){
+    var sx=P[pid].sex, w=ult(pid, peso)||eiNum(P[pid].initial_weight), t=talla(pid), c=ult(pid, cint);
+    if(w&&t){ var i=w/Math.pow(t/100,2); d.imc.n++; if(i<18.5) d.imc.bajo++; else if(i<25) d.imc.normal++; else if(i<30) d.imc.sobre++; else d.imc.obes++; }
+    if(c){ var a=sx==="Masculino"?94:80, b=sx==="Masculino"?102:88; d.cin.n++; if(c<a) d.cin.ok++; else if(c<b) d.cin.aum++; else d.cin.muy++; }
+  });
+  // factores de riesgo y estado
+  d.riesgo={ conDato:0, alguno:0, f:{} }; d.estado={};
+  pob.forEach(function(pid){
+    var p=P[pid], w=ult(pid, peso)||eiNum(p.initial_weight), t=talla(pid), c=ult(pid, cint), l=(gl[pid]||[]).slice(-1)[0]||null;
+    var fs=eiFactores(p.sex, w, t, c, l);
+    if((w&&t)||c||l){ d.riesgo.conDato++; if(fs.length) d.riesgo.alguno++; }
+    fs.forEach(function(k){ d.riesgo.f[k]=(d.riesgo.f[k]||0)+1; });
+    var st=p.status||"En Progreso"; if(st!=="Objetivo Alcanzado" && st!=="Requiere Derivación" && fs.length) st="En Riesgo";
+    d.estado[st]=(d.estado[st]||0)+1;
+  });
+  // cambios: el primer registro de cada persona contra el último hasta el final del período
+  function cambio(f, d1){ var n=0, a=0, b=0, mej=0; pob.forEach(function(pid){ var l=(gs[pid]||[]).map(f).filter(function(v){ return v!=null; }); if(l.length<2) return; n++; a+=l[0]; b+=l[l.length-1]; if(d1(l[0], l[l.length-1])) mej++; }); return { n:n, a:n?a/n:null, b:n?b/n:null, mej:mej }; }
+  d.cambios=[
+    ["Energía", "/5", 1, cambio(esc5("energy_level"), function(x,y){ return y>x; }), "subió"],
+    ["Calidad del sueño", "/5", 1, cambio(esc5("sleep_quality"), function(x,y){ return y>x; }), "subió"],
+    ["Adherencia", "/5", 1, cambio(esc5("adherence"), function(x,y){ return y>x; }), "subió"],
+    ["Cintura", "cm", 1, cambio(cint, function(x,y){ return y<=x-1; }), "bajó 1 cm o más"],
+    ["Peso", "kg", 1, cambio(peso, function(){ return false; }), ""]
+  ];
+  // laboratorio: fuera de referencia en el primero y en el último
+  d.lab=LAB_DEF.map(function(def){
+    var n=0, fi=0, ff=0;
+    pob.forEach(function(pid){ var l=(gl[pid]||[]).map(function(x){ return labValor(x, def); }).filter(function(v){ return v!=null; }); if(l.length<2) return; n++; if(def.fuera(l[0], P[pid].sex)) fi++; if(def.fuera(l[l.length-1], P[pid].sex)) ff++; });
+    return { def:def, n:n, fi:fi, ff:ff };
+  }).filter(function(x){ return x.n; });
+  // participación por mes: 12 meses hasta el final del período (o los meses del período, hasta 24)
+  var fin=hasta.slice(0,7), ini;
+  if(desde && !rg.mes){ ini=desde.slice(0,7); } else { var y=+fin.slice(0,4), m=+fin.slice(5,7)-11; while(m<1){ m+=12; y--; } ini=y+"-"+String(m).padStart(2,"0"); }
+  var meses=[], y2=+ini.slice(0,4), m2=+ini.slice(5,7);
+  while((y2+"-"+String(m2).padStart(2,"0"))<=fin && meses.length<24){ meses.push(y2+"-"+String(m2).padStart(2,"0")); m2++; if(m2>12){ m2=1; y2++; } }
+  if(meses.length>24) meses=meses.slice(-24);
+  d.meses=meses.map(function(k){ var c=0, per={}; ses.forEach(function(s){ if(P[s.patient_id] && String(s.session_date).slice(0,7)===k){ c++; per[s.patient_id]=true; } }); return { k:k, consultas:c, personas:Object.keys(per).length }; });
+  return d;
+}
+
+/* ---------- pintar ---------- */
+function eiTile(l, v, s, meta){ return '<div class="ei-tile"><span class="l">'+l+'</span><span class="v">'+v+'</span>'+(s?'<span class="s">'+s+'</span>':'')+(meta?'<span class="m">'+meta+'</span>':'')+'</div>'; }
+function eiBarraHab(et, h, meta, ref){
+  var cumple=h.n && h.pct>=meta;
+  return '<div class="ei-hab"><div class="ei-hab-t"><b>'+et+'</b><span class="ei-hab-v">'+(h.n?h.pct+' %':'—')+'</span></div>'+
+    '<div class="ei-hab-b" role="img" aria-label="'+esc(et)+': '+(h.n?h.pct+' %':'sin datos')+', meta '+meta+' %"><i style="width:'+(h.n?h.pct:0)+'%"></i><u style="left:'+meta+'%"></u></div>'+
+    '<div class="ei-hab-n"><span>'+(h.n?h.si+' de '+h.n+' personas':'Sin datos')+' · '+ref+'</span><span class="'+(h.n?(cumple?'ok':'no'):'')+'">Meta: '+meta+' %'+(h.n?(cumple?' · cumple':' · por debajo'):'')+'</span></div></div>';
+}
+function eiApilada(et, partes, total){
+  if(!total) return '';
+  var visibles=partes.filter(function(x){ return x[1]>0; });
+  return '<div class="ei-ap"><p class="ei-ap-t"><b>'+et+'</b><span>'+total+' personas con el dato</span></p>'+
+    '<div class="ei-ap-b">'+visibles.map(function(x){ return '<i class="'+x[2]+'" style="width:'+(x[1]/total*100).toFixed(1)+'%"><span>'+eiPct(x[1],total)+' %</span></i>'; }).join("")+'</div>'+
+    '<p class="ei-ap-l">'+partes.map(function(x){ return '<span><i class="'+x[2]+'"></i>'+x[0]+' · <b>'+x[1]+'</b> ('+eiPct(x[1],total)+' %)</span>'; }).join("")+'</p></div>';
+}
+function eiMesesSVG(ms){
+  if(!ms.length) return '';
+  var max=Math.max.apply(null, ms.map(function(x){ return x.consultas; }).concat([1])), W=640, H=200, pad=28, bw=(W-pad)/ms.length;
+  var tope=Math.ceil(max/5)*5||5, y=function(v){ return H-24-(v/tope)*(H-48); };
+  var g='';
+  [0, tope/2, tope].forEach(function(v){ g+='<line x1="'+pad+'" x2="'+W+'" y1="'+y(v).toFixed(1)+'" y2="'+y(v).toFixed(1)+'" class="ei-gl"/><text x="'+(pad-6)+'" y="'+(y(v)+4).toFixed(1)+'" class="ei-gt" text-anchor="end">'+Math.round(v)+'</text>'; });
+  ms.forEach(function(m, i){
+    var x=pad+i*bw+bw*0.18, w=bw*0.64, yc=y(m.consultas), mes=EI_MESES[+m.k.slice(5,7)-1];
+    g+='<rect x="'+x.toFixed(1)+'" y="'+yc.toFixed(1)+'" width="'+w.toFixed(1)+'" height="'+(H-24-yc).toFixed(1)+'" rx="4" class="ei-gb"><title>'+mes+' '+m.k.slice(0,4)+': '+m.consultas+' consultas, '+m.personas+' personas</title></rect>';
+    if(m.consultas) g+='<text x="'+(x+w/2).toFixed(1)+'" y="'+(yc-6).toFixed(1)+'" class="ei-gv" text-anchor="middle">'+m.consultas+'</text>';
+    g+='<text x="'+(x+w/2).toFixed(1)+'" y="'+(H-6)+'" class="ei-gt" text-anchor="middle">'+mes+'</text>';
+  });
+  return '<svg class="ei-meses" viewBox="0 0 '+W+' '+H+'" role="img" aria-label="Consultas por mes">'+g+'</svg>';
+}
+function eiLectura(d){
+  var t=[], h=d.hab;
+  if(d.feria){ t.push("En el evento se atendieron "+d.pob.length+" personas."); }
+  else { t.push(d.rango.frase+", "+d.pob.length+" de las "+d.total+" personas del programa tuvieron al menos una consulta ("+eiPct(d.pob.length, d.total)+" %)."); }
+  if(d.energia.n) t.push("La energía promedio es "+eiF(d.energia.v)+" sobre 5"+(h.energia.n?": "+h.energia.pct+" % dice tener buena energía (4 o 5)":"")+".");
+  var ce=d.cambios[0][3]; if(!d.feria && ce.n>=3 && ce.b-ce.a>=0.05) t.push("Entre quienes tienen más de un registro, la energía pasó de "+eiF(ce.a)+" a "+eiF(ce.b)+".");
+  var top=EI_RIESGO.map(function(r){ return [r[1], d.riesgo.f[r[0]]||0]; }).filter(function(x){ return x[1]; }).sort(function(a,b){ return b[1]-a[1]; })[0];
+  if(top && d.riesgo.conDato) t.push("El factor de riesgo más frecuente: "+top[0].charAt(0).toLowerCase()+top[0].slice(1)+" ("+top[1]+" de "+d.riesgo.conDato+" personas con datos).");
+  if(!d.feria && d.adherencia.n) t.push("La adherencia promedio es "+eiF(d.adherencia.v)+" sobre 5 (la meta es 4).");
+  return t;
+}
+function eiPintar(d){
+  var h=d.hab, pobN=d.pob.length, feria=d.feria;
+  if(!pobN){
+    $("ei-informe").innerHTML='<div class="caja"><p style="margin:0;">'+(feria?"Todavía no hay consultas cargadas en este evento.":"Nadie de "+esc(d.empresa)+" tuvo una consulta en "+esc(d.rango.txt.toLowerCase())+". Probá con otro mes o con todo el historial.")+'</p></div>';
+    $("ei-acciones").classList.add("oculto"); return;
+  }
+  var c='<div class="ei-cab"><span class="ei-k">'+(feria?"Informe del evento":"Informe para la empresa")+'</span><h2>'+esc(d.empresa)+'</h2><p class="bajada">'+esc(d.rango.txt)+' · datos de grupo, sin nombres</p></div>';
+  c+='<div class="ei-tiles">'+
+    (feria
+      ? eiTile("Personas atendidas", pobN, d.consultas+" consultas")
+      : eiTile("Personas atendidas", pobN, "de "+d.total+" en el programa · "+eiPct(pobN,d.total)+" %", "Meta: 80 %"))+
+    (feria?'':eiTile("Consultas", d.consultas, d.antros?d.antros+" con antropometría":"", d.nuevas?d.nuevas+" personas nuevas":""))+
+    eiTile("Energía", d.energia.n?eiF(d.energia.v)+'<small>/5</small>':"—", d.energia.n?d.energia.n+" personas con el dato":"Sin datos")+
+    eiTile("Con algún factor de riesgo", d.riesgo.conDato?d.riesgo.alguno:"—", d.riesgo.conDato?eiPct(d.riesgo.alguno,d.riesgo.conDato)+" % de "+d.riesgo.conDato+" con datos":"Sin datos")+
+    (feria?'':eiTile("Adherencia", d.adherencia.n?eiF(d.adherencia.v)+'<small>/5</small>':"—", d.adherencia.n?d.adherencia.n+" personas con el dato":"Sin datos", "Meta: 4"))+
+  '</div>';
+  c+='<div class="ei-lectura"><h3>En pocas palabras</h3>'+eiLectura(d).map(function(x){ return '<p>'+esc(x)+'</p>'; }).join("")+'</div>';
+  c+='<h3 class="sec-ficha">Hábitos</h3><p class="nota">El último dato de cada persona'+(feria?'':' hasta el final del período')+'. La línea marca la meta.</p><div class="ei-habs">'+
+    eiBarraHab("Energía buena (4 o 5 de 5)", h.energia, 60, "cómo se siente durante el día")+
+    eiBarraHab("Duerme bien (4 o 5 de 5)", h.sueno, 60, "calidad del sueño")+
+    eiBarraHab("Toma 2 litros de agua por día", h.agua, 80, "referencia OMS")+
+    eiBarraHab("Frutas y verduras casi todos los días", h.frutas, 60, "4 o 5 de 5 · OMS: 400 g por día")+
+    eiBarraHab("Actividad física de 150 min por semana o más", h.actividad, 60, "referencia OMS")+'</div>';
+  c+='<h3 class="sec-ficha">Composición del grupo</h3>'+
+    eiApilada("Índice de masa corporal", [["Bajo peso",d.imc.bajo,"c0"],["Normal",d.imc.normal,"c1"],["Sobrepeso",d.imc.sobre,"c2"],["Obesidad",d.imc.obes,"c3"]], d.imc.n)+
+    eiApilada("Cintura", [["Sin riesgo",d.cin.ok,"c1"],["Riesgo aumentado",d.cin.aum,"c2"],["Riesgo muy aumentado",d.cin.muy,"c3"]], d.cin.n)+
+    (!d.imc.n&&!d.cin.n?'<p class="nota">Sin peso, talla ni cintura cargados.</p>':'')+
+    '<p class="nota">Cintura: sin riesgo debajo de 80 cm en mujeres y 94 cm en varones; muy aumentado desde 88 y 102 cm.</p>';
+  var est=["Objetivo Alcanzado","En Progreso","En Riesgo","Requiere Derivación"].map(function(k){ return [k, d.estado[k]||0]; });
+  c+=eiApilada("Estado de las personas", [["Objetivo alcanzado",est[0][1],"c1"],["En progreso",est[1][1],"c0"],["En riesgo",est[2][1],"c2"],["Requiere derivación",est[3][1],"c3"]], pobN);
+  var fr=EI_RIESGO.map(function(r){ return [r[1], d.riesgo.f[r[0]]||0]; }).filter(function(x){ return x[1]; }).sort(function(a,b){ return b[1]-a[1]; });
+  c+='<h3 class="sec-ficha">Factores de riesgo</h3>'+(fr.length
+    ? '<div class="tabla-scroll"><table class="tabla evo-t ei-t"><thead><tr><th>Factor</th><th>Personas</th><th>% de quienes tienen datos</th></tr></thead><tbody>'+fr.map(function(x){ return '<tr><td>'+x[0]+'</td><td class="mono">'+x[1]+'</td><td class="mono"><span class="ei-mini"><i style="width:'+eiPct(x[1],d.riesgo.conDato)+'%"></i></span>'+eiPct(x[1],d.riesgo.conDato)+' %</td></tr>'; }).join("")+'</tbody></table></div>'
+    : '<p>Nadie tiene factores de riesgo en las últimas mediciones y análisis.</p>')+
+    '<p class="nota">Con el último peso, talla y cintura, y el último análisis de cada persona. Cintura: más de 80 cm en mujeres y 94 cm en varones. HDL bajo: menos de 50 en mujeres y 40 en varones.</p>';
+  if(!feria){
+    var cb=d.cambios.filter(function(x){ return x[3].n; });
+    c+='<h3 class="sec-ficha">Cómo cambiaron</h3>'+(cb.length
+      ? '<p class="nota">Personas con dos registros o más: el primero contra el último'+(d.rango.desde||d.rango.hasta?' hasta el final del período':'')+'.</p><div class="tabla-scroll"><table class="tabla evo-t ei-t"><thead><tr><th>Dato</th><th>Personas</th><th>Al empezar</th><th>Último</th><th>Diferencia</th><th>Mejoró</th></tr></thead><tbody>'+
+        cb.map(function(x){ var m=x[3], dif=difTxt(m.a, m.b, x[2]); return '<tr><td>'+x[0]+'</td><td class="mono">'+m.n+'</td><td class="mono">'+eiF(m.a,x[2])+' '+x[1].replace("/5","")+'</td><td class="mono">'+eiF(m.b,x[2])+' '+x[1].replace("/5","")+'</td><td class="mono">'+dif.s+(dif.x&&x[1]!=="/5"?' '+x[1]:'')+'</td><td class="mono">'+(x[4]?m.mej+' ('+eiPct(m.mej,m.n)+' %)':'')+'</td></tr>'; }).join("")+'</tbody></table></div>'
+      : '<p>Todavía nadie tiene dos registros para comparar.</p>');
+    var labs=d.lab.filter(function(x){ return x.fi||x.ff; });
+    if(labs.length) c+='<h3 class="sec-ficha">Laboratorio</h3><p class="nota">Personas con dos análisis o más: cuántas estaban fuera de referencia en el primero y cuántas en el último.</p><div class="tabla-scroll"><table class="tabla evo-t ei-t"><thead><tr><th>Análisis</th><th>Personas</th><th>Fuera al empezar</th><th>Fuera ahora</th></tr></thead><tbody>'+
+      labs.map(function(x){ return '<tr><td>'+x.def.n+'</td><td class="mono">'+x.n+'</td><td class="mono">'+x.fi+'</td><td class="mono">'+x.ff+(x.ff<x.fi?' <span class="ei-baja">−'+(x.fi-x.ff)+'</span>':'')+'</td></tr>'; }).join("")+'</tbody></table></div>';
+    c+='<h3 class="sec-ficha">Consultas por mes</h3>'+eiMesesSVG(d.meses)+
+      '<p class="nota">'+d.meses.map(function(m){ return m.consultas?EI_MESES[+m.k.slice(5,7)-1]+" "+m.k.slice(2,4)+": "+m.personas+" personas":""; }).filter(Boolean).join(" · ")+'</p>';
+  }
+  c+='<p class="nota ei-metodo">Cada persona cuenta una vez, con su último dato'+(feria?'':' hasta el final del período')+'. Sin nombres. Escalas de 1 a 5 como se cargan en la consulta. Referencias: OMS (hábitos e IMC), cintura según sexo, laboratorio y presión según las guías de uso habitual.</p>';
+  var titulo=(feria?"Informe del evento":"Informe para la empresa")+" · "+d.empresa;
+  $("ei-informe").innerHTML=anHoja(titulo, c, null);
+  if(typeof rotularEvo==="function") rotularEvo($("ei-informe"));
+  $("ei-acciones").classList.remove("oculto");
+}
+function eiImprimir(){
+  var t=document.title, d=EI.ultimo; if(d) document.title=(d.feria?"Informe del evento":"Informe para la empresa")+" · "+d.empresa+" · "+d.rango.txt;
+  try{ window.print(); } finally { setTimeout(function(){ document.title=t; }, 800); }
+}
+
+/* =====================================================================
+   FORMULARIOS CON QR (unificación · bloque U3) · los formularios antes de la consulta, adentro de NuPlan.
+   Mismas tablas que la app anterior (forms, form_responses) y el mismo link público (/public/form/<slug>),
+   así los QR que ya están impresos siguen andando. El QR se arma acá mismo, sin servicios de afuera.
+   ===================================================================== */
+var FO = { lista:[], pend:{}, tab:"forms", estado:"pending", resp:[], abierta:null, nl:0, nb:0 };
+var FO_CAMPOS = [{key:"first_name",label:"Nombre",type:"text",required:true,placeholder:"María"},{key:"last_name",label:"Apellido",type:"text",required:true,placeholder:"Pérez"},{key:"email",label:"Email",type:"email",required:true,placeholder:"maria@email.com"},{key:"phone",label:"WhatsApp",type:"tel",required:false,placeholder:"+54 9 11 ..."},{key:"birth_date",label:"Fecha de nacimiento",type:"date",required:true},{key:"sex",label:"Sexo",type:"select",required:true,options:["Femenino","Masculino"]},{key:"weight",label:"Peso actual (kg)",type:"number",required:false,placeholder:"70"},{key:"height",label:"Altura (cm)",type:"number",required:false,placeholder:"170"},{key:"goal",label:"¿Cuál es tu objetivo?",type:"select",required:true,options:["Descenso de peso","Aumento de peso","Descenso de grasa corporal","Ganar masa muscular","Laboratorio","Educación alimentaria","Otro"]},{key:"hydration",label:"¿Tomás 2 L de agua por día?",type:"yesno",required:true},{key:"activity",label:"¿Hacés más de 150 min de actividad por semana?",type:"yesno",required:true},{key:"fruits",label:"Consumo de frutas y verduras (1 = casi nunca, 5 = todos los días)",type:"rating1to5",required:true},{key:"sleep",label:"Calidad del sueño (1 = muy mala, 5 = excelente)",type:"rating1to5",required:true},{key:"energy",label:"Nivel de energía durante el día (1 = muy bajo, 5 = excelente)",type:"rating1to5",required:true},{key:"notes",label:"¿Algo más que quieras contarnos?",type:"textarea",required:false,placeholder:"Alergias, intolerancias, medicación, motivo de consulta..."}];
+
+function foSlug(t){ return String(t||"").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"").replace(/[^a-z0-9]+/g,"-").replace(/^-+|-+$/g,"").slice(0,60); }
+function foLink(f){ return location.origin+"/public/form/"+f.slug; }
+function foVencido(f){ return !!f.expires_at && new Date(f.expires_at).getTime()<Date.now(); }
+function foNum(v){ if(v==null||v==="") return null; var n=typeof v==="number"?v:Number(String(v).replace(",",".")); return isFinite(n)?n:null; }
+function foEsc5(v){ var n=foNum(v); if(n==null) return null; n=Math.round(n); return n>=1&&n<=5?n:null; }
+function foValor(v){ return v==null||v==="" ? "—" : typeof v==="boolean" ? (v?"Sí":"No") : String(v); }
+function foCuando(iso){ if(!iso) return ""; var d=new Date(iso); return d.toLocaleDateString("es-AR",{day:"2-digit",month:"2-digit",year:"numeric"})+" · "+d.toLocaleTimeString("es-AR",{hour:"2-digit",minute:"2-digit"}); }
+
+/* ---------- la pantalla ---------- */
+async function abrirFormularios(tab){
+  if(!irA("forms")) return;
+  $("fo-empresa").textContent=empresa||"";
+  $("fo-nuevo").classList.add("oculto"); $("fo-qr").classList.add("oculto");
+  $("fo-aviso").className="aviso"; $("fo-aviso").textContent="";
+  foTab(tab||"forms");
+  await foCargar();
+}
+function foTab(t){
+  FO.tab=t;
+  document.querySelectorAll("#fo-tabs button").forEach(function(b){ var on=b.dataset.v===t; b.classList.toggle("on", on); b.setAttribute("aria-selected", on?"true":"false"); });
+  $("fo-p-forms").classList.toggle("oculto", t!=="forms"); $("fo-p-bandeja").classList.toggle("oculto", t!=="bandeja");
+  if(t==="bandeja") foCargarBandeja();
+}
+async function foCargar(){
+  var n=++FO.nl, emp=empresa, av=$("fo-aviso");
+  $("fo-lista").innerHTML='<p class="nota">Cargando…</p>';
+  var r=await sb.from("forms").select("id, slug, company, title, description, fields, expires_at, is_active, created_at").eq("company",emp).order("created_at",{ascending:false});
+  if(n!==FO.nl||emp!==empresa) return;
+  if(r.error){ $("fo-lista").innerHTML=""; av.className="aviso error"; av.textContent="No se pudieron leer los formularios: "+errorLegible(r.error); return; }
+  FO.lista=r.data||[]; FO.pend={};
+  if(FO.lista.length){
+    var q=await sb.from("form_responses").select("form_id, status").in("form_id", FO.lista.map(function(f){ return f.id; }));
+    if(n!==FO.nl) return;
+    (q.data||[]).forEach(function(x){ if(x.status==="pending") FO.pend[x.form_id]=(FO.pend[x.form_id]||0)+1; });
+  }
+  foPintarLista(); foPintarContador();
+}
+function foPendientes(){ return Object.keys(FO.pend).reduce(function(a,k){ return a+FO.pend[k]; }, 0); }
+function foPintarContador(){
+  var p=foPendientes(), b=$("fo-tab-n");
+  b.textContent=p?String(p):""; b.classList.toggle("oculto", !p);
+  var t=$("ini-forms-n"); if(t){ t.textContent=p?(p===1?"1 respuesta para revisar":p+" respuestas para revisar"):""; t.classList.toggle("oculto", !p); }
+}
+function foPintarLista(){
+  var ul=$("fo-lista");
+  if(!FO.lista.length){ ul.innerHTML='<div class="fo-vacio"><p><b>Todavía no hay formularios para '+esc(empresa)+'.</b></p><p>Creá uno por feria o evento: te da un link y un QR para que cada persona lo complete desde su celular.</p></div>'; return; }
+  ul.innerHTML=FO.lista.map(function(f){
+    var venc=foVencido(f), p=FO.pend[f.id]||0, est=!f.is_active?"Pausado":venc?"Vencido":"Recibiendo respuestas";
+    return '<article class="fo-card'+(!f.is_active||venc?' apagado':'')+'" data-id="'+f.id+'">'+
+      '<div class="fo-card-t"><h3>'+esc(f.title)+'</h3><span class="fo-chip'+(!f.is_active||venc?' gris':'')+'">'+est+'</span></div>'+
+      (f.description?'<p class="fo-desc">'+esc(f.description)+'</p>':'')+
+      '<p class="fo-link mono">'+esc(foLink(f).replace(/^https?:\/\//,""))+'</p>'+
+      '<p class="fo-meta">'+(f.expires_at?'Vence el '+new Date(f.expires_at).toLocaleDateString("es-AR",{day:"2-digit",month:"2-digit",year:"numeric"}):'Sin vencimiento')+(p?' · <button type="button" class="enlace fo-pend" onclick="foTab(\'bandeja\')">'+p+(p===1?' respuesta para revisar':' respuestas para revisar')+'</button>':'')+'</p>'+
+      '<div class="fo-acc">'+
+        '<button type="button" class="btn chico" onclick="foVerQR(\''+f.id+'\')">Ver el QR</button>'+
+        '<button type="button" class="btn chico suave" onclick="foCopiar(\''+f.id+'\', this)">Copiar link</button>'+
+        '<a class="btn chico suave" href="'+esc(foLink(f))+'" target="_blank" rel="noopener">Abrir</a>'+
+        '<button type="button" class="btn chico suave" onclick="foActivar(\''+f.id+'\')">'+(f.is_active?'Pausar':'Volver a abrir')+'</button>'+
+        '<button type="button" class="btn chico suave fo-borrar" onclick="foBorrar(\''+f.id+'\')">Borrar</button>'+
+      '</div></article>';
+  }).join("");
+}
+function foBuscar(id){ return FO.lista.filter(function(f){ return f.id===id; })[0]||null; }
+
+/* ---------- crear ---------- */
+function foNuevo(){ $("fo-n-emp").textContent=empresa||""; $("fo-nuevo").classList.remove("oculto"); $("fo-qr").classList.add("oculto"); $("fo-titulo").value=""; $("fo-descripcion").value=""; $("fo-vence").value=""; $("fo-n-aviso").className="aviso"; $("fo-n-aviso").textContent=""; setTimeout(function(){ $("fo-titulo").focus(); }, 30); }
+function foCancelarNuevo(){ $("fo-nuevo").classList.add("oculto"); }
+async function foCrear(){
+  var av=$("fo-n-aviso"), t=$("fo-titulo").value.trim(), d=$("fo-descripcion").value.trim(), v=$("fo-vence").value, b=$("btn-fo-crear");
+  av.className="aviso"; av.textContent="";
+  if(!t){ av.className="aviso error"; av.textContent="Ponele un nombre al formulario (por ejemplo, el de la feria)."; $("fo-titulo").focus(); return; }
+  if(v && v<new Date().toISOString().slice(0,10)){ av.className="aviso error"; av.textContent="La fecha de vencimiento ya pasó."; return; }
+  if(b.disabled) return; b.disabled=true; av.textContent="Creando…";
+  var base=foSlug(empresa+"-"+t)||"formulario", slug=base;
+  for(var i=0;i<5;i++){
+    var ya=await sb.from("forms").select("id").eq("slug",slug).maybeSingle();
+    if(!ya.data) break;
+    slug=base+"-"+Math.random().toString(36).slice(2,6);
+  }
+  // vence al final de ese día (en la app anterior vencía la noche anterior)
+  var vence=v ? new Date(v+"T23:59:59").toISOString() : null;
+  var r=await sb.from("forms").insert({ slug:slug, company:empresa, title:t, description:d||null, fields:FO_CAMPOS, expires_at:vence, is_active:true, created_by:usuario.id }).select("id, slug, company, title, description, fields, expires_at, is_active, created_at");
+  b.disabled=false;
+  if(r.error){ av.className="aviso error"; av.textContent="No se pudo crear: "+errorLegible(r.error); return; }
+  $("fo-nuevo").classList.add("oculto");
+  await foCargar();
+  var nuevo=(r.data&&r.data[0])||FO.lista.filter(function(f){ return f.slug===slug; })[0];
+  if(nuevo) foVerQR(nuevo.id, true);
+}
+
+/* ---------- acciones ---------- */
+async function foCopiar(id, btn){
+  var f=foBuscar(id); if(!f) return;
+  var ok=false; try{ await navigator.clipboard.writeText(foLink(f)); ok=true; }catch(e){}
+  var av=$("fo-aviso"); av.className=ok?"aviso ok":"aviso"; av.textContent=ok?"Link copiado: "+foLink(f):"Copialo de acá: "+foLink(f);
+}
+async function foActivar(id){
+  var f=foBuscar(id), av=$("fo-aviso"); if(!f) return;
+  var r=await sb.from("forms").update({ is_active:!f.is_active }).eq("id",id).select("id");
+  if(r.error||!r.data||!r.data.length){ av.className="aviso error"; av.textContent="No se pudo cambiar: "+(r.error?errorLegible(r.error):"tu usuario no tiene permiso."); return; }
+  av.className="aviso ok"; av.textContent=f.is_active?"«"+f.title+"» quedó pausado: el link deja de recibir respuestas.":"«"+f.title+"» vuelve a recibir respuestas.";
+  await foCargar();
+}
+async function foBorrar(id){
+  var f=foBuscar(id), av=$("fo-aviso"); if(!f) return;
+  var p=FO.pend[id]||0;
+  if(!confirm("¿Borrar «"+f.title+"»? El link y el QR dejan de andar"+(p?" y se pierden "+p+(p===1?" respuesta sin revisar":" respuestas sin revisar"):"")+". Si solo querés que deje de recibir, usá «Pausar».")) return;
+  var r=await sb.from("forms").delete().eq("id",id).select("id");
+  if(r.error){ av.className="aviso error"; av.textContent="No se pudo borrar: "+errorLegible(r.error); return; }
+  av.className="aviso ok"; av.textContent="Formulario borrado.";
+  $("fo-qr").classList.add("oculto");
+  await foCargar();
+}
+
+/* ---------- el QR: se arma acá, para mostrar, bajar o imprimir como cartel ---------- */
+function foQR(texto){ var q=qrcode(0,"M"); q.addData(texto); q.make(); return q; }
+function foQRsvg(texto){
+  var q=foQR(texto), n=q.getModuleCount(), m=4, t=n+m*2, d="";
+  for(var r=0;r<n;r++) for(var c=0;c<n;c++) if(q.isDark(r,c)) d+="M"+(c+m)+" "+(r+m)+"h1v1h-1z";
+  return '<svg class="fo-qr-svg" viewBox="0 0 '+t+' '+t+'" shape-rendering="crispEdges" role="img" aria-label="Código QR del formulario"><rect width="'+t+'" height="'+t+'" fill="#fff"/><path d="'+d+'" fill="#1a1a1a"/></svg>';
+}
+function foQRpng(texto, lado){
+  var q=foQR(texto), n=q.getModuleCount(), m=4, t=n+m*2, k=Math.max(4, Math.floor(lado/t)), cv=document.createElement("canvas");
+  cv.width=cv.height=t*k; var x=cv.getContext("2d"); x.fillStyle="#fff"; x.fillRect(0,0,cv.width,cv.height); x.fillStyle="#1a1a1a";
+  for(var r=0;r<n;r++) for(var c=0;c<n;c++) if(q.isDark(r,c)) x.fillRect((c+m)*k,(r+m)*k,k,k);
+  return cv.toDataURL("image/png");
+}
+function foVerQR(id, recien){
+  var f=foBuscar(id); if(!f) return;
+  FO.qr=f;
+  $("fo-qr-t").textContent=f.title;
+  $("fo-qr-msj").textContent=recien?"Listo: el formulario ya recibe respuestas. Mostrá este QR en la feria o mandá el link.":"Mostralo en la feria o mandá el link por WhatsApp o mail.";
+  $("fo-qr-img").innerHTML=foQRsvg(foLink(f));
+  $("fo-qr-link").textContent=foLink(f);
+  $("fo-qr").classList.remove("oculto"); $("fo-nuevo").classList.add("oculto");
+  $("fo-qr").scrollIntoView({block:"nearest"});
+}
+function foBajarQR(){
+  var f=FO.qr; if(!f) return;
+  var a=document.createElement("a"); a.href=foQRpng(foLink(f), 1200); a.download="qr-"+f.slug+".png"; document.body.appendChild(a); a.click(); a.remove();
+}
+function foCartel(){
+  var f=FO.qr; if(!f) return;
+  $("fo-cartel").innerHTML='<div class="fo-c-cab">NuPlan&trade; &middot; Lic. Rosana Rold&aacute;n</div>'+
+    '<h1>'+esc(f.title)+'</h1><p class="fo-c-b">Antes de tu consulta, completá este formulario desde tu celular. Son 2 minutos.</p>'+
+    '<div class="fo-c-qr">'+foQRsvg(foLink(f))+'</div>'+
+    '<ol class="fo-c-pasos"><li>Abrí la cámara del celular.</li><li>Apuntá al código.</li><li>Tocá el link y completá.</li></ol>'+
+    '<p class="fo-c-l mono">'+esc(foLink(f).replace(/^https?:\/\//,""))+'</p>';
+  document.body.classList.add("imp-cartel");
+  var fin=function(){ document.body.classList.remove("imp-cartel"); window.removeEventListener("afterprint", fin); };
+  window.addEventListener("afterprint", fin);
+  try{ window.print(); } finally { setTimeout(fin, 1500); }
+}
+
+/* ---------- la bandeja ---------- */
+function foEstado(e){ FO.estado=e; document.querySelectorAll("#fo-estados button").forEach(function(b){ var on=b.dataset.v===e; b.classList.toggle("on", on); b.setAttribute("aria-pressed", on?"true":"false"); }); foCargarBandeja(); }
+async function foCargarBandeja(mantener){
+  var n=++FO.nb, emp=empresa, ul=$("fo-resp"), av=$("fo-b-aviso");
+  if(!mantener){ av.className="aviso"; av.textContent=""; } $("fo-detalle").classList.add("oculto"); ul.innerHTML='<li class="nota">Cargando…</li>';
+  var rf=await sb.from("forms").select("id, title, slug, fields, company").eq("company",emp);
+  if(n!==FO.nb||emp!==empresa) return;
+  if(rf.error){ ul.innerHTML=""; av.className="aviso error"; av.textContent="No se pudo leer la bandeja: "+errorLegible(rf.error); return; }
+  var M={}; (rf.data||[]).forEach(function(f){ M[f.id]=f; });
+  var ids=Object.keys(M);
+  if(!ids.length){ FO.resp=[]; ul.innerHTML='<li class="fo-vacio"><p>Todavía no hay formularios en '+esc(emp)+'. Creá uno en la pestaña Formularios.</p></li>'; return; }
+  var r=await sb.from("form_responses").select("id, form_id, data, status, patient_id, submitted_at, processed_at").in("form_id", ids).eq("status", FO.estado).order("submitted_at",{ascending:false});
+  if(n!==FO.nb||emp!==empresa) return;
+  if(r.error){ ul.innerHTML=""; av.className="aviso error"; av.textContent="No se pudieron leer las respuestas: "+errorLegible(r.error); return; }
+  FO.resp=(r.data||[]).map(function(x){ return Object.assign({}, x, { form:M[x.form_id] }); });
+  if(FO.estado==="pending"){ FO.pend={}; FO.resp.forEach(function(x){ FO.pend[x.form_id]=(FO.pend[x.form_id]||0)+1; }); foPintarContador(); }
+  if(!FO.resp.length){ ul.innerHTML='<li class="fo-vacio"><p>'+(FO.estado==="pending"?"No hay respuestas para revisar. Cuando alguien complete un formulario, aparece acá.":FO.estado==="processed"?"Todavía no diste de alta a nadie desde un formulario.":"No hay respuestas descartadas.")+'</p></li>'; return; }
+  ul.innerHTML=FO.resp.map(function(x){ var d=x.data||{}; return '<li><button type="button" class="fo-r" onclick="foAbrirResp(\''+x.id+'\')"><span class="fo-r-n">'+esc(((d.first_name||"")+" "+(d.last_name||"")).trim()||"(sin nombre)")+'</span><span class="fo-r-f">'+esc(x.form?x.form.title:"")+' · '+esc(foCuando(x.submitted_at))+'</span></button></li>'; }).join("");
+}
+async function foAbrirResp(id){
+  var x=FO.resp.filter(function(r){ return r.id===id; })[0]; if(!x) return;
+  FO.abierta=x; FO.existente=null;
+  var d=x.data||{}, campos=(x.form&&x.form.fields&&x.form.fields.length)?x.form.fields:Object.keys(d).map(function(k){ return {key:k,label:k}; });
+  $("fo-d-nom").textContent=((d.first_name||"")+" "+(d.last_name||"")).trim()||"(sin nombre)";
+  $("fo-d-sub").textContent=(x.form?x.form.title:"")+" · "+foCuando(x.submitted_at);
+  $("fo-d-campos").innerHTML=campos.map(function(c){ return '<div class="fo-d-f"><dt>'+esc(c.label)+'</dt><dd>'+esc(foValor(d[c.key]))+'</dd></div>'; }).join("");
+  var pend=x.status==="pending";
+  $("fo-d-acc").classList.toggle("oculto", !pend);
+  $("fo-d-quien").textContent="";
+  $("fo-d-aviso").className="aviso"; $("fo-d-aviso").textContent="";
+  $("fo-detalle").classList.remove("oculto");
+  if(!pend){ $("fo-d-quien").textContent=x.status==="processed"?"Ya se dio de alta"+(x.processed_at?" el "+new Date(x.processed_at).toLocaleDateString("es-AR",{day:"2-digit",month:"2-digit",year:"numeric"}):"")+".":"Descartada: no se dio de alta a nadie."; }
+  else {
+    // ¿ya está en la empresa? por mail
+    var mail=d.email?String(d.email).trim().toLowerCase():null, emp=x.form.company;
+    $("btn-fo-alta").textContent="Dar de alta en "+emp;
+    if(mail){
+      var q=await sb.from("patients").select("id, first_name, last_name").eq("company",emp).ilike("email",mail).limit(1);
+      if(FO.abierta!==x) return;
+      var ya=q.data&&q.data[0];
+      if(ya){ FO.existente=ya; $("fo-d-quien").textContent="Ya está en "+emp+" como "+nombreCompleto(ya)+": sus respuestas se suman a su ficha."; $("btn-fo-alta").textContent="Sumar a su ficha"; }
+      else $("fo-d-quien").textContent="Al confirmar, se da de alta en "+emp+" con estos datos.";
+    } else $("fo-d-quien").textContent="Al confirmar, se da de alta en "+emp+" con estos datos.";
+  }
+  $("fo-detalle").scrollIntoView({block:"nearest"});
+}
+async function foDarDeAlta(){
+  var x=FO.abierta, av=$("fo-d-aviso"), b=$("btn-fo-alta"); if(!x||b.disabled) return;
+  var d=x.data||{}, emp=x.form.company, nom=String(d.first_name||"").trim(), ape=String(d.last_name||"").trim();
+  if(!nom||!ape){ av.className="aviso error"; av.textContent="La respuesta no tiene nombre y apellido: no se puede dar de alta. Podés descartarla."; return; }
+  b.disabled=true; av.className="aviso"; av.textContent="Guardando…";
+  var mail=d.email?String(d.email).trim().toLowerCase():null, peso=foNum(d.weight), talla=foNum(d.height), pid=FO.existente?FO.existente.id:null, nueva=false;
+  try{
+    if(!pid){
+      var sx=d.sex==="Masculino"?"Masculino":d.sex==="Femenino"?"Femenino":null;
+      var rp=await sb.from("patients").insert({ first_name:capitalizar(nom), last_name:capitalizar(ape), email:mail, phone:d.phone?String(d.phone):null, birth_date:d.birth_date||null, sex:sx, initial_weight:peso, height:talla, area:d.area||"Sin especificar", status:"En Progreso", company:emp, created_by:usuario.id }).select("id").single();
+      if(rp.error) throw rp.error;
+      pid=rp.data.id; nueva=true;
+    }
+    if(peso!=null || d.hydration!==undefined || d.activity!==undefined || d.fruits!==undefined || d.sleep!==undefined || d.energy!==undefined){
+      var hoy=new Date(), f=hoy.getFullYear()+"-"+String(hoy.getMonth()+1).padStart(2,"0")+"-"+String(hoy.getDate()).padStart(2,"0");
+      var rs=await sb.from("sessions").insert({ patient_id:pid, nutritionist_id:usuario.id, session_date:f, company:emp, session_type:"Consulta", weight:peso, height:talla,
+        hydration:d.hydration===true?true:d.hydration===false?false:null, physical_activity:d.activity===true?"+150 min":d.activity===false?"≤150 min":null,
+        consumo_frutas_verduras:foEsc5(d.fruits), energy_level:foEsc5(d.energy), sleep_quality:foEsc5(d.sleep), consultation_reason:d.goal||null, consultation_notes:d.notes||null });
+      if(rs.error) throw rs.error;
+    }
+    var ru=await sb.from("form_responses").update({ status:"processed", patient_id:pid, processed_at:new Date().toISOString(), processed_by:usuario.id }).eq("id", x.id).select("id");
+    if(ru.error) throw ru.error;
+  }catch(e){ b.disabled=false; av.className="aviso error"; av.textContent="No se pudo: "+errorLegible(e); return; }
+  b.disabled=false;
+  if(nueva) pacientes=[];
+  $("fo-detalle").classList.add("oculto");
+  var bav=$("fo-b-aviso"); bav.className="aviso ok";
+  var quien=esc(capitalizar(nom)+" "+capitalizar(ape));
+  bav.innerHTML=(nueva?"Listo: "+quien+" ya está en "+esc(emp)+".":"Listo: las respuestas de "+quien+" quedaron en su ficha.")+' <button type="button" class="enlace" onclick="foIrFicha(\''+pid+'\')">Ver su ficha</button>';
+  await foCargarBandeja(true);
+}
+function foIrFicha(pid){ abrirFichaPorId(pid); }
+async function foDescartar(){
+  var x=FO.abierta, av=$("fo-d-aviso"); if(!x) return;
+  if(!confirm("¿Descartar esta respuesta? No se da de alta a nadie. La vas a poder ver en «Descartadas».")) return;
+  var r=await sb.from("form_responses").update({ status:"discarded", processed_at:new Date().toISOString(), processed_by:usuario.id }).eq("id", x.id).select("id");
+  if(r.error){ av.className="aviso error"; av.textContent="No se pudo descartar: "+errorLegible(r.error); return; }
+  $("fo-detalle").classList.add("oculto");
+  var bav=$("fo-b-aviso"); bav.className="aviso ok"; bav.textContent="Respuesta descartada.";
+  await foCargarBandeja(true);
+}
+/* en el inicio: cuántas respuestas hay para revisar (sin frenar nada) */
+async function foContarInicio(){
+  try{
+    var emp=empresa; if(!emp) return;
+    var rf=await sb.from("forms").select("id").eq("company",emp); if(rf.error||emp!==empresa) return;
+    var ids=(rf.data||[]).map(function(f){ return f.id; }), t=$("ini-forms-n"); if(!t) return;
+    if(!ids.length){ t.classList.add("oculto"); return; }
+    var r=await sb.from("form_responses").select("form_id, status").in("form_id", ids).eq("status","pending"); if(r.error||emp!==empresa) return;
+    var p=(r.data||[]).length; t.textContent=p?(p===1?"1 respuesta para revisar":p+" respuestas para revisar"):""; t.classList.toggle("oculto", !p);
+  }catch(e){}
+}
+
 function fichaNuevaConsulta(){ var p=ficha.paciente; if(!p) return; abrirConsulta(); conElegir(p); }
 function fichaNuevoPlan(){ if(ficha.paciente) nuevoPlanPara(ficha.paciente); }
 function fichaRecetario(){ var p=ficha.paciente; if(!p) return; abrirRecetario(); recElegirPaciente(p); }
@@ -4260,5 +5034,6 @@ window.addEventListener("beforeunload", function(e){
   }).catch(function(){ irA("login"); });
 })();
 </script>
+<div id="fo-cartel" aria-hidden="true"></div>
 </body>
 </html>

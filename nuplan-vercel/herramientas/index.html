@@ -875,6 +875,13 @@
   .tabla.pe-t small{color:var(--muted);font-size:.9rem;}
   #pe-buscar{min-height:48px;}
   @media(max-width:640px){ .tabla.pe-t td{white-space:normal;} .pe-imp{margin-left:0;} }
+  /* ===== consulta en un paso ===== */
+  .oculto-nueva{display:none !important;}
+  .rec-t{margin:16px 0 0;font-family:var(--mono);font-size:1rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--coral-dark);}
+  .resultados.rec-l{max-height:none;margin-top:8px;}
+  .resultados li.nueva{border:1.5px dashed var(--accent);background:var(--tinte);}
+  .resultados li.nueva b{color:var(--coral-dark);}
+  #con-nueva{border-color:var(--accent);}
 </style>
 <script src="/assets/qrcode-generator-1.4.4.js"></script>
 </head>
@@ -929,10 +936,11 @@
   <p class="bajada">Escribí dos letras de su nombre y tocalo en la lista.</p>
   <div class="caja">
     <div class="buscador">
-      <input type="text" id="busca-paciente-ini" placeholder="Buscar paciente…" aria-label="Buscar paciente" autocomplete="off" oninput="filtrarPacientesIni(this.value)">
+      <input type="text" id="busca-paciente-ini" placeholder="Nombre o apellido…" aria-label="Buscar paciente" autocomplete="off" oninput="filtrarPacientesIni(this.value)">
       <ul class="resultados" id="lista-pacientes-ini"></ul>
     </div>
-    <p class="nota" style="margin:12px 0 0;">¿Es nueva? <button type="button" class="enlace" onclick="abrirAlta('')">Darla de alta</button> · <button type="button" class="enlace" onclick="abrirPersonas()">Ver la lista completa</button></p>
+    <div id="ini-recientes" class="oculto"></div>
+    <p class="nota" style="margin:12px 0 0;">¿Primera vez? <button type="button" class="enlace" onclick="abrirConsultaNueva('')">Cargá su primera consulta</button> · <button type="button" class="enlace" onclick="abrirPersonas()">Ver la lista completa</button></p>
   </div>
   <div class="grupo-t">Con una paciente</div>
   <div class="tarjetas">
@@ -1030,7 +1038,7 @@
   <p class="bajada">Escribí las primeras letras. Vas a ver sus planes y recetarios, del más nuevo al más viejo.</p>
   <div class="caja">
     <div class="buscador">
-      <input type="text" id="busca-paciente-gua" placeholder="Buscar paciente…" autocomplete="off" oninput="filtrarPacientesGua(this.value)">
+      <input type="text" id="busca-paciente-gua" placeholder="Nombre o apellido…" autocomplete="off" oninput="filtrarPacientesGua(this.value)">
       <ul class="resultados" id="lista-pacientes-gua"></ul>
     </div>
     <div class="elegido oculto" id="gua-elegido">
@@ -1054,7 +1062,7 @@
   <p class="bajada no-imprimir">Pliegues, perímetros y diámetros. Con peso y talla ya se guarda; con las 17 medidas sale la composición corporal completa y el informe.</p>
   <div class="caja no-imprimir" id="an-quien">
     <div class="buscador" id="an-buscar">
-      <input type="text" id="busca-paciente-an" placeholder="Buscar paciente…" aria-label="Buscar paciente" autocomplete="off" oninput="filtrarPacientesAn(this.value)">
+      <input type="text" id="busca-paciente-an" placeholder="Nombre o apellido…" aria-label="Buscar paciente" autocomplete="off" oninput="filtrarPacientesAn(this.value)">
       <ul class="resultados" id="lista-pacientes-an"></ul>
     </div>
     <div class="elegido oculto" id="an-elegido" style="margin-top:0;">
@@ -1375,19 +1383,35 @@
 <section class="pantalla wrap oculto" id="p-consulta">
   <span class="kicker">Nueva consulta</span>
   <h2>¿A quién atendiste?</h2>
-  <p class="bajada">Escribí las primeras letras. Los datos de la última consulta quedan a la vista para comparar.</p>
+  <p class="bajada">Escribí las primeras letras o tocá a alguien de la lista. Si es su primera vez, escribí su nombre completo y la cargás acá mismo, con todo.</p>
   <div class="caja">
     <div class="buscador">
-      <input type="text" id="busca-paciente-con" placeholder="Buscar paciente…" autocomplete="off" oninput="filtrarPacientesCon(this.value)">
+      <input type="text" id="busca-paciente-con" placeholder="Nombre o apellido…" autocomplete="off" oninput="filtrarPacientesCon(this.value)">
       <ul class="resultados" id="lista-pacientes-con"></ul>
     </div>
+    <div id="con-recientes" class="oculto"></div>
     <div class="elegido oculto" id="con-elegido">
       <div><b id="ce-nombre"></b><small id="ce-datos"></small></div>
-      <div class="botonera"><button class="btn chico suave" onclick="abrirCorregirNombre('con')">Corregir nombre</button><button class="btn chico suave oculto" id="btn-ultima-consulta" onclick="editarUltimaConsulta()">Corregir la última consulta</button><button class="btn chico suave" onclick="conDeselegir()">Cambiar</button></div>
+      <div class="botonera"><button class="btn chico suave solo-existente" onclick="abrirCorregirNombre('con')">Corregir nombre</button><button class="btn chico suave oculto solo-existente" id="btn-ultima-consulta" onclick="editarUltimaConsulta()">Corregir la última consulta</button><button class="btn chico suave" onclick="conDeselegir()">Cambiar</button></div>
     </div>
   </div>
 
   <div id="con-form" class="oculto">
+    <div class="caja oculto" id="con-nueva">
+      <span class="sub">Persona nueva en <b id="cn-empresa"></b></span>
+      <div class="grid2">
+        <label class="campo">Nombre *<input type="text" id="cn-nombre" autocomplete="off"></label>
+        <label class="campo">Apellido *<input type="text" id="cn-apellido" autocomplete="off"></label>
+      </div>
+      <div class="campo"><span class="an-et">Sexo</span><div class="an-pills" id="cn-sexo"><button type="button" data-v="Femenino" onclick="cnSexo('Femenino')">Mujer</button><button type="button" data-v="Masculino" onclick="cnSexo('Masculino')">Varón</button></div></div>
+      <div class="grid3">
+        <label class="campo">Fecha de nacimiento<input type="date" id="cn-nacimiento"></label>
+        <label class="campo">WhatsApp<input type="tel" id="cn-telefono" autocomplete="off" placeholder="opcional"></label>
+        <label class="campo">Mail<input type="email" id="cn-mail" autocomplete="off" placeholder="opcional"></label>
+      </div>
+      <p class="nota" style="margin:0;">Con nombre y apellido alcanza. Peso y talla de esta consulta quedan como su punto de partida. Lo demás se completa después en su ficha.</p>
+      <p class="aviso" id="cn-aviso"></p>
+    </div>
     <div class="caja oculto" id="con-editando" style="border-color:var(--coral);background:#fdeeea;">
       <p style="margin:0;"><b id="con-editando-tipo">Estás corrigiendo una consulta ya guardada</b> <span id="con-editando-fecha"></span>. Cambiá lo que haga falta y tocá Guardar cambios.<span class="oculto" id="con-editando-antro"> Para pliegues y perímetros, usá «Corregir» en la ficha: abre la antropometría completa.</span></p>
     </div>
@@ -1456,6 +1480,7 @@
       <button class="btn" onclick="conOtra()">Cargar otra consulta</button>
       <button class="btn ghost oculto" id="btn-corregir-consulta" onclick="editarConsultaGuardada()">Corregir esta consulta</button>
       <button class="btn suave oculto" id="btn-volver-ficha" onclick="abrirFicha(ficha.paciente)">Volver a la ficha</button>
+      <button class="btn suave oculto" id="btn-ir-ficha" onclick="abrirFicha(con.paciente)">Ir a su ficha</button>
       <button class="btn suave" onclick="irA('inicio')">Volver al inicio</button>
     </div>
   </div>
@@ -1472,7 +1497,7 @@
     <p class="bajada">Escribí las primeras letras del nombre o apellido.</p>
     <div class="caja">
       <div class="buscador">
-        <input type="text" id="busca-paciente" placeholder="Buscar paciente…" autocomplete="off" oninput="filtrarPacientes(this.value)">
+        <input type="text" id="busca-paciente" placeholder="Nombre o apellido…" autocomplete="off" oninput="filtrarPacientes(this.value)">
         <ul class="resultados" id="lista-pacientes"></ul>
       </div>
       <div class="elegido oculto" id="paciente-elegido">
@@ -1993,6 +2018,7 @@ function irA(nombre, forzar){
   if(!forzar && nombre!=="planes" && hayCambiosSinGuardar() && !confirm("Tenés cambios sin guardar en el plan. ¿Salir igual y perderlos?")) return false;
   ["login","clave","inicio","consulta","planes","recetario","listado","recomendaciones","guardados","ficha","alta","biblioteca","programa","consultante","antro","empinf","forms","import","empresas","personas"].forEach(function(p){ $("p-"+p).classList.toggle("oculto", p!==nombre); });
   if(nombre==="inicio" && typeof foContarInicio==="function") foContarInicio();
+  if(nombre==="inicio" && typeof cargarRecientes==="function") cargarRecientes("ini-recientes", function(p){ abrirFicha(p); });
   window.scrollTo(0,0);
   return true;
 }
@@ -3383,12 +3409,12 @@ var ficha = { paciente:null, sesiones:[], docs:[], labs:[], labsError:"" };
 var ESTADOS_PACIENTE = ["En Progreso","Objetivo Alcanzado","En Riesgo","Requiere Derivación"];
 async function filtrarPacientesIni(q){
   await cargarPacientes();
-  var ul=$("lista-pacientes-ini"); ul.innerHTML="";
+  var ul=$("lista-pacientes-ini"); ul.innerHTML=""; recientesVisibles("busca-paciente-ini","ini-recientes");
   if(q.trim().length<2) return;
   if(sinResultados(ul,q)) return;
   var hits=pacientes.filter(function(p){return coincide(p,q);}).slice(0,12);
   if(!hits.length){
-    ul.innerHTML='<li class="sin"><span>Nadie con ese nombre en '+esc(empresa)+'</span><button type="button" class="btn chico" onclick="abrirAlta(document.getElementById(\'busca-paciente-ini\').value)">Dar de alta a «'+esc(q.trim())+'»</button></li>';
+    ul.innerHTML='<li class="sin"><span>Nadie con ese nombre en '+esc(empresa)+'</span><button type="button" class="btn chico" onclick="abrirConsultaNueva(document.getElementById(\'busca-paciente-ini\').value)">Cargar su primera consulta</button></li>';
     return;
   }
   hits.forEach(function(p){
@@ -4987,6 +5013,95 @@ function pePintar(){
   if(typeof rotularEvo==="function") rotularEvo($("pe-lista"));
 }
 
+/* =====================================================================
+   CONSULTA EN UN PASO (19/11, pedido de Javo y Ro) · ya no hay pantalla de «dar de alta»:
+   si la persona es nueva, se escribe su nombre en Nueva consulta y se carga ahí mismo su primera
+   consulta completa (medidas, escalas, laboratorio, notas). Al guardar se crea la ficha y la consulta.
+   Para encontrar a quien ya vino: las últimas personas atendidas aparecen antes de escribir.
+   ===================================================================== */
+
+function abrirConsultaNueva(texto){ abrirConsulta(); conNueva(texto||""); }
+function abrirAlta(texto){ abrirConsultaNueva(texto); }
+function conSalirDeNueva(){
+  con.nueva=false; $("con-nueva").classList.add("oculto"); $("cn-aviso").className="aviso"; $("cn-aviso").textContent="";
+  document.querySelectorAll("#con-elegido .botonera .solo-existente").forEach(function(b){ b.classList.remove("oculto-nueva"); });
+}
+function cnSexo(v){ con.sexoNueva=v; document.querySelectorAll("#cn-sexo button").forEach(function(b){ var on=b.dataset.v===v; b.classList.toggle("on", on); b.setAttribute("aria-pressed", on?"true":"false"); }); }
+function conNueva(texto){
+  conElegir.n++; cerrarCorregirNombre(); limpiarLabConsulta(); sacarOpcionesExtra();
+  con.paciente=null; con.ultima=null; con.editandoId=null; con.editandoTipo=null; con.filaCargada=null; con.formInicial=null; con.recienCreada=false;
+  con.nueva=true;
+  var partes=partirNombre(texto);
+  $("cn-nombre").value=partes.nombre; $("cn-apellido").value=partes.apellido;
+  ["cn-nacimiento","cn-telefono","cn-mail"].forEach(function(id){ $(id).value=""; });
+  cnSexo("Femenino"); $("cn-empresa").textContent=empresa||"";
+  $("cn-aviso").className="aviso"; $("cn-aviso").textContent=partes.dudoso?"Revisá dónde termina el nombre y empieza el apellido.":"";
+  $("lista-pacientes-con").innerHTML=""; $("con-recientes").classList.add("oculto"); $("busca-paciente-con").value=String(texto||"").trim();
+  $("ce-nombre").textContent="Persona nueva"; $("ce-datos").textContent="Primera consulta: su ficha se crea al guardar";
+  document.querySelectorAll("#con-elegido .botonera .solo-existente").forEach(function(b){ b.classList.add("oculto-nueva"); });
+  $("con-editando").classList.add("oculto"); $("con-escalas").classList.remove("oculto"); $("con-editando-antro").classList.add("oculto");
+  $("btn-guardar-consulta").textContent="Guardar su primera consulta";
+  var h=new Date(); $("c-fecha").value=h.getFullYear()+"-"+String(h.getMonth()+1).padStart(2,"0")+"-"+String(h.getDate()).padStart(2,"0");
+  ["c-peso","c-talla","c-cintura","c-motivo","c-notas"].forEach(function(id){ $(id).value=""; });
+  ["c-adherencia","c-hidratacion","c-actividad","c-frutas","c-energia","c-sueno"].forEach(function(id){ $(id).value=""; });
+  $("c-aviso").className="aviso"; $("c-aviso").textContent=""; $("c-imc").textContent="";
+  $("con-elegido").classList.remove("oculto"); $("con-nueva").classList.remove("oculto"); $("con-form").classList.remove("oculto"); $("con-listo").classList.add("oculto");
+  $(partes.dudoso||!$("cn-nombre").value?"cn-nombre":(!$("cn-apellido").value?"cn-apellido":"c-peso")).focus();
+}
+/* crea la ficha de la persona nueva justo antes de guardar su consulta; avisa si ya existe */
+async function conCrearNueva(fuerza){
+  var av=$("c-aviso");
+  var nombre=capitalizar($("cn-nombre").value), apellido=capitalizar($("cn-apellido").value), mail=$("cn-mail").value.trim();
+  if(!nombre||!apellido){ av.className="aviso error"; av.textContent="Completá nombre y apellido de la persona nueva."; $(!nombre?"cn-nombre":"cn-apellido").focus(); return false; }
+  if(mail && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(mail)){ av.className="aviso error"; av.textContent="Revisá el mail: falta algo."; $("cn-mail").focus(); return false; }
+  av.className="aviso"; av.textContent="Revisando que no exista…";
+  pacientes=[]; await cargarPacientes();
+  if(pacientesError){ av.className="aviso error"; av.textContent="No se pudo revisar la lista ("+pacientesError+"). Probá de nuevo en un rato."; return false; }
+  var repetida=pacientes.filter(function(x){ return plano(nombreCompleto(x)).replace(/\s+/g," ").trim()===plano(nombre+" "+apellido).replace(/\s+/g," ").trim(); })[0];
+  if(repetida && !fuerza){
+    av.className="aviso error";
+    av.innerHTML='Ya existe '+esc(nombreCompleto(repetida))+' en '+esc(empresa)+'. <button type="button" class="enlace" onclick="conUsarExistente(\''+repetida.id+'\')">Es la misma persona: guardar en su ficha</button> · <button type="button" class="enlace" onclick="guardarConsulta(true)">Es otra persona: dar de alta igual</button>';
+    return false;
+  }
+  var med=function(id){ var v=parseFloat(String($(id).value).replace(",",".")); return v>0?v:null; };
+  var fila={ first_name:nombre, last_name:apellido, sex:con.sexoNueva, birth_date:$("cn-nacimiento").value||null,
+    initial_weight:med("c-peso"), height:med("c-talla"), phone:$("cn-telefono").value.trim()||null, email:mail||null,
+    area:"Sin especificar", status:"En Progreso", company:empresa, created_by:usuario.id };
+  var campos="id, first_name, last_name, sex, birth_date, initial_weight, height, status, email, phone, area, company, created_at";
+  var r=await sb.from("patients").insert(fila).select(campos).single();
+  if(r.error){ av.className="aviso error"; av.textContent="No se pudo crear su ficha: "+errorLegible(r.error); return false; }
+  var p=r.data||null;
+  if(!p||!p.id){ var q=await sb.from("patients").select(campos).eq("company",empresa).eq("first_name",nombre).eq("last_name",apellido).order("created_at",{ascending:false}).limit(1).maybeSingle(); p=q.data||null; }
+  if(!p||!p.id){ av.className="aviso error"; av.textContent="Su ficha se creó, pero no la pude abrir. Buscala por el nombre y cargá la consulta."; pacientes=[]; return false; }
+  pacientes.push(p); pacientes.sort(function(a,b){ return String(a.last_name).localeCompare(String(b.last_name)); });
+  con.paciente=p; con.recienCreada=true; conSalirDeNueva();
+  $("ce-nombre").textContent=nombreCompleto(p); $("ce-datos").textContent="Primera consulta";
+  return true;
+}
+function conUsarExistente(id){
+  var p=pacientes.filter(function(x){ return x.id===id; })[0]; if(!p) return;
+  con.paciente=p; con.recienCreada=false; conSalirDeNueva();
+  $("ce-nombre").textContent=nombreCompleto(p); $("busca-paciente-con").value=nombreCompleto(p);
+  guardarConsulta();
+}
+/* las últimas personas atendidas, para tocarlas sin escribir */
+async function cargarRecientes(cont, alElegir){
+  var emp=empresa, caja=$(cont); if(!caja) return;
+  var r=await sb.from("sessions").select("patient_id, session_date").eq("company",emp).order("session_date",{ascending:false}).limit(80);
+  await cargarPacientes();
+  if(emp!==empresa || r.error) { caja.classList.add("oculto"); return; }
+  var vistos={}, l=[];
+  (r.data||[]).forEach(function(s){ if(vistos[s.patient_id]) return; vistos[s.patient_id]=s.session_date; var p=pacientes.filter(function(x){ return x.id===s.patient_id; })[0]; if(p && l.length<6) l.push(p); });
+  if(!l.length){ caja.classList.add("oculto"); caja.innerHTML=""; return; }
+  caja.innerHTML='<p class="rec-t">Últimas personas atendidas</p><ul class="resultados rec-l">'+l.map(function(p){ return '<li data-id="'+esc(p.id)+'" role="button" tabindex="0"><span>'+esc(nombreCompleto(p))+'</span><small>'+esc(fechaCorta(vistos[p.id]))+'</small></li>'; }).join("")+'</ul>';
+  caja.querySelectorAll("li").forEach(function(li){ var p=pacientes.filter(function(x){ return x.id===li.dataset.id; })[0]; var ir=function(){ alElegir(p); }; li.onclick=ir; li.onkeydown=function(e){ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); ir(); } }; });
+  // si mientras tanto eligió a alguien, empezó una persona nueva o escribió, no se muestran
+  var inp=cont==="con-recientes"?"busca-paciente-con":"busca-paciente-ini";
+  if((cont==="con-recientes" && (con.paciente||con.nueva)) || ($(inp) && String($(inp).value).trim().length>=2)){ caja.classList.add("oculto"); return; }
+  caja.classList.remove("oculto");
+}
+function recientesVisibles(input, cont){ var c=$(cont); if(!c) return; c.classList.toggle("oculto", String($(input).value).trim().length>=2 || !c.innerHTML || (cont==="con-recientes" && !!(con.paciente||con.nueva))); }
+
 function fichaNuevaConsulta(){ var p=ficha.paciente; if(!p) return; abrirConsulta(); conElegir(p); }
 function fichaNuevoPlan(){ if(ficha.paciente) nuevoPlanPara(ficha.paciente); }
 function fichaRecetario(){ var p=ficha.paciente; if(!p) return; abrirRecetario(); recElegirPaciente(p); }
@@ -5035,7 +5150,7 @@ async function guardarDatos(){
   if(cambios.company) pacientes=pacientes.filter(function(x){ return x.id!==p.id; });
 }
 /* alta de paciente nueva (misma tabla y mismas columnas que la app) */
-function abrirAlta(texto){
+function abrirAltaVieja(texto){
   var partes=partirNombre(texto);
   $("a-nombre").value=partes.nombre; $("a-apellido").value=partes.apellido;
   ["a-peso","a-talla","a-nacimiento","a-telefono","a-mail","a-area"].forEach(function(id){ $(id).value=""; });
@@ -5340,24 +5455,26 @@ function armarEscala(id, etiquetas){
   etiquetas.forEach(function(t,i){ var o=document.createElement("option"); o.value=String(i+1); o.textContent=t; sel.appendChild(o); });
 }
 function abrirConsulta(){
-  irA("consulta"); cargarPacientes();
+  irA("consulta"); cargarPacientes(); if(!con.paciente && !con.nueva) cargarRecientes("con-recientes", function(p){ conElegir(p); });
   if(!$("c-fecha").value){ var h=new Date(); $("c-fecha").value=h.getFullYear()+"-"+String(h.getMonth()+1).padStart(2,"0")+"-"+String(h.getDate()).padStart(2,"0"); }
 }
 async function filtrarPacientesCon(q){
   await cargarPacientes();
-  var ul=$("lista-pacientes-con"); ul.innerHTML="";
+  var ul=$("lista-pacientes-con"); ul.innerHTML=""; recientesVisibles("busca-paciente-con","con-recientes");
   if(q.trim().length<2) return;
   if(sinResultados(ul,q)) return;
   var hits=pacientes.filter(function(p){return coincide(p,q);}).slice(0,12);
-  if(!hits.length){ ul.innerHTML='<li><span>Nadie con ese nombre en '+esc(empresa)+'</span></li>'; return; }
   hits.forEach(function(p){
     var li=document.createElement("li"); li.innerHTML='<span>'+esc(nombreCompleto(p))+'</span><small>'+esc(p.status||"")+'</small>';
     li.onclick=function(){ conElegir(p); }; ul.appendChild(li);
   });
+  var n=document.createElement("li"); n.className="nueva";
+  n.innerHTML='<span>'+(hits.length?'¿Es otra persona? ':'Nadie con ese nombre en '+esc(empresa)+'. ')+'<b>Cargar la primera consulta de «'+esc(q.trim())+'»</b></span>';
+  n.onclick=function(){ conNueva(q); }; ul.appendChild(n);
 }
 conElegir.n=0;
 async function conElegir(p){
-  var token=++conElegir.n; cerrarCorregirNombre();
+  var token=++conElegir.n; cerrarCorregirNombre(); conSalirDeNueva(); con.recienCreada=false; $("con-recientes").classList.add("oculto");
   con.paciente=p; con.editandoId=null; con.editandoTipo=null; con.filaCargada=null; con.formInicial=null; con.ultima=null; sacarOpcionesExtra(); $("lista-pacientes-con").innerHTML=""; $("busca-paciente-con").value=nombreCompleto(p);
   $("con-escalas").classList.remove("oculto"); $("con-editando-antro").classList.add("oculto");
   $("con-elegido").classList.add("oculto"); $("con-form").classList.add("oculto"); $("btn-ultima-consulta").classList.add("oculto");
@@ -5379,7 +5496,7 @@ async function conElegir(p){
   limpiarLabConsulta();
   $("c-peso").focus();
 }
-function conDeselegir(){ conElegir.n++; limpiarLabConsulta(); con.paciente=null; con.ultima=null; con.editandoId=null; con.editandoTipo=null; con.filaCargada=null; con.formInicial=null; sacarOpcionesExtra(); $("con-escalas").classList.remove("oculto"); $("con-editando-antro").classList.add("oculto"); $("con-elegido").classList.add("oculto"); $("con-form").classList.add("oculto"); $("busca-paciente-con").value=""; $("lista-pacientes-con").innerHTML=""; cerrarCorregirNombre(); }
+function conDeselegir(){ conElegir.n++; limpiarLabConsulta(); conSalirDeNueva(); $("btn-guardar-consulta").textContent="Guardar consulta"; con.paciente=null; con.ultima=null; con.editandoId=null; con.editandoTipo=null; con.filaCargada=null; con.formInicial=null; sacarOpcionesExtra(); $("con-escalas").classList.remove("oculto"); $("con-editando-antro").classList.add("oculto"); $("con-elegido").classList.add("oculto"); $("con-form").classList.add("oculto"); $("busca-paciente-con").value=""; $("lista-pacientes-con").innerHTML=""; cerrarCorregirNombre(); recientesVisibles("busca-paciente-con","con-recientes"); }
 function conOtra(){ conDeselegir(); $("con-listo").classList.add("oculto"); $("busca-paciente-con").focus(); }
 function fechaCorta(iso){
   var t=String(iso||""); if(!t) return "";
@@ -5425,16 +5542,17 @@ function conCalcIMC(){
   var comparar = con.ultima && con.ultima.weight && !(con.editandoId && con.ultima.id===con.editandoId);
   $("c-imc").textContent = (p>0&&t>0) ? "IMC "+numeroAR((p/Math.pow(t/100,2)).toFixed(1))+(comparar?" · "+(p-con.ultima.weight>=0?"+":"")+numeroAR((p-con.ultima.weight).toFixed(1))+" kg desde la última":"") : "";
 }
-async function guardarConsulta(){
+async function guardarConsulta(fuerza){
   var av=$("c-aviso"); av.className="aviso";
   var editando=con.editandoId, esAntro=!!(editando && /antropometr/i.test(con.editandoTipo||""));
   // en una consulta nueva las escalas son obligatorias; al corregir una ya guardada, no (puede venir de una planilla sin escalas)
   var faltan=editando ? [] : Array.prototype.filter.call(document.querySelectorAll("#con-form [data-req]"), function(el){ return String(el.value).trim()===""; });
   if(faltan.length){ av.className="aviso error"; av.textContent="Completá los campos con asterisco."; faltan[0].focus(); return; }
-  if(!con.paciente){ av.className="aviso error"; av.textContent="Elegí a la paciente."; return; }
+  if(!con.paciente && !con.nueva){ av.className="aviso error"; av.textContent="Elegí a la persona o escribí el nombre de una nueva."; return; }
   var lab=leerLabConsulta();
   if(lab.error){ av.className="aviso error"; av.textContent=lab.error; if(lab.el) lab.el.focus(); return; }
   var btn=$("btn-guardar-consulta"); if(btn.disabled) return; btn.disabled=true; av.textContent="Guardando…";
+  if(!con.paciente && con.nueva){ var creada=await conCrearNueva(fuerza===true); if(!creada){ btn.disabled=false; return; } av.className="aviso"; av.textContent="Guardando…"; }
   function medida(id){ var v=parseFloat(String($(id).value).replace(",",".")); return v>0 ? v : null; }
   function escala(id){ var v=parseInt($(id).value,10); return isNaN(v) ? null : v; }
   var fila={
@@ -5484,7 +5602,9 @@ async function guardarConsulta(){
   var palabra=/antropometr/i.test(tipo) ? "Antropometría" : "Consulta";
   $("con-listo-titulo").textContent = editando ? palabra+" corregida" : "Consulta guardada";
   $("btn-volver-ficha").classList.toggle("oculto", !(ficha.paciente&&ficha.paciente.id===con.paciente.id));
+  $("btn-ir-ficha").classList.toggle("oculto", !$("btn-volver-ficha").classList.contains("oculto"));
   $("con-listo-texto").textContent=[nombreCompleto(con.paciente), completa.weight!=null?numeroAR(completa.weight)+" kg":null, completa.adherence!=null?"adherencia "+completa.adherence+"/5":null].filter(Boolean).join(" · ")+" · "+(editando?"corregida en su ficha.":"guardada en su ficha.")+labTxt;
+  if(con.recienCreada){ $("con-listo-titulo").textContent="Primera consulta guardada"; $("con-listo-texto").textContent=nombreCompleto(con.paciente)+" ya está en "+empresa+", con su primera consulta"+(completa.weight!=null?" ("+numeroAR(completa.weight)+" kg)":"")+"."+labTxt; con.recienCreada=false; }
   $("con-listo").classList.remove("oculto"); window.scrollTo(0,0);
 }
 function numeroAR(n){ return String(n).replace(".",","); }

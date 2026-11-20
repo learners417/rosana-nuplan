@@ -6,6 +6,7 @@
 
 import { leerJSON, origenPermitido, respuestaJSON, registrar, usuariaDeToken, esEquipo, ErrorDeAcceso, supabaseConToken } from "./_lib.mjs";
 import { APP, MAIL_OK, mailNuPlan, mandarMail } from "./_correo.mjs";
+import { avisarComunidad, partirNombre } from "./_comunidad.mjs";
 
 export async function POST(req) {
   if (!origenPermitido(req)) return respuestaJSON(403, { error: "Esto solo responde dentro de NuPlan." });
@@ -65,6 +66,8 @@ export async function POST(req) {
       signal: AbortSignal.timeout(8000),
     }).catch(() => null);
   }
-  registrar("alta", { mail });
-  return respuestaJSON(200, { ok: true, mail, link });
+  // Acceso al grupo «Programa NuPlan · 90 días» en El Consultorio (y la etiqueta «programa nuplan»).
+  const com = await avisarComunidad("alta", { email, ...partirNombre(nombre), dia: 0 });
+  registrar("alta", { mail, comunidad: com.ok ? "ok" : "error" });
+  return respuestaJSON(200, { ok: true, mail, link, comunidad: com.ok ? "ok" : "error" });
 }

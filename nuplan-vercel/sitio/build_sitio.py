@@ -1,10 +1,12 @@
 # -*- coding: utf-8 -*-
 # NuPlan · el sitio completo para El Consultorio (GHL): inicio, empresas, la clase, legales,
 # pago del programa, bienvenida y segundo pago. Misma identidad que la app y que el libro.
-# Copy público en tuteo neutro. Rosana habla en primera persona.
+# Copy público en voseo, como habla Ro (20 nov 2026). Rosana habla en primera persona.
 # Sale a nuplan-vercel/sitio/src/*.html; en GHL cada página va como un elemento de código.
 import os, sys, json
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+_AQUI = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, _AQUI)
+sys.path.insert(0, os.path.join(_AQUI, "..", "libro", "fuente"))   # build_web.py (el embudo del libro) vive en el repo
 import build_web as W
 from build_web import E, P, ic, FONTS, GHL_CSS, CSS, JS
 
@@ -190,7 +192,7 @@ document.querySelectorAll('#nlb form[data-tipo]').forEach(function(f){
   fetch(API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)})
    .then(function(r){return r.json().catch(function(){return{}}).then(function(j){return{ok:r.ok&&j&&j.ok===true}})})
    .then(function(x){if(!x.ok)throw 0;var c=box.querySelector('.codigo');if(c)c.textContent=codigo;box.classList.add('ok');box.scrollIntoView({behavior:'smooth',block:'center'})})
-   .catch(function(){btn.disabled=false;est.className='est mal';est.innerHTML='No se pudo enviar. Escríbeme por WhatsApp: <a href="%s" target="_blank" rel="noopener">11 5142-6830</a>'});
+   .catch(function(){btn.disabled=false;est.className='est mal';est.innerHTML='No se pudo enviar. Escribime por WhatsApp: <a href="%s" target="_blank" rel="noopener">11 5142-6830</a>'});
  });});
 })();</script>""" % (json.dumps(API_AVISO), U["wa"])
 
@@ -220,7 +222,7 @@ def pie():
  <div><b>Nu<span style="color:var(--co)">Plan</span>™</b>
   <p class="mu" style="font-size:18px;margin:0">Nutrición en 4 dimensiones. Lic. Rosana Roldán, nutricionista (UBA), M.N. 3884. Buenos Aires.</p>
   <p style="font-size:18px;margin:16px 0 0"><b style="display:inline;font-size:18px">Atención:</b> WhatsApp <a style="display:inline" href="{U["wa"]}" target="_blank" rel="noopener">11 5142-6830</a>, de lunes a viernes de 9 a 17 h.</p></div>
- <div><b>Para ti</b><a href="{U["vsl"]}" target="_top">El programa</a><a href="{U["libro"]}" target="_top">El libro</a><a href="{U["clase"]}" target="_top">La clase de 11 minutos</a><a href="{U["mesa"]}" target="_blank" rel="noopener">La Mesa · comunidad</a></div>
+ <div><b>Para vos</b><a href="{U["vsl"]}" target="_top">El programa</a><a href="{U["libro"]}" target="_top">El libro</a><a href="{U["clase"]}" target="_top">La clase de 11 minutos</a><a href="{U["mesa"]}" target="_blank" rel="noopener">La Mesa · comunidad</a></div>
  <div><b>Empresas</b><a href="{U["empresas"]}" target="_top">NuPlan para empresas</a><a href="{U["empresas"]}#contacto" target="_top">Hablemos</a></div>
  <div><b>Consultantes</b><a href="{U["app"]}" target="_blank" rel="noopener">Entrar a mi app</a><a href="{U["ig"]}" target="_blank" rel="noopener">Instagram</a></div>
 </div>
@@ -254,7 +256,7 @@ def inicio():
         ("sesion", "El programa NuPlan · 90 días", "Te acompaño una a una, con mi equipo, mi app y un plan hecho para tu semana real.", "Ver el video y agendar", U["vsl"], "dest", ""),
         ("libro", "El libro", "«Recuperá tu energía en 90 días»: una invitación por día para hacerlo a tu ritmo.", "Ver el libro", U["libro"], "", "USD 27"),
         ("empresa", "Para empresas", "Programas de nutrición para equipos: consultas en la oficina, jornadas de salud e informes.", "Llevarlo a tu empresa", U["empresas"], "", ""),
-        ("play", "La clase de 11 minutos", "Por qué comes por estrés, explicado con biología y objetos sobre la mesa.", "Ver la clase", U["clase"], "", "Sin costo"),
+        ("play", "La clase de 11 minutos", "Por qué comés por estrés, explicado con biología y objetos sobre la mesa.", "Ver la clase", U["clase"], "", "Sin costo"),
         ("app", "La app NuPlan", "Donde vive el programa: un ejercicio por día, tu diario y tu plan, en tu teléfono.", "Cómo funciona", "#app", "", ""),
         ("mesa", "La Mesa", "Mi comunidad abierta: herramientas, videos, el libro y preguntas.", "Sumarte a La Mesa", U["mesa"], "", "Comunidad"),
     ]
@@ -275,30 +277,30 @@ def inicio():
     app = "".join(f'<div class="fi rv">{ic(i)}<div><h3>{E(t)}</h3><p>{E(d)}</p></div></div>' for i, t, d in app_items)
     recursos = [
         ("termo", "Test de cansancio", "¿Tu cansancio es normal o es una señal? Cinco preguntas, menos de un minuto.", "Hacer el test", U["test"]),
-        ("lapiz", "Auditoría express", "Escribes lo que comiste ayer y te devuelvo los tres patrones más claros.", "Hacer la auditoría", U["auditoria"]),
+        ("lapiz", "Auditoría express", "Escribís lo que comiste ayer y te devuelvo los tres patrones más claros.", "Hacer la auditoría", U["auditoria"]),
         ("chispa", "Calculadora de energía", "Ocho preguntas y tu energía real: la tuya, no la del café.", "Calcular mi energía", U["calculadora"]),
-        ("libro", "Capítulo 1 del libro", "Léelo completo, sin costo, y mira si este camino es para ti.", "Leer el capítulo 1", U["cap1"]),
+        ("libro", "Capítulo 1 del libro", "Leelo completo, sin costo, y mirá si este camino es para vos.", "Leer el capítulo 1", U["cap1"]),
     ]
     rec = "".join(f'<a class="vcard rv" href="{h}" target="{"_blank" if h.endswith(".pdf") else "_top"}"><span class="vi">{ic(i)}</span><h3>{E(t)}</h3><p>{E(d)}</p><span class="go">{E(g)}{ic("flecha")}</span></a>' for i, t, d, g, h in recursos)
     inner = f'''{bar()}
 <nav class="nav" aria-label="Secciones"><a href="#empezar">Por dónde empezar</a><a href="#metodo">El método</a><a href="#app">La app</a><a href="#rosana">Quién soy</a><a href="#recursos">Recursos</a><a href="{U["empresas"]}" target="_top">Empresas</a></nav>
 <section class="hero"><div class="wrap hgrid"><div>
  <span class="eyb">NUTRICIÓN EN 4 DIMENSIONES</span>
- <h1>Recupera tu energía y tus <em>ganas de vivir.</em></h1>
+ <h1>Recuperá tu energía y tus <em>ganas de vivir.</em></h1>
  <p class="lead">Soy Rosana Roldán, nutricionista. Hace más de 20 años acompaño a mujeres que viven aceleradas a comer en paz y llegar con energía al final del día.</p>
  <div class="ctas">{btn("Ver cómo funciona el programa", U["vsl"])}{btn("Empezar por la clase de 11 minutos", U["clase"], "cta sec2", "play")}</div>
  <div class="chips"><span class="chip">{ic("check")}+20 años de clínica</span><span class="chip">{ic("check")}UBA · M.N. 3884</span><span class="chip">{ic("check")}Empresas desde 2005</span></div>
 </div>{RINGS}</div></section>
 <section class="sec white" id="empezar"><div class="wrap">
  {lab("Por dónde empezar", "flecha")}
- <h2>Elige tu camino.</h2>
- <p class="lead">Todo NuPlan en un solo lugar: para ti, para tu empresa y para tu biblioteca.</p>
+ <h2>Elegí tu camino.</h2>
+ <p class="lead">Todo NuPlan en un solo lugar: para vos, para tu empresa y para tu biblioteca.</p>
  <div class="vgrid">{"".join(card(x) for x in v)}</div>
 </div></section>
 <section class="sec" id="metodo"><div class="wrap">
  {lab("El método", "chispa")}
  <h2>Nutrición en 4 dimensiones.</h2>
- <p class="lead">Lo que comes es una parte. La otra es cómo llegas a la comida: con qué emoción, con qué energía y con qué ideas en la cabeza. NuPlan trabaja las cuatro a la vez.</p>
+ <p class="lead">Lo que comés es una parte. La otra es cómo llegás a la comida: con qué emoción, con qué energía y con qué ideas en la cabeza. NuPlan trabaja las cuatro a la vez.</p>
  <div class="dims">{dims}</div>
  <h3 style="margin:56px 0 6px;font-size:26px">Seis pasos, noventa días</h3>
  <p class="mu" style="font-size:18px">Uno detrás del otro, a tu ritmo y con acompañamiento.</p>
@@ -308,7 +310,7 @@ def inicio():
  <div>
   {lab("La app NuPlan", "app")}
   <h2>Tu programa vive en tu teléfono.</h2>
-  <p class="lead">Entras con tu mail, sin contraseña. Se abre un día por vez y todo lo que cargas me llega a mí.</p>
+  <p class="lead">Entrás con tu mail, sin contraseña. Se abre un día por vez y todo lo que cargás me llega a mí.</p>
   <div class="cred2"><div>{ic("empresa")}<span>En las empresas, cada consulta queda cargada y el informe para Recursos Humanos se arma solo.</span></div></div>
   {btn("Ya soy consultante · entrar a mi app", U["app"], "cta sec2", "app").replace('target="_top"', 'target="_blank" rel="noopener"')}
  </div>
@@ -327,13 +329,13 @@ def inicio():
 </div></section>
 <section class="sec white" id="recursos"><div class="wrap">
  {lab("Recursos", "chispa")}
- <h2>Empieza hoy, sin costo.</h2>
- <p class="lead">Herramientas cortas para mirar cómo comes y cómo llegas a la noche.</p>
+ <h2>Empezá hoy, sin costo.</h2>
+ <p class="lead">Herramientas cortas para mirar cómo comés y cómo llegás a la noche.</p>
  <div class="vgrid dos" style="grid-template-columns:repeat(auto-fit,minmax(240px,1fr))">{rec}</div>
 </div></section>
 <section class="sec coral final"><div class="wrap narrow">
  <h2>¿Hablamos 30 minutos?</h2>
- <p class="lead">Me cuentas tu caso y te digo con honestidad si el programa tiene sentido para ti.</p>
+ <p class="lead">Me contás tu caso y te digo con honestidad si el programa tiene sentido para vos.</p>
  {btn("Agendar mi llamada", U["agenda"], "cta inv")}
  <p class="micro">SIN COSTO · POR VIDEOLLAMADA</p>
 </div></section>
@@ -351,7 +353,7 @@ def empresas():
     ]
     q = "".join(f'<div class="fi rv">{ic(i)}<div><h3>{E(t)}</h3><p>{E(d)}</p></div></div>' for i, t, d in que)
     pasos = [
-        ("Una reunión de 30 minutos", "Me cuentas cuántas personas son, cómo trabajan y qué quieren lograr."),
+        ("Una reunión de 30 minutos", "Me contás cuántas personas son, cómo trabajan y qué quieren lograr."),
         ("Una propuesta a medida", "Formato, frecuencia y alcance, por escrito."),
         ("La primera jornada", "Mi equipo atiende en tu empresa o en línea."),
         ("El informe", "Lo que cambió, con números, para tu equipo de Recursos Humanos."),
@@ -365,11 +367,11 @@ def empresas():
    <div class="campo"><label for="e-nom">Tu nombre y apellido</label><input id="e-nom" name="nombre" type="text" data-l="Nombre" autocomplete="name" required></div>
    <div class="campo"><label for="e-emp">Empresa</label><input id="e-emp" name="empresa" type="text" data-l="Empresa" autocomplete="organization" required></div>
    <div class="campo"><label for="e-car">Tu cargo <span class="op">(opcional)</span></label><input id="e-car" name="cargo" type="text" data-l="Cargo" autocomplete="organization-title"></div>
-   <div class="campo"><label for="e-per">¿Cuántas personas son?</label><select id="e-per" name="personas" data-l="Personas" required><option value="">Elige una opción</option>{"".join(f"<option>{E(x)}</option>" for x in personas)}</select></div>
+   <div class="campo"><label for="e-per">¿Cuántas personas son?</label><select id="e-per" name="personas" data-l="Personas" required><option value="">Elegí una opción</option>{"".join(f"<option>{E(x)}</option>" for x in personas)}</select></div>
    <div class="campo"><label for="e-mail">Mail</label><input id="e-mail" name="email" type="email" data-l="Mail" autocomplete="email" required></div>
    <div class="campo"><label for="e-tel">WhatsApp</label><input id="e-tel" name="telefono" type="tel" data-l="WhatsApp" autocomplete="tel" placeholder="11 5555-5555" required></div>
   </div>
-  <div class="campo"><span class="lb">¿Qué les interesa? <span class="op">(puedes marcar varias)</span></span>
+  <div class="campo"><span class="lb">¿Qué les interesa? <span class="op">(podés marcar varias)</span></span>
    <div class="opts" data-l="Le interesa" data-n="interes">{"".join(f'<label class="opt"><input type="checkbox" value="{E(x)}"><span>{E(x)}</span></label>' for x in interes)}</div></div>
   <div class="campo"><label for="e-pre">¿Con qué prepaga trabaja la empresa? <span class="op">(opcional)</span></label><input id="e-pre" name="prepaga" type="text" data-l="Prepaga"></div>
   <div class="campo"><label for="e-msj">Algo más que quieras contarme <span class="op">(opcional)</span></label><textarea id="e-msj" name="detalle" data-l="Mensaje"></textarea></div>
@@ -410,10 +412,10 @@ def empresas():
 </div></section>
 <section class="sec"><div class="wrap narrow">
  {lab("Hablemos", "mail")}
- <h2>Cuéntame de tu empresa.</h2>
+ <h2>Contame de tu empresa.</h2>
  <p class="lead">Con esto preparo la reunión. Te respondo yo.</p>
  {form}
- <a class="no" href="{U["wa"]}?text={E("Hola Rosana, te escribo por un programa de nutrición para mi empresa.").replace(" ", "%20")}" target="_blank" rel="noopener">¿Prefieres WhatsApp? Escríbeme aquí</a>
+ <a class="no" href="{U["wa"]}?text={E("Hola Rosana, te escribo por un programa de nutrición para mi empresa.").replace(" ", "%20")}" target="_blank" rel="noopener">¿Preferís WhatsApp? Escribime aquí</a>
 </div></section>
 {pie()}'''
     return page("NuPlan™ para empresas · Lic. Rosana Roldán", inner, JS_FORM)
@@ -421,19 +423,19 @@ def empresas():
 
 # =============================== 3 · LA CLASE ===============================
 CAPS = [
-    ("0:00", 0, "Lo que te pasa no es normal (y nadie te lo dijo)", "Cuatro preguntas. Si respondes que sí a dos o más, no es la edad."),
+    ("0:00", 0, "Lo que te pasa no es normal (y nadie te lo dijo)", "Cuatro preguntas. Si respondés que sí a dos o más, no es la edad."),
     ("0:43", 43, "Tu intestino tiene más neuronas que tu médula", "Quinientos millones. Tu segundo cerebro, y con qué lo estás alimentando."),
-    ("1:14", 74, "Qué le pasa a tu cuerpo cuando comes dos veces al día", "Metabolismo adaptativo, con la porción real sobre la mesa."),
-    ("2:06", 126, "«Sacas las harinas y desbarrancas peor»", "Por qué la restricción es el camino más rápido al descontrol."),
+    ("1:14", 74, "Qué le pasa a tu cuerpo cuando comés dos veces al día", "Metabolismo adaptativo, con la porción real sobre la mesa."),
+    ("2:06", 126, "«Sacás las harinas y desbarrancás peor»", "Por qué la restricción es el camino más rápido al descontrol."),
     ("2:49", 169, "El plan que se comió el perro", "Historias de veinte años de consultorio, y la consulta de cuatro minutos."),
-    ("5:07", 307, "Las 4 dimensiones que tu plan no toca", "Cortisol, serotonina y por qué a la noche comes sin hambre."),
+    ("5:07", 307, "Las 4 dimensiones que tu plan no toca", "Cortisol, serotonina y por qué a la noche comés sin hambre."),
     ("8:09", 489, "«No la metas en la cárcel, negocia»", "La pizza del sábado, y por qué comer también es disfrute."),
-    ("9:33", 573, "Tres herramientas para empezar hoy", "Lo que puedes hacer esta misma noche."),
+    ("9:33", 573, "Tres herramientas para empezar hoy", "Lo que podés hacer esta misma noche."),
 ]
 QUE = [
     ("Metabolismo adaptativo", "Por qué comer dos veces por día pone a tu cuerpo en modo ahorro: gasta menos y guarda más."),
     ("Eje intestino-cerebro", "El 90 % de tu serotonina se produce en el intestino. Si tu microbiota está alterada, se caen el ánimo, el sueño y la saciedad."),
-    ("La trampa de sacar harinas", "Sacas las harinas, entras en hipoglucemia reactiva y después comes las de antes y las nuevas. Es bioquímica, no debilidad."),
+    ("La trampa de sacar harinas", "Sacás las harinas, entrás en hipoglucemia reactiva y después comés las de antes y las nuevas. Es bioquímica, no debilidad."),
     ("Sedentarismo oculto", "Ocho horas sentada te hacen sedentaria aunque entrenes. Cinco minutos de pausa activa cada dos horas valen más."),
     ("Cortisol crónico", "Por qué a la noche tu cerebro te pide azúcar y pan: busca alivio rápido después de un día en alerta."),
     ("Las 4 dimensiones", "La física, la emocional, la energética y la mental. Lo que probaste antes trabajaba una sola."),
@@ -449,16 +451,16 @@ def clase():
     que = "".join(f'<div class="fi rv">{ic("chispa")}<div><h3>{E(t)}</h3><p>{E(d)}</p></div></div>' for t, d in QUE)
     herr = [
         ("termo", "Herramienta 1", "¿Tu cansancio es normal o es una señal?", "Cinco preguntas, menos de un minuto. Te devuelvo qué dimensión está pesando más en tu caso.", "Hacer el test", U["test"]),
-        ("lapiz", "Herramienta 2", "Auditoría express de tu día", "Escribes lo que comiste ayer y te devuelvo los tres patrones más claros, leídos desde las cuatro dimensiones.", "Hacer la auditoría", U["auditoria"]),
-        ("chispa", "Herramienta 3", "¿Cuánta energía real tienes?", "Ocho preguntas y tu energía vital. La tuya, no la del café, que es prestada y te la cobra a las tres de la tarde.", "Calcular mi energía", U["calculadora"]),
+        ("lapiz", "Herramienta 2", "Auditoría express de tu día", "Escribís lo que comiste ayer y te devuelvo los tres patrones más claros, leídos desde las cuatro dimensiones.", "Hacer la auditoría", U["auditoria"]),
+        ("chispa", "Herramienta 3", "¿Cuánta energía real tenés?", "Ocho preguntas y tu energía vital. La tuya, no la del café, que es prestada y te la cobra a las tres de la tarde.", "Calcular mi energía", U["calculadora"]),
     ]
     h = "".join(f'<a class="vcard rv" href="{hr}" target="_top"><span class="vi">{ic(i)}</span><span class="tag">{E(k)}</span><h3>{E(t)}</h3><p>{E(d)}</p><span class="go">{E(g)}{ic("flecha")}</span></a>' for i, k, t, d, g, hr in herr)
     inner = f'''{bar()}
 <section class="hero"><div class="wrap narrow">
  <span class="eyb">LA CLASE · 11 MINUTOS · SIN COSTO</span>
- <h1 style="font-size:clamp(38px,9vw,64px)">Por qué comes por estrés <em>(y lo que nadie te explicó)</em></h1>
- <p class="lead">Vives acelerada, comes lo que puedes y a la noche pierdes el control. Tiene explicación biológica: tu sistema nervioso lleva meses en alerta y encontró un regulador. La comida.</p>
- <div class="vid" id="video"><iframe id="yt" src="https://www.youtube.com/embed/{YT}?rel=0&amp;modestbranding=1&amp;playsinline=1" title="Por qué comes por estrés · Rosana Roldán" allow="accelerometer; autoplay; clipboard-write; encrypted-media; picture-in-picture" allowfullscreen></iframe></div>
+ <h1 style="font-size:clamp(38px,9vw,64px)">Por qué comés por estrés <em>(y lo que nadie te explicó)</em></h1>
+ <p class="lead">Vivís acelerada, comés lo que podés y a la noche perdés el control. Tiene explicación biológica: tu sistema nervioso lleva meses en alerta y encontró un regulador. La comida.</p>
+ <div class="vid" id="video"><iframe id="yt" src="https://www.youtube.com/embed/{YT}?rel=0&amp;modestbranding=1&amp;playsinline=1" title="Por qué comés por estrés · Rosana Roldán" allow="accelerometer; autoplay; clipboard-write; encrypted-media; picture-in-picture" allowfullscreen></iframe></div>
  <p class="vnote">SIN REGISTRO · DALE PLAY</p>
 </div></section>
 <section class="sec white"><div class="wrap">
@@ -468,8 +470,8 @@ def clase():
 </div></section>
 <section class="sec"><div class="wrap">
  {lab("Los capítulos", "reloj")}
- <h2>Ve directo a lo que te interesa.</h2>
- <p class="mu" style="font-size:18px">Toca un capítulo y el video arranca ahí.</p>
+ <h2>Andá directo a lo que te interesa.</h2>
+ <p class="mu" style="font-size:18px">Tocá un capítulo y el video arranca ahí.</p>
  <div class="caps">{caps}</div>
 </div></section>
 <section class="sec white"><div class="wrap split">
@@ -483,19 +485,19 @@ def clase():
 </div></section>
 <section class="sec coral final"><div class="wrap narrow">
  {lab("El paso siguiente", "flecha")}
- <h2>Ya entiendes qué te pasa. Ahora te muestro cómo se trabaja.</h2>
- <p class="lead">El Método NuPlan son 90 días trabajando las cuatro dimensiones a la vez. Te lo explico completo en el próximo video, y ahí mismo puedes agendar una llamada de 30 minutos conmigo.</p>
+ <h2>Ya entendés qué te pasa. Ahora te muestro cómo se trabaja.</h2>
+ <p class="lead">El Método NuPlan son 90 días trabajando las cuatro dimensiones a la vez. Te lo explico completo en el próximo video, y ahí mismo podés agendar una llamada de 30 minutos conmigo.</p>
  {btn("Ver cómo funciona el método", U["vsl"], "cta inv")}
  <p class="micro">UN VIDEO DE 3 MINUTOS · SIN COSTO</p>
 </div></section>
 <section class="sec"><div class="wrap">
  {lab("Las herramientas del minuto 9", "chispa")}
- <h2>Empieza hoy, sin costo.</h2>
+ <h2>Empezá hoy, sin costo.</h2>
  <div class="vgrid">{h}</div>
- <a class="no" href="{U["agenda"]}" target="_top">¿Prefieres hablar directamente? Agenda 30 minutos conmigo</a>
+ <a class="no" href="{U["agenda"]}" target="_top">¿Preferís hablar directamente? Agendá 30 minutos conmigo</a>
 </div></section>
 {pie()}'''
-    return page("La clase · Por qué comes por estrés · NuPlan™", inner, JS_CLASE)
+    return page("La clase · Por qué comés por estrés · NuPlan™", inner, JS_CLASE)
 
 
 # =============================== 4 · LEGALES ===============================
@@ -508,7 +510,7 @@ def legales():
   <div class="dosc">
    <div class="campo"><label for="{tipo}-nom">Nombre y apellido</label><input id="{tipo}-nom" name="nombre" type="text" data-l="Nombre" autocomplete="name" required></div>
    <div class="campo"><label for="{tipo}-mail">El mail con el que compraste</label><input id="{tipo}-mail" name="email" type="email" data-l="Mail" autocomplete="email" required></div>
-   <div class="campo"><label for="{tipo}-que">¿Qué compraste?</label><select id="{tipo}-que" name="producto" data-l="Producto" required><option value="">Elige una opción</option>{"".join(f"<option>{E(x)}</option>" for x in opciones)}</select></div>
+   <div class="campo"><label for="{tipo}-que">¿Qué compraste?</label><select id="{tipo}-que" name="producto" data-l="Producto" required><option value="">Elegí una opción</option>{"".join(f"<option>{E(x)}</option>" for x in opciones)}</select></div>
    {f'<div class="campo"><label for="{tipo}-fec">Fecha de compra</label><input id="{tipo}-fec" name="fecha_compra" type="date" data-l="Fecha de compra" required></div>' if campo_fecha else '<div class="campo"><label for="'+tipo+'-tel">WhatsApp <span class="op">(opcional)</span></label><input id="'+tipo+'-tel" name="telefono" type="tel" data-l="WhatsApp" autocomplete="tel"></div>'}
   </div>
   <div class="campo"><label for="{tipo}-msj">Algo que quieras contarme <span class="op">(opcional)</span></label><textarea id="{tipo}-msj" name="detalle" data-l="Mensaje"></textarea></div>
@@ -536,37 +538,37 @@ def legales():
  <ul>
   <li><b>El libro digital</b> «Recuperá tu energía en 90 días»: un PDF que llega a tu mail en el momento del pago.</li>
   <li><b>Rosana te escribe cada mañana:</b> 90 mails, uno por día, desde el día siguiente al pago.</li>
-  <li><b>Sesión 1-1 con Rosana:</b> 45 minutos por videollamada, en el horario que eliges al pagar.</li>
+  <li><b>Sesión 1-1 con Rosana:</b> 45 minutos por videollamada, en el horario que elegís al pagar.</li>
   <li><b>Programa NuPlan · 90 días:</b> el acompañamiento completo. Lo rige el acuerdo de participación que firmas al empezar.</li>
  </ul>
  <h3>Precios y pago</h3>
  <p>Los precios se muestran en dólares y se pagan en pesos con Mercado Pago, al valor que ves en el momento del pago.</p>
  <h3>Devoluciones del programa</h3>
- <p>En el programa te devuelvo el 100 % si cambias de idea antes de tu encuentro de apertura conmigo, sin explicaciones. Desde la apertura, el trabajo clínico ya empezó y se rige por tu acuerdo de participación.</p>
+ <p>En el programa te devuelvo el 100 % si cambiás de idea antes de tu encuentro de apertura conmigo, sin explicaciones. Desde la apertura, el trabajo clínico ya empezó y se rige por tu acuerdo de participación.</p>
  <h3>Tu derecho de arrepentimiento</h3>
- <p>Tienes 10 días corridos para arrepentirte de una compra, contados desde la compra o desde que recibes el producto, lo último que ocurra (artículo 34 de la Ley 24.240 y artículo 1110 del Código Civil y Comercial). Lo pides con el botón de arrepentimiento, sin registrarte ni hacer ningún otro trámite.</p>
+ <p>Tenés 10 días corridos para arrepentirte de una compra, contados desde la compra o desde que recibís el producto, lo último que ocurra (artículo 34 de la Ley 24.240 y artículo 1110 del Código Civil y Comercial). Lo pedís con el botón de arrepentimiento, sin registrarte ni hacer ningún otro trámite.</p>
  <p>Por ley, este derecho no aplica a los archivos digitales que ya descargaste, como el libro en PDF (artículo 1116 del Código Civil y Comercial), ni a un servicio que ya usaste por completo.</p>
  <h3>Baja de un servicio</h3>
- <p>Puedes dar de baja los mails diarios o el programa por el mismo medio por el que los contrataste, con el botón de baja de servicio. Los mails también traen, al pie, la opción para dejar de recibirlos.</p>
+ <p>Podés dar de baja los mails diarios o el programa por el mismo medio por el que los contrataste, con el botón de baja de servicio. Los mails también traen, al pie, la opción para dejar de recibirlos.</p>
  <h3>Salud</h3>
- <p>NuPlan es educación y acompañamiento nutricional, y trabaja junto con tu médico. Si tienes un diagnóstico, tomas medicación o estás embarazada, cuéntamelo al empezar.</p>
+ <p>NuPlan es educación y acompañamiento nutricional, y trabaja junto con tu médico. Si tenés un diagnóstico, tomás medicación o estás embarazada, cuéntamelo al empezar.</p>
 </div></section>
 <section class="sec" id="privacidad"><div class="wrap legal">
  <h2>Privacidad</h2>
- <p>Uso tus datos (nombre, mail, teléfono y lo que me cuentas en los formularios y en la app) para entregarte lo que compraste, coordinar tus encuentros y escribirte. Los ven solo mi equipo y yo; lo que cargas sobre tu salud, solo la coordinadora del programa y yo. No los vendo ni los comparto.</p>
- <p>Puedes pedirme en cualquier momento ver, corregir o borrar tus datos, por WhatsApp al 11 5142-6830.</p>
+ <p>Uso tus datos (nombre, mail, teléfono y lo que me cuentas en los formularios y en la app) para entregarte lo que compraste, coordinar tus encuentros y escribirte. Los ven solo mi equipo y yo; lo que cargás sobre tu salud, solo la coordinadora del programa y yo. No los vendo ni los comparto.</p>
+ <p>Podés pedirme en cualquier momento ver, corregir o borrar tus datos, por WhatsApp al 11 5142-6830.</p>
  <div class="aviso"><p>La Agencia de Acceso a la Información Pública, en su carácter de Órgano de Control de la Ley N.º 25.326, tiene la atribución de atender las denuncias y reclamos que interpongan quienes resulten afectados en sus derechos por incumplimiento de las normas vigentes en materia de protección de datos personales.</p></div>
 </div></section>
 <section class="sec white" id="arrepentimiento"><div class="wrap legal">
  {lab("Botón de arrepentimiento", "escudo")}
  <h2>Arrepentirme de una compra</h2>
- <p>Completa estos datos y envía tu pedido. Te muestro tu código de pedido en el momento y te escribo dentro de las 24 horas para devolverte el dinero.</p>
+ <p>Completá estos datos y enviá tu pedido. Te muestro tu código de pedido en el momento y te escribo dentro de las 24 horas para devolverte el dinero.</p>
  {formulario("arrep", "Botón de arrepentimiento", "NP-A", compras, "Te escribo dentro de las 24 horas al mail que dejaste para devolverte el dinero.", True)}
 </div></section>
 <section class="sec" id="baja"><div class="wrap legal">
  {lab("Botón de baja de servicio", "escudo")}
  <h2>Dar de baja un servicio</h2>
- <p>Completa estos datos y envía tu pedido. Te muestro tu código en el momento y la baja queda hecha dentro de las 24 horas.</p>
+ <p>Completá estos datos y enviá tu pedido. Te muestro tu código en el momento y la baja queda hecha dentro de las 24 horas.</p>
  {formulario("baja", "Botón de baja de servicio", "NP-B", servicios, "La baja queda hecha dentro de las 24 horas y te lo confirmo por mail.", False)}
 </div></section>
 {pie()}'''
@@ -594,12 +596,12 @@ def programa():
    <p class="ot">Qué incluye</p>
    <ul class="inc" style="margin-top:18px">{li}</ul>
    <p class="price">USD 1.000 <small>en un pago</small></p>
-   <p class="pnote">O dos pagos de USD 550: el segundo, a los 30 días. Pagas en pesos con Mercado Pago.</p>
-   <div class="cred"><p><b>¿Hiciste la sesión 1-1 conmigo en los últimos 7 días?</b> Escribe tu código de descuento en el formulario y se descuentan los USD 97.</p></div>
+   <p class="pnote">O dos pagos de USD 550: el segundo, a los 30 días. Pagás en pesos con Mercado Pago.</p>
+   <div class="cred"><p><b>¿Hiciste la sesión 1-1 conmigo en los últimos 7 días?</b> Escribí tu código de descuento en el formulario y se descuentan los USD 97.</p></div>
    <p class="tick">{ic("escudo")}100 % DE DEVOLUCIÓN HASTA TU APERTURA</p>
   </div>
  </div>
- <p class="micro" style="text-align:center;margin-top:30px">ELIGE UN PAGO O DOS Y COMPLETA TUS DATOS ↓</p>
+ <p class="micro" style="text-align:center;margin-top:30px">ELEGÍ UN PAGO O DOS Y COMPLETÁ TUS DATOS ↓</p>
 </div></section>'''
     return page("Programa NuPlan · 90 días · Tu lugar", inner)
 
@@ -610,8 +612,8 @@ def segundo_pago():
  <span class="eyb">PROGRAMA NUPLAN · SEGUNDO PAGO</span>
  <h1 style="font-size:clamp(38px,9vw,64px)">Tu segundo <em>pago.</em></h1>
  <p class="lead">Ya vas por el día 30. Con este pago completas tu programa.</p>
- <div class="conf">{ic("ok")}<div><b>USD 550</b><span>Pagas en pesos con Mercado Pago.</span></div></div>
- <p class="micro" style="text-align:center">COMPLETA TUS DATOS ↓</p>
+ <div class="conf">{ic("ok")}<div><b>USD 550</b><span>Pagás en pesos con Mercado Pago.</span></div></div>
+ <p class="micro" style="text-align:center">COMPLETÁ TUS DATOS ↓</p>
 </div></section>'''
     return page("Programa NuPlan · Segundo pago", inner)
 
@@ -621,7 +623,7 @@ def segundo_gracias():
 <section class="hero"><div class="wrap narrow">
  <div class="conf">{ic("ok")}<div><b>Pago recibido.</b><span>Tu programa quedó completo.</span></div></div>
  <h1 style="font-size:clamp(38px,9vw,64px)">Gracias. <em>Seguimos.</em></h1>
- <p class="lead">Tu recorrido sigue igual en la app. Cualquier duda, me escribes.</p>
+ <p class="lead">Tu recorrido sigue igual en la app. Cualquier duda, me escribís.</p>
  {btn("Entrar a mi app", U["app"], "cta").replace('target="_top"', 'target="_blank" rel="noopener"')}
  <p class="firma">Rosana<span>LIC. ROSANA ROLDÁN · M.N. 3884</span></p>
 </div></section>
@@ -632,7 +634,7 @@ def segundo_gracias():
 # =============================== 6 · BIENVENIDA ===============================
 def bienvenida():
     pasos = [
-        ("En el día", "Tu acceso a la app", "Te llega un mail con tu acceso. Entras desde el teléfono con tu mail, sin contraseña. Con el acceso llega también la invitación al grupo privado del programa."),
+        ("En el día", "Tu acceso a la app", "Te llega un mail con tu acceso. Entrás desde el teléfono con tu mail, sin contraseña. Con el acceso llega también la invitación al grupo privado del programa."),
         ("En 48 horas", "Tu bienvenida", "María Julia, coordinadora del programa, te escribe por WhatsApp para tu bienvenida de 15 minutos. Ahí firman tu acuerdo del programa."),
         ("Días 1 a 3", "Tu apertura conmigo", "45 minutos por videollamada: tu historia y la dirección de tu plan."),
     ]
@@ -648,7 +650,7 @@ def bienvenida():
  <h1 style="font-size:clamp(40px,10vw,68px)">Bienvenida al <em>programa.</em></h1>
  <p class="lead">Esto es lo que pasa ahora, en orden.</p>
  <div class="steps" style="grid-template-columns:1fr">{st}</div>
- <h2 style="font-size:clamp(28px,6vw,38px);margin-top:20px">Elige el horario de tu apertura</h2>
+ <h2 style="font-size:clamp(28px,6vw,38px);margin-top:20px">Elegí el horario de tu apertura</h2>
  {agenda}
  <p class="firma">Te espero.<span>ROSANA · LIC. ROSANA ROLDÁN · M.N. 3884</span></p>
 </div></section>
@@ -766,37 +768,37 @@ if(s&&h&&('IntersectionObserver' in window)){var vh=true,va=false;var f=function
 MARCA = ["Como cualquier cosa en el trabajo.", "Llego a la noche y no tengo control.", "Arranco bien y después abandono.",
          "Estoy cansada todo el tiempo, sin energía.", "Necesito café para funcionar.", "Probé de todo y siempre vuelvo al mismo lugar."]
 MARCA_R = [
-    "Empieza marcando las que reconoces. Todas las respuestas valen.",
+    "Empezá marcando las que reconocés. Todas las respuestas valen.",
     "Una sola ya alcanza para mirarla. Casi siempre es la punta de un patrón más grande.",
     "Dos frases marcan un patrón, no un mal día. <strong>Tu cuerpo te está pidiendo algo que la comida no le está dando.</strong>",
     "Tres. Aquí ya no hablamos de la edad ni del estrés de esta semana: es tu sistema nervioso en alerta desde hace meses.",
     "Cuatro. Estás funcionando con <strong>energía prestada</strong>: café, adrenalina, inercia. Rindes, a un costo que todavía no ves.",
     "Cinco de seis. Esto es biología, y la biología se regula. <strong>Tiene solución.</strong>",
-    "Las seis. Lee esto despacio: <strong>tu cuerpo está entero</strong>. Está en modo supervivencia, y nadie te explicó qué le está pasando.",
+    "Las seis. Leé esto despacio: <strong>tu cuerpo está entero</strong>. Está en modo supervivencia, y nadie te explicó qué le está pasando.",
 ]
 DIMS_VSL = [
-    ("tierra", "Física", "FÍSICA · TIERRA", "Qué comes",
+    ("tierra", "Física", "FÍSICA · TIERRA", "Qué comés",
      "Lo concreto del plato, desde la inteligencia de tu cuerpo: tu biotipo, tu saciedad real, tu contexto. Es la dimensión que todos miran. Es necesaria, y es una de cuatro."),
     ("agua", "Emocional", "EMOCIONAL · AGUA", "Qué emoción estás comiendo",
-     "El corazón del método. Aquí trabajas la ansiedad, el estrés y la culpa, que son los que mandan cualquier plan al cajón a los cuatro meses. Aprendes a distinguir hambre real de hambre emocional y a regularte con más recursos que la comida."),
+     "El corazón del método. Aquí trabajás la ansiedad, el estrés y la culpa, que son los que mandan cualquier plan al cajón a los cuatro meses. Aprendes a distinguir hambre real de hambre emocional y a regularte con más recursos que la comida."),
     ("fuego", "Energética", "ENERGÉTICA · FUEGO", "Cuándo te pide comer tu cuerpo",
-     "Tus ritmos, tu descanso y cómo llegas a la noche. Crononutrición y biotipo: dos personas con el mismo plan y distintos horarios tienen resultados distintos."),
-    ("aire", "Mental", "MENTAL · AIRE", "Qué te dices",
+     "Tus ritmos, tu descanso y cómo llegás a la noche. Crononutrición y biotipo: dos personas con el mismo plan y distintos horarios tienen resultados distintos."),
+    ("aire", "Mental", "MENTAL · AIRE", "Qué te decís",
      "«Ya fallé, sigo.» «Mañana empiezo.» Son programas instalados hace años. Se desactivan con técnica, y la técnica se aprende."),
 ]
 PASOS_VSL = [
     ("N", "DÍAS 1 A 14 · DIAGNÓSTICO REAL", "Nutrir",
-     "Tu apertura conmigo empieza por la pregunta que nadie te hizo: «¿qué estás comiendo de verdad?». Dos semanas para mirar cómo comes, tal como comes hoy.", 0, 15.6),
+     "Tu apertura conmigo empieza por la pregunta que nadie te hizo: «¿qué estás comiendo de verdad?». Dos semanas para mirar cómo comés, tal como comés hoy.", 0, 15.6),
     ("U", "DÍAS 15 A 28 · RAÍZ EMOCIONAL", "Unir",
      "Distingues hambre real de hambre emocional y aprendes a regular tu sistema nervioso con más recursos que la comida.", 15.6, 15.6),
-    ("P", "DÍAS 29 A 42 · TU PLAN, CONTIGO", "Personalizar",
-     "Aquí aparece tu plan de comidas, construido contigo desde tu vida real y tus horarios reales. En el día 43 lo aprobamos juntas.", 31.1, 15.6),
+    ("P", "DÍAS 29 A 42 · TU PLAN, CON VOS", "Personalizar",
+     "Aquí aparece tu plan de comidas, construido con vos desde tu vida real y tus horarios reales. En el día 43 lo aprobamos juntas.", 31.1, 15.6),
     ("L", "DÍAS 43 A 56 · ANTI-RECAÍDA", "Liberar",
      "El punto donde se caen la mayoría de los planes. Aquí un desliz pasa a ser información.", 46.7, 15.6),
     ("A", "DÍAS 57 A 70 · DATOS REALES", "Activar",
      "Tu tablero con parámetros objetivos: energía, sueño, evolución. Ves tu avance en datos, más allá de cómo te sentiste hoy.", 62.2, 15.6),
     ("N", "DÍAS 71 A 90 · IDENTIDAD NUEVA", "Naturalizar",
-     "El éxito del método es que sigas sola. Terminas con tus propias reglas y tus herramientas.", 77.8, 22.2),
+     "El éxito del método es que sigas sola. Terminás con tus propias reglas y tus herramientas.", 77.8, 22.2),
 ]
 INCLUYE = [
     "8 encuentros por videollamada: 3 conmigo (apertura, tu plan y cierre) y 5 con María Julia, coordinadora del programa",
@@ -808,9 +810,9 @@ INCLUYE = [
 ]
 FAQ_VSL = [
     ("¿Voy a tener un plan de comidas?",
-     "Sí, y lo armamos juntas. Aparece en la etapa P, entre los días 29 y 42, con lo que te gusta y tu semana real. Si para ti es importante compartir la pizza que amasa tu marido los sábados, entra en tu plan."),
+     "Sí, y lo armamos juntas. Aparece en la etapa P, entre los días 29 y 42, con lo que te gusta y tu semana real. Si para vos es importante compartir la pizza que amasa tu marido los sábados, entra en tu plan."),
     ("Ya probé de todo. ¿Por qué esto sería distinto?",
-     "Porque todo lo que probaste trabajó una sola dimensión: el plato, la cabeza o la química. Aquí trabajamos las cuatro a la vez: lo que comes, lo que sientes, tus ritmos y lo que te dices."),
+     "Porque todo lo que probaste trabajó una sola dimensión: el plato, la cabeza o la química. Aquí trabajamos las cuatro a la vez: lo que comés, lo que sentís, tus ritmos y lo que te decís."),
     ("No tengo tiempo. ¿Cuánto me demanda?",
      "Diez minutos por día en la app, de lunes a sábado, y 8 encuentros por videollamada en los 90 días: 3 conmigo y 5 con María Julia, la coordinadora del programa. Está pensado para mujeres con agenda exigente."),
     ("¿Cuánto sale?",
@@ -849,16 +851,16 @@ def vsl():
     p0 = PASOS_VSL[0]
     inc = "".join(f"<li>{ic('check')}<span>{E(x)}</span></li>" for x in INCLUYE)
     faq = "".join(f"<details><summary>{E(q)}</summary><p>{E(a)}</p></details>" for q, a in FAQ_VSL)
-    minutos = [("0 a 10", "Me cuentas cómo es tu día", "Y dónde se te escapa el control."),
+    minutos = [("0 a 10", "Me contás cómo es tu día", "Y dónde se te escapa el control."),
                ("10 a 20", "Te muestro qué dimensión manda", "La que está dominando en tu caso."),
-               ("20 a 30", "Te digo si es para ti", "Con honestidad, y cómo seguimos si lo es.")]
+               ("20 a 30", "Te digo si es para vos", "Con honestidad, y cómo seguimos si lo es.")]
     mins = "".join(f'<div class="step rv"><span class="sn">{E(m)}</span><div><h3>{E(t)}</h3><p>{E(d)}</p></div></div>' for m, t, d in minutos)
     inner = f'''{CSS_VSL}
 <div class="bar"><a href="{U["inicio"]}" target="_top"><b>Nu<span>Plan</span>™</b></a><a class="bcta" href="#agenda">Agendar</a></div>
 <section class="hero"><div class="wrap hgrid hv">
  <div>
   <span class="eyb">PROGRAMA NUPLAN · 90 DÍAS</span>
-  <h1>Recupera tu energía y tus <em>ganas de vivir.</em></h1>
+  <h1>Recuperá tu energía y tus <em>ganas de vivir.</em></h1>
   <p class="lead">Para mujeres ejecutivas y profesionales con cargo que viven aceleradas, comen lo que pueden y a la noche sienten que perdieron el control.</p>
  </div>
  <div>
@@ -875,7 +877,7 @@ def vsl():
 </div></div></section>
 <section class="sec white" id="te-pasa"><div class="wrap">
  {lab("30 segundos", "reloj")}
- <h2>Marca las que te pasan.</h2>
+ <h2>Marcá las que te pasan.</h2>
  <p class="lead">Las escucho en consultorio hace veinte años. Siempre las mismas, dichas por mujeres distintas.</p>
  <div class="mk">{marca}</div>
  <div class="mkr" aria-live="polite"><b class="mkn">0 DE 6</b><p class="mkt">{MARCA_R[0]}</p><a href="#agenda">Cuéntamelo en la llamada{ic("flecha")}</a></div>
@@ -887,7 +889,7 @@ def vsl():
  <div class="chart">{CHART}</div>
  <div class="leg2"><span><i></i>Tu día hoy · los puntos son cafés</span><span><i class="d"></i>Tu energía vital</span></div>
  <p class="lead">Lo que te pasa tiene nombre: <strong>regulación</strong>. Tu sistema nervioso pasa catorce horas en alerta y a la noche busca bajar con lo único que tiene a mano.</p>
- <div class="quote rv"><p>«La restricción no encierra a la comida: te encierra a ti.»</p><span>LIC. ROSANA ROLDÁN</span></div>
+ <div class="quote rv"><p>«La restricción no encierra a la comida: te encierra a vos.»</p><span>LIC. ROSANA ROLDÁN</span></div>
 </div></section>
 <section class="sec white" id="metodo"><div class="wrap">
  {lab("El método", "chispa")}
@@ -899,7 +901,7 @@ def vsl():
 <section class="sec" id="camino"><div class="wrap">
  {lab("Los 90 días", "semana")}
  <h2>Seis pasos, en orden.</h2>
- <p class="lead">Toca cada letra para ver qué pasa en cada etapa.</p>
+ <p class="lead">Tocá cada letra para ver qué pasa en cada etapa.</p>
  <div class="lts" role="tablist" aria-label="Las seis etapas">{lts}</div>
  <div class="dbar"><i style="left:0%;width:15.6%"></i></div>
  <div class="dlab"><span>DÍA 1</span><span>DÍA 90</span></div>
@@ -911,17 +913,17 @@ def vsl():
   {lab("Quién te va a acompañar", "sesion")}
   <h2>Rosana Roldán</h2>
   <p>Nutricionista de la UBA, M.N. 3884, con dos posgrados y más de veinte años de consultorio. Y te lo digo también desde otro lugar: <strong>yo viví ese mismo agotamiento</strong>. Trabajaba sin parar, comía lo que podía y a la noche no me alcanzaba la energía para nada.</p>
-  <p>En el programa me acompaña María Julia, nutricionista y coordinadora del programa: te recibe el primer día y está contigo entre encuentro y encuentro.</p>
+  <p>En el programa me acompaña María Julia, nutricionista y coordinadora del programa: te recibe el primer día y está con vos entre encuentro y encuentro.</p>
  </div>
  <div><p class="big">«Mi propio cuerpo fue mi primer laboratorio.»</p></div>
 </div></section>
 <section class="sec" id="agenda"><div class="wrap">
- <div class="gar rv">{ic("escudo")}<div><p class="el">TU GARANTÍA</p><h3>Si cambias de idea, te devuelvo el 100 %.</h3><p>Hasta tu encuentro de apertura conmigo, sin explicaciones. Así decides con calma.</p></div></div>
+ <div class="gar rv">{ic("escudo")}<div><p class="el">TU GARANTÍA</p><h3>Si cambiás de idea, te devuelvo el 100 %.</h3><p>Hasta tu encuentro de apertura conmigo, sin explicaciones. Así decidís con calma.</p></div></div>
  {lab("El siguiente paso", "flecha")}
- <h2>Agenda 30 minutos conmigo.</h2>
- <p class="lead">Sin costo, por videollamada. Me cuentas tu caso y te digo con honestidad si el programa tiene sentido para ti.</p>
+ <h2>Agendá 30 minutos conmigo.</h2>
+ <p class="lead">Sin costo, por videollamada. Me contás tu caso y te digo con honestidad si el programa tiene sentido para vos.</p>
  <div class="steps">{mins}</div>
- <div class="calw"><iframe src="https://api.leadconnectorhq.com/widget/booking/{CAL_ADMISION}" scrolling="no" id="{CAL_ADMISION}_1787681177706" title="Agenda tu llamada con Rosana"></iframe></div>
+ <div class="calw"><iframe src="https://api.leadconnectorhq.com/widget/booking/{CAL_ADMISION}" scrolling="no" id="{CAL_ADMISION}_1787681177706" title="Agendá tu llamada con Rosana"></iframe></div>
  <script src="https://link.msgsndr.com/js/form_embed.js" type="text/javascript"></script>
  <p class="micro" style="text-align:center">ES ONLINE, DESDE CUALQUIER PAÍS · 5 CUPOS POR SEMANA</p>
  <a class="no" href="{CAL_ADMISION_LINK}" target="_blank" rel="noopener">¿No carga el calendario? Ábrelo aquí</a>
@@ -934,25 +936,25 @@ def vsl():
 </div></section>
 <section class="sec coral final"><div class="wrap narrow">
  <h2>¿Hablamos 30 minutos?</h2>
- <p class="lead">Me cuentas tu caso y te digo con honestidad si el programa tiene sentido para ti.</p>
+ <p class="lead">Me contás tu caso y te digo con honestidad si el programa tiene sentido para vos.</p>
  <a class="cta inv" href="#agenda">Agendar mi llamada{ic("flecha")}</a>
  <p class="micro">SIN COSTO · POR VIDEOLLAMADA</p>
 </div></section>
 {pie()}
 <a class="stk" href="#agenda">Agendar mi llamada de 30 minutos{ic("flecha")}</a>'''
-    return page("NuPlan™ · Recupera tu energía y tus ganas de vivir", inner, js_vsl())
+    return page("NuPlan™ · Recuperá tu energía y tus ganas de vivir", inner, js_vsl())
 
 
 # =============================== 10 · ANTES DE LA LLAMADA (/preparacion) ===============================
 def preparacion():
-    tres = [("Es una conversación", "Me cuentas qué te pasa, te escucho, y al final vemos juntas si tiene sentido seguir."),
-            ("Todas las respuestas valen", "Habla como le contarías a una amiga. Lo que digas queda entre nosotras, y lo que prefieras guardarte, te lo guardas."),
-            ("Del otro lado hay alguien que lo vivió", "Además de los veinte años de consultorio, mi propio cuerpo fue mi primer laboratorio: pasé por el mismo agotamiento que tú.")]
+    tres = [("Es una conversación", "Me contás qué te pasa, te escucho, y al final vemos juntas si tiene sentido seguir."),
+            ("Todas las respuestas valen", "Hablá como le contarías a una amiga. Lo que digas queda entre nosotras, y lo que prefieras guardarte, te lo guardás."),
+            ("Del otro lado hay alguien que lo vivió", "Además de los veinte años de consultorio, mi propio cuerpo fue mi primer laboratorio: pasé por el mismo agotamiento que vos.")]
     t3 = "".join(f'<div class="step rv"><span class="sn">{i}</span><div><h3>{E(t)}</h3><p>{E(d)}</p></div></div>' for i, (t, d) in enumerate(tres, 1))
-    cuatro = [("Busca un lugar tranquilo.", "Vamos a hablar de cosas que quizás nunca contaste en voz alta. Mejor sin nadie escuchando de fondo."),
-              ("Bloquea los 30 minutos completos.", "Con el mail cerrado y sin reuniones pegadas. Es media hora para ti."),
-              ("Usa auriculares.", "Se escucha mejor y te vas a sentir más cómoda para hablar."),
-              ("Ven tal como estás.", "Tu historia es lo que necesito, y ya la tienes.")]
+    cuatro = [("Buscá un lugar tranquilo.", "Vamos a hablar de cosas que quizás nunca contaste en voz alta. Mejor sin nadie escuchando de fondo."),
+              ("Bloquea los 30 minutos completos.", "Con el mail cerrado y sin reuniones pegadas. Es media hora para vos."),
+              ("Usá auriculares.", "Se escucha mejor y te vas a sentir más cómoda para hablar."),
+              ("Vení tal como estás.", "Tu historia es lo que necesito, y ya la tenés.")]
     c4 = "".join(f'<div class="step rv"><span class="sn">{i}</span><div><h3>{E(t)}</h3><p>{E(d)}</p></div></div>' for i, (t, d) in enumerate(cuatro, 1))
     wa_rep = U["wa"] + "?text=Hola%20Rosana%2C%20necesito%20reprogramar%20mi%20llamada."
     inner = f'''{CSS_VSL}
@@ -960,16 +962,16 @@ def preparacion():
 <section class="hero"><div class="wrap narrow">
  <div class="conf">{ic("ok")}<div><b>Listo. Tu llamada quedó agendada.</b><span>Te llegó un mail con el día, la hora y el link de la videollamada.</span></div></div>
  <span class="eyb">ANTES DE QUE HABLEMOS</span>
- <h1 style="font-size:clamp(38px,9vw,64px)">Mira este video de 30 segundos. Es lo único que te <em>pido.</em></h1>
+ <h1 style="font-size:clamp(38px,9vw,64px)">Mirá este video de 30 segundos. Es lo único que te <em>pido.</em></h1>
  <p class="lead">Te cuento cómo va a ser nuestra conversación, para que llegues sabiendo qué esperar.</p>
  {vid(VIDEO_PREP, "Qué esperar · 30 s", "video", "0.6")}
 </div></section>
 <section class="sec white"><div class="wrap narrow">
  {lab("Lo que viene", "sesion")}
  <h2>Esos 30 minutos son tuyos.</h2>
- <p>Es media hora reservada para hablar de algo que probablemente vienes postergando hace años, porque siempre hubo algo más urgente.</p>
- <p>Vas a hablar tú y yo voy a escuchar, que es justo lo que casi nunca pasa en una consulta. Llegas como estás: sin análisis, sin registros, sin anotar lo que comiste.</p>
- <p>Al final te digo con honestidad si puedo ayudarte. Y si el método no es para ti, te digo quién puede.</p>
+ <p>Es media hora reservada para hablar de algo que probablemente venís postergando hace años, porque siempre hubo algo más urgente.</p>
+ <p>Vas a hablar vos y yo voy a escuchar, que es justo lo que casi nunca pasa en una consulta. Llegás como estás: sin análisis, sin registros, sin anotar lo que comiste.</p>
+ <p>Al final te digo con honestidad si puedo ayudarte. Y si el método no es para vos, te digo quién puede.</p>
  <p class="big" style="margin-top:30px">«Mi trabajo empieza por escucharte.»</p>
 </div></section>
 <section class="sec"><div class="wrap">
@@ -981,13 +983,13 @@ def preparacion():
  {lab("El día de la llamada", "reloj")}
  <h2>Cómo llegar bien preparada.</h2>
  <div class="steps" style="grid-template-columns:repeat(auto-fit,minmax(240px,1fr))">{c4}</div>
- <div class="avs"><p class="el">SI NO PUEDES ASISTIR</p><h3>Avísame con 24 horas de anticipación.</h3><p>Con ese tiempo le ofrezco tu lugar a otra mujer que está esperando, y a ti te consigo otro horario. Cada semana hay solo cinco lugares.</p>
+ <div class="avs"><p class="el">SI NO PODÉS ASISTIR</p><h3>Avisame con 24 horas de anticipación.</h3><p>Con ese tiempo le ofrezco tu lugar a otra mujer que está esperando, y a vos te consigo otro horario. Cada semana hay solo cinco lugares.</p>
  {btn("Escribirme por WhatsApp para reprogramar", wa_rep, "cta sec2", "wa").replace('target="_top"', 'target="_blank" rel="noopener"')}</div>
 </div></section>
 <section class="sec coral final"><div class="wrap narrow">
  {lab("Mientras tanto", "play")}
- <h2>Si quieres ir entendiendo qué te pasa.</h2>
- <p class="lead">Grabé una clase de 11 minutos donde te explico, con biología y con objetos de mi consultorio, por qué comes por estrés. Las que la ven llegan a la llamada con las preguntas más afiladas.</p>
+ <h2>Si querés ir entendiendo qué te pasa.</h2>
+ <p class="lead">Grabé una clase de 11 minutos donde te explico, con biología y con objetos de mi consultorio, por qué comés por estrés. Las que la ven llegan a la llamada con las preguntas más afiladas.</p>
  {btn("Ver la clase de 11 minutos", U["clase"], "cta inv", "play")}
  <p class="micro">SIN COSTO · LA VES CUANDO QUIERAS</p>
 </div></section>

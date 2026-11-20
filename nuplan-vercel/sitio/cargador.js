@@ -30,7 +30,11 @@
     'empresas': 'nuplan-empresas.html',
     'legales': 'nuplan-legales.html',
     'bienvenida': 'nuplan-bienvenida.html',
-    'programa-segundo-gracias': 'nuplan-programa-segundo-gracias.html'
+    'programa-segundo-gracias': 'nuplan-programa-segundo-gracias.html',
+    /* El embudo del libro: sale de libro/fuente/build_web.py a libro/src/ (Vercel lo sirve igual, con CORS). */
+    'libro': '../../libro/src/nuplan-libro-landing.html',
+    'libro-agenda': '../../libro/src/nuplan-libro-agenda.html',
+    'libro-gracias': '../../libro/src/nuplan-libro-gracias.html'
   };
   var rama = 'main';
   try { var pedida = new URLSearchParams(location.search).get('rama'); if (pedida && /^[a-z0-9-]{2,30}$/.test(pedida)) rama = pedida; } catch (e) {}

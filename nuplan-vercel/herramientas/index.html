@@ -468,6 +468,16 @@
     .porc-eq{font-size:10.5pt;line-height:1.45;} .porc-g{font-size:11.5pt;} .porc-ayuda{font-size:11pt;}
   }
 
+  /* ---------- mandar el plan a su app ---------- */
+  .pa-ops{display:grid;gap:8px;margin:0 0 16px;max-height:46vh;overflow:auto;}
+  .pa-op{display:flex;align-items:center;gap:12px;min-height:56px;padding:10px 14px;border:1px solid var(--borde);border-radius:var(--r-lg);background:#fff;cursor:pointer;}
+  .pa-op:has(input:checked){border-color:var(--coral);background:var(--tinte);}
+  .pa-op input{width:22px;height:22px;accent-color:var(--coral);flex:none;margin:0;}
+  .pa-op span{display:flex;flex-direction:column;min-width:0;}
+  .pa-op b{font-size:1.05rem;color:var(--ink);}
+  .pa-op small{font-family:var(--mono);font-size:1rem;color:var(--muted);overflow-wrap:anywhere;}
+  .pa-op .pa-suya{font-family:var(--mono);font-size:1rem;color:var(--coral-dark);}
+
   /* ---------- edición del plan ---------- */
   .solo-edicion{display:none;}
   .editando .solo-edicion{display:inline-flex;align-items:center;}
@@ -2846,6 +2856,75 @@ function porcGuardar(){
   }, 600);
 }
 
+/* ---------- el plan en la app de la consultante (19/11) ---------- */
+function hoyLocalISO(){ var d=new Date(); return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0"); }
+/* lo que viaja a su app: las porciones (sin el valor calórico: ella no lo ve), las ideas de almuerzo y cena, el agua y las recomendaciones generales */
+function planParaApp(d){
+  var p=d.porciones;
+  var sem=(d.weeklyMenu||[]).map(function(dia){ return { dia:String(dia.dia||""), comidas:(dia.comidas||[]).filter(function(c){ return NPPorc.PRINCIPAL[c.k]; }).map(function(c){ return { k:c.k, id:c.id||"", t:String(c.t||""), tipo:c.tipo||"" }; }) }; });
+  var recos=(d.recommendationsAndRecipes||[]).filter(function(r){ return r && r.general; }).slice(0,10).map(function(r){ return { t:String(r.title||"").slice(0,160), c:String(r.content||"").slice(0,1500) }; });
+  var hp=d.hydrationPlan||{};
+  return { v:1, fecha:hoyLocalISO(),
+    porciones:{ comidas:p.comidas, tips:p.tips||{}, tipo:p.dieta||"n", celiaco:!!p.celiaco, cenaSinCarbo:p.cenaSinCarbo!==false },
+    semana:sem, recomendaciones:recos,
+    agua: hp.targetLiters ? { litros:hp.targetLiters, vasos:hp.equivalentGlasses||null } : null };
+}
+function firmaPlanApp(d){ try{ var x=planParaApp(d); delete x.fecha; return JSON.stringify(x); }catch(e){ return ""; } }
+var PA={ altas:[] };
+async function abrirPlanApp(){
+  var d=plan.resultado;
+  if(!conPorciones(d)){ avisar("Solo los planes por porciones se mandan a la app.", 5000); return; }
+  if(!plan.docId){ avisar("Esperá a que el plan termine de guardarse y probá de nuevo.", 6000); return; }
+  if($("plan-resultado").classList.contains("editando")){ avisar("Primero guardá o cancelá los cambios de texto.", 5000); return; }
+  var h=$("hoja-app");
+  if(!h){ h=document.createElement("div"); h.id="hoja-app"; h.className="hoja-cambio"; h.setAttribute("role","dialog"); h.setAttribute("aria-modal","true"); h.setAttribute("aria-labelledby","pa-tit");
+    h.addEventListener("click", function(e){ if(e.target===h) cerrarPlanApp(); }); document.body.appendChild(h);
+    document.addEventListener("keydown", function(e){ if(e.key==="Escape" && $("hoja-app") && !$("hoja-app").classList.contains("oculto")) cerrarPlanApp(); }); }
+  h.innerHTML='<div class="hoja-caja"><div class="hoja-cab"><div><span class="kicker" style="margin:0">Plan alimentario</span><h3 id="pa-tit" style="margin:2px 0 0">Mandar a su app</h3></div>'+
+    '<button type="button" class="quitar-item" onclick="cerrarPlanApp()" aria-label="Cerrar">×</button></div>'+
+    '<p class="nota" style="margin:0 0 14px">Le aparece en «Tu plan» de su app del programa: cada comida con sus porciones y, en cada porción, elige la opción. Si después cambiás el plan, lo volvés a mandar y ve el último.</p>'+
+    '<div id="pa-lista"><p class="nota">Buscando a las consultantes del programa…</p></div>'+
+    '<div class="botonera-gen" style="margin-top:0"><button type="button" class="btn" id="pa-ok" onclick="mandarPlanApp()" disabled>Mandárselo</button><button type="button" class="btn suave" onclick="cerrarPlanApp()">Cancelar</button></div>'+
+    '<p class="aviso" id="pa-est" role="status"></p></div>';
+  h.classList.remove("oculto"); document.body.classList.add("con-hoja");
+  var r; try{ r=await sb.from("programa_altas").select("email, nombre").order("nombre",{ascending:true}).limit(500); }catch(e){ r={ error:e }; }
+  var L=$("pa-lista"); if(!L) return;
+  if(r.error){
+    var falta=/programa_altas|schema cache|does not exist|PGRST205/i.test(String(r.error.message||r.error.code||""));
+    L.innerHTML='<p class="aviso error">'+(falta?"Falta correr el SQL de Supabase (lo corre Javo, una sola vez). El plan quedó guardado igual.":"No se pudo leer el programa. Revisá la conexión y probá de nuevo.")+'</p>'; return; }
+  PA.altas=(r.data||[]).filter(function(a){ return a && a.email; });
+  if(!PA.altas.length){ L.innerHTML='<p class="nota">Todavía no diste de alta a nadie en el programa. Hacelo en Programa → «Dar de alta a una consultante» y después mandale el plan.</p>'; return; }
+  var pac=plan.paciente||{}, mail=String(pac.email||"").toLowerCase(), nom=plano(nombreCompleto(pac)).trim(), ea=(d.enApp&&d.enApp.email)||"";
+  var suya=PA.altas.filter(function(a){ return a.email===ea; })[0] || PA.altas.filter(function(a){ return mail && a.email===mail; })[0] || PA.altas.filter(function(a){ return nom && plano(a.nombre).trim()===nom; })[0] || null;
+  L.innerHTML=(PA.altas.length>8?'<label class="campo">Buscar<input type="text" id="pa-buscar" autocomplete="off" oninput="filtrarPlanApp()" placeholder="Nombre o mail"></label>':'')+
+    '<div class="pa-ops" role="radiogroup" aria-label="A quién se lo mandás">'+PA.altas.map(function(a){ var es=suya&&suya.email===a.email;
+      return '<label class="pa-op" data-q="'+esc(plano(a.nombre+" "+a.email))+'"><input type="radio" name="pa-c" value="'+esc(a.email)+'"'+(es?' checked':'')+' onchange="$(\'pa-ok\').disabled=false"><span><b>'+esc(a.nombre||a.email)+'</b><small>'+esc(a.email)+'</small>'+(es&&a.email!==ea?'<small class="pa-suya">es la de esta ficha</small>':'')+'</span></label>'; }).join("")+'</div>';
+  $("pa-ok").disabled=!suya;
+  var c=document.querySelector('input[name="pa-c"]:checked') || document.querySelector('input[name="pa-c"]'); if(c) c.focus();
+}
+function filtrarPlanApp(){ var q=plano($("pa-buscar").value).trim(); document.querySelectorAll("#pa-lista .pa-op").forEach(function(o){ o.hidden=!!q && o.getAttribute("data-q").indexOf(q)===-1; }); }
+function cerrarPlanApp(){ var h=$("hoja-app"); if(h) h.classList.add("oculto"); document.body.classList.remove("con-hoja"); var b=$("btn-plan-app"); if(b) b.focus(); }
+async function mandarPlanApp(){
+  var sel=document.querySelector('input[name="pa-c"]:checked'), e=$("pa-est"), b=$("pa-ok"), d=plan.resultado;
+  if(!sel){ e.className="aviso error"; e.textContent="Elegí a quién se lo mandás."; return; }
+  if(b.disabled || !conPorciones(d)) return;
+  var a=PA.altas.filter(function(x){ return x.email===sel.value; })[0]; if(!a) return;
+  b.disabled=true; e.className="aviso"; e.textContent="Mandando…";
+  var docId=plan.docId, pac=plan.paciente, fila={ email:a.email, nombre:String(a.nombre||"").slice(0,120)||null, doc_id:docId?String(docId):null, patient_id:pac&&pac.id?String(pac.id):null, plan:planParaApp(d), creado_por:(usuario&&usuario.id)||null };
+  var r; try{ r=await sb.from("programa_planes").insert(fila).select("id, creado").single(); }catch(err){ r={ error:err }; }
+  if(r.error){
+    b.disabled=false;
+    var falta=/programa_planes|schema cache|does not exist|PGRST205/i.test(String(r.error.message||r.error.code||""));
+    e.className="aviso error"; e.textContent=falta?"Para mandarlo a la app falta correr el SQL de Supabase (lo corre Javo, una sola vez). El plan quedó guardado.":"No se pudo mandar. Revisá la conexión y probá de nuevo."; return; }
+  if(plan.resultado!==d) return;
+  d.enApp={ email:a.email, nombre:a.nombre||"", fecha:(r.data&&r.data.creado)||new Date().toISOString(), id:(r.data&&r.data.id)||null, firma:firmaPlanApp(d) };
+  e.className="aviso"; e.textContent="Listo: ya está en la app de "+(String(a.nombre||"").split(" ")[0]||a.email)+". Le aparece en «Tu plan».";
+  pintarEnvios();
+  if(pac && pac.id && !pac.email){ pac.email=a.email; try{ await sb.from("patients").update({ email:a.email }).eq("id", pac.id); }catch(err){} }
+  porcGuardar();
+  setTimeout(function(){ var h=$("hoja-app"); if(h && !h.classList.contains("oculto") && /^Listo/.test(e.textContent)) cerrarPlanApp(); }, 2200);
+}
+
 /* ---------- menú de la semana: tocar una comida y elegir otra del mismo grupo (3 toques), se guarda solo */
 function modeloDelPlan(d){ var m=(d&&d.modeloRo)||{}; return { tipo: m.tipo||NPMenu.dietaDe((plan.pref||{}).dietType), celiaco: m.celiaco!=null ? !!m.celiaco : NPMenu.esCeliaco((plan.pref||{}).intolerances) }; }
 function htmlSemana(d){
@@ -2882,7 +2961,13 @@ function cambiarComida(dia, k){
 function pintarEnvios(){
   var p=$("plan-envios"); if(!p) return;
   var l=(plan.envios && plan.envios.docId===plan.docId) ? plan.envios.l : [];
-  p.textContent = l.length ? "Mandado por mail: " + l.map(function(x){ return String(x.a||"")+" el "+fechaCorta(x.fecha); }).join(" · ") : "";
+  var t = l.length ? "Mandado por mail: " + l.map(function(x){ return String(x.a||"")+" el "+fechaCorta(x.fecha); }).join(" · ") : "";
+  var ea = plan.resultado && plan.resultado.enApp;
+  if(ea && ea.email){
+    var cambio = conPorciones(plan.resultado) && ea.firma && ea.firma!==firmaPlanApp(plan.resultado);
+    t = (t ? t + " · " : "") + "En la app de " + String(ea.nombre||ea.email) + " desde el " + fechaCorta(ea.fecha) + (cambio ? ". Lo cambiaste después: volvé a mandarlo para que vea lo último." : "");
+  }
+  p.textContent = t;
 }
 function htmlPlanParaMail(){
   var raiz=document.querySelector("#plan-resultado .hoja > tbody > tr > td");
@@ -3043,7 +3128,7 @@ function pintarPlan(d){
     h+='<div class="bloque-res"><h3>Lista de compras</h3><div class="grupos">'+Object.keys(NOMBRES_COMPRAS).map(function(k){
       return '<div class="grupo"><b>'+NOMBRES_COMPRAS[k]+'</b>'+edLista("shoppingList."+k, sl[k]||[])+'</div>';}).join("")+'</div></div>';
   }
-  var acciones='<div class="acciones-fijas no-imprimir"><div class="acciones-res" id="acciones-ver"><button class="btn" onclick="window.print()">Imprimir o guardar PDF</button><button class="btn suave" onclick="abrirMandarPlan()">Mandar por mail</button>'+
+  var acciones='<div class="acciones-fijas no-imprimir"><div class="acciones-res" id="acciones-ver"><button class="btn" onclick="window.print()">Imprimir o guardar PDF</button><button class="btn suave" onclick="abrirMandarPlan()">Mandar por mail</button>'+(conPorciones(d)?'<button class="btn suave" id="btn-plan-app" onclick="abrirPlanApp()">Mandar a su app</button>':'')+
      '<button class="btn ghost" onclick="editarPlan()">Editar el plan</button>'+
      (plan.deGuardado
        ? '<button class="btn suave" onclick="nuevoPlanPara(plan.paciente)">Plan nuevo para esta paciente</button><button class="btn suave" onclick="abrirGuardados()">Volver a los guardados</button>'

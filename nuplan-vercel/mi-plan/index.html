@@ -331,6 +331,32 @@ img[data-ruta]{background:var(--line2);min-height:120px}
 .pl-ops button small,.pl-alt button small,.pl-plato small{color:var(--mut);font-size:.95rem;line-height:1.4}
 .pl-ops button.on{background:var(--tinte);border-color:var(--cor);box-shadow:inset 4px 0 0 var(--cor)}
 .pl-ops button:active,.pl-alt button:active{transform:scale(.985)}
+.plr-tabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;margin:0 0 16px}
+.plr-tabs button{padding:10px 6px;line-height:1.25;font-size:1rem;text-align:center}
+.plr-g .lnk + .lnk{margin-left:8px}
+.plr-com{background:var(--sup);border:1px solid var(--line2);border-radius:var(--r3);padding:16px 16px 6px;margin:0 0 14px}
+.plr-cab{display:flex;justify-content:space-between;align-items:baseline;gap:10px;margin:0 0 6px}
+.plr-cab b{font:700 1rem var(--mono);text-transform:uppercase;letter-spacing:.04em;color:var(--cord)}
+.plr-cab span{font:400 1rem var(--mono);color:var(--mut)}
+.plr-g{position:relative;padding:12px 0 12px 16px;border-top:1px solid var(--line2)}
+.plr-g:first-of-type{border-top:0}
+.plr-g::before{content:"";position:absolute;left:0;top:14px;bottom:14px;width:5px;border-radius:3px;background:var(--line)}
+.plr-g.g-lac::before{background:#f6a29a}.plr-g.g-carb::before{background:#e9b04f}.plr-g.g-prot::before{background:#c53a1e}
+.plr-g.g-fru::before{background:#e8472a}.plr-g.g-gra::before{background:#b07a1c}.plr-g.g-veg::before{background:#3f8a5c}
+.plr-t{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 10px;margin:0 0 8px;font-weight:600;font-size:1.05rem;color:var(--ink)}
+.plr-n{font:700 1.2rem var(--mono)}
+.plr-c{margin-left:auto;font:400 1rem var(--mono);color:var(--mut)}
+.plr-c.ok{color:var(--cord);font-weight:700}
+.plr-libre{font:700 1rem var(--mono);text-transform:uppercase;letter-spacing:.04em;padding:4px 10px;border-radius:99px;background:var(--tinte);color:var(--cord)}
+.plr-g.g-veg .plr-libre{background:#e7f2ea;color:#2f7048}.plr-g.g-veg .plr-t{color:#2f7048}
+.plr-eqtxt{margin:0;color:var(--body);font-size:1rem;line-height:1.55}
+.plr-g .pl-ops button{flex-direction:row;align-items:center;justify-content:space-between;font-size:1.02rem}
+.plr-g .pl-ops button b{font-family:var(--mono);color:var(--cord)}
+.plr-tip{margin:4px 0 10px;padding:10px 12px;background:var(--tinte);border-radius:var(--r2);font-size:1rem;color:var(--body)}
+.plr-recos details{border-top:1px solid var(--line2);padding:6px 0}
+.plr-recos summary{min-height:44px;display:flex;align-items:center;font-weight:600;cursor:pointer}
+.plr-recos p{margin:0 0 10px;font-size:1rem;line-height:1.55}
+.plr-nuevo{display:inline-block;margin-left:8px;padding:2px 9px;border-radius:99px;background:var(--cor);color:#fff;font:700 .9rem var(--mono);letter-spacing:.03em;vertical-align:middle}
 .pl-dias{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:5px;margin:0 0 14px}
 .pl-dias button{min-height:48px;border-radius:var(--r3);border:1.5px solid var(--line2);background:var(--sup);font:700 .95rem var(--mono);color:var(--body);cursor:pointer;padding:0}
 .pl-dias button.on{background:var(--cor);border-color:var(--cor);color:#fff}
@@ -660,6 +686,7 @@ img[data-ruta]{background:var(--line2);min-height:120px}
 </div>
 
 <script src="/plan/menu-ro.js"></script>
+<script src="/plan/porciones-ro.js"></script>
 <script>
 var BASE = [{"d": 1, "s": 1, "l": "N", "le": "Nutrir", "fo": "Descubrí tu forma de comer", "a": "Mirar el video de NUTRIR y sacarle una foto a tu heladera abierta, tal cual está", "ej": "", "x": "Tu heladera, hoy", "xp": "P1 &middot; NUTRIR", "u": "https://metodo.nuplan.com.ar/n", "un": "el video de NUTRIR", "k": "heladera"}, {"d": 2, "s": 1, "l": "N", "le": "Nutrir", "fo": "Descubrí tu forma de comer", "a": "Contestar las cinco preguntas de NUTRIR, sin corregirte", "ej": "", "x": "Las cinco preguntas", "xp": "P1 &middot; NUTRIR", "u": "", "un": "", "k": "preguntasN"}, {"d": 3, "s": 1, "l": "N", "le": "Nutrir", "fo": "Descubrí tu forma de comer", "a": "Cargar tus datos y hacer el quiz: el escaneo de tus cuatro dimensiones. Leer tu diagnóstico", "ej": "", "x": "Datos clínicos y quiz emocional", "xp": "P1 &middot; NUTRIR", "u": "https://metodo.nuplan.com.ar/n", "un": "el escaneo de tus 4 dimensiones", "k": ""}, {"d": 4, "s": 1, "l": "N", "le": "Nutrir", "fo": "Descubrí tu forma de comer", "a": "Primer día del diario de comida y emoción: anotar todo, sin cambiar nada", "ej": "", "x": "El diario de comida y emoción", "xp": "P1 &middot; NUTRIR", "u": "", "un": "", "k": "diario"}, {"d": 5, "s": 1, "l": "N", "le": "Nutrir", "fo": "Descubrí tu forma de comer", "a": "Diario otra vez, y esta vez marcar qué sentías antes de comer", "ej": "", "x": "", "xp": "", "u": "", "un": "", "k": "diario"}, {"d": 6, "s": 1, "l": "N", "le": "Nutrir", "fo": "Descubrí tu forma de comer", "a": "Mirar tu diario y escribir qué estuviste alimentando hasta hoy, y qué querés empezar a nutrir", "ej": "", "x": "Lo que estuviste alimentando", "xp": "P1 &middot; NUTRIR", "u": "", "un": "", "k": "alimentando"}, {"d": 7, "s": 1, "l": "N", "le": "Nutrir", "fo": "Descubrí tu forma de comer", "a": "Mirar tus días de diario y la foto de tu heladera, y escribir una frase de lo que descubriste", "ej": "", "x": "Tu primera semana en una frase", "xp": "P1 &middot; NUTRIR", "u": "", "un": "", "k": "frase"}, {"d": 8, "s": 2, "l": "N", "le": "Nutrir", "fo": "Ver qué te dispara y decidir tu primer paso", "a": "Armar el mapa de tus disparadores: qué, cuándo y dónde", "ej": "", "x": "El mapa de tus disparadores", "xp": "P1 &middot; NUTRIR", "u": "", "un": "", "k": "disparadores"}, {"d": 9, "s": 2, "l": "N", "le": "Nutrir", "fo": "Ver qué te dispara y decidir tu primer paso", "a": "Escribir tu acuerdo con tu forma de comer", "ej": "", "x": "Acuerdo con tu forma de comer", "xp": "P1 &middot; NUTRIR", "u": "", "un": "", "k": "acuerdo"}, {"d": 10, "s": 2, "l": "N", "le": "Nutrir", "fo": "Ver qué te dispara y decidir tu primer paso", "a": "Escribir tu objetivo, lo más concreto posible, y marcar del 0 al 10 cuánto te importa y cuánta confianza tenés de lograrlo", "ej": "", "x": "Tu objetivo", "xp": "P1 &middot; NUTRIR", "u": "", "un": "", "k": "objetivo"}, {"d": 11, "s": 2, "l": "N", "le": "Nutrir", "fo": "Ver qué te dispara y decidir tu primer paso", "a": "Hacer la balanza: las ventajas y desventajas del cambio", "ej": "", "x": "La balanza", "xp": "P1 &middot; NUTRIR", "u": "", "un": "", "k": "balanza"}, {"d": 12, "s": 2, "l": "N", "le": "Nutrir", "fo": "Ver qué te dispara y decidir tu primer paso", "a": "Elegir un paso chico que estés dispuesta a dar esta semana, con día y hora", "ej": "", "x": "Tu paso chico", "xp": "P1 &middot; NUTRIR", "u": "", "un": "", "k": "paso"}, {"d": 13, "s": 2, "l": "N", "le": "Nutrir", "fo": "Ver qué te dispara y decidir tu primer paso", "a": "Diario del día y marcar si empezaste a dar tu paso chico", "ej": "", "x": "", "xp": "", "u": "", "un": "", "k": "pasoChk"}, {"d": 14, "s": 2, "l": "N", "le": "Nutrir", "fo": "Ver qué te dispara y decidir tu primer paso", "a": "Check-in con Rosana: mandarle tu primera quincena", "ej": "", "x": "", "xp": "", "u": "", "un": "", "k": "checkin"}, {"d": 15, "s": 3, "l": "U", "le": "Unir", "fo": "La raíz que hay debajo del hambre", "a": "Mirar el video de UNIR y contestar sus cinco preguntas", "ej": "", "x": "Las cinco preguntas de UNIR", "xp": "P2 &middot; UNIR", "u": "https://metodo.nuplan.com.ar/u", "un": "el video de UNIR", "k": "preguntasU"}, {"d": 16, "s": 3, "l": "U", "le": "Unir", "fo": "La raíz que hay debajo del hambre", "a": "Hacer el semáforo del hambre con lo que ya registraste", "ej": "", "x": "El semáforo del hambre", "xp": "P2 &middot; UNIR", "u": "", "un": "", "k": "semaforo"}, {"d": 17, "s": 3, "l": "U", "le": "Unir", "fo": "La raíz que hay debajo del hambre", "a": "Probar la pausa de 90 segundos, dos veces hoy", "ej": "", "x": "La pausa de 90 segundos", "xp": "P2 &middot; UNIR", "u": "", "un": "", "k": "pausa"}, {"d": 18, "s": 3, "l": "U", "le": "Unir", "fo": "La raíz que hay debajo del hambre", "a": "Diario y anotar en qué momento del día te cuesta más manejar el hambre", "ej": "", "x": "", "xp": "", "u": "", "un": "", "k": "momento"}, {"d": 19, "s": 3, "l": "U", "le": "Unir", "fo": "La raíz que hay debajo del hambre", "a": "Completar tu rueda de la alimentación", "ej": "", "x": "Tu rueda de la alimentación", "xp": "P2 &middot; UNIR", "u": "", "un": "", "k": "rueda"}, {"d": 20, "s": 3, "l": "U", "le": "Unir", "fo": "La raíz que hay debajo del hambre", "a": "Mirar tu rueda y escribir por qué les diste ese número a tus ejes más bajos", "ej": "", "x": "", "xp": "", "u": "", "un": "", "k": "ejes"}, {"d": 21, "s": 3, "l": "U", "le": "Unir", "fo": "La raíz que hay debajo del hambre", "a": "Elegir dos de tus ejes más bajos y escribir qué empezás a hacer hoy para que mejoren", "ej": "", "x": "", "xp": "", "u": "", "un": "", "k": "ejes2"}, {"d": 22, "s": 4, "l": "U", "le": "Unir", "fo": "Nombrar lo que com&eacute;s sin hambre", "a": "Automonitoreo, día 1: tu diario y lo que pasa alrededor de lo que comés", "ej": "", "x": "Automonitoreo", "xp": "P2 &middot; UNIR", "u": "", "un": "", "k": "automon"}, {"d": 23, "s": 4, "l": "U", "le": "Unir", "fo": "Nombrar lo que com&eacute;s sin hambre", "a": "Automonitoreo, día 2: tu diario y lo que pasa alrededor de lo que comés", "ej": "", "x": "", "xp": "", "u": "", "un": "", "k": "automon"}, {"d": 24, "s": 4, "l": "U", "le": "Unir", "fo": "Nombrar lo que com&eacute;s sin hambre", "a": "Aliados y saboteadores: lo que te decís y lo que te podrías decir", "ej": "", "x": "Aliados y saboteadores", "xp": "P2 &middot; UNIR", "u": "", "un": "", "k": "aliados"}, {"d": 25, "s": 4, "l": "U", "le": "Unir", "fo": "Nombrar lo que com&eacute;s sin hambre", "a": "Volver a la pausa de 90 segundos, dos veces hoy", "ej": "", "x": "", "xp": "", "u": "", "un": "", "k": "pausa"}, {"d": 26, "s": 4, "l": "U", "le": "Unir", "fo": "Nombrar lo que com&eacute;s sin hambre", "a": "Mirar tu automonitoreo: qué descubriste y qué emoción te comés más seguido", "ej": "", "x": "", "xp": "", "u": "", "un": "", "k": "emocion"}, {"d": 27, "s": 4, "l": "U", "le": "Unir", "fo": "Nombrar lo que com&eacute;s sin hambre", "a": "Volver a mirar tu semáforo y ver si algo cambió", "ej": "", "x": "", "xp": "", "u": "", "un": "", "k": "semaforo"}, {"d": 28, "s": 4, "l": "U", "le": "Unir", "fo": "Nombrar lo que com&eacute;s sin hambre", "a": "Check-in con Rosana: tu primer mes y tu semáforo", "ej": "", "x": "", "xp": "", "u": "", "un": "", "k": "checkin"}, {"d": 29, "s": 5, "l": "P", "le": "Personalizar", "fo": "Armar tu plan, no el plan de nadie", "a": "Mirar el video de PERSONALIZAR y contestar sus cinco preguntas", "ej": "Paso 3 &middot; PERSONALIZAR", "x": "", "xp": "", "u": "https://metodo.nuplan.com.ar/p", "un": "Paso 3 &middot; PERSONALIZAR"}, {"d": 30, "s": 5, "l": "P", "le": "Personalizar", "fo": "Armar tu plan, no el plan de nadie", "a": "Volver a completar tu rueda de la alimentación: con ella se arma tu plan", "ej": "", "x": "Tu rueda de alimentaci&oacute;n", "xp": "P3 &middot; PERSONALIZAR", "u": "https://metodo.nuplan.com.ar/p", "un": "Paso 3 &middot; PERSONALIZAR"}, {"d": 31, "s": 5, "l": "P", "le": "Personalizar", "fo": "Armar tu plan, no el plan de nadie", "a": "Armar tu lista &laquo;s&iacute; quiero&raquo;: lo que quer&eacute;s que est&eacute; s&iacute; o s&iacute;", "ej": "", "x": "La lista &laquo;s&iacute; quiero&raquo;", "xp": "P3 &middot; PERSONALIZAR", "u": "https://metodo.nuplan.com.ar/p", "un": "Paso 3 &middot; PERSONALIZAR"}, {"d": 32, "s": 5, "l": "P", "le": "Personalizar", "fo": "Armar tu plan, no el plan de nadie", "a": "Escribir tu carta al plan que abandonaste", "ej": "", "x": "Carta al plan que abandonaste", "xp": "P3 &middot; PERSONALIZAR", "u": "https://metodo.nuplan.com.ar/p", "un": "Paso 3 &middot; PERSONALIZAR"}, {"d": 33, "s": 5, "l": "P", "le": "Personalizar", "fo": "Armar tu plan, no el plan de nadie", "a": "Armar tu plan de la semana: eleg&iacute;s lo que te gusta y se arma con las porciones de Rosana", "ej": "", "x": "Tu plan de la semana", "xp": "P3 &middot; PERSONALIZAR", "u": "", "un": "", "k": "plan"}, {"d": 34, "s": 5, "l": "P", "le": "Personalizar", "fo": "Armar tu plan, no el plan de nadie", "a": "Cambiar una cosa del plan para que sea m&aacute;s tuyo", "ej": "", "x": "Tu plan de la semana", "xp": "P3 &middot; PERSONALIZAR", "u": "", "un": "", "k": "plan"}, {"d": 35, "s": 5, "l": "P", "le": "Personalizar", "fo": "Armar tu plan, no el plan de nadie", "a": "Primer d&iacute;a siguiendo el plan: diario normal", "ej": "", "x": "", "xp": "", "u": "", "un": ""}, {"d": 36, "s": 6, "l": "P", "le": "Personalizar", "fo": "Que el plan entre en tu semana real", "a": "Hacer el ejercicio &laquo;tu plan en tu semana real&raquo;", "ej": "", "x": "Tu plan en tu semana real", "xp": "P3 &middot; PERSONALIZAR", "u": "https://metodo.nuplan.com.ar/p", "un": "Paso 3 &middot; PERSONALIZAR"}, {"d": 37, "s": 6, "l": "P", "le": "Personalizar", "fo": "Que el plan entre en tu semana real", "a": "Mirar tu semana que viene y marcar los dos d&iacute;as m&aacute;s dif&iacute;ciles", "ej": "", "x": "", "xp": "", "u": "", "un": ""}, {"d": 38, "s": 6, "l": "P", "le": "Personalizar", "fo": "Que el plan entre en tu semana real", "a": "Decidir qu&eacute; vas a hacer esos dos d&iacute;as, por escrito", "ej": "", "x": "", "xp": "", "u": "", "un": ""}, {"d": 39, "s": 6, "l": "P", "le": "Personalizar", "fo": "Que el plan entre en tu semana real", "a": "Dejar algo listo la noche anterior, una sola cosa", "ej": "", "x": "", "xp": "", "u": "", "un": ""}, {"d": 40, "s": 6, "l": "P", "le": "Personalizar", "fo": "Que el plan entre en tu semana real", "a": "Foto de una comida del plan hecha por vos", "ej": "", "x": "", "xp": "", "u": "", "un": ""}, {"d": 41, "s": 6, "l": "P", "le": "Personalizar", "fo": "Que el plan entre en tu semana real", "a": "Anotar cu&aacute;nto tiempo real te llev&oacute; hoy", "ej": "", "x": "", "xp": "", "u": "", "un": ""}, {"d": 42, "s": 6, "l": "P", "le": "Personalizar", "fo": "Que el plan entre en tu semana real", "a": "Check-in con Rosana: ajustar el plan con ella", "ej": "", "x": "", "xp": "", "u": "", "un": "", "k": "checkin"}, {"d": 43, "s": 7, "l": "L", "le": "Liberar", "fo": "Que un desliz deje de arrastrarte al abandono", "a": "Mirar el video de LIBERAR y contestar sus cinco preguntas", "ej": "Paso 4 &middot; LIBERAR", "x": "", "xp": "", "u": "https://metodo.nuplan.com.ar/l", "un": "Paso 4 &middot; LIBERAR"}, {"d": 44, "s": 7, "l": "L", "le": "Liberar", "fo": "Que un desliz deje de arrastrarte al abandono", "a": "Armar tu protocolo de deslices: qu&eacute; hac&eacute;s los primeros diez minutos", "ej": "", "x": "Tu protocolo de deslices", "xp": "P4 &middot; LIBERAR", "u": "https://metodo.nuplan.com.ar/l", "un": "Paso 4 &middot; LIBERAR"}, {"d": 45, "s": 7, "l": "L", "le": "Liberar", "fo": "Que un desliz deje de arrastrarte al abandono", "a": "Leer tu protocolo en voz alta", "ej": "", "x": "", "xp": "", "u": "", "un": ""}, {"d": 46, "s": 7, "l": "L", "le": "Liberar", "fo": "Que un desliz deje de arrastrarte al abandono", "a": "Hacer &laquo;reescrib&iacute; la voz&raquo;: c&oacute;mo te habl&aacute;s cuando algo no sale", "ej": "", "x": "Reescrib&iacute; la voz", "xp": "P4 &middot; LIBERAR", "u": "https://metodo.nuplan.com.ar/l", "un": "Paso 4 &middot; LIBERAR"}, {"d": 47, "s": 7, "l": "L", "le": "Liberar", "fo": "Que un desliz deje de arrastrarte al abandono", "a": "Diario + anotar si apareci&oacute; alguno de los disparadores que mapeaste", "ej": "", "x": "", "xp": "", "u": "", "un": ""}, {"d": 48, "s": 7, "l": "L", "le": "Liberar", "fo": "Que un desliz deje de arrastrarte al abandono", "a": "Escribir tu carta al d&iacute;a que abandonaste", "ej": "", "x": "Carta al d&iacute;a que abandonaste", "xp": "P4 &middot; LIBERAR", "u": "https://metodo.nuplan.com.ar/l", "un": "Paso 4 &middot; LIBERAR"}, {"d": 49, "s": 7, "l": "L", "le": "Liberar", "fo": "Que un desliz deje de arrastrarte al abandono", "a": "Releer tu acuerdo de la semana 2 y ver si sigue siendo tuyo", "ej": "", "x": "", "xp": "", "u": "", "un": ""}, {"d": 50, "s": 8, "l": "L", "le": "Liberar", "fo": "Usar el protocolo de verdad", "a": "Diario + si hubo desliz, usar el protocolo y anotarlo", "ej": "", "x": "", "xp": "", "u": "", "un": ""}, {"d": 51, "s": 8, "l": "L", "le": "Liberar", "fo": "Usar el protocolo de verdad", "a": "Escribir qu&eacute; pas&oacute; despu&eacute;s de usarlo", "ej": "", "x": "", "xp": "", "u": "", "un": ""}, {"d": 52, "s": 8, "l": "L", "le": "Liberar", "fo": "Usar el protocolo de verdad", "a": "Elegir un disparador de tu mapa y sacarlo del medio, f&iacute;sicamente", "ej": "", "x": "", "xp": "", "u": "", "un": ""}, {"d": 53, "s": 8, "l": "L", "le": "Liberar", "fo": "Usar el protocolo de verdad", "a": "Foto de ese cambio en tu casa", "ej": "", "x": "", "xp": "", "u": "", "un": ""}, {"d": 54, "s": 8, "l": "L", "le": "Liberar", "fo": "Usar el protocolo de verdad", "a": "Diario normal", "ej": "", "x": "", "xp": "", "u": "", "un": ""}, {"d": 55, "s": 8, "l": "L", "le": "Liberar", "fo": "Usar el protocolo de verdad", "a": "Anotar en qu&eacute; se diferencia esta semana de la semana 1", "ej": "", "x": "", "xp": "", "u": "", "un": ""}, {"d": 56, "s": 8, "l": "L", "le": "Liberar", "fo": "Usar el protocolo de verdad", "a": "Check-in con Rosana: c&oacute;mo te fue con el protocolo", "ej": "", "x": "", "xp": "", "u": "", "un": "", "k": "checkin"}, {"d": 57, "s": 9, "l": "A", "le": "Activar", "fo": "Responderle a la duda con datos", "a": "Mirar el video de ACTIVAR y contestar sus cinco preguntas", "ej": "Paso 5 &middot; ACTIVAR", "x": "", "xp": "", "u": "https://metodo.nuplan.com.ar/a", "un": "Paso 5 &middot; ACTIVAR"}, {"d": 58, "s": 9, "l": "A", "le": "Activar", "fo": "Responderle a la duda con datos", "a": "Armar tu tablero de evidencia: elegir tus tres indicadores", "ej": "", "x": "Tu tablero de evidencia", "xp": "P5 &middot; ACTIVAR", "u": "https://metodo.nuplan.com.ar/a", "un": "Paso 5 &middot; ACTIVAR"}, {"d": 59, "s": 9, "l": "A", "le": "Activar", "fo": "Responderle a la duda con datos", "a": "Empezar tu lista de pruebas: qu&eacute; pod&eacute;s se&ntilde;alar que antes no pasaba", "ej": "", "x": "La lista de pruebas", "xp": "P5 &middot; ACTIVAR", "u": "https://metodo.nuplan.com.ar/a", "un": "Paso 5 &middot; ACTIVAR"}, {"d": 60, "s": 9, "l": "A", "le": "Activar", "fo": "Responderle a la duda con datos", "a": "Mirar tus fotos del d&iacute;a 6 al d&iacute;a 53, una al lado de la otra", "ej": "", "x": "", "xp": "", "u": "", "un": ""}, {"d": 61, "s": 9, "l": "A", "le": "Activar", "fo": "Responderle a la duda con datos", "a": "Diario + comparar con tu diario del d&iacute;a 4", "ej": "", "x": "", "xp": "", "u": "", "un": ""}, {"d": 62, "s": 9, "l": "A", "le": "Activar", "fo": "Responderle a la duda con datos", "a": "Escribir tu carta a tu yo que dudaba", "ej": "", "x": "Carta a tu yo que dudaba", "xp": "P5 &middot; ACTIVAR", "u": "https://metodo.nuplan.com.ar/a", "un": "Paso 5 &middot; ACTIVAR"}, {"d": 63, "s": 9, "l": "A", "le": "Activar", "fo": "Responderle a la duda con datos", "a": "Leer tu informe de evidencia completo", "ej": "", "x": "", "xp": "", "u": "", "un": ""}, {"d": 64, "s": 10, "l": "A", "le": "Activar", "fo": "Sostener sin que te empujen", "a": "Hacer el d&iacute;a completo sin abrir la app hasta la noche", "ej": "", "x": "", "xp": "", "u": "", "un": ""}, {"d": 65, "s": 10, "l": "A", "le": "Activar", "fo": "Sostener sin que te empujen", "a": "Diario + anotar qu&eacute; hiciste sin pensarlo", "ej": "", "x": "", "xp": "", "u": "", "un": ""}, {"d": 66, "s": 10, "l": "A", "le": "Activar", "fo": "Sostener sin que te empujen", "a": "Elegir una cosa que ya no te cuesta y sumarla a tus pruebas", "ej": "", "x": "", "xp": "", "u": "", "un": ""}, {"d": 67, "s": 10, "l": "A", "le": "Activar", "fo": "Sostener sin que te empujen", "a": "Probar un d&iacute;a dif&iacute;cil a prop&oacute;sito: salida, reuni&oacute;n, lo que sea", "ej": "", "x": "", "xp": "", "u": "", "un": ""}, {"d": 68, "s": 10, "l": "A", "le": "Activar", "fo": "Sostener sin que te empujen", "a": "Anotar c&oacute;mo te fue en ese d&iacute;a", "ej": "", "x": "", "xp": "", "u": "", "un": ""}, {"d": 69, "s": 10, "l": "A", "le": "Activar", "fo": "Sostener sin que te empujen", "a": "Foto de ese momento", "ej": "", "x": "", "xp": "", "u": "", "un": ""}, {"d": 70, "s": 10, "l": "A", "le": "Activar", "fo": "Sostener sin que te empujen", "a": "Check-in con Rosana: mostrarle tu tablero", "ej": "", "x": "", "xp": "", "u": "", "un": "", "k": "checkin"}, {"d": 71, "s": 11, "l": "N", "le": "Naturalizar", "fo": "Escribir tus propias reglas", "a": "Mirar el video de NATURALIZAR y contestar sus cinco preguntas", "ej": "Paso 6 &middot; NATURALIZAR", "x": "", "xp": "", "u": "https://metodo.nuplan.com.ar/n-3944", "un": "Paso 6 &middot; NATURALIZAR"}, {"d": 72, "s": 11, "l": "N", "le": "Naturalizar", "fo": "Escribir tus propias reglas", "a": "Escribir las cinco reglas de tu manual de autonom&iacute;a", "ej": "", "x": "Tu manual de autonom&iacute;a", "xp": "P6 &middot; NATURALIZAR", "u": "https://metodo.nuplan.com.ar/n-3944", "un": "Paso 6 &middot; NATURALIZAR"}, {"d": 73, "s": 11, "l": "N", "le": "Naturalizar", "fo": "Escribir tus propias reglas", "a": "Armar tu plan para las semanas dif&iacute;ciles", "ej": "", "x": "El plan para las semanas dif&iacute;ciles", "xp": "P6 &middot; NATURALIZAR", "u": "https://metodo.nuplan.com.ar/n-3944", "un": "Paso 6 &middot; NATURALIZAR"}, {"d": 74, "s": 11, "l": "N", "le": "Naturalizar", "fo": "Escribir tus propias reglas", "a": "Anotar tus se&ntilde;ales de alarma: qu&eacute; pasa cuando te est&aacute;s yendo", "ej": "", "x": "", "xp": "", "u": "", "un": ""}, {"d": 75, "s": 11, "l": "N", "le": "Naturalizar", "fo": "Escribir tus propias reglas", "a": "Diario + anotar qu&eacute; regla us&aacute;s sin darte cuenta", "ej": "", "x": "", "xp": "", "u": "", "un": ""}, {"d": 76, "s": 11, "l": "N", "le": "Naturalizar", "fo": "Escribir tus propias reglas", "a": "Pulir tu manual: sacar lo que no es tuyo", "ej": "", "x": "", "xp": "", "u": "", "un": ""}, {"d": 77, "s": 11, "l": "N", "le": "Naturalizar", "fo": "Escribir tus propias reglas", "a": "Imprimirlo o ponerlo donde lo veas", "ej": "", "x": "", "xp": "", "u": "", "un": ""}, {"d": 78, "s": 12, "l": "N", "le": "Naturalizar", "fo": "Cerrar y quedarte parada sola", "a": "Diario normal, como cualquier d&iacute;a", "ej": "", "x": "", "xp": "", "u": "", "un": ""}, {"d": 79, "s": 12, "l": "N", "le": "Naturalizar", "fo": "Cerrar y quedarte parada sola", "a": "Mirar tu l&iacute;nea de tiempo completa", "ej": "", "x": "", "xp": "", "u": "", "un": ""}, {"d": 80, "s": 12, "l": "N", "le": "Naturalizar", "fo": "Cerrar y quedarte parada sola", "a": "Volver a leer lo que escribiste antes de empezar", "ej": "", "x": "", "xp": "", "u": "", "un": ""}, {"d": 81, "s": 12, "l": "N", "le": "Naturalizar", "fo": "Cerrar y quedarte parada sola", "a": "Escribir tu carta a tu yo del d&iacute;a 1", "ej": "", "x": "Carta a tu yo del d&iacute;a 1", "xp": "P6 &middot; NATURALIZAR", "u": "https://metodo.nuplan.com.ar/n-3944", "un": "Paso 6 &middot; NATURALIZAR"}, {"d": 82, "s": 12, "l": "N", "le": "Naturalizar", "fo": "Cerrar y quedarte parada sola", "a": "Anotar qu&eacute; te llev&aacute;s, en una frase", "ej": "", "x": "", "xp": "", "u": "", "un": ""}, {"d": 83, "s": 12, "l": "N", "le": "Naturalizar", "fo": "Cerrar y quedarte parada sola", "a": "Grabar un audio de un minuto para vos misma", "ej": "", "x": "", "xp": "", "u": "", "un": ""}, {"d": 84, "s": 12, "l": "N", "le": "Naturalizar", "fo": "Cerrar y quedarte parada sola", "a": "Check-in final con Rosana", "ej": "", "x": "", "xp": "", "u": "", "un": "", "k": "checkin"}, {"d": 85, "s": 13, "l": "+", "le": "Cierre", "fo": "Cerrar y quedarte parada sola", "a": "Tu carta de graduaci&oacute;n. Rosana te escribe. Aparece en la app y te queda guardada.", "ej": "", "x": "", "xp": "", "u": "", "un": ""}, {"d": 86, "s": 13, "l": "+", "le": "Cierre", "fo": "Cerrar y quedarte parada sola", "a": "Tu l&iacute;nea de tiempo. Las fotos, los diarios y tus respuestas de los 84 d&iacute;as, en una sola pantalla.", "ej": "", "x": "", "xp": "", "u": "", "un": ""}, {"d": 87, "s": 13, "l": "+", "le": "Cierre", "fo": "Cerrar y quedarte parada sola", "a": "El antes y el despu&eacute;s en tus palabras. Lo que escribiste antes de empezar, al lado de tu carta del d&iacute;a 81.", "ej": "", "x": "", "xp": "", "u": "", "un": ""}, {"d": 88, "s": 13, "l": "+", "le": "Cierre", "fo": "Cerrar y quedarte parada sola", "a": "Tu manual, en limpio. Tus cinco reglas maquetadas para imprimir.", "ej": "", "x": "", "xp": "", "u": "", "un": ""}, {"d": 89, "s": 13, "l": "+", "le": "Cierre", "fo": "Cerrar y quedarte parada sola", "a": "Qu&eacute; sigue. Eleg&iacute;s si segu&iacute;s sola, con seguimiento mensual o con un acompa&ntilde;amiento nuevo.", "ej": "", "x": "", "xp": "", "u": "", "un": ""}, {"d": 90, "s": 13, "l": "+", "le": "Cierre", "fo": "Cerrar y quedarte parada sola", "a": "El cierre. La app queda abierta para consultar, el diario sigue disponible, y Rosana recibe tu informe final.", "ej": "", "x": "", "xp": "", "u": "", "un": ""}];
 var ONB = [
@@ -1126,7 +1153,7 @@ function arrancarApp(){
   }
   document.getElementById("aWsp").href = waRosana();
   pintarHoy(); pintarGrilla(); pintarChat(); marcarNav(); pintarModo(); pintarCola(); pintarBanner();
-  mandarDiasPendientes(); msjCargar();
+  mandarDiasPendientes(); msjCargar(); plrCargar();
   var ic = document.getElementById("iChat");
   if(ic && !ic.value && S.borrador.chat) ic.value = S.borrador.chat;
   if(esRosana()){ irR("programa") }
@@ -1164,6 +1191,7 @@ function pintarHoy(){
     '<div class="bt">' + bEj +
       (x.u ? '<a' + (bEj ? '' : ' class="lleno"') + ' href="' + x.u + '" target="_blank" rel="noopener">' +
         (bEj ? '<span class="ic"><svg class="i" aria-hidden="true"><use href="#i-pasos"/></svg></span>' : '') + 'Abrir ' + x.un + '</a>' : "") +
+      plrBotonHoy() +
       (diarioAbierto() ? '<button onclick="ir(\'diario\')"><span class="ic"><svg class="i" aria-hidden="true"><use href="#i-diario"/></svg></span>' +
         (nCom ? 'Tu diario de hoy<span class="mk">&#10003; cargado</span>' : 'Cargar mi día en el diario') + '</button>' : "") +
       '<button onclick="pedirFoto()"><span class="ic"><svg class="i" aria-hidden="true"><use href="#i-foto"/></svg></span>Subir una foto</button>' +
@@ -1498,6 +1526,7 @@ function plArmar(v){
   v.armado = hoyISO();
 }
 function plUI(){
+  if(plrHay()) return plrUI();
   var v = plSt();
   if(!window.NPMenu) return '<p class="aviso">No se pudo cargar el menú de Rosana. Revisá la conexión y volvé a abrir el día.</p>';
   var paso = v.paso || (v.semana ? 3 : 1), h = '<div class="pl-pasos">' + ["Cómo comés","Lo que te gusta","Tu semana"].map(function(t, i){
@@ -1542,7 +1571,8 @@ function plUI(){
 function plPintar(){ var u = document.getElementById("plUI"); if(u) u.innerHTML = plUI(); plBoton() }
 /* «Mandárselo a Rosana» aparece recién cuando hay una semana armada */
 function plBoton(){ var b = document.getElementById("ejEnv"), e = document.getElementById("ejEst"), v = plSt();
-  if(b && document.getElementById("plUI")){ b.hidden = !v.semana; if(e && !v.semana) e.textContent = "" } }
+  var listo = plrHay() ? plrEligio() : !!v.semana;
+  if(b && document.getElementById("plUI")){ b.hidden = !listo; if(e && !listo) e.textContent = "" } }
 function plClick(e){
   var b = e.target.closest ? e.target.closest("button") : null; if(!b || !b.closest("#plUI")) return;
   var v = plSt(), a;
@@ -1563,6 +1593,161 @@ function plClick(e){
   guardar(); plPintar();
 }
 document.addEventListener("click", plClick);
+
+
+/* ============ EL PLAN DE ROSANA EN SU APP (19/11) ============
+   Ro lo manda desde NuPlan (programa_planes); acá se ve el último. Lo que elige queda en S.ej.plan.v.ro
+   (se sincroniza con su cuenta como cualquier ejercicio). La tabla de porciones es la misma de NuPlan (NPPorc). */
+var PLR = { p:null, cargando:false, falta:false };
+function plrClave(){ return "nuplan_plan_ro_" + ((S.cuenta && S.cuenta.id) || "") }
+function plrValido(x){ return !!(x && x.id && x.plan && typeof x.plan === "object" && x.plan.porciones && typeof x.plan.porciones.comidas === "object") }
+function plrDeCache(){ try { var x = JSON.parse(localStorage.getItem(plrClave()) || "null"); if(plrValido(x)) PLR.p = x } catch(e){} }
+function plrCargar(){
+  if(!S.cuenta || esRosana()) return;
+  if(!PLR.p){ plrDeCache(); if(PLR.p) pintarHoy() }
+  if(!SB || PLR.cargando) return;
+  PLR.cargando = true;
+  var cuenta = S.cuenta.id;
+  Promise.resolve(SB.from("programa_planes").select("id, creado, plan").order("creado", { ascending:false }).limit(1))
+    .then(function(r){
+      PLR.cargando = false;
+      if(!S.cuenta || S.cuenta.id !== cuenta) return;
+      if(!r || r.error){ PLR.falta = !!(r && r.error && /programa_planes|schema cache|does not exist|PGRST205/i.test(String(r.error.message || r.error.code || ""))); return }
+      var x = (r.data || [])[0] || null;
+      if(!plrValido(x)) return;
+      var nuevo = !PLR.p || PLR.p.id !== x.id;
+      PLR.p = x;
+      try { localStorage.setItem(plrClave(), JSON.stringify(x)) } catch(e){}
+      if(nuevo){ pintarHoy(); if(document.getElementById("plUI")) plPintar() }
+    }, function(){ PLR.cargando = false });
+}
+function plrHay(){ return !!(PLR.p && window.NPPorc && !esRosana()) }
+/* su estado con el plan de Ro: si Ro manda uno nuevo, arranca de cero (las elecciones eran de otro plan) */
+function plrSt(){
+  if(!plrHay()) return null;
+  var v = plSt();
+  if(!v.ro || v.ro.id !== PLR.p.id) v.ro = { id: PLR.p.id, el: {}, tab: "comidas", visto: "" };
+  if(!v.ro.el || typeof v.ro.el !== "object") v.ro.el = {};
+  if(!Array.isArray(v.ro.semana)) v.ro.semana = JSON.parse(JSON.stringify(PLR.p.plan.semana || []));
+  return v.ro;
+}
+function plrPor(){ var p = (PLR.p && PLR.p.plan && PLR.p.plan.porciones) || {}; return { comidas: p.comidas || {}, tips: p.tips || {}, tipo: p.tipo || "n", cel: !!p.celiaco } }
+function plrNuevo(){ var v = S.ej && S.ej.plan && S.ej.plan.v; return plrHay() && !(v && v.ro && v.ro.id === PLR.p.id && v.ro.visto === PLR.p.id) }
+function plrBotonHoy(){
+  if(!plrHay()) return "";
+  return '<button onclick="abrirPlanRo()"><span class="ic"><svg class="i" aria-hidden="true"><use href="#i-plato"/></svg></span>Tu plan de Rosana' +
+    (plrNuevo() ? '<span class="plr-nuevo">nuevo</span>' : '') + '</button>';
+}
+function abrirPlanRo(){
+  if(!plrHay()) return;
+  var ro = plrSt(); if(ro.visto !== PLR.p.id){ ro.visto = PLR.p.id; guardar() }
+  pausaParar(); HOJA_DIA = 0;
+  $id("hjT").innerHTML = "Tu plan de Rosana";
+  $id("hjB").innerHTML = '<div id="plUI">' + plUI() + '</div>';
+  if(!abrirHojaUI()) $id("hjB").scrollTop = 0;
+  pintarHoy();
+}
+function plrUI(){
+  var ro = plrSt(), P = PLR.p.plan, tab = ro.tab || "comidas";
+  var h = '<p class="sub">Rosana te armó este plan' + (P.fecha ? " el " + fechaLinda(P.fecha) : "") + '. Cada comida tiene sus porciones: en cada una, tocá la opción que vas a comer.</p>' +
+    '<div class="pill plr-tabs" role="group" aria-label="Partes de tu plan">' + [["comidas","Tus comidas"],["ideas","Almuerzos y cenas"],["compras","Compras"]].map(function(t){
+      return '<button type="button" data-plr-tab="' + t[0] + '" class="' + (tab === t[0] ? "on" : "") + '" aria-pressed="' + (tab === t[0]) + '">' + t[1] + '</button>' }).join("") + '</div>';
+  return h + (tab === "ideas" ? plrIdeas(ro) : tab === "compras" ? plrCompras(ro) : plrComidas(ro));
+}
+function plrElegidas(ro, mom, gk, n, eqs){ return (ro.el[mom + "|" + gk] || []).filter(function(i){ return i >= 0 && i < eqs.length }).slice(0, n) }
+function plrComidas(ro){
+  var por = plrPor(), P = PLR.p.plan, h = "";
+  NPPorc.MOMENTOS.forEach(function(mo){
+    var x = por.comidas[mo.k] || {}, principal = !!NPPorc.PRINCIPAL[mo.k], filas = "";
+    if(principal) filas += '<div class="plr-g g-veg"><p class="plr-t"><span class="plr-libre">Libre</span> Vegetales, la mitad del plato</p><p class="plr-eqtxt">' + esc(NPPorc.VEGETALES) + '</p></div>';
+    if(mo.k === "desayuno" || mo.k === "merienda") filas += '<div class="plr-g g-inf"><p class="plr-t"><span class="plr-libre">Libre</span> Infusión: té, mate o café</p></div>';
+    (principal ? ["prot","carb","gra","fru","lac"] : ["lac","carb","prot","gra","fru"]).forEach(function(gk){
+      var n = Math.max(0, Math.min(12, +x[gk] || 0)); if(!n) return;
+      var eqs = NPPorc.equivalencias(gk, mo.k, por.tipo, por.cel), el = plrElegidas(ro, mo.k, gk, n, eqs), cuenta = {};
+      el.forEach(function(i){ cuenta[i] = (cuenta[i] || 0) + 1 });
+      var listo = el.length === n, cl = mo.k + "|" + gk, abierto = !listo || ro.ab === cl;
+      filas += '<div class="plr-g g-' + gk + '"><p class="plr-t"><span class="plr-n">' + n + '</span> ' + (n === 1 ? "porción" : "porciones") + ' de ' + esc(NPPorc.grupo(gk).t) +
+        '<span class="plr-c' + (listo ? " ok" : "") + '">' + (listo ? "&#10003; listo" : "elegiste " + el.length + " de " + n) + '</span></p>' +
+        '<div class="pl-ops">' + eqs.map(function(t, i){ var c = cuenta[i] || 0; if(!abierto && !c) return "";
+          return '<button type="button" data-plr-eq="' + cl + '|' + i + '" class="' + (c ? "on" : "") + '" aria-pressed="' + (c > 0) + '">' + esc(t) + (c > 1 ? ' <b>&times;' + c + '</b>' : '') + '</button>' }).join("") + '</div>' +
+        (!abierto ? '<button type="button" class="lnk" data-plr-abrir="' + cl + '">Cambiar</button>'
+          : el.length ? '<button type="button" class="lnk" data-plr-borrar="' + cl + '">Volver a elegir</button>' + (listo ? '<button type="button" class="lnk" data-plr-abrir="">Listo</button>' : '') : '') + '</div>';
+    });
+    if(!filas) return;
+    var tip = por.tips[mo.k];
+    h += '<div class="plr-com"><div class="plr-cab"><b>' + mo.t + '</b><span>' + mo.h + '</span></div>' + filas + (tip ? '<p class="plr-tip">' + esc(tip) + '</p>' : '') + '</div>';
+  });
+  h += '<p class="sub">Si una porción no te entra en esa comida, pasala a otra del mismo día.</p>';
+  if(P.agua && P.agua.litros) h += '<div class="ejcard"><b>Agua</b>' + esc(String(P.agua.litros).replace(".", ",")) + ' litros por día' + (P.agua.vasos ? ', unos ' + esc(String(P.agua.vasos)) + ' vasos' : '') + '.</div>';
+  var rec = (P.recomendaciones || []).filter(function(r){ return r && r.t });
+  if(rec.length) h += '<div class="plr-recos"><p class="ojo" style="margin:16px 0 4px">Recomendaciones de Rosana</p>' + rec.map(function(r){ return '<details><summary>' + esc(r.t) + '</summary><p>' + esc(r.c || "") + '</p></details>' }).join("") + '</div>';
+  return h;
+}
+function plrIdeas(ro){
+  var por = plrPor(), sem = ro.semana || [];
+  if(!sem.length) return '<p class="sub">Con este plan, Rosana no te mandó ideas de almuerzo y cena.</p>';
+  var d = Math.min(PL_DIA, sem.length - 1), dia2 = sem[d] || { comidas: [] };
+  var h = '<p class="sub">Ideas de Rosana para tus almuerzos y cenas. Las cantidades son las de tus porciones. Tocá un plato para cambiarlo por otro.</p>' +
+    '<div class="pl-dias">' + sem.map(function(x, i){ return '<button type="button" data-plr-dia="' + i + '" class="' + (i === d ? "on" : "") + '" aria-pressed="' + (i === d) + '">' + esc(String(x.dia || "").slice(0, 3)) + '</button>' }).join("") + '</div>' +
+    '<div class="pl-dia"><h3>' + esc(dia2.dia || "") + '</h3>';
+  (dia2.comidas || []).forEach(function(c){
+    var abierto = ro.cambiando === d + "|" + c.k;
+    h += '<div class="pl-com' + (abierto ? " abierta" : "") + '"><span class="mom">' + NPMenu.nombreMomento(c.k) + '</span>' +
+      '<button type="button" class="pl-plato" data-plr-cambiar="' + d + '|' + c.k + '" aria-expanded="' + abierto + '"><b>' + esc(c.t) + '</b><span class="pl-cam">' + (abierto ? "Cerrar" : "Cambiar") + '</span></button>';
+    if(abierto){
+      var alt = []; try { alt = NPMenu.alternativas(sem, d, c.k, por.tipo, por.cel) } catch(e){}
+      h += '<div class="pl-alt">' + alt.map(function(o){ return '<button type="button" data-plr-elegir="' + d + '|' + c.k + '|' + o.id + '"><b>' + esc(o.t) + '</b></button>' }).join("") + '</div>';
+    }
+    h += '</div>';
+  });
+  return h + '</div>';
+}
+/* lo que eligió, como texto: «1 rebanada de pan integral ×2» */
+function plrLista(ro){
+  var por = plrPor(), out = [];
+  NPPorc.MOMENTOS.forEach(function(mo){
+    var x = por.comidas[mo.k] || {}, partes = [];
+    NPPorc.GRUPOS.forEach(function(g){ var n = +x[g.k] || 0; if(!n) return;
+      var eqs = NPPorc.equivalencias(g.k, mo.k, por.tipo, por.cel), c = {}, orden = [];
+      plrElegidas(ro, mo.k, g.k, n, eqs).forEach(function(i){ if(!c[i]){ c[i] = 0; orden.push(i) } c[i]++ });
+      orden.forEach(function(i){ partes.push(eqs[i] + (c[i] > 1 ? " ×" + c[i] : "")) });
+    });
+    if(partes.length) out.push({ k: mo.t, v: partes.join(" · "), l: partes });
+  });
+  return out;
+}
+function plrCompras(ro){
+  var por = plrPor(), h = '<p class="sub">Lo que elegiste para tus comidas y lo de las ideas de almuerzo y cena.</p>';
+  var mias = [], vistos = {};
+  plrLista(ro).forEach(function(c){ c.l.forEach(function(t){ var b = t.replace(/ ×\d+$/, ""); if(!vistos[b]){ vistos[b] = 1; mias.push(b) } }) });
+  h += '<p class="ojo" style="margin:14px 0 6px">Tus elecciones</p>' + (mias.length ? '<ul class="mini">' + mias.map(function(x){ return '<li>' + esc(x) + '</li>' }).join("") + '</ul>' : '<p class="sub">Cuando elijas en «Tus comidas», aparecen acá.</p>');
+  var compras = {}; try { compras = NPMenu.compras(ro.semana || [], por.tipo, por.cel) } catch(e){}
+  var NOM = { carbsAndLegumes:"Carbohidratos y legumbres", proteins:"Proteínas", dairy:"Lácteos", vegetablesAndFruits:"Vegetales y frutas", fats:"Grasas", canned:"Enlatados", frozen:"Congelados" };
+  Object.keys(NOM).filter(function(k){ return compras[k] && compras[k].length }).forEach(function(k){
+    h += '<p class="ojo" style="margin:14px 0 6px">' + NOM[k] + '</p><ul class="mini">' + compras[k].map(function(x){ return '<li>' + esc(x) + '</li>' }).join("") + '</ul>' });
+  return h;
+}
+function plrEligio(){ var ro = plrSt(); return !!ro && Object.keys(ro.el).some(function(k){ return (ro.el[k] || []).length }) }
+function plrClick(e){
+  var b = e.target.closest ? e.target.closest("button") : null; if(!b || !b.closest("#plUI") || !plrHay()) return;
+  var ro = plrSt(), por = plrPor(), a, foco = null;
+  if((a = b.getAttribute("data-plr-tab"))){ ro.tab = a; ro.cambiando = ""; foco = '[data-plr-tab="' + a + '"]' }
+  else if((a = b.getAttribute("data-plr-eq"))){
+    var q = a.split("|"), cl = q[0] + "|" + q[1], i = +q[2], n = Math.min(12, +((por.comidas[q[0]] || {})[q[1]]) || 0); if(!n) return;
+    var el = (ro.el[cl] || []).slice(0, n); if(el.length >= n) el.shift(); el.push(i); ro.el[cl] = el; ro.cambios = (ro.cambios || 0) + 1; foco = '[data-plr-eq="' + a + '"]';
+    if(el.length === n && ro.ab === cl && n > 1) ro.ab = cl; else if(el.length === n) ro.ab = "" }
+  else if(b.hasAttribute("data-plr-abrir")){ a = b.getAttribute("data-plr-abrir"); var prev = ro.ab; ro.ab = a; foco = a ? '[data-plr-eq^="' + a + '|"]' : (prev ? '[data-plr-abrir="' + prev + '"]' : null) }
+  else if((a = b.getAttribute("data-plr-borrar"))){ delete ro.el[a]; ro.ab = ""; foco = '[data-plr-eq="' + a + '|0"]' }
+  else if((a = b.getAttribute("data-plr-dia"))){ PL_DIA = +a; ro.cambiando = ""; foco = '[data-plr-dia="' + a + '"]' }
+  else if((a = b.getAttribute("data-plr-cambiar"))){ ro.cambiando = ro.cambiando === a ? "" : a; foco = '[data-plr-cambiar="' + a + '"]' }
+  else if((a = b.getAttribute("data-plr-elegir"))){ var q2 = a.split("|");
+    try { ro.semana = NPMenu.cambiar(ro.semana, +q2[0], q2[1], q2[2], por.tipo, por.cel) } catch(err){}
+    ro.cambiando = ""; ro.cambiosSemana = (ro.cambiosSemana || 0) + 1; foco = '[data-plr-cambiar="' + q2[0] + '|' + q2[1] + '"]' }
+  else return;
+  guardar(); plPintar();
+  if(foco){ var f = document.querySelector("#plUI " + foco); if(f) try { f.focus({ preventScroll: true }) } catch(err){ f.focus() } }
+}
+document.addEventListener("click", plrClick);
 
 /* ============ EJERCICIOS ============ */
 function pintarHerr(){
@@ -1601,7 +1786,7 @@ function pintarRosana(){
       ". Tu recorrido queda guardado ahí: si cambiás de teléfono, entrás con el mismo mail y sigue todo.";
     document.getElementById("estCuenta").textContent = "";
   }
-  msjPintar(); msjCargar();
+  msjPintar(); msjCargar(); plrCargar();
   marcarNav();
 }
 function mandarCheckin(){
@@ -1994,6 +2179,10 @@ var EJC = {
     html: function(d, st){ return '<div id="plUI">' + plUI() + '</div>' },
     init: function(d, st){ plBoton() },
     bloq: function(d, st){
+      if(plrHay()){ var ro = plrSt(), l2 = plrLista(ro).map(function(c){ return { k: c.k, v: c.l.join("\n") } });
+        if(!l2.length) return [];
+        if(ro.cambiosSemana) l2.push({ k:"Platos que cambió en las ideas de almuerzo y cena", v: String(ro.cambiosSemana) });
+        return [{ t:"Lo que eligió de tu plan", l: l2 }] }
       var v = plSt(); if(!v.semana || !window.NPMenu) return [];
       var tipo = (PL_TIPOS.filter(function(t){ return t[0] === (v.tipo || "n") })[0] || ["","Como de todo"])[1] + (v.stacc ? " · sin TACC" : "");
       var l = [{ k:"Cómo come", v: tipo }];
@@ -2970,7 +3159,7 @@ function iniciarNube(){
       NUBE.sinSesion = false;
       if(esRosana()) return;
       if(S.bajado !== S.cuenta.id){ continuarEntrada(); return }
-      bajar("inicio").then(function(){ programarSubida(0); subirFotos(); pintarNube() });
+      bajar("inicio").then(function(){ programarSubida(0); subirFotos(); pintarNube(); plrCargar() });
     } else if(S.cuenta && !esRosana()){
       var sinRed = navigator.onLine === false || esErrorDeRed(r && r.error);
       if(!sinRed){ NUBE.sinSesion = true; pintarBanner(); if(S.bajado !== S.cuenta.id) abrirEntrada("volver") }

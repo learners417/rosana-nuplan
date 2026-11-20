@@ -29,7 +29,8 @@
     'inicio': 'nuplan-inicio.html',
     'empresas': 'nuplan-empresas.html',
     'legales': 'nuplan-legales.html',
-    'bienvenida': 'nuplan-bienvenida.html'
+    'bienvenida': 'nuplan-bienvenida.html',
+    'programa-segundo-gracias': 'nuplan-programa-segundo-gracias.html'
   };
   var rama = 'main';
   try { var pedida = new URLSearchParams(location.search).get('rama'); if (pedida && /^[a-z0-9-]{2,30}$/.test(pedida)) rama = pedida; } catch (e) {}

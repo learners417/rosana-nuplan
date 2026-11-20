@@ -419,6 +419,28 @@
   .reco tr.total td{border-top:2px solid var(--borde);font-weight:700;}
   .reco .nota{margin-top:12px;}
 
+  /* ---------- escalas con botones (E1) ---------- */
+  label.campo:has(.escala-sel){position:relative;}
+  .escala-sel{position:absolute;left:0;bottom:0;width:1px;height:1px;opacity:0;pointer-events:none;overflow:hidden;}
+  .escala-b{display:flex;gap:6px;margin-top:6px;}
+  .escala-b button{flex:1 1 0;min-width:44px;min-height:48px;padding:8px 10px;border:1.5px solid var(--line);border-radius:var(--r-lg);background:#fff;color:var(--ink);font:600 1rem var(--body);cursor:pointer;line-height:1.2;}
+  .escala-b.cinco button{font:700 1.2rem var(--mono);}
+  .escala-b button:hover{border-color:var(--accent);}
+  .escala-b button.on{background:var(--coral);border-color:var(--coral);color:#fff;}
+  .escala-b button:focus-visible{outline:2px solid var(--coral-dark);outline-offset:2px;}
+  .escala-ley{display:block;margin:6px 0 0;font-size:1rem;font-weight:400;color:var(--muted);}
+  .escala-ley b{color:var(--coral-dark);font-weight:700;}
+  #d-edad.falta{border-color:var(--coral);box-shadow:0 0 0 3px rgba(232,71,42,.15);}
+  #d-edad-aviso{margin:4px 0 12px;}
+  .campo-cin .check-chico{display:flex;align-items:center;gap:10px;min-height:44px;margin:-4px 0 6px;font-size:1rem;color:var(--texto);cursor:pointer;}
+  .campo-cin .check-chico input{width:22px;height:22px;accent-color:var(--coral);margin:0;}
+  .resultados li.otra-emp-t{cursor:default;background:transparent;border-top:1px solid var(--line);padding-top:12px;}
+  .resultados li.otra-emp-t span{font:700 1rem var(--mono);text-transform:uppercase;letter-spacing:.04em;color:var(--muted);}
+  .resultados li.otra-emp:not(.otra-emp-t){flex-direction:column;align-items:flex-start;justify-content:center;gap:2px;}
+  .resultados li.otra-emp small{font-family:var(--mono);color:var(--coral-dark);}
+  .resultados li.otra-emp-t:first-child{border-top:0;padding-top:6px;}
+  .resultados li.otra-emp + li.sin, .resultados li.otra-emp + li.nueva{border-top:1px solid var(--line);margin-top:8px;padding-top:14px;border-radius:0;}
+
   /* ---------- plan por porciones ---------- */
   .porc-ayuda{margin:0 0 16px;color:var(--texto);font-size:1.05rem;max-width:62ch;}
   .porc-tot{display:flex;flex-wrap:wrap;align-items:center;gap:12px 22px;background:var(--surface);border:1px solid var(--borde);border-left:5px solid var(--ambar);border-radius:var(--r-xl);padding:16px 20px;margin:0 0 16px;}
@@ -946,7 +968,7 @@
 </head>
 <body>
 
-<svg xmlns="http://www.w3.org/2000/svg" style="position:absolute;width:0;height:0;overflow:hidden" aria-hidden="true"><symbol id="i-marca" viewBox="0 0 24 24"><circle cx="12" cy="7.6" r="3.4"/><circle cx="16.4" cy="12" r="3.4"/><circle cx="12" cy="16.4" r="3.4"/><circle cx="7.6" cy="12" r="3.4"/></symbol><symbol id="i-inicio" viewBox="0 0 24 24"><path d="M3.5 10.5 12 3.5l8.5 7"/><path d="M5.5 9v10.5a1 1 0 0 0 1 1H10v-5.5h4v5.5h3.5a1 1 0 0 0 1-1V9"/></symbol><symbol id="i-buscar" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.6-3.6"/></symbol><symbol id="i-consulta" viewBox="0 0 24 24"><rect x="5" y="4" width="14" height="17" rx="2.2"/><path d="M9 4V2.8h6V4"/><path d="M8 13.2h2l1.5-3 2 5.6 1.5-2.6H16"/></symbol><symbol id="i-plato" viewBox="0 0 24 24"><path d="M3.5 3v6.2a2 2 0 0 0 2 2V21"/><path d="M7.5 3v6.2a2 2 0 0 1-2 2"/><path d="M5.5 3v5"/><circle cx="15.5" cy="12" r="5.5"/><circle cx="15.5" cy="12" r="2.4"/></symbol><symbol id="i-receta" viewBox="0 0 24 24"><path d="M12 6.6C10.4 5.1 7.8 4.6 4 4.6V18c3.8 0 6.4.5 8 2 1.6-1.5 4.2-2 8-2V4.6c-3.8 0-6.4.5-8 2Z"/><path d="M12 6.6V20"/></symbol><symbol id="i-informe" viewBox="0 0 24 24"><path d="M4 20.5h16"/><rect x="5.5" y="11" width="3.2" height="6.5" rx="1"/><rect x="10.4" y="6.5" width="3.2" height="11" rx="1"/><rect x="15.3" y="13.5" width="3.2" height="4" rx="1"/></symbol><symbol id="i-reco" viewBox="0 0 24 24"><path d="m4 6.2 1.6 1.6L8.4 5"/><path d="M11.5 6.5H20"/><path d="m4 12.2 1.6 1.6 2.8-2.8"/><path d="M11.5 12.5H20"/><path d="m4 18.2 1.6 1.6 2.8-2.8"/><path d="M11.5 18.5H20"/></symbol><symbol id="i-carpeta" viewBox="0 0 24 24"><path d="M3 7.2a2 2 0 0 1 2-2h4l2 2.4h8a2 2 0 0 1 2 2V18a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z"/></symbol><symbol id="i-enviar" viewBox="0 0 24 24"><path d="M21 3 10.2 13.8"/><path d="M21 3 14.6 21l-3.9-7.3L3.4 9.8Z"/></symbol><symbol id="i-programa" viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15.5" rx="2.2"/><path d="M3.5 10h17M8 3v4M16 3v4"/><path d="M7.5 14h3.5M7.5 17h6"/></symbol><symbol id="i-empresa" viewBox="0 0 24 24"><rect x="4" y="3" width="10.5" height="18" rx="1.6"/><path d="M14.5 9H19a1 1 0 0 1 1 1v11"/><path d="M7.5 7h3.5M7.5 11h3.5M7.5 15h3.5M2.5 21h19"/></symbol><symbol id="i-salir" viewBox="0 0 24 24"><path d="M10 4H6.5a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2H10"/><path d="m15 16 4-4-4-4"/><path d="M19 12H9.5"/></symbol><symbol id="i-chev" viewBox="0 0 24 24"><path d="m9 5.5 6.5 6.5L9 18.5"/></symbol><symbol id="i-atras" viewBox="0 0 24 24"><path d="M15 5.5 8.5 12l6.5 6.5"/></symbol><symbol id="i-mas" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol><symbol id="i-persona-mas" viewBox="0 0 24 24"><circle cx="9.5" cy="8" r="3.6"/><path d="M3 20.2c.8-3.6 3.4-5.6 6.5-5.6s5.7 2 6.5 5.6"/><path d="M19 7.5v6.5M15.8 10.8h6.4"/></symbol><symbol id="i-imprimir" viewBox="0 0 24 24"><path d="M7 9V3.5h10V9"/><rect x="3.5" y="9" width="17" height="8" rx="2"/><path d="M7 14.5h10v6H7Z"/></symbol><symbol id="i-mail" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2.2"/><path d="m4 7 8 6 8-6"/></symbol><symbol id="i-copiar" viewBox="0 0 24 24"><rect x="8.5" y="8.5" width="12" height="12" rx="2.2"/><path d="M15.5 8.5V5.5a2 2 0 0 0-2-2h-8a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h3"/></symbol><symbol id="i-editar" viewBox="0 0 24 24"><path d="M4 20h4L19 9a2.8 2.8 0 0 0-4-4L4 16Z"/><path d="m13.5 6.5 4 4"/></symbol><symbol id="i-hoy" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6"/></symbol><symbol id="i-camino" viewBox="0 0 24 24"><circle cx="6" cy="18.5" r="2.4"/><circle cx="18" cy="5.5" r="2.4"/><path d="M8.4 18.5h7.1a3 3 0 0 0 0-6h-7a3 3 0 0 1 0-6h7.1"/></symbol><symbol id="i-diario" viewBox="0 0 24 24"><path d="M5 3.5h11.5a2 2 0 0 1 2 2V20a.5.5 0 0 1-.5.5H7a2 2 0 0 1-2-2Z"/><path d="M5 18.5a2 2 0 0 1 2-2h11.5"/><path d="M9 8h6M9 11.5h4"/></symbol><symbol id="i-pasos" viewBox="0 0 24 24"><path d="M3.5 20.5h5v-5h5v-5h5v-5h2"/></symbol><symbol id="i-chat" viewBox="0 0 24 24"><path d="M20 14.5a2 2 0 0 1-2 2H8.5L4 20V6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2Z"/><path d="M8.5 9.5h7M8.5 12.5h4.5"/></symbol><symbol id="i-rosana" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4.5 20.5c1-4 4-6 7.5-6s6.5 2 7.5 6"/></symbol><symbol id="i-foto" viewBox="0 0 24 24"><path d="M4 8.5a2 2 0 0 1 2-2h2l1.6-2.2h4.8L16 6.5h2a2 2 0 0 1 2 2V18a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2Z"/><circle cx="12" cy="12.8" r="3.6"/></symbol><symbol id="i-reloj" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></symbol><symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5"/></symbol><symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></symbol><symbol id="i-linea" viewBox="0 0 24 24"><path d="M4 6h3M4 12h3M4 18h3"/><circle cx="10" cy="6" r="1.4"/><circle cx="10" cy="12" r="1.4"/><circle cx="10" cy="18" r="1.4"/><path d="M14 6h6M14 12h6M14 18h6"/></symbol><symbol id="i-play" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M10 8.5v7l6-3.5Z"/></symbol><symbol id="i-chispa" viewBox="0 0 24 24"><path d="M12 3.5 13.8 10 20.5 12 13.8 14 12 20.5 10.2 14 3.5 12 10.2 10Z"/></symbol><symbol id="i-whatsapp" viewBox="0 0 24 24"><path d="M4 20l1.3-4A8 8 0 1 1 8.4 19Z"/><path d="M9 8.6c0 3.2 2.9 6.4 6.3 6.4l.9-1.5-2-1-1 1c-1-.4-2.4-1.8-2.8-2.8l1-1-1-2Z"/></symbol><symbol id="i-basura" viewBox="0 0 24 24"><path d="M4 7h16M10 11v6M14 11v6"/><path d="M6 7l1 12.5a1.5 1.5 0 0 0 1.5 1.5h7a1.5 1.5 0 0 0 1.5-1.5L18 7"/><path d="M9 7V4.5h6V7"/></symbol><symbol id="i-llave" viewBox="0 0 24 24"><circle cx="8" cy="15" r="4"/><path d="m11 12 8.5-8.5M16.5 6.5l2.5 2.5M14 9l2 2"/></symbol></svg>
+<svg xmlns="http://www.w3.org/2000/svg" style="position:absolute;width:0;height:0;overflow:hidden" aria-hidden="true"><symbol id="i-marca" viewBox="0 0 24 24"><circle cx="12" cy="7.6" r="3.4"/><circle cx="16.4" cy="12" r="3.4"/><circle cx="12" cy="16.4" r="3.4"/><circle cx="7.6" cy="12" r="3.4"/></symbol><symbol id="i-inicio" viewBox="0 0 24 24"><path d="M3.5 10.5 12 3.5l8.5 7"/><path d="M5.5 9v10.5a1 1 0 0 0 1 1H10v-5.5h4v5.5h3.5a1 1 0 0 0 1-1V9"/></symbol><symbol id="i-buscar" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.6-3.6"/></symbol><symbol id="i-consulta" viewBox="0 0 24 24"><rect x="5" y="4" width="14" height="17" rx="2.2"/><path d="M9 4V2.8h6V4"/><path d="M8 13.2h2l1.5-3 2 5.6 1.5-2.6H16"/></symbol><symbol id="i-plato" viewBox="0 0 24 24"><path d="M3.5 3v6.2a2 2 0 0 0 2 2V21"/><path d="M7.5 3v6.2a2 2 0 0 1-2 2"/><path d="M5.5 3v5"/><circle cx="15.5" cy="12" r="5.5"/><circle cx="15.5" cy="12" r="2.4"/></symbol><symbol id="i-receta" viewBox="0 0 24 24"><path d="M12 6.6C10.4 5.1 7.8 4.6 4 4.6V18c3.8 0 6.4.5 8 2 1.6-1.5 4.2-2 8-2V4.6c-3.8 0-6.4.5-8 2Z"/><path d="M12 6.6V20"/></symbol><symbol id="i-lista" viewBox="0 0 24 24"><rect x="4" y="4.5" width="16" height="16" rx="2"/><path d="M4 9.5h16M8.5 2.5v4M15.5 2.5v4M8 13.5h3M8 17h6"/></symbol><symbol id="i-qr" viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="6.5" height="6.5" rx="1"/><rect x="14" y="3.5" width="6.5" height="6.5" rx="1"/><rect x="3.5" y="14" width="6.5" height="6.5" rx="1"/><path d="M14 14h2.5v2.5H14zM18 18h2.5v2.5H18zM18 14h2.5M14 18v2.5"/></symbol><symbol id="i-planilla" viewBox="0 0 24 24"><rect x="3.5" y="4" width="17" height="16" rx="2"/><path d="M3.5 9h17M3.5 14h17M9.5 4v16"/></symbol><symbol id="i-informe" viewBox="0 0 24 24"><path d="M4 20.5h16"/><rect x="5.5" y="11" width="3.2" height="6.5" rx="1"/><rect x="10.4" y="6.5" width="3.2" height="11" rx="1"/><rect x="15.3" y="13.5" width="3.2" height="4" rx="1"/></symbol><symbol id="i-reco" viewBox="0 0 24 24"><path d="m4 6.2 1.6 1.6L8.4 5"/><path d="M11.5 6.5H20"/><path d="m4 12.2 1.6 1.6 2.8-2.8"/><path d="M11.5 12.5H20"/><path d="m4 18.2 1.6 1.6 2.8-2.8"/><path d="M11.5 18.5H20"/></symbol><symbol id="i-carpeta" viewBox="0 0 24 24"><path d="M3 7.2a2 2 0 0 1 2-2h4l2 2.4h8a2 2 0 0 1 2 2V18a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z"/></symbol><symbol id="i-enviar" viewBox="0 0 24 24"><path d="M21 3 10.2 13.8"/><path d="M21 3 14.6 21l-3.9-7.3L3.4 9.8Z"/></symbol><symbol id="i-programa" viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15.5" rx="2.2"/><path d="M3.5 10h17M8 3v4M16 3v4"/><path d="M7.5 14h3.5M7.5 17h6"/></symbol><symbol id="i-empresa" viewBox="0 0 24 24"><rect x="4" y="3" width="10.5" height="18" rx="1.6"/><path d="M14.5 9H19a1 1 0 0 1 1 1v11"/><path d="M7.5 7h3.5M7.5 11h3.5M7.5 15h3.5M2.5 21h19"/></symbol><symbol id="i-salir" viewBox="0 0 24 24"><path d="M10 4H6.5a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2H10"/><path d="m15 16 4-4-4-4"/><path d="M19 12H9.5"/></symbol><symbol id="i-chev" viewBox="0 0 24 24"><path d="m9 5.5 6.5 6.5L9 18.5"/></symbol><symbol id="i-atras" viewBox="0 0 24 24"><path d="M15 5.5 8.5 12l6.5 6.5"/></symbol><symbol id="i-mas" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol><symbol id="i-persona-mas" viewBox="0 0 24 24"><circle cx="9.5" cy="8" r="3.6"/><path d="M3 20.2c.8-3.6 3.4-5.6 6.5-5.6s5.7 2 6.5 5.6"/><path d="M19 7.5v6.5M15.8 10.8h6.4"/></symbol><symbol id="i-imprimir" viewBox="0 0 24 24"><path d="M7 9V3.5h10V9"/><rect x="3.5" y="9" width="17" height="8" rx="2"/><path d="M7 14.5h10v6H7Z"/></symbol><symbol id="i-mail" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2.2"/><path d="m4 7 8 6 8-6"/></symbol><symbol id="i-copiar" viewBox="0 0 24 24"><rect x="8.5" y="8.5" width="12" height="12" rx="2.2"/><path d="M15.5 8.5V5.5a2 2 0 0 0-2-2h-8a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h3"/></symbol><symbol id="i-editar" viewBox="0 0 24 24"><path d="M4 20h4L19 9a2.8 2.8 0 0 0-4-4L4 16Z"/><path d="m13.5 6.5 4 4"/></symbol><symbol id="i-hoy" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6"/></symbol><symbol id="i-camino" viewBox="0 0 24 24"><circle cx="6" cy="18.5" r="2.4"/><circle cx="18" cy="5.5" r="2.4"/><path d="M8.4 18.5h7.1a3 3 0 0 0 0-6h-7a3 3 0 0 1 0-6h7.1"/></symbol><symbol id="i-diario" viewBox="0 0 24 24"><path d="M5 3.5h11.5a2 2 0 0 1 2 2V20a.5.5 0 0 1-.5.5H7a2 2 0 0 1-2-2Z"/><path d="M5 18.5a2 2 0 0 1 2-2h11.5"/><path d="M9 8h6M9 11.5h4"/></symbol><symbol id="i-pasos" viewBox="0 0 24 24"><path d="M3.5 20.5h5v-5h5v-5h5v-5h2"/></symbol><symbol id="i-chat" viewBox="0 0 24 24"><path d="M20 14.5a2 2 0 0 1-2 2H8.5L4 20V6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2Z"/><path d="M8.5 9.5h7M8.5 12.5h4.5"/></symbol><symbol id="i-rosana" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4.5 20.5c1-4 4-6 7.5-6s6.5 2 7.5 6"/></symbol><symbol id="i-foto" viewBox="0 0 24 24"><path d="M4 8.5a2 2 0 0 1 2-2h2l1.6-2.2h4.8L16 6.5h2a2 2 0 0 1 2 2V18a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2Z"/><circle cx="12" cy="12.8" r="3.6"/></symbol><symbol id="i-reloj" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></symbol><symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5"/></symbol><symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></symbol><symbol id="i-linea" viewBox="0 0 24 24"><path d="M4 6h3M4 12h3M4 18h3"/><circle cx="10" cy="6" r="1.4"/><circle cx="10" cy="12" r="1.4"/><circle cx="10" cy="18" r="1.4"/><path d="M14 6h6M14 12h6M14 18h6"/></symbol><symbol id="i-play" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M10 8.5v7l6-3.5Z"/></symbol><symbol id="i-chispa" viewBox="0 0 24 24"><path d="M12 3.5 13.8 10 20.5 12 13.8 14 12 20.5 10.2 14 3.5 12 10.2 10Z"/></symbol><symbol id="i-whatsapp" viewBox="0 0 24 24"><path d="M4 20l1.3-4A8 8 0 1 1 8.4 19Z"/><path d="M9 8.6c0 3.2 2.9 6.4 6.3 6.4l.9-1.5-2-1-1 1c-1-.4-2.4-1.8-2.8-2.8l1-1-1-2Z"/></symbol><symbol id="i-basura" viewBox="0 0 24 24"><path d="M4 7h16M10 11v6M14 11v6"/><path d="M6 7l1 12.5a1.5 1.5 0 0 0 1.5 1.5h7a1.5 1.5 0 0 0 1.5-1.5L18 7"/><path d="M9 7V4.5h6V7"/></symbol><symbol id="i-llave" viewBox="0 0 24 24"><circle cx="8" cy="15" r="4"/><path d="m11 12 8.5-8.5M16.5 6.5l2.5 2.5M14 9l2 2"/></symbol></svg>
 <div class="topbar">
   <div class="wrap row">
     <button class="brand" type="button" onclick="irA('inicio')" aria-label="NuPlan · ir al inicio"><span class="punto"><svg class="i" aria-hidden="true"><use href="#i-marca"/></svg></span>NuPlan</button>
@@ -995,13 +1017,13 @@
   <p class="bajada">Escribí dos letras de su nombre y tocalo en la lista.</p>
   <div class="caja">
     <div class="buscador">
-      <input type="text" id="busca-paciente-ini" placeholder="Nombre o apellido…" aria-label="Buscar paciente" autocomplete="off" oninput="filtrarPacientesIni(this.value)">
+      <input type="text" id="busca-paciente-ini" placeholder="Nombre o apellido…" aria-label="Buscar persona" autocomplete="off" oninput="filtrarPacientesIni(this.value)">
       <ul class="resultados" id="lista-pacientes-ini"></ul>
     </div>
     <div id="ini-recientes" class="oculto"></div>
     <p class="nota" style="margin:12px 0 0;">¿Primera vez? <button type="button" class="enlace" onclick="abrirConsultaNueva('')">Cargá su primera consulta</button> · <button type="button" class="enlace" onclick="abrirPersonas()">Ver la lista completa</button></p>
   </div>
-  <div class="grupo-t">Con una paciente</div>
+  <div class="grupo-t">Con una persona</div>
   <div class="tarjetas">
     <button class="tarjeta" onclick="abrirConsulta()"><span class="ico"><svg class="i" aria-hidden="true"><use href="#i-consulta"/></svg></span><span class="tx"><h3>Nueva consulta</h3><p>Peso, cintura, adherencia, energía y sueño.</p></span><svg class="i chev" aria-hidden="true"><use href="#i-chev"/></svg></button>
     <button class="tarjeta" onclick="abrirAntro()"><span class="ico"><svg class="i" aria-hidden="true"><use href="#i-pasos"/></svg></span><span class="tx"><h3>Antropometría</h3><p>Pliegues, perímetros, composición corporal y su informe.</p></span><svg class="i chev" aria-hidden="true"><use href="#i-chev"/></svg></button>
@@ -1017,9 +1039,9 @@
   <div class="grupo-t">Empresas</div>
   <div class="tarjetas">
     <button class="tarjeta" onclick="abrirInformeEmpresa()"><span class="ico"><svg class="i" aria-hidden="true"><use href="#i-informe"/></svg></span><span class="tx"><h3>Informe para la empresa</h3><p>Participación, energía, hábitos y riesgo del grupo. Sin nombres.</p></span><svg class="i chev" aria-hidden="true"><use href="#i-chev"/></svg></button>
-    <button class="tarjeta" onclick="abrirListado()"><span class="ico"><svg class="i" aria-hidden="true"><use href="#i-informe"/></svg></span><span class="tx"><h3>Consultas del mes</h3><p>Quién se atendió en el mes, con nombre. Sin datos clínicos.</p></span><svg class="i chev" aria-hidden="true"><use href="#i-chev"/></svg></button>
-    <button class="tarjeta" onclick="abrirFormularios()"><span class="ico"><svg class="i" aria-hidden="true"><use href="#i-informe"/></svg></span><span class="tx"><h3>Formularios con QR</h3><p>Un link por feria o evento. Las respuestas, para revisar y dar de alta.</p><p class="ini-n oculto" id="ini-forms-n"></p></span><svg class="i chev" aria-hidden="true"><use href="#i-chev"/></svg></button>
-    <button class="tarjeta" onclick="abrirImportar()"><span class="ico"><svg class="i" aria-hidden="true"><use href="#i-informe"/></svg></span><span class="tx"><h3>Importar desde Excel</h3><p>La planilla de la feria o cualquier Excel. Ves qué entra antes de guardar.</p></span><svg class="i chev" aria-hidden="true"><use href="#i-chev"/></svg></button>
+    <button class="tarjeta" onclick="abrirListado()"><span class="ico"><svg class="i" aria-hidden="true"><use href="#i-lista"/></svg></span><span class="tx"><h3>Consultas del mes</h3><p>Quién se atendió en el mes, con nombre. Sin datos clínicos.</p></span><svg class="i chev" aria-hidden="true"><use href="#i-chev"/></svg></button>
+    <button class="tarjeta" onclick="abrirFormularios()"><span class="ico"><svg class="i" aria-hidden="true"><use href="#i-qr"/></svg></span><span class="tx"><h3>Formularios con QR</h3><p>Un link por feria o evento. Las respuestas, para revisar y dar de alta.</p><p class="ini-n oculto" id="ini-forms-n"></p></span><svg class="i chev" aria-hidden="true"><use href="#i-chev"/></svg></button>
+    <button class="tarjeta" onclick="abrirImportar()"><span class="ico"><svg class="i" aria-hidden="true"><use href="#i-planilla"/></svg></span><span class="tx"><h3>Importar desde Excel</h3><p>La planilla de la feria o cualquier Excel. Ves qué entra antes de guardar.</p></span><svg class="i chev" aria-hidden="true"><use href="#i-chev"/></svg></button>
     <button class="tarjeta" onclick="abrirEmpresas()"><span class="ico"><svg class="i" aria-hidden="true"><use href="#i-empresa"/></svg></span><span class="tx"><h3>Empresas</h3><p>Agregar una empresa o feria, su diseño de informe y cuántas personas tiene.</p></span><svg class="i chev" aria-hidden="true"><use href="#i-chev"/></svg></button>
     <button class="tarjeta" onclick="abrirRecomendaciones()"><span class="ico"><svg class="i" aria-hidden="true"><use href="#i-reco"/></svg></span><span class="tx"><h3>Recomendaciones</h3><p>Fibra, hidratación y ultraprocesados, para imprimir.</p></span><svg class="i chev" aria-hidden="true"><use href="#i-chev"/></svg></button>
   </div>
@@ -1033,7 +1055,7 @@
   <div class="caja">
     <span class="sub" style="margin-top:0;">¿Para quién? Es opcional: el nombre va en el saludo y en el ejercicio</span>
     <div class="buscador">
-      <input type="text" id="bib-quien" placeholder="Nombre o paciente…" autocomplete="off" oninput="filtrarPacientesBib(this.value)">
+      <input type="text" id="bib-quien" placeholder="Nombre de la persona…" autocomplete="off" oninput="filtrarPacientesBib(this.value)">
       <ul class="resultados" id="lista-pacientes-bib"></ul>
     </div>
     <div class="bib-elegida oculto" id="bib-elegida">
@@ -1059,6 +1081,8 @@
       <p class="nota" style="margin-top:0">Le llega un mail con el link a su app. Entra con su mail y un código, sin contraseña.</p>
       <label class="campo">Nombre y apellido<input type="text" id="alta-nombre" autocomplete="off"></label>
       <label class="campo">Mail<input type="email" id="alta-mail" autocomplete="off" inputmode="email" autocapitalize="off" spellcheck="false"></label>
+      <label class="campo">Celular (opcional)<input type="tel" id="alta-tel" autocomplete="off" inputmode="tel" placeholder="11 5555 1234"></label>
+      <p class="nota" style="margin-top:-6px">Con código de área, sin 0 ni 15. Con el mail le damos acceso a la comunidad del programa.</p>
       <div class="nav-pasos" style="margin-top:0">
         <button type="button" class="btn suave" onclick="altaCerrar()">Cancelar</button>
         <button type="button" class="btn" id="alta-ok" onclick="altaGuardar()">Darla de alta y mandarle el acceso</button>
@@ -1105,7 +1129,7 @@
       <div class="botonera"><button class="btn chico" onclick="nuevoPlanPara()">Plan nuevo</button><button class="btn chico suave" onclick="guaDeselegir()">Cambiar</button></div>
     </div>
     <p class="aviso" id="gua-aviso"></p>
-    <p class="nota" style="margin:14px 0 0;">¿Un recetario sin paciente? <button type="button" class="enlace" onclick="listarGenerales()">Ver los recetarios generales</button></p>
+    <p class="nota" style="margin:14px 0 0;">¿Un recetario general? <button type="button" class="enlace" onclick="listarGenerales()">Ver los recetarios generales</button></p>
   </div>
   <div id="gua-lista"></div>
   <div class="nav-pasos">
@@ -1121,7 +1145,7 @@
   <p class="bajada no-imprimir">Pliegues, perímetros y diámetros. Con peso y talla ya se guarda; con las 17 medidas sale la composición corporal completa y el informe.</p>
   <div class="caja no-imprimir" id="an-quien">
     <div class="buscador" id="an-buscar">
-      <input type="text" id="busca-paciente-an" placeholder="Nombre o apellido…" aria-label="Buscar paciente" autocomplete="off" oninput="filtrarPacientesAn(this.value)">
+      <input type="text" id="busca-paciente-an" placeholder="Nombre o apellido…" aria-label="Buscar persona" autocomplete="off" oninput="filtrarPacientesAn(this.value)">
       <ul class="resultados" id="lista-pacientes-an"></ul>
     </div>
     <div class="elegido oculto" id="an-elegido" style="margin-top:0;">
@@ -1363,7 +1387,7 @@
 </section>
 
 <section class="pantalla wrap oculto" id="p-ficha">
-  <span class="kicker no-imprimir">Ficha de la paciente</span>
+  <span class="kicker no-imprimir">Ficha</span>
   <div class="caja no-imprimir" id="ficha-caja">
     <div class="elegido" id="ficha-cab" style="margin-top:0;">
       <div><b id="fi-nombre"></b><small id="fi-datos"></small></div>
@@ -1412,7 +1436,7 @@
 
 <!-- ============ ALTA DE PACIENTE ============ -->
 <section class="pantalla wrap oculto" id="p-alta">
-  <span class="kicker">Paciente nueva</span>
+  <span class="kicker">Persona nueva</span>
   <h2>¿Quién es?</h2>
   <p class="bajada">Con nombre, apellido, peso y talla alcanza. Lo demás se puede completar después desde su ficha.</p>
   <div class="caja">
@@ -1429,7 +1453,7 @@
       <label class="campo">Mail<input type="email" id="a-mail" autocomplete="off"></label>
     </div>
     <label class="campo">Área / sector (opcional)<input type="text" id="a-area" autocomplete="off" placeholder="Ej: Administración"></label>
-    <p class="nota">Queda en <b id="a-empresa"></b>, como paciente en progreso. Se guarda en la misma app.</p>
+    <p class="nota">Queda en <b id="a-empresa"></b>, como persona en seguimiento. Se guarda en la misma app.</p>
     <p class="aviso" id="a-aviso"></p>
   </div>
   <div class="nav-pasos">
@@ -1479,7 +1503,8 @@
       <div class="grid3">
         <label class="campo">Peso (kg)<input type="number" step="0.1" min="0" inputmode="decimal" id="c-peso" placeholder="opcional"></label>
         <label class="campo">Talla (cm)<input type="number" step="0.1" min="0" inputmode="decimal" id="c-talla" placeholder="opcional"></label>
-        <label class="campo">Cintura (cm)<input type="number" step="0.1" min="0" inputmode="decimal" id="c-cintura" placeholder="opcional"></label>
+        <div class="campo-cin"><label class="campo">Cintura (cm) *<input type="number" step="0.1" min="0" inputmode="decimal" id="c-cintura" oninput="if(this.value) $('c-sin-cintura').checked=false"></label>
+        <label class="check-chico"><input type="checkbox" id="c-sin-cintura"> No se pudo medir hoy</label></div>
       </div>
       <p class="nota" id="c-imc"></p>
     </div>
@@ -1585,10 +1610,11 @@
         <label class="campo">Cintura (cm)<input type="number" step="0.1" id="d-cintura" oninput="recalcular()"></label>
       </div>
       <div class="grid3">
-        <label class="campo">Edad<input type="number" id="d-edad" oninput="recalcular()"></label>
+        <label class="campo">Edad<input type="number" id="d-edad" min="1" max="120" inputmode="numeric" oninput="recalcular()"></label>
         <label class="campo">Sexo<select id="d-sexo" onchange="recalcular()"><option>Femenino</option><option>Masculino</option></select></label>
         <label class="campo">Actividad<select id="d-actividad" onchange="recalcular()"></select></label>
       </div>
+      <p class="aviso error" id="d-edad-aviso" hidden></p>
       <label class="campo">Valor calórico definido a mano (opcional)
         <input type="number" id="d-manual" placeholder="Dejalo vacío para usar el cálculo" oninput="recalcular()"></label>
     </div>
@@ -1627,7 +1653,7 @@
       <label class="campo" style="margin-top:22px;">Alimentos que no puede consumir
         <textarea id="d-restricciones" placeholder="Alergias, rechazos, lo que no entra"></textarea></label>
       <label class="campo">Notas para el plan
-        <textarea id="d-objetivos" placeholder="Lo que la paciente contó, lo que querés que el plan tenga en cuenta"></textarea></label>
+        <textarea id="d-objetivos" placeholder="Lo que contó, lo que querés que el plan tenga en cuenta"></textarea></label>
       <label class="interruptor"><input type="checkbox" id="d-ocultar"> Ocultar cifras calóricas (trastorno de la conducta alimentaria)</label>
     </div>
     <div class="nav-pasos">
@@ -1674,7 +1700,7 @@
     </div>
     <div class="caja">
       <span class="sub">Recomendaciones generales al final del plan</span>
-      <p class="bajada" style="margin-bottom:10px;font-size:1rem;">Tocá las que van para esta paciente. Cada una suma una hoja al plan.</p>
+      <p class="bajada" style="margin-bottom:10px;font-size:1rem;">Tocá las que van para esta persona. Cada una suma una hoja al plan.</p>
       <div class="chips" id="chips-reco"></div>
     </div>
     <div class="nav-pasos">
@@ -1701,9 +1727,9 @@
   <h2>¿Cuántas recetas de cada tipo?</h2>
   <p class="bajada">Poné la cantidad al lado de cada uno. Hasta 12 en total.</p>
   <div class="caja">
-    <span class="sub">Paciente (opcional)</span>
+    <span class="sub">Persona (opcional)</span>
     <div class="buscador">
-      <input type="text" id="busca-paciente-rec" placeholder="Buscar paciente, o dejalo vacío para un recetario general" autocomplete="off" oninput="filtrarPacientesRec(this.value)">
+      <input type="text" id="busca-paciente-rec" placeholder="Buscar a la persona, o dejalo vacío para un recetario general" autocomplete="off" oninput="filtrarPacientesRec(this.value)">
       <ul class="resultados" id="lista-pacientes-rec"></ul>
     </div>
     <div class="elegido oculto" id="rec-elegido">
@@ -2111,12 +2137,13 @@ async function iniciarSesion(u){
   $("saludo-nombre").textContent = perfil.first_name || perfil.full_name || u.email;
   var e = await cargarEmpresas();
   if(e&&e.error){ av.className="aviso error"; av.textContent="No se pudieron cargar las empresas: "+errorLegible(e.error); irA("login", true); return; }
-  if(!empresa){ av.className="aviso error"; av.textContent="Tu usuario no tiene ninguna empresa cargada. Cargala en Empresas e informes."; irA("login", true); return; }
+  var sinEmpresas=!empresa;
   av.className="aviso"; av.textContent="";
   $("barra-sesion").classList.remove("oculto");
   irA("inicio", true);
   repararDocumentos();
   irDestino();
+  if(sinEmpresas){ abrirEmpresas(); avisar("Todavía no hay empresas cargadas. Agregá la primera para empezar.", 8000); }
 }
 /* /herramientas/#plan y #recetario (los botones de la app anterior llevan acá) abren esa pantalla */
 function irDestino(){
@@ -2219,7 +2246,7 @@ document.addEventListener("visibilitychange", function(){
   else if(cargarPacientes.oculta && Date.now()-cargarPacientes.oculta>15000){ cargarPacientes.oculta=0; pacientes=[]; }
 });
 function sinResultados(ul, q){
-  if(pacientesError){ ul.innerHTML='<li><span>No se pudo cargar la lista de pacientes: '+esc(pacientesError)+'</span><button type="button" class="btn chico suave" onclick="pacientes=[];this.closest(\'ul\').previousElementSibling.dispatchEvent(new Event(\'input\'))">Reintentar</button></li>'; return true; }
+  if(pacientesError){ ul.innerHTML='<li><span>No se pudo cargar la lista de personas: '+esc(pacientesError)+'</span><button type="button" class="btn chico suave" onclick="pacientes=[];this.closest(\'ul\').previousElementSibling.dispatchEvent(new Event(\'input\'))">Reintentar</button></li>'; return true; }
   return false;
 }
 function edadDe(fecha){
@@ -2292,13 +2319,14 @@ async function elegirPaciente(p){
   var peso = m.weight ?? p.initial_weight ?? 70, talla = m.height ?? p.height ?? 165;
   plan.info = { firstName:p.first_name, lastName:p.last_name, age:edadDe(p.birth_date), sex:p.sex||"Femenino", weight:Number(peso), height:Number(talla), waist:m.girth_waist!=null?Number(m.girth_waist):null };
   $("pe-nombre").textContent=nombreCompleto(p);
-  $("pe-datos").textContent=(p.birth_date?plan.info.age+" años":"sin fecha de nacimiento (usa "+plan.info.age+" años)")+" · "+plan.info.sex+" · "+plan.info.weight+" kg · "+plan.info.height+" cm";
+  plan.sinEdad=!p.birth_date;
+  $("pe-datos").textContent=(p.birth_date?plan.info.age+" años":"sin fecha de nacimiento: falta su edad")+" · "+plan.info.sex+" · "+plan.info.weight+" kg · "+plan.info.height+" cm";
   $("paciente-elegido").classList.remove("oculto");
   $("pac-aviso").textContent="";
   if(m.error){ $("pac-aviso").className="aviso error"; $("pac-aviso").textContent="No se pudo leer su última consulta ("+m.error+"). Se usan los datos de la ficha: revisalos en el paso 2."; }
   $("btn-p1").disabled=false;
   $("d-peso").value=plan.info.weight; $("d-talla").value=plan.info.height; $("d-cintura").value=plan.info.waist??"";
-  $("d-edad").value=plan.info.age; $("d-sexo").value=plan.info.sex;
+  $("d-edad").value=plan.sinEdad?"":plan.info.age; $("d-sexo").value=plan.info.sex;
   limpiarFormularioPlan();
   if(obj) marcarChip("chips-objetivo", obj.objetivo);
   pintarOrigenObjetivo(obj);
@@ -2430,6 +2458,7 @@ function recalcular(){
   plan.info.weight=peso; plan.info.height=talla; plan.info.age=edad; plan.info.sex=sexo; plan.info.waist=isNaN(cint)?null:cint;
   var etq=etiquetasActuales(), etapa=$("d-embarazo").value;
   var m=calcularMetricas(peso,talla,edad,sexo,act,etq,etapa);
+  setTimeout(pintarFaltaEdad, 0);
   var manual=parseFloat($("d-manual").value);
   if(manual>0){ m.calories=Math.round(Math.min(Math.max(manual,600),6000)); m.calculationMethod="Valor calórico definido manualmente por la profesional"; }
   plan.metricas=m;
@@ -2564,7 +2593,19 @@ function pintarPasos(){
     c.appendChild(d);
   });
 }
+function edadFalta(){
+  if(!plan.sinEdad || !$("d-edad")) return false;
+  var e=parseInt($("d-edad").value,10); return !(e>0 && e<=120);
+}
+function pintarFaltaEdad(forzar){
+  var a=$("d-edad-aviso"); if(!a) return;
+  var falta=edadFalta(), ver=falta && (forzar===true || pasoActual===2);
+  a.hidden=!ver; if(ver) a.textContent="Falta su edad: no tiene fecha de nacimiento en la ficha. Escribila acá para que el cálculo sea el suyo.";
+  $("d-edad").classList.toggle("falta", falta);
+  if(falta){ $("m-cal").innerHTML="—"; $("m-prot").innerHTML="—"; }
+}
 function irPaso(n){
+  if((n===3||n===4) && edadFalta()){ pasoActual=2; pintarPasos(); for(var i=1;i<=5;i++) $("plan-"+i).classList.toggle("oculto", i!==2); recalcular(); pintarFaltaEdad(true); setTimeout(function(){ $("d-edad").focus(); $("d-edad").scrollIntoView({block:"center"}); }, 0); return; }
   if(n!==5 && pasoActual===5 && hayCambiosSinGuardar() && !confirm("Tenés cambios sin guardar en el plan. ¿Salir del plan igual y perderlos?")) return;
   if(n!==5 && pasoActual===5 && $("plan-resultado").classList.contains("editando")) cancelarEdicion();
   pasoActual=n; pintarPasos();
@@ -2624,8 +2665,9 @@ function preferenciasActuales(){
 }
 async function generarPlan(modo){
   modo = modo==="porciones" ? "porciones" : "ia";
-  if(!plan.info||!plan.metricas||!plan.paciente){ $("plan-error").textContent="Elegí a la paciente de nuevo: se perdieron los datos del cálculo."; return; }
+  if(!plan.info||!plan.metricas||!plan.paciente){ $("plan-error").textContent="Elegí a la persona de nuevo: se perdieron los datos del cálculo."; return; }
   if(ocupado()) return;
+  if(edadFalta()){ irPaso(2); pintarFaltaEdad(true); return; }
   if(!chipsElegidos("chips-objetivo").length){ irPaso(3); avisarFaltaObjetivo(); return; }
   plan.pref=preferenciasActuales();
   // se congela todo lo que el plan necesita: si Rosana cambia de paciente mientras la IA trabaja, el plan igual se guarda en la ficha correcta
@@ -2752,6 +2794,103 @@ function objetivoDelPlan(){
   var primero=String(pr.objectives||"").split(". ")[0].trim();
   return OBJETIVOS.indexOf(primero)!==-1 ? primero : "";
 }
+/* ---------- E1 · escalas con botones: el desplegable sigue (lo usa todo el código), pero se toca con botones ---------- */
+var ESCALA_TXT={ "c-hidratacion":{ "true":"Sí", "false":"No" }, "c-actividad":{ "≤150 min":"Hasta 150 min", "+150 min":"Más de 150 min" } };
+var VALOR_SELECT=Object.getOwnPropertyDescriptor(HTMLSelectElement.prototype, "value");
+function escalaUI(sel){
+  if(!sel || sel._escala) return; sel._escala=true;
+  var lab=sel.closest("label"), titulo=lab ? String(lab.firstChild && lab.firstChild.textContent || "").replace("*","").trim() : sel.id;
+  sel.classList.add("escala-sel"); sel.setAttribute("tabindex","-1"); sel.setAttribute("aria-hidden","true");
+  var caja=document.createElement("span"); caja.className="escala-b"; caja.setAttribute("role","radiogroup"); caja.setAttribute("aria-label", titulo);
+  var ley=document.createElement("span"); ley.className="escala-ley"; ley.setAttribute("aria-live","polite");
+  sel.insertAdjacentElement("afterend", caja); caja.insertAdjacentElement("afterend", ley);
+  Object.defineProperty(sel, "value", { configurable:true, get:function(){ return VALOR_SELECT.get.call(this); }, set:function(v){ VALOR_SELECT.set.call(this, v); escalaPintar(this); } });
+  sel.addEventListener("change", function(){ escalaPintar(sel); });
+  escalaPintar(sel);
+}
+function escalaPintar(sel){
+  var caja=sel.nextElementSibling; if(!caja || !caja.classList.contains("escala-b")) return;
+  var ley=caja.nextElementSibling, v=VALOR_SELECT.get.call(sel), ops=Array.prototype.filter.call(sel.options, function(o){ return o.value!==""; });
+  var cinco=ops.length>=3 && ops.every(function(o){ return /^\d+$/.test(o.value); }), txt=ESCALA_TXT[sel.id]||{};
+  caja.classList.toggle("cinco", cinco);
+  caja.innerHTML=ops.map(function(o){ var on=o.value===v, palabra=String(o.textContent||"").replace(/^\d+\s*-\s*/,"");
+    return '<button type="button" role="radio" aria-checked="'+on+'" class="'+(on?"on":"")+'" data-v="'+esc(o.value)+'"'+(cinco?' aria-label="'+esc(o.value+" · "+palabra)+'"':'')+'>'+esc(cinco?o.value:(txt[o.value]||o.textContent))+'</button>'; }).join("");
+  if(ley){
+    if(!cinco){ ley.textContent=""; ley.hidden=true; return; }
+    ley.hidden=false;
+    var sel1=ops.filter(function(o){ return o.value===v; })[0], pal=function(o){ return String(o.textContent||"").replace(/^\d+\s*-\s*/,""); };
+    ley.innerHTML=sel1 ? '<b>'+esc(sel1.value)+' · '+esc(pal(sel1))+'</b>' : esc(ops[0].value+" "+pal(ops[0]).toLowerCase()+" · "+ops[ops.length-1].value+" "+pal(ops[ops.length-1]).toLowerCase());
+  }
+}
+document.addEventListener("click", function(e){
+  var b=e.target.closest ? e.target.closest(".escala-b button") : null; if(!b) return;
+  e.preventDefault();
+  var sel=b.parentNode.previousElementSibling; if(!sel || sel.tagName!=="SELECT") return;
+  var v=b.getAttribute("data-v"); sel.value=v;
+  sel.dispatchEvent(new Event("input", { bubbles:true })); sel.dispatchEvent(new Event("change", { bubbles:true }));
+  var n=b.parentNode && b.parentNode.querySelector('button[data-v="'+v.replace(/"/g,'\\"')+'"]'); if(n) n.focus();
+});
+/* adherencia al plan: recién desde la segunda consulta */
+function conAdherencia(mostrar){
+  var sel=$("c-adherencia"); if(!sel) return; var lab=sel.closest("label");
+  if(lab) lab.classList.toggle("oculto", !mostrar);
+  if(mostrar) sel.setAttribute("data-req",""); else { sel.removeAttribute("data-req"); sel.value=""; }
+}
+
+/* ---------- E1 · buscar en todas las empresas: si la persona está en otra, aparece con su empresa y se pasa a esa ---------- */
+var TODAS={ l:null, t:0, p:null };
+async function todasLasPersonas(){
+  if(TODAS.l && Date.now()-TODAS.t<120000) return TODAS.l;
+  if(TODAS.p) return TODAS.p;
+  TODAS.p=(async function(){
+    var out=[], desde=0;
+    for(var v=0; v<30; v++){
+      var r=await sb.from("patients").select("id, first_name, last_name, sex, birth_date, initial_weight, height, status, email, phone, area, company, created_at").order("last_name",{ascending:true}).order("id",{ascending:true}).range(desde, desde+999);
+      if(r.error || !r.data) return TODAS.l||[];
+      out=out.concat(r.data); desde+=r.data.length;
+      if(r.data.length<1000) break;
+    }
+    TODAS.l=out; TODAS.t=Date.now(); return out;
+  })();
+  try{ return await TODAS.p; } finally { TODAS.p=null; }
+}
+async function otrasEmpresas(ul, q, alElegir){
+  if(!ul) return;
+  var t=String(q||"").trim(), n=ul._otras=(ul._otras||0)+1, emp=empresa;
+  Array.prototype.forEach.call(ul.querySelectorAll(".otra-emp"), function(x){ x.remove(); });
+  if(t.length<2) return;
+  var l=await todasLasPersonas();
+  if(n!==ul._otras || emp!==empresa) return;
+  var hits=l.filter(function(p){ return p.company!==emp && coincide(p, t); }).slice(0,8);
+  if(!hits.length) return;
+  var ref=ul.querySelector("li.nueva, li.sin");
+  var head=document.createElement("li"); head.className="otra-emp otra-emp-t"; head.innerHTML='<span>En otras empresas</span>';
+  ul.insertBefore(head, ref);
+  hits.forEach(function(p){
+    var li=document.createElement("li"); li.className="otra-emp";
+    li.innerHTML='<span>'+esc(nombreCompleto(p))+'</span><small>'+esc(p.company||"sin empresa")+'</small>';
+    li.onclick=function(){ pasarAEmpresaDe(p); alElegir(p); }; ul.insertBefore(li, ref);
+  });
+}
+function pasarAEmpresaDe(p){
+  var c=p && p.company; if(!c || c===empresa) return;
+  if(!(empresas||[]).some(function(e){ return e.name===c; })){ avisar("Esta persona figura en «"+c+"», que no está en Empresas. Lo que cargues queda con su empresa.", 8000); return; }
+  empresa=c; try{ localStorage.setItem(CLAVE_EMPRESA, c); }catch(e){}
+  if($("empresa")) $("empresa").value=c;
+  pacientes=[]; cargarPacientes.p=null; cargarPacientes.emp=null;
+  avisar("Pasaste a "+c+": es su empresa.", 5000);
+}
+function conOtrasEmpresas(nombre, ulId, alElegir){
+  var orig=window[nombre]; if(typeof orig!=="function") return;
+  window[nombre]=async function(q){ var r=await orig.apply(this, arguments); otrasEmpresas($(ulId), q, alElegir); return r; };
+}
+conOtrasEmpresas("filtrarPacientesIni", "lista-pacientes-ini", function(p){ abrirFicha(p); });
+conOtrasEmpresas("filtrarPacientesCon", "lista-pacientes-con", function(p){ conElegir(p); });
+conOtrasEmpresas("filtrarPacientes", "lista-pacientes", function(p){ elegirPaciente(p); });
+conOtrasEmpresas("filtrarPacientesAn", "lista-pacientes-an", function(p){ anElegir(p); });
+conOtrasEmpresas("filtrarPacientesGua", "lista-pacientes-gua", function(p){ guaElegir(p); });
+conOtrasEmpresas("filtrarPacientesRec", "lista-pacientes-rec", function(p){ recElegirPaciente(p); });
+
 /* ---------- plan por porciones (audio de Ro, 19/11) ---------- */
 function conPorciones(d){ return !!(d && d.porciones && typeof d.porciones==="object" && d.porciones.comidas && typeof d.porciones.comidas==="object" && window.NPPorc); }
 function kcalHoja(d){ return (conPorciones(d) && !d.porciones.sinValor && d.porciones.kcal) || (plan.metricas && plan.metricas.calories) || 0; }
@@ -3131,8 +3270,8 @@ function pintarPlan(d){
   var acciones='<div class="acciones-fijas no-imprimir"><div class="acciones-res" id="acciones-ver"><button class="btn" onclick="window.print()">Imprimir o guardar PDF</button><button class="btn suave" onclick="abrirMandarPlan()">Mandar por mail</button>'+(conPorciones(d)?'<button class="btn suave" id="btn-plan-app" onclick="abrirPlanApp()">Mandar a su app</button>':'')+
      '<button class="btn ghost" onclick="editarPlan()">Editar el plan</button>'+
      (plan.deGuardado
-       ? '<button class="btn suave" onclick="nuevoPlanPara(plan.paciente)">Plan nuevo para esta paciente</button><button class="btn suave" onclick="abrirGuardados()">Volver a los guardados</button>'
-       : '<button class="btn suave" onclick="irPaso(4)">Ajustar y volver a generar</button><button class="btn suave" onclick="otraPaciente()">Plan para otra paciente</button><button class="btn suave" onclick="irA(\'inicio\')">Volver al inicio</button>')+'</div>'+
+       ? '<button class="btn suave" onclick="nuevoPlanPara(plan.paciente)">Plan nuevo para esta persona</button><button class="btn suave" onclick="abrirGuardados()">Volver a los guardados</button>'
+       : '<button class="btn suave" onclick="irPaso(4)">Ajustar y volver a generar</button><button class="btn suave" onclick="otraPaciente()">Plan para otra persona</button><button class="btn suave" onclick="irA(\'inicio\')">Volver al inicio</button>')+'</div>'+
      '<div class="acciones-res oculto" id="acciones-editar"><button class="btn" onclick="guardarEdicion()">Guardar cambios</button>'+
      '<button class="btn suave" onclick="cancelarEdicion()">Cancelar</button></div>'+
      '<p class="aviso ok" id="plan-guardado"></p><p class="aviso" id="plan-envios"></p></div>';
@@ -3159,7 +3298,7 @@ function editarPlan(){
 function cancelarEdicion(){ plan.baseEdicion=null; if(plan.resultado) pintarPlan(plan.resultado); else { $("plan-resultado").innerHTML=""; $("plan-resultado").classList.remove("editando"); } }
 async function guardarEdicion(){
   if(plan.guardandoEdicion){ avisar("Esperá: se están guardando los cambios.", 5000); return; }
-  if(!plan.paciente||!plan.resultado){ avisar("Se perdió la paciente del plan. Abrilo de nuevo desde Planes guardados.", 8000); return; }
+  if(!plan.paciente||!plan.resultado){ avisar("Se perdió la persona del plan. Abrilo de nuevo desde Planes guardados.", 8000); return; }
   plan.guardandoEdicion=true;
   var nuevo=leerPlanEditado(plan.resultado);
   plan.resultado=nuevo; pintarPlan(nuevo);
@@ -3179,7 +3318,7 @@ async function guardarEdicion(){
 function avisosDelPlan(d){
   var h="";
   if(d && d._aviso==="respaldo") h+='<p class="aviso no-imprimir" id="plan-respaldo"><b>Revisalo antes de entregarlo:</b> este plan lo armó el modelo de respaldo, porque el principal no respondió bien. Cuando lo revises, tocá Editar el plan y Guardar cambios.</p>';
-  if(d && Array.isArray(d._revisar) && d._revisar.length) h+='<p class="aviso error no-imprimir" id="plan-revisar"><b>Revisalo antes de entregarlo:</b> puede incluir alimentos que esta paciente no debe comer: '+esc(d._revisar.join(", "))+'. Sacalos con Editar el plan y Guardar cambios.</p>';
+  if(d && Array.isArray(d._revisar) && d._revisar.length) h+='<p class="aviso error no-imprimir" id="plan-revisar"><b>Revisalo antes de entregarlo:</b> puede incluir alimentos que esta persona no debe comer: '+esc(d._revisar.join(", "))+'. Sacalos con Editar el plan y Guardar cambios.</p>';
   return h;
 }
 function leerPlanEditado(base){
@@ -3388,7 +3527,7 @@ function pintarPrograma(){
   $("prog-lista").querySelectorAll(".prog-item[data-u]").forEach(function(b){ b.onclick=function(){ abrirConsultante(b.getAttribute("data-u")); }; });
   $("prog-lista").querySelectorAll("[data-reenviar]").forEach(function(b){ b.onclick=async function(){
     var a=(prog.altas||[]).filter(function(x){ return x.email===b.getAttribute("data-reenviar"); })[0]; if(!a || b.disabled) return;
-    b.disabled=true; var r=await altaMandar(a.nombre, a.email); b.disabled=false; avisar(r.texto, 12000); }; });
+    b.disabled=true; var r=await altaMandar(a.nombre, a.email); b.disabled=false; avisar(r.texto+(r.ok ? comunidadTexto(r.comunidad) : ""), 12000); }; });
 }
 /* ===== bloque 4 · altas y mensajes ===== */
 async function progExtras(){
@@ -3408,28 +3547,46 @@ function altaAbrir(){
 }
 function altaCerrar(){
   $("prog-alta-form").classList.add("oculto"); $("prog-alta-abrir").classList.remove("oculto");
-  $("alta-nombre").value=""; $("alta-mail").value=""; $("alta-est").textContent="";
+  $("alta-nombre").value=""; $("alta-mail").value=""; $("alta-tel").value=""; $("alta-est").textContent="";
 }
-async function altaMandar(nombre, email){
+/* el mismo criterio que el servidor: +549 y 10 números, o un +código de otro país */
+function telefonoGHL(x){
+  var s=String(x==null?"":x).trim(); if(!s) return "";
+  var mas=s.charAt(0)==="+"||s.slice(0,2)==="00", d=s.replace(/\D/g,"");
+  if(s.slice(0,2)==="00") d=d.slice(2);
+  if(mas){ if(/^54[1-8]\d{9}$/.test(d)) d="549"+d.slice(2); return d.length>=8&&d.length<=15 ? "+"+d : null; }
+  if(d.slice(0,2)==="54"&&d.length>=12) d=d.slice(2);
+  if(d.charAt(0)==="9"&&d.length===11) d=d.slice(1);
+  if(d.charAt(0)==="0") d=d.slice(1);
+  return /^[1-9]\d{9}$/.test(d) ? "+549"+d : null;
+}
+async function altaMandar(nombre, email, tel){
   try{
-    var res=await fetch("/api/alta",{ method:"POST", headers:await cabecerasIA(), body:JSON.stringify({ nombre:nombre, email:email }) });
+    var cuerpo={ nombre:nombre, email:email }; if(tel) cuerpo.telefono=tel;
+    var res=await fetch("/api/alta",{ method:"POST", headers:await cabecerasIA(), body:JSON.stringify(cuerpo) });
     var j=await res.json().catch(function(){ return {}; });
     if(!res.ok) return { ok:false, texto:j.error||"No se pudo dar de alta. Probá de nuevo." };
     var nom=String(nombre).split(" ")[0];
     return { ok:true, link:j.link, texto: j.mail==="enviado" ? "Listo: el alta de "+nom+" quedó guardada y le llegó el mail con el acceso."
       : j.mail==="sin_config" ? "El alta de "+nom+" quedó guardada, pero el mail todavía no sale: falta que Javo configure los mails. Mientras, mandale este link por WhatsApp: "+j.link
-      : "El alta de "+nom+" quedó guardada, pero el mail no salió. Probá «Mandarle el acceso de nuevo» en un rato." };
+      : "El alta de "+nom+" quedó guardada, pero el mail no salió. Probá «Mandarle el acceso de nuevo» en un rato.",
+      comunidad: j.comunidad };
   }catch(e){ return { ok:false, texto:"Sin conexión. Probá de nuevo." }; }
+}
+function comunidadTexto(c){
+  return c==="ok"||c==="ya" ? " Ya tiene acceso a la comunidad del programa." : c==="error" ? " La comunidad no respondió: tocá «Mandarle el acceso de nuevo» en un rato." : "";
 }
 async function altaGuardar(){
   var n=$("alta-nombre").value.replace(/\s+/g," ").trim(), m=$("alta-mail").value.trim().toLowerCase(), e=$("alta-est"), b=$("alta-ok");
+  var tel=telefonoGHL($("alta-tel").value);
   if(n.length<2){ e.className="aviso error"; e.textContent="Escribí su nombre y apellido."; $("alta-nombre").focus(); return; }
   if(!/^[^\s@<>"',;]+@[^\s@<>"',;]+\.[a-z]{2,}$/i.test(m)){ e.className="aviso error"; e.textContent="Revisá el mail: así no le va a llegar."; $("alta-mail").focus(); return; }
+  if(tel===null){ e.className="aviso error"; e.textContent="Revisá el celular: con código de área, sin 0 ni 15 (por ejemplo 11 5555 1234)."; $("alta-tel").focus(); return; }
   if(b.disabled) return;
   b.disabled=true; e.className="aviso"; e.textContent="Guardando el alta…";
-  var r=await altaMandar(n, m);
-  b.disabled=false; e.className=r.ok ? "aviso" : "aviso error"; e.textContent=r.texto;
-  if(r.ok){ $("alta-nombre").value=""; $("alta-mail").value=""; await progExtras(); pintarPrograma(); }
+  var r=await altaMandar(n, m, tel);
+  b.disabled=false; e.className=r.ok ? "aviso" : "aviso error"; e.textContent=r.texto+(r.ok ? comunidadTexto(r.comunidad) : "");
+  if(r.ok){ $("alta-nombre").value=""; $("alta-mail").value=""; $("alta-tel").value=""; await progExtras(); pintarPrograma(); }
 }
 function progMsj(x, nom){
   var ro=x.de==="rosana";
@@ -4205,7 +4362,7 @@ async function anGuardar(){
   var r, id=an.editandoId;
   if(id){ r=await sb.from("sessions").update(fila).eq("id",id).select("*"); if(!r.error&&(!r.data||!r.data.length)) r={error:{message:"la app no permitió corregir esta medición"}}; }
   else {
-    Object.assign(fila, { patient_id:an.paciente.id, nutritionist_id:usuario.id, company:empresa, session_type:"Antropometría", modality:"Presencial" });
+    Object.assign(fila, { patient_id:an.paciente.id, nutritionist_id:usuario.id, company:an.paciente.company||empresa, session_type:"Antropometría", modality:"Presencial" });
     r=await sb.from("sessions").insert(fila).select("*");
   }
   b.disabled=false;
@@ -5284,6 +5441,7 @@ function conSalirDeNueva(){
 }
 function cnSexo(v){ con.sexoNueva=v; document.querySelectorAll("#cn-sexo button").forEach(function(b){ var on=b.dataset.v===v; b.classList.toggle("on", on); b.setAttribute("aria-pressed", on?"true":"false"); }); }
 function conNueva(texto){
+  conAdherencia(false); if($("c-sin-cintura")) $("c-sin-cintura").checked=false;
   conElegir.n++; cerrarCorregirNombre(); limpiarLabConsulta(); sacarOpcionesExtra();
   con.paciente=null; con.ultima=null; con.editandoId=null; con.editandoTipo=null; con.filaCargada=null; con.formInicial=null; con.recienCreada=false;
   con.nueva=true;
@@ -5711,7 +5869,7 @@ function armarEscala(id, etiquetas){
   etiquetas.forEach(function(t,i){ var o=document.createElement("option"); o.value=String(i+1); o.textContent=t; sel.appendChild(o); });
 }
 function abrirConsulta(){
-  irA("consulta"); cargarPacientes(); if(!con.paciente && !con.nueva) cargarRecientes("con-recientes", function(p){ conElegir(p); });
+  irA("consulta"); $("c-fecha").max=hoyLocalISO(); $("c-fecha").min="2020-01-01"; cargarPacientes(); if(!con.paciente && !con.nueva) cargarRecientes("con-recientes", function(p){ conElegir(p); });
   if(!$("c-fecha").value){ var h=new Date(); $("c-fecha").value=h.getFullYear()+"-"+String(h.getMonth()+1).padStart(2,"0")+"-"+String(h.getDate()).padStart(2,"0"); }
 }
 async function filtrarPacientesCon(q){
@@ -5737,6 +5895,7 @@ async function conElegir(p){
   var r=await sb.from("sessions").select("*").eq("patient_id",p.id).order("session_date",{ascending:false}).order("created_at",{ascending:false}).limit(1);
   if(token!==conElegir.n) return;
   con.ultima=(r.data&&r.data[0])||null;
+  conAdherencia(!!con.ultima);
   $("btn-ultima-consulta").classList.toggle("oculto", !(con.ultima&&con.ultima.id));
   $("con-editando").classList.add("oculto"); $("btn-guardar-consulta").textContent="Guardar consulta";
   var h=new Date(); $("c-fecha").value=h.getFullYear()+"-"+String(h.getMonth()+1).padStart(2,"0")+"-"+String(h.getDate()).padStart(2,"0");
@@ -5745,7 +5904,7 @@ async function conElegir(p){
     : con.ultima ? "Última consulta "+fechaCorta(con.ultima.session_date)+(con.ultima.weight>0?" · "+con.ultima.weight+" kg":"")+(con.ultima.girth_waist>0?" · cintura "+con.ultima.girth_waist+" cm":"")
     : "Primera consulta registrada";
   $("con-elegido").classList.remove("oculto"); $("con-form").classList.remove("oculto"); $("con-listo").classList.add("oculto");
-  $("c-peso").value=""; $("c-cintura").value=""; $("c-motivo").value=""; $("c-notas").value="";
+  $("c-peso").value=""; $("c-cintura").value=""; $("c-sin-cintura").checked=false; $("c-motivo").value=""; $("c-notas").value="";
   $("c-talla").value = (con.ultima&&con.ultima.height) ? con.ultima.height : (p.height||"");
   ["c-adherencia","c-hidratacion","c-actividad","c-frutas","c-energia","c-sueno"].forEach(function(id){ $(id).value=""; });
   $("c-aviso").textContent=""; $("c-imc").textContent="";
@@ -5763,6 +5922,7 @@ function fechaCorta(iso){
 function cargarConsultaEnFormulario(fila, id){
   if(/antropometr/i.test((fila&&fila.session_type)||"")){ var pa=con.paciente||ficha.paciente; if(pa){ abrirAntro(pa, Object.assign({}, fila, {id:id})); return; } }
   con.editandoId=id; con.editandoTipo=fila.session_type||"Consulta"; con.filaCargada=fila;
+  conAdherencia(fila.adherence!=null);
   // un valor guardado que el formulario no ofrece (planillas viejas) se muestra igual, así no se pierde
   [["c-actividad",fila.physical_activity],["c-adherencia",fila.adherence],["c-frutas",fila.consumo_frutas_verduras],["c-energia",fila.energy_level],["c-sueno",fila.sleep_quality]].forEach(function(par){
     var sel=$(par[0]), v=par[1]; if(v==null||v==="") return; v=String(v);
@@ -5804,6 +5964,9 @@ async function guardarConsulta(fuerza){
   // en una consulta nueva las escalas son obligatorias; al corregir una ya guardada, no (puede venir de una planilla sin escalas)
   var faltan=editando ? [] : Array.prototype.filter.call(document.querySelectorAll("#con-form [data-req]"), function(el){ return String(el.value).trim()===""; });
   if(faltan.length){ av.className="aviso error"; av.textContent="Completá los campos con asterisco."; faltan[0].focus(); return; }
+  if(!editando && String($("c-cintura").value).trim()==="" && !$("c-sin-cintura").checked){ av.className="aviso error"; av.textContent="Falta la cintura. Si hoy no se pudo medir, marcá «No se pudo medir hoy»."; $("c-cintura").focus(); return; }
+  var fC=$("c-fecha").value, hoyC=hoyLocalISO();
+  if(fC && (fC<"2020-01-01" || fC>hoyC)){ av.className="aviso error"; av.textContent="Revisá la fecha: no puede ser posterior a hoy ni anterior a 2020."; $("c-fecha").focus(); return; }
   if(!con.paciente && !con.nueva){ av.className="aviso error"; av.textContent="Elegí a la persona o escribí el nombre de una nueva."; return; }
   var lab=leerLabConsulta();
   if(lab.error){ av.className="aviso error"; av.textContent=lab.error; if(lab.el) lab.el.focus(); return; }
@@ -5829,7 +5992,7 @@ async function guardarConsulta(fuerza){
     });
   }
   // al corregir no se tocan el tipo, la empresa ni quién la cargó, y solo viaja lo que Rosana cambió
-  if(!editando) Object.assign(fila, { patient_id: con.paciente.id, nutritionist_id: usuario.id, company: empresa, session_type: "Consulta" });
+  if(!editando) Object.assign(fila, { patient_id: con.paciente.id, nutritionist_id: usuario.id, company: con.paciente.company||empresa, session_type: "Consulta" });
   else if(con.formInicial){
     var ahora=valoresConsulta();
     Object.keys(CAMPOS_CONSULTA).forEach(function(id){ if(ahora[id]===con.formInicial[id]) delete fila[CAMPOS_CONSULTA[id]]; });
@@ -5951,6 +6114,7 @@ window.addEventListener("beforeunload", function(e){
   armarChips("chips-clinicas-rec", CLINICAS, false);
   armarEscala("c-adherencia", ESCALAS.adherencia); armarEscala("c-frutas", ESCALAS.frutas);
   armarEscala("c-energia", ESCALAS.energia); armarEscala("c-sueno", ESCALAS.sueno);
+  ["c-adherencia","c-hidratacion","c-actividad","c-frutas","c-energia","c-sueno"].forEach(function(id){ escalaUI($(id)); });
   ["c-peso","c-talla"].forEach(function(id){ $(id).addEventListener("input", conCalcIMC); });
   pintarPasos();
   sb.auth.getSession().then(function(r){

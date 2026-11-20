@@ -23,7 +23,6 @@ import {
   registrar,
   ORIGENES,
 } from "./_lib.mjs";
-import { avisarComunidad, hitoDeAviso, partirNombre } from "./_comunidad.mjs";
 
 function cabeceras(req) {
   const origen = req.headers.get("origin") || "";
@@ -160,9 +159,5 @@ export async function POST(req) {
     );
   }
   registrar("aviso_ok", { id, paso: cuerpo.paso, sin_registro: estado === "sin_registro" || undefined });
-
-  // Hitos para la comunidad (arrancó, check-in): solo quién es y en qué día va, nunca lo que escribió.
-  const hito = hitoDeAviso(cuerpo.paso, cuerpo.paso_slug);
-  if (hito) await avisarComunidad(hito.evento, { email: cuerpo.email, ...partirNombre(cuerpo.nombre), dia: hito.dia });
   return responder({ ok: true }, req);
 }

@@ -1,12 +1,13 @@
 // NuPlan · Alta de una consultante desde NuPlan → Programa (bloque 4).
 // Solo el equipo. Guarda nombre y mail en programa_altas (con la sesión de quien la
-// da de alta: la base decide si puede) y le manda el mail con el acceso a su app.
+// da de alta: la base decide si puede), le manda el mail con el acceso a su app y le da
+// acceso a la comunidad del programa en GHL (con su celular, si Ro lo cargó).
 //
-//   POST { nombre, email }  →  { ok, mail: "enviado" | "sin_config" | "error", link }
+//   POST { nombre, email, telefono? }  →  { ok, mail: "enviado" | "sin_config" | "error", comunidad: "ok" | "ya" | "error", link }
 
 import { leerJSON, origenPermitido, respuestaJSON, registrar, usuariaDeToken, esEquipo, ErrorDeAcceso, supabaseConToken } from "./_lib.mjs";
 import { APP, MAIL_OK, mailNuPlan, mandarMail } from "./_correo.mjs";
-import { avisarComunidad, partirNombre } from "./_comunidad.mjs";
+import { avisarComunidad, telefonoGHL, TELEFONO_MAL } from "./_comunidad.mjs";
 
 export async function POST(req) {
   if (!origenPermitido(req)) return respuestaJSON(403, { error: "Esto solo responde dentro de NuPlan." });
@@ -28,13 +29,23 @@ export async function POST(req) {
   const email = String(d.email || "").trim().toLowerCase();
   if (nombre.length < 2) return respuestaJSON(400, { error: "Escribí su nombre y apellido." });
   if (!MAIL_OK.test(email) || email.length > 160) return respuestaJSON(400, { error: "Revisá el mail: así no le va a llegar." });
+  const conTel = d.telefono != null && String(d.telefono).trim() !== "";
+  const telefono = conTel ? telefonoGHL(d.telefono) : "";
+  if (telefono === null) return respuestaJSON(400, { error: TELEFONO_MAL });
 
-  const g = await supabaseConToken("/rest/v1/programa_altas?on_conflict=email", u.token, {
-    method: "POST",
-    headers: { Prefer: "resolution=merge-duplicates,return=minimal" },
-    body: JSON.stringify({ email, nombre, creado_por: u.id }),
-    signal: AbortSignal.timeout(8000),
-  }).catch(() => null);
+  const guardar = (fila) =>
+    supabaseConToken("/rest/v1/programa_altas?on_conflict=email", u.token, {
+      method: "POST",
+      headers: { Prefer: "resolution=merge-duplicates,return=minimal" },
+      body: JSON.stringify(fila),
+      signal: AbortSignal.timeout(8000),
+    }).catch(() => null);
+  let g = await guardar(Object.assign({ email, nombre, creado_por: u.id }, conTel ? { telefono } : {}));
+  if (conTel && g && !g.ok) {
+    // todavía sin la columna del teléfono en la base: se guarda sin él (a la comunidad le llega igual)
+    const t = await g.clone().text().catch(() => "");
+    if (/telefono/i.test(t)) g = await guardar({ email, nombre, creado_por: u.id });
+  }
   if (!g || !g.ok) {
     const t = g ? await g.text().catch(() => "") : "";
     const falta = /programa_altas|schema cache|does not exist/i.test(t);
@@ -66,8 +77,16 @@ export async function POST(req) {
       signal: AbortSignal.timeout(8000),
     }).catch(() => null);
   }
-  // Acceso al grupo «Programa NuPlan · 90 días» en El Consultorio (y la etiqueta «programa nuplan»).
-  const com = await avisarComunidad("alta", { email, ...partirNombre(nombre), dia: 0 });
-  registrar("alta", { mail, comunidad: com.ok ? "ok" : "error" });
-  return respuestaJSON(200, { ok: true, mail, link, comunidad: com.ok ? "ok" : "error" });
+  // La comunidad: si Ro no escribió el celular (por ejemplo, al mandar el acceso de nuevo), va el que quedó guardado.
+  let tel = telefono;
+  if (!conTel) {
+    const v = await supabaseConToken(`/rest/v1/programa_altas?select=telefono&email=eq.${encodeURIComponent(email)}&limit=1`, u.token, {
+      signal: AbortSignal.timeout(8000),
+    }).catch(() => null);
+    const f = v && v.ok ? await v.json().catch(() => []) : [];
+    tel = (Array.isArray(f) && f[0] && f[0].telefono) || "";
+  }
+  const comunidad = await avisarComunidad({ evento: "alta", email, nombre, telefono: tel, dia: 0 });
+  registrar("alta", { mail, comunidad });
+  return respuestaJSON(200, { ok: true, mail, comunidad: comunidad === "en_curso" ? "ok" : comunidad, link });
 }

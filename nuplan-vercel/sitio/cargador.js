@@ -203,7 +203,7 @@
 
   function aviso() {
     carga.error = 1;
-    tapa.textContent += 'body:before{content:"La página se está actualizando. Vuelve a abrirla en un momento.";display:block;font:20px/1.6 "DM Sans",system-ui,sans-serif;color:#1a1a1a;text-align:center;margin:30vh 24px 0}';
+    tapa.textContent += 'body:before{content:"La página se está actualizando. Volvé a abrirla en un momento.";display:block;font:20px/1.6 "DM Sans",system-ui,sans-serif;color:#1a1a1a;text-align:center;margin:30vh 24px 0}';
   }
 
   primera().then(montar).catch(aviso);

@@ -252,7 +252,7 @@ RINGS = ('<div class="rings rv"><svg viewBox="0 0 420 420" role="img" aria-label
 def inicio():
     v = [
         ("sesion", "El programa NuPlan · 90 días", "Te acompaño una a una, con mi equipo, mi app y un plan hecho para tu semana real.", "Ver el video y agendar", U["vsl"], "dest", ""),
-        ("libro", "El libro", "Recupera tu energía en 90 días: una invitación por día para hacerlo a tu ritmo.", "Ver el libro", U["libro"], "", "USD 27"),
+        ("libro", "El libro", "«Recuperá tu energía en 90 días»: una invitación por día para hacerlo a tu ritmo.", "Ver el libro", U["libro"], "", "USD 27"),
         ("empresa", "Para empresas", "Programas de nutrición para equipos: consultas en la oficina, jornadas de salud e informes.", "Llevarlo a tu empresa", U["empresas"], "", ""),
         ("play", "La clase de 11 minutos", "Por qué comes por estrés, explicado con biología y objetos sobre la mesa.", "Ver la clase", U["clase"], "", "Sin costo"),
         ("app", "La app NuPlan", "Donde vive el programa: un ejercicio por día, tu diario y tu plan, en tu teléfono.", "Cómo funciona", "#app", "", ""),
@@ -534,7 +534,7 @@ def legales():
  <p>Lic. Rosana Roldán, nutricionista (UBA), M.N. 3884, Ciudad de Buenos Aires, Argentina. Atención por WhatsApp al 11 5142-6830, de lunes a viernes de 9 a 17 h.</p>
  <h3>Qué vendo</h3>
  <ul>
-  <li><b>El libro digital</b> «Recupera tu energía en 90 días»: un PDF que llega a tu mail en el momento del pago.</li>
+  <li><b>El libro digital</b> «Recuperá tu energía en 90 días»: un PDF que llega a tu mail en el momento del pago.</li>
   <li><b>Rosana te escribe cada mañana:</b> 90 mails, uno por día, desde el día siguiente al pago.</li>
   <li><b>Sesión 1-1 con Rosana:</b> 45 minutos por videollamada, en el horario que eliges al pagar.</li>
   <li><b>Programa NuPlan · 90 días:</b> el acompañamiento completo. Lo rige el acuerdo de participación que firmas al empezar.</li>
@@ -579,7 +579,7 @@ def programa():
         "8 encuentros por videollamada: 3 conmigo (apertura, tu plan y cierre) y 5 con María Julia, coordinadora del programa",
         "La app NuPlan: un ejercicio por día, tu diario y tus check-in conmigo",
         "Tu plan personalizado, armado por mí con lo que te gusta y tu semana real",
-        "El libro «Recupera tu energía en 90 días», edición del programa",
+        "El libro «Recuperá tu energía en 90 días», edición del programa",
         "El grupo privado del programa, con lives y un canal por etapa",
         "Taller de planificación en grupo y WhatsApp de coordinación",
     ]
@@ -802,7 +802,7 @@ INCLUYE = [
     "8 encuentros por videollamada: 3 conmigo (apertura, tu plan y cierre) y 5 con María Julia, coordinadora del programa",
     "La app NuPlan: un ejercicio por día, tu diario y tus check-in conmigo",
     "Tu plan personalizado, armado por mí con lo que te gusta y tu semana real",
-    "El libro «Recupera tu energía en 90 días», edición del programa",
+    "El libro «Recuperá tu energía en 90 días», edición del programa",
     "El grupo privado del programa, con lives y un canal por etapa",
     "Taller de planificación en grupo y WhatsApp de coordinación",
 ]

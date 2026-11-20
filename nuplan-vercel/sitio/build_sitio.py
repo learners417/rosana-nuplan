@@ -486,7 +486,7 @@ def clase():
  <h2>Ya entiendes qué te pasa. Ahora te muestro cómo se trabaja.</h2>
  <p class="lead">El Método NuPlan son 90 días trabajando las cuatro dimensiones a la vez. Te lo explico completo en el próximo video, y ahí mismo puedes agendar una llamada de 30 minutos conmigo.</p>
  {btn("Ver cómo funciona el método", U["vsl"], "cta inv")}
- <p class="micro">13 MINUTOS · SIN COSTO</p>
+ <p class="micro">UN VIDEO DE 3 MINUTOS · SIN COSTO</p>
 </div></section>
 <section class="sec"><div class="wrap">
  {lab("Las herramientas del minuto 9", "chispa")}
@@ -656,6 +656,346 @@ def bienvenida():
     return page("Bienvenida al programa NuPlan", inner)
 
 
+# =============================== 9 · EL VIDEO Y LA AGENDA (/vsl) ===============================
+CAL_ADMISION = "csuNSCxUTLqSGtRxTUKJ"   # «Entrevista de Admisión NuPlan™», 30 min, asignado a Rosana
+CAL_ADMISION_LINK = "https://api.leadconnectorhq.com/widget/bookings/entrevista-admisin-con-ro"
+VIDEO_VSL = "https://assets.cdn.filesafe.space/s44QfsRYPnToRlrDgJbo/media/6a6a5201c0edd70fbca745c5.mp4"   # 2:50
+VIDEO_PREP = "https://assets.cdn.filesafe.space/s44QfsRYPnToRlrDgJbo/media/6a6a51e17d99a224644380a7.mp4"  # 0:32
+
+CSS_VSL = """<style>
+@media (prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
+#nlb .vid video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;background:#2a1712}
+#nlb .vplay{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);display:inline-flex;align-items:center;gap:10px;white-space:nowrap;background:var(--co);color:#fff;border:0;border-radius:999px;padding:14px 22px;font:inherit;font-weight:800;font-size:19px;cursor:pointer;box-shadow:0 16px 34px -12px rgba(40,10,4,.6);transition:background .2s}
+#nlb .vplay:hover{background:var(--cd)}
+#nlb .vplay .ic{width:28px;height:28px}
+#nlb .vid.on .vplay{display:none}
+#nlb .hgrid .vid{margin:4px 0 22px}
+#nlb .stats{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:34px}
+#nlb .stat{background:var(--sf);border:1px solid var(--bd);border-radius:1rem;padding:16px 18px}
+#nlb .stat b{display:block;font-size:40px;font-weight:800;letter-spacing:-.02em;color:var(--co);line-height:1}
+#nlb .stat span{display:block;font-size:17px;color:#3d4148;margin-top:8px;line-height:1.3}
+#nlb .mk{display:grid;gap:10px;margin-top:26px}
+#nlb .mki{display:flex;align-items:center;gap:14px;width:100%;text-align:left;font:inherit;font-size:20px;font-weight:600;line-height:1.35;color:var(--tx);background:var(--bg);border:2px solid var(--bd);border-radius:1rem;padding:16px 18px;cursor:pointer;transition:border-color .2s,background .2s}
+#nlb .mki .ic{width:30px;height:30px;flex:none;color:transparent;border:2px solid var(--ac);border-radius:.5rem;padding:3px;transition:all .2s}
+#nlb .mki[aria-pressed="true"]{border-color:var(--co);background:#fff}
+#nlb .mki[aria-pressed="true"] .ic{color:#fff;background:var(--co);border-color:var(--co)}
+#nlb .mkr{margin-top:16px;background:var(--co);color:#fff;border-radius:1.5rem;padding:24px 22px}
+#nlb .mkr b{display:block;font-family:"Space Mono",monospace;font-weight:400;font-size:15px;letter-spacing:.1em;color:var(--ti);margin-bottom:8px}
+#nlb .mkr p{margin:0;font-size:21px;line-height:1.45}
+#nlb .mkr a{display:inline-flex;align-items:center;gap:8px;margin-top:14px;color:#fff;font-weight:800;font-size:19px;text-underline-offset:4px}
+#nlb .mkr a .ic{width:22px;height:22px}
+#nlb .chart{max-width:560px;margin:30px 0 8px;background:var(--sf);border:1px solid var(--bd);border-radius:1.5rem;padding:18px 14px 10px}
+#nlb .chart svg{display:block;width:100%;height:auto}
+#nlb .chart .gl{stroke:#f0e2dd;stroke-width:1.5}
+#nlb .chart .ax{font-family:"Space Mono",monospace;font-size:17px;fill:#c53a1e}
+#nlb .chart .ln{fill:none;stroke:#e8472a;stroke-width:4;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:1;stroke-dashoffset:1;transition:stroke-dashoffset 2.4s ease .3s}
+#nlb .chart .vt{fill:none;stroke:#1a1a1a;stroke-width:2.5;stroke-dasharray:7 7;opacity:.55}
+#nlb .chart .cf{fill:#e8472a;stroke:#fff;stroke-width:3;opacity:0;transition:opacity .5s ease 2.2s}
+#nlb .chart.in .ln{stroke-dashoffset:0}
+#nlb .chart.in .cf{opacity:1}
+#nlb .leg2{display:flex;flex-wrap:wrap;gap:8px 20px;font-size:16px;color:#3d4148;margin:0 0 22px}
+#nlb .leg2 span{display:inline-flex;align-items:center;gap:8px}
+#nlb .leg2 i{display:inline-block;width:26px;height:4px;border-radius:2px;background:var(--co)}
+#nlb .leg2 i.d{background:repeating-linear-gradient(90deg,#8a8f98 0 6px,transparent 6px 11px)}
+#nlb .tabs{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:28px}
+#nlb .tab{display:flex;align-items:center;gap:8px;min-width:0;font:inherit;font-size:18px;font-weight:700;color:var(--tx);background:var(--bg);border:2px solid var(--bd);border-radius:1rem;padding:14px 12px;cursor:pointer;transition:all .2s}
+#nlb .tab .ic{width:24px;height:24px;color:var(--co)}
+#nlb .tab[aria-selected="true"]{background:var(--co);border-color:var(--co);color:#fff}
+#nlb .tab[aria-selected="true"] .ic{color:#fff}
+#nlb .tpan,#nlb .lpan{margin-top:14px;border-radius:1.5rem;padding:26px 22px}
+#nlb .tpan{background:var(--bg);min-height:230px}
+#nlb .lpan{background:var(--sf);border:1px solid var(--bd);min-height:220px}
+#nlb .tpan .el,#nlb .lpan .wk{font-family:"Space Mono",monospace;font-size:15px;letter-spacing:.08em;color:var(--cd);margin-bottom:8px}
+#nlb .tpan h3,#nlb .lpan h3{font-size:clamp(26px,5.4vw,34px);margin-bottom:12px}
+#nlb .tpan .tx,#nlb .lpan .tx{font-size:20px;line-height:1.55;margin:0;color:#33373d}
+#nlb .lts{display:flex;gap:6px;margin-top:26px}
+#nlb .ltb{width:50px;height:50px;flex:none;border-radius:50%;font:inherit;font-size:24px;font-weight:800;color:var(--cd);background:var(--sf);border:2px solid var(--ac);cursor:pointer;transition:all .2s}
+#nlb .ltb[aria-selected="true"]{background:var(--cd);border-color:var(--cd);color:#fff;transform:translateY(-3px)}
+#nlb .dbar{position:relative;height:12px;border-radius:6px;background:var(--ti);margin:22px 0 8px}
+#nlb .dbar i{position:absolute;top:0;bottom:0;border-radius:6px;background:var(--co);transition:left .4s ease,width .4s ease}
+#nlb .dlab{display:flex;justify-content:space-between;font-family:"Space Mono",monospace;font-size:15px;color:var(--mu)}
+#nlb .incb{background:var(--sf);border:1px solid var(--bd);border-radius:1.5rem;padding:26px 22px;margin-top:30px}
+#nlb .incb .inc{margin:16px 0 0}
+#nlb .gar{display:flex;gap:18px;align-items:flex-start;background:var(--sf);border:2px dashed var(--ac);border-radius:1.5rem;padding:24px 22px;margin:0 0 40px}
+#nlb .gar>.ic{width:46px;height:46px;color:var(--co)}
+#nlb .gar .el{font-family:"Space Mono",monospace;font-size:15px;letter-spacing:.1em;color:var(--cd);margin:0 0 6px}
+#nlb .gar h3{font-size:24px;margin-bottom:8px}
+#nlb .gar p{margin:0;font-size:18px;color:#3d4148}
+#nlb .steps .sn{font-size:16px;width:auto;min-width:44px;padding:0 10px;border-radius:999px}
+#nlb .calw iframe{display:block;width:100%;border:0;min-height:920px}
+#nlb .avs{background:var(--sf);border:1px solid var(--bd);border-left:5px solid var(--co);border-radius:1rem;padding:22px 20px;margin-top:30px}
+#nlb .avs .el{font-family:"Space Mono",monospace;font-size:15px;letter-spacing:.1em;color:var(--cd);margin:0 0 6px}
+#nlb .avs h3{font-size:24px;margin-bottom:8px}
+#nlb .avs p{font-size:18px;color:#3d4148}
+#nlb .stk{position:fixed;left:12px;right:12px;bottom:12px;z-index:60;display:flex;align-items:center;justify-content:center;gap:10px;background:var(--co);color:#fff;text-decoration:none;font-weight:800;font-size:19px;line-height:1.2;padding:16px 18px;border-radius:1rem;box-shadow:0 16px 34px -12px rgba(120,30,10,.6);transform:translateY(160%);transition:transform .3s ease}
+#nlb .stk .ic{width:22px;height:22px}
+#nlb .stk.on{transform:none}
+@media (min-width:760px){
+ #nlb .hgrid.hv{grid-template-columns:1fr 1.1fr}
+ #nlb .tab{font-size:19px;padding:14px 16px;gap:10px}
+ #nlb .stats{grid-template-columns:repeat(4,1fr)}
+ #nlb .mk{grid-template-columns:1fr 1fr}
+ #nlb .tabs{grid-template-columns:repeat(4,1fr)}
+ #nlb .lts{gap:10px}
+ #nlb .ltb{width:58px;height:58px;font-size:26px}
+ #nlb .tpan,#nlb .lpan{padding:34px 34px}
+ #nlb .stk{display:none}
+}
+@media (prefers-reduced-motion:reduce){#nlb .chart .ln{stroke-dashoffset:0;transition:none}#nlb .chart .cf{opacity:1;transition:none}}
+</style>"""
+
+JS_VSL = """<script>(function(){var r=document.getElementById('nlb');if(!r)return;
+var M=__M__,D=__D__,S=__S__;
+r.querySelectorAll('.vid[data-v]').forEach(function(w){var v=w.querySelector('video'),b=w.querySelector('.vplay');if(!v||!b)return;
+ b.addEventListener('click',function(){w.classList.add('on');v.controls=true;try{v.currentTime=0}catch(e){}var p=v.play();if(p&&p.catch)p.catch(function(){});});});
+var mk=r.querySelectorAll('.mki'),n=r.querySelector('.mkn'),t=r.querySelector('.mkt');
+function up(){var c=r.querySelectorAll('.mki[aria-pressed="true"]').length;if(n)n.textContent=c+' DE 6';if(t&&M)t.innerHTML=M[c];}
+mk.forEach(function(b){b.addEventListener('click',function(){b.setAttribute('aria-pressed',b.getAttribute('aria-pressed')==='true'?'false':'true');up();});});
+function tabs(sel,pan,data,render){var bs=r.querySelectorAll(sel),p=r.querySelector(pan);if(!p||!data)return;
+ bs.forEach(function(b,i){b.addEventListener('click',function(){bs.forEach(function(x){x.setAttribute('aria-selected','false')});b.setAttribute('aria-selected','true');render(p,data[i]);});});}
+tabs('.tab','.tpan',D,function(p,d){p.querySelector('.el').textContent=d[0];p.querySelector('h3').textContent=d[1];p.querySelector('.tx').textContent=d[2];});
+tabs('.ltb','.lpan',S,function(p,d){p.querySelector('.wk').textContent=d[0];p.querySelector('h3').textContent=d[1];p.querySelector('.tx').textContent=d[2];
+ var i=r.querySelector('.dbar i');if(i){i.style.left=d[3]+'%';i.style.width=d[4]+'%';}});
+var ch=r.querySelector('.chart');if(ch){if('IntersectionObserver' in window){var o=new IntersectionObserver(function(e){if(e[0].isIntersecting){ch.classList.add('in');o.disconnect();}},{threshold:.35});o.observe(ch);setTimeout(function(){ch.classList.add('in')},9000);}else ch.classList.add('in');}
+var s=r.querySelector('.stk'),h=r.querySelector('.hero'),a=document.getElementById('agenda');
+if(s&&h&&('IntersectionObserver' in window)){var vh=true,va=false;var f=function(){if(!vh&&!va)s.classList.add('on');else s.classList.remove('on');};
+ new IntersectionObserver(function(e){vh=e[0].isIntersecting;f();}).observe(h);
+ if(a)new IntersectionObserver(function(e){va=e[0].isIntersecting;f();}).observe(a);}
+})();</script>"""
+
+MARCA = ["Como cualquier cosa en el trabajo.", "Llego a la noche y no tengo control.", "Arranco bien y después abandono.",
+         "Estoy cansada todo el tiempo, sin energía.", "Necesito café para funcionar.", "Probé de todo y siempre vuelvo al mismo lugar."]
+MARCA_R = [
+    "Empieza marcando las que reconoces. Todas las respuestas valen.",
+    "Una sola ya alcanza para mirarla. Casi siempre es la punta de un patrón más grande.",
+    "Dos frases marcan un patrón, no un mal día. <strong>Tu cuerpo te está pidiendo algo que la comida no le está dando.</strong>",
+    "Tres. Aquí ya no hablamos de la edad ni del estrés de esta semana: es tu sistema nervioso en alerta desde hace meses.",
+    "Cuatro. Estás funcionando con <strong>energía prestada</strong>: café, adrenalina, inercia. Rindes, a un costo que todavía no ves.",
+    "Cinco de seis. Esto es biología, y la biología se regula. <strong>Tiene solución.</strong>",
+    "Las seis. Lee esto despacio: <strong>tu cuerpo está entero</strong>. Está en modo supervivencia, y nadie te explicó qué le está pasando.",
+]
+DIMS_VSL = [
+    ("tierra", "Física", "FÍSICA · TIERRA", "Qué comes",
+     "Lo concreto del plato, desde la inteligencia de tu cuerpo: tu biotipo, tu saciedad real, tu contexto. Es la dimensión que todos miran. Es necesaria, y es una de cuatro."),
+    ("agua", "Emocional", "EMOCIONAL · AGUA", "Qué emoción estás comiendo",
+     "El corazón del método. Aquí trabajas la ansiedad, el estrés y la culpa, que son los que mandan cualquier plan al cajón a los cuatro meses. Aprendes a distinguir hambre real de hambre emocional y a regularte con más recursos que la comida."),
+    ("fuego", "Energética", "ENERGÉTICA · FUEGO", "Cuándo te pide comer tu cuerpo",
+     "Tus ritmos, tu descanso y cómo llegas a la noche. Crononutrición y biotipo: dos personas con el mismo plan y distintos horarios tienen resultados distintos."),
+    ("aire", "Mental", "MENTAL · AIRE", "Qué te dices",
+     "«Ya fallé, sigo.» «Mañana empiezo.» Son programas instalados hace años. Se desactivan con técnica, y la técnica se aprende."),
+]
+PASOS_VSL = [
+    ("N", "DÍAS 1 A 14 · DIAGNÓSTICO REAL", "Nutrir",
+     "Tu apertura conmigo empieza por la pregunta que nadie te hizo: «¿qué estás comiendo de verdad?». Dos semanas para mirar cómo comes, tal como comes hoy.", 0, 15.6),
+    ("U", "DÍAS 15 A 28 · RAÍZ EMOCIONAL", "Unir",
+     "Distingues hambre real de hambre emocional y aprendes a regular tu sistema nervioso con más recursos que la comida.", 15.6, 15.6),
+    ("P", "DÍAS 29 A 42 · TU PLAN, CONTIGO", "Personalizar",
+     "Aquí aparece tu plan de comidas, construido contigo desde tu vida real y tus horarios reales. En el día 43 lo aprobamos juntas.", 31.1, 15.6),
+    ("L", "DÍAS 43 A 56 · ANTI-RECAÍDA", "Liberar",
+     "El punto donde se caen la mayoría de los planes. Aquí un desliz pasa a ser información.", 46.7, 15.6),
+    ("A", "DÍAS 57 A 70 · DATOS REALES", "Activar",
+     "Tu tablero con parámetros objetivos: energía, sueño, evolución. Ves tu avance en datos, más allá de cómo te sentiste hoy.", 62.2, 15.6),
+    ("N", "DÍAS 71 A 90 · IDENTIDAD NUEVA", "Naturalizar",
+     "El éxito del método es que sigas sola. Terminas con tus propias reglas y tus herramientas.", 77.8, 22.2),
+]
+INCLUYE = [
+    "8 encuentros por videollamada: 3 conmigo (apertura, tu plan y cierre) y 5 con María Julia, coordinadora del programa",
+    "La app NuPlan: un ejercicio por día, tu diario y tus check-in conmigo",
+    "Tu plan personalizado, armado por mí con lo que te gusta y tu semana real",
+    "El libro «Recupera tu energía en 90 días», edición del programa",
+    "El grupo privado del programa, con lives y un canal por etapa",
+    "Taller de planificación en grupo y WhatsApp de coordinación",
+]
+FAQ_VSL = [
+    ("¿Voy a tener un plan de comidas?",
+     "Sí, y lo armamos juntas. Aparece en la etapa P, entre los días 29 y 42, con lo que te gusta y tu semana real. Si para ti es importante compartir la pizza que amasa tu marido los sábados, entra en tu plan."),
+    ("Ya probé de todo. ¿Por qué esto sería distinto?",
+     "Porque todo lo que probaste trabajó una sola dimensión: el plato, la cabeza o la química. Aquí trabajamos las cuatro a la vez: lo que comes, lo que sientes, tus ritmos y lo que te dices."),
+    ("No tengo tiempo. ¿Cuánto me demanda?",
+     "Diez minutos por día en la app, de lunes a sábado, y 8 encuentros por videollamada en los 90 días: 3 conmigo y 5 con María Julia, la coordinadora del programa. Está pensado para mujeres con agenda exigente."),
+    ("¿Cuánto sale?",
+     "Lo vemos en la llamada. Primero te digo si puedo ayudarte; después, los números y las formas de pago."),
+    ("¿Y si después de pagar cambio de idea?",
+     "Te devuelvo el 100 % hasta tu encuentro de apertura conmigo, sin explicaciones."),
+]
+
+CHART = ('<svg viewBox="0 0 350 232" role="img" aria-label="Tu energía durante el día: cada café la sube y la deja más abajo; tu energía vital baja hasta la noche">'
+         '<line class="gl" x1="48" y1="16" x2="316" y2="16"/><line class="gl" x1="48" y1="101" x2="316" y2="101"/><line class="gl" x1="48" y1="186" x2="316" y2="186"/>'
+         '<text class="ax" x="0" y="22">ALTA</text><text class="ax" x="0" y="192">BAJA</text>'
+         '<path class="vt" d="M48,64 C130,74 220,108 316,168"/>'
+         '<path class="ln" pathLength="1" d="M48,110 L56,116 L66,44 C80,70 96,112 112,124 L121,58 C138,88 156,126 172,136 L181,74 C198,104 214,140 228,150 L237,96 C250,124 262,150 272,162 S300,178 316,182"/>'
+         '<circle class="cf" cx="56" cy="116" r="7"/><circle class="cf" cx="112" cy="124" r="7"/><circle class="cf" cx="172" cy="136" r="7"/><circle class="cf" cx="228" cy="150" r="7"/>'
+         '<text class="ax" x="48" y="220" text-anchor="middle">7 h</text><text class="ax" x="115" y="220" text-anchor="middle">11 h</text>'
+         '<text class="ax" x="182" y="220" text-anchor="middle">15 h</text><text class="ax" x="249" y="220" text-anchor="middle">19 h</text>'
+         '<text class="ax" x="316" y="220" text-anchor="middle">23 h</text></svg>')
+
+
+def vid(src, rot, ident, t0="0.1"):
+    return (f'<div class="vid rv" data-v id="{ident}"><video src="{src}#t={t0}" preload="metadata" playsinline></video>'
+            f'<button class="vplay" type="button">{ic("play")}<span>{E(rot)}</span></button></div>')
+
+
+def js_vsl():
+    return (JS_VSL.replace("__M__", json.dumps(MARCA_R, ensure_ascii=False))
+                  .replace("__D__", json.dumps([[d[2], d[3], d[4]] for d in DIMS_VSL], ensure_ascii=False))
+                  .replace("__S__", json.dumps([[p[1], p[2], p[3], p[4], p[5]] for p in PASOS_VSL], ensure_ascii=False)))
+
+
+def vsl():
+    marca = "".join(f'<button class="mki" type="button" aria-pressed="false">{ic("check")}<span>{E(x)}</span></button>' for x in MARCA)
+    tabs = "".join(f'<button class="tab" type="button" role="tab" aria-selected="{"true" if i == 0 else "false"}">{ic(d[0])}<span>{E(d[1])}</span></button>' for i, d in enumerate(DIMS_VSL))
+    d0 = DIMS_VSL[0]
+    lts = "".join(f'<button class="ltb" type="button" role="tab" aria-selected="{"true" if i == 0 else "false"}" aria-label="{E(p[2])}">{p[0]}</button>' for i, p in enumerate(PASOS_VSL))
+    p0 = PASOS_VSL[0]
+    inc = "".join(f"<li>{ic('check')}<span>{E(x)}</span></li>" for x in INCLUYE)
+    faq = "".join(f"<details><summary>{E(q)}</summary><p>{E(a)}</p></details>" for q, a in FAQ_VSL)
+    minutos = [("0 a 10", "Me cuentas cómo es tu día", "Y dónde se te escapa el control."),
+               ("10 a 20", "Te muestro qué dimensión manda", "La que está dominando en tu caso."),
+               ("20 a 30", "Te digo si es para ti", "Con honestidad, y cómo seguimos si lo es.")]
+    mins = "".join(f'<div class="step rv"><span class="sn">{E(m)}</span><div><h3>{E(t)}</h3><p>{E(d)}</p></div></div>' for m, t, d in minutos)
+    inner = f'''{CSS_VSL}
+<div class="bar"><a href="{U["inicio"]}" target="_top"><b>Nu<span>Plan</span>™</b></a><a class="bcta" href="#agenda">Agendar</a></div>
+<section class="hero"><div class="wrap hgrid hv">
+ <div>
+  <span class="eyb">PROGRAMA NUPLAN · 90 DÍAS</span>
+  <h1>Recupera tu energía y tus <em>ganas de vivir.</em></h1>
+  <p class="lead">Para mujeres ejecutivas y profesionales con cargo que viven aceleradas, comen lo que pueden y a la noche sienten que perdieron el control.</p>
+ </div>
+ <div>
+  {vid(VIDEO_VSL, "Ver el video · 3 min", "video")}
+  <a class="cta" href="#agenda">Agendar mi llamada de 30 minutos{ic("flecha")}</a>
+  <p class="micro">SIN COSTO · 5 CUPOS POR SEMANA</p>
+ </div>
+</div>
+<div class="wrap"><div class="stats">
+ <div class="stat rv"><b>20+</b><span>años de clínica</span></div>
+ <div class="stat rv"><b>90</b><span>días de programa</span></div>
+ <div class="stat rv"><b>4</b><span>dimensiones</span></div>
+ <div class="stat rv"><b>8</b><span>encuentros por videollamada</span></div>
+</div></div></section>
+<section class="sec white" id="te-pasa"><div class="wrap">
+ {lab("30 segundos", "reloj")}
+ <h2>Marca las que te pasan.</h2>
+ <p class="lead">Las escucho en consultorio hace veinte años. Siempre las mismas, dichas por mujeres distintas.</p>
+ <div class="mk">{marca}</div>
+ <div class="mkr" aria-live="polite"><b class="mkn">0 DE 6</b><p class="mkt">{MARCA_R[0]}</p><a href="#agenda">Cuéntamelo en la llamada{ic("flecha")}</a></div>
+</div></section>
+<section class="sec"><div class="wrap">
+ {lab("Lo que nadie te explicó", "chispa")}
+ <h2>Así se ve tu día por dentro.</h2>
+ <p class="lead">Cada café te sube. Cada subida te deja más abajo que antes. A eso le llamo <strong>energía prestada</strong>.</p>
+ <div class="chart">{CHART}</div>
+ <div class="leg2"><span><i></i>Tu día hoy · los puntos son cafés</span><span><i class="d"></i>Tu energía vital</span></div>
+ <p class="lead">Lo que te pasa tiene nombre: <strong>regulación</strong>. Tu sistema nervioso pasa catorce horas en alerta y a la noche busca bajar con lo único que tiene a mano.</p>
+ <div class="quote rv"><p>«La restricción no encierra a la comida: te encierra a ti.»</p><span>LIC. ROSANA ROLDÁN</span></div>
+</div></section>
+<section class="sec white" id="metodo"><div class="wrap">
+ {lab("El método", "chispa")}
+ <h2>Las 4 dimensiones de tu energía.</h2>
+ <p class="lead">Casi todo lo que probaste trabajó una sola: el plato. Lo que te pasa vive también en las otras tres, y NuPlan trabaja las cuatro a la vez.</p>
+ <div class="tabs" role="tablist" aria-label="Las cuatro dimensiones">{tabs}</div>
+ <div class="tpan" role="tabpanel" aria-live="polite"><p class="el">{E(d0[2])}</p><h3>{E(d0[3])}</h3><p class="tx">{E(d0[4])}</p></div>
+</div></section>
+<section class="sec" id="camino"><div class="wrap">
+ {lab("Los 90 días", "semana")}
+ <h2>Seis pasos, en orden.</h2>
+ <p class="lead">Toca cada letra para ver qué pasa en cada etapa.</p>
+ <div class="lts" role="tablist" aria-label="Las seis etapas">{lts}</div>
+ <div class="dbar"><i style="left:0%;width:15.6%"></i></div>
+ <div class="dlab"><span>DÍA 1</span><span>DÍA 90</span></div>
+ <div class="lpan" role="tabpanel" aria-live="polite"><p class="wk">{E(p0[1])}</p><h3>{E(p0[2])}</h3><p class="tx">{E(p0[3])}</p></div>
+ <div class="incb rv"><p class="ot" style="font-size:clamp(24px,5vw,30px)">Qué incluyen tus 90 días</p><ul class="inc">{inc}</ul></div>
+</div></section>
+<section class="sec white" id="rosana"><div class="wrap split">
+ <div>
+  {lab("Quién te va a acompañar", "sesion")}
+  <h2>Rosana Roldán</h2>
+  <p>Nutricionista de la UBA, M.N. 3884, con dos posgrados y más de veinte años de consultorio. Y te lo digo también desde otro lugar: <strong>yo viví ese mismo agotamiento</strong>. Trabajaba sin parar, comía lo que podía y a la noche no me alcanzaba la energía para nada.</p>
+  <p>En el programa me acompaña María Julia, nutricionista y coordinadora del programa: te recibe el primer día y está contigo entre encuentro y encuentro.</p>
+ </div>
+ <div><p class="big">«Mi propio cuerpo fue mi primer laboratorio.»</p></div>
+</div></section>
+<section class="sec" id="agenda"><div class="wrap">
+ <div class="gar rv">{ic("escudo")}<div><p class="el">TU GARANTÍA</p><h3>Si cambias de idea, te devuelvo el 100 %.</h3><p>Hasta tu encuentro de apertura conmigo, sin explicaciones. Así decides con calma.</p></div></div>
+ {lab("El siguiente paso", "flecha")}
+ <h2>Agenda 30 minutos conmigo.</h2>
+ <p class="lead">Sin costo, por videollamada. Me cuentas tu caso y te digo con honestidad si el programa tiene sentido para ti.</p>
+ <div class="steps">{mins}</div>
+ <div class="calw"><iframe src="https://api.leadconnectorhq.com/widget/booking/{CAL_ADMISION}" scrolling="no" id="{CAL_ADMISION}_1787681177706" title="Agenda tu llamada con Rosana"></iframe></div>
+ <script src="https://link.msgsndr.com/js/form_embed.js" type="text/javascript"></script>
+ <p class="micro" style="text-align:center">ES ONLINE, DESDE CUALQUIER PAÍS · 5 CUPOS POR SEMANA</p>
+ <a class="no" href="{CAL_ADMISION_LINK}" target="_blank" rel="noopener">¿No carga el calendario? Ábrelo aquí</a>
+</div></section>
+<section class="sec white" id="preguntas"><div class="wrap narrow">
+ {lab("Antes de agendar", "chispa")}
+ <h2>Lo que casi todas me preguntan.</h2>
+ <div style="margin-top:26px">{faq}</div>
+ <p class="big" style="margin-top:44px">«Comer es mucho más que ingerir nutrientes. Es defensa. Es expresión.»</p>
+</div></section>
+<section class="sec coral final"><div class="wrap narrow">
+ <h2>¿Hablamos 30 minutos?</h2>
+ <p class="lead">Me cuentas tu caso y te digo con honestidad si el programa tiene sentido para ti.</p>
+ <a class="cta inv" href="#agenda">Agendar mi llamada{ic("flecha")}</a>
+ <p class="micro">SIN COSTO · POR VIDEOLLAMADA</p>
+</div></section>
+{pie()}
+<a class="stk" href="#agenda">Agendar mi llamada de 30 minutos{ic("flecha")}</a>'''
+    return page("NuPlan™ · Recupera tu energía y tus ganas de vivir", inner, js_vsl())
+
+
+# =============================== 10 · ANTES DE LA LLAMADA (/preparacion) ===============================
+def preparacion():
+    tres = [("Es una conversación", "Me cuentas qué te pasa, te escucho, y al final vemos juntas si tiene sentido seguir."),
+            ("Todas las respuestas valen", "Habla como le contarías a una amiga. Lo que digas queda entre nosotras, y lo que prefieras guardarte, te lo guardas."),
+            ("Del otro lado hay alguien que lo vivió", "Además de los veinte años de consultorio, mi propio cuerpo fue mi primer laboratorio: pasé por el mismo agotamiento que tú.")]
+    t3 = "".join(f'<div class="step rv"><span class="sn">{i}</span><div><h3>{E(t)}</h3><p>{E(d)}</p></div></div>' for i, (t, d) in enumerate(tres, 1))
+    cuatro = [("Busca un lugar tranquilo.", "Vamos a hablar de cosas que quizás nunca contaste en voz alta. Mejor sin nadie escuchando de fondo."),
+              ("Bloquea los 30 minutos completos.", "Con el mail cerrado y sin reuniones pegadas. Es media hora para ti."),
+              ("Usa auriculares.", "Se escucha mejor y te vas a sentir más cómoda para hablar."),
+              ("Ven tal como estás.", "Tu historia es lo que necesito, y ya la tienes.")]
+    c4 = "".join(f'<div class="step rv"><span class="sn">{i}</span><div><h3>{E(t)}</h3><p>{E(d)}</p></div></div>' for i, (t, d) in enumerate(cuatro, 1))
+    wa_rep = U["wa"] + "?text=Hola%20Rosana%2C%20necesito%20reprogramar%20mi%20llamada."
+    inner = f'''{CSS_VSL}
+{bar(False)}
+<section class="hero"><div class="wrap narrow">
+ <div class="conf">{ic("ok")}<div><b>Listo. Tu llamada quedó agendada.</b><span>Te llegó un mail con el día, la hora y el link de la videollamada.</span></div></div>
+ <span class="eyb">ANTES DE QUE HABLEMOS</span>
+ <h1 style="font-size:clamp(38px,9vw,64px)">Mira este video de 30 segundos. Es lo único que te <em>pido.</em></h1>
+ <p class="lead">Te cuento cómo va a ser nuestra conversación, para que llegues sabiendo qué esperar.</p>
+ {vid(VIDEO_PREP, "Qué esperar · 30 s", "video", "0.6")}
+</div></section>
+<section class="sec white"><div class="wrap narrow">
+ {lab("Lo que viene", "sesion")}
+ <h2>Esos 30 minutos son tuyos.</h2>
+ <p>Es media hora reservada para hablar de algo que probablemente vienes postergando hace años, porque siempre hubo algo más urgente.</p>
+ <p>Vas a hablar tú y yo voy a escuchar, que es justo lo que casi nunca pasa en una consulta. Llegas como estás: sin análisis, sin registros, sin anotar lo que comiste.</p>
+ <p>Al final te digo con honestidad si puedo ayudarte. Y si el método no es para ti, te digo quién puede.</p>
+ <p class="big" style="margin-top:30px">«Mi trabajo empieza por escucharte.»</p>
+</div></section>
+<section class="sec"><div class="wrap">
+ {lab("Para que llegues tranquila", "chispa")}
+ <h2>Tres cosas que quiero que sepas.</h2>
+ <div class="steps">{t3}</div>
+</div></section>
+<section class="sec white"><div class="wrap">
+ {lab("El día de la llamada", "reloj")}
+ <h2>Cómo llegar bien preparada.</h2>
+ <div class="steps" style="grid-template-columns:repeat(auto-fit,minmax(240px,1fr))">{c4}</div>
+ <div class="avs"><p class="el">SI NO PUEDES ASISTIR</p><h3>Avísame con 24 horas de anticipación.</h3><p>Con ese tiempo le ofrezco tu lugar a otra mujer que está esperando, y a ti te consigo otro horario. Cada semana hay solo cinco lugares.</p>
+ {btn("Escribirme por WhatsApp para reprogramar", wa_rep, "cta sec2", "wa").replace('target="_top"', 'target="_blank" rel="noopener"')}</div>
+</div></section>
+<section class="sec coral final"><div class="wrap narrow">
+ {lab("Mientras tanto", "play")}
+ <h2>Si quieres ir entendiendo qué te pasa.</h2>
+ <p class="lead">Grabé una clase de 11 minutos donde te explico, con biología y con objetos de mi consultorio, por qué comes por estrés. Las que la ven llegan a la llamada con las preguntas más afiladas.</p>
+ {btn("Ver la clase de 11 minutos", U["clase"], "cta inv", "play")}
+ <p class="micro">SIN COSTO · LA VES CUANDO QUIERAS</p>
+</div></section>
+{pie()}'''
+    return page("NuPlan™ · Tu llamada está agendada", inner, js_vsl())
+
+
+
 PAGES = {
     "nuplan-inicio.html": inicio,
     "nuplan-empresas.html": empresas,
@@ -665,6 +1005,8 @@ PAGES = {
     "nuplan-programa-segundo-pago-encabezado.html": segundo_pago,
     "nuplan-programa-segundo-gracias.html": segundo_gracias,
     "nuplan-bienvenida.html": bienvenida,
+    "nuplan-vsl.html": vsl,
+    "nuplan-preparacion.html": preparacion,
 }
 
 if __name__ == "__main__":

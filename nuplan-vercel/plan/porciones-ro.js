@@ -6,13 +6,13 @@
 (function (g) {
   "use strict";
 
-  /* Grupos: k · nombre en singular · energía aproximada de UNA porción (kcal) */
+  /* Grupos: k · nombre del grupo como lo dice Ro (25/11) · energía aproximada de UNA porción (kcal) */
   var GRUPOS = [
-    { k: "lac", t: "lácteo", kcal: 80 },
-    { k: "carb", t: "carbohidrato", kcal: 80 },
-    { k: "prot", t: "proteína", kcal: 75 },
-    { k: "fru", t: "fruta", kcal: 65 },
-    { k: "gra", t: "grasa buena", kcal: 45 }
+    { k: "lac", t: "lácteos", kcal: 80 },
+    { k: "carb", t: "carbohidratos", kcal: 80 },
+    { k: "prot", t: "proteínas", kcal: 75 },
+    { k: "fru", t: "vitaminas y minerales", kcal: 65 },
+    { k: "gra", t: "grasa saludable", kcal: 45 }
   ];
   var VEG_KCAL = 50; // la mitad del plato de vegetales, en almuerzo y cena
   var MOMENTOS = [
@@ -59,7 +59,7 @@
     if (k === "fru") return ["1 fruta mediana (manzana, naranja o pera)", "1 banana chica", "1 taza de frutas cortadas o de frutillas", "2 mandarinas"];
     if (k === "gra") return principal
       ? ["1 cucharadita de aceite de oliva", "2 cucharadas de palta", "6 aceitunas", "1 cucharada de semillas (chía, lino o sésamo)"]
-      : ["6 almendras", "2 nueces", "10 maníes sin sal", "1 cucharadita de pasta de maní", "2 cucharadas de palta"];
+      : ["6 almendras", "2 nueces", "10 maníes sin sal", "1 cucharadita de pasta de maní", "2 cucharadas de palta", "1 cucharada de semillas (chía, lino o sésamo)"];
     return [];
   }
   var VEGETALES = "Crudos, al vapor, al horno o salteados: hojas verdes, tomate, zapallito, brócoli, zanahoria, berenjena, pimiento, chauchas.";
@@ -122,7 +122,7 @@
     if (Array.isArray(o)) { o = o.map(function (x) { return String(x == null ? "" : x).replace(/\s+/g, " ").trim(); }).filter(Boolean); if (o.length) return o; }
     return equivalencias(gk, mom, p && (p.dieta || p.tipo), p && (p.celiaco || p.cel));
   }
-  /* Grupos que se pueden sumar en una comida (en el desayuno, el lácteo ya está dentro de «proteína») */
+  /* Grupos que se pueden sumar en una comida (en el desayuno, los lácteos ya están dentro de «proteínas») */
   function agregables(mom, x) {
     return GRUPOS.filter(function (gr) { return !(+(x || {})[gr.k] > 0) && !(mom === "desayuno" && gr.k === "lac"); });
   }
@@ -167,8 +167,15 @@
   }
   function cuantas(comidas) { var n = 0; MOMENTOS.forEach(function (mo) { var x = (comidas || {})[mo.k] || {}; GRUPOS.forEach(function (gr) { n += (+x[gr.k] || 0); }); }); return n; }
 
-  /* «2 porciones de carbohidrato» */
-  function rotulo(n, gk) { var gr = grupo(gk); return n + (n === 1 ? " porción de " : " porciones de ") + (gr ? gr.t : gk); }
+  /* El nombre del grupo en una comida: «proteínas (lácteos y huevo)» en el desayuno, «vitaminas y minerales (frutas)» */
+  function nombre(gk, mom, p) {
+    var gr = grupo(gk); if (!gr) return gk;
+    if (gk === "prot" && mom === "desayuno" && (p && (p.dieta || p.tipo)) !== "g") return gr.t + " (lácteos y huevo)";
+    if (gk === "fru") return gr.t + " (frutas)";
+    return gr.t;
+  }
+  /* «2 porciones de carbohidratos» */
+  function rotulo(n, gk, mom, p) { return n + (n === 1 ? " porción de " : " porciones de ") + nombre(gk, mom, p); }
 
   /* Lo que se guarda en el plan */
   function nuevo(o) {
@@ -205,7 +212,7 @@
       if (mo.k === "desayuno" || mo.k === "merienda") items.push("Infusión libre: té, mate o café");
       GRUPOS.forEach(function (gr) {
         var n = +x[gr.k] || 0; if (!n) return;
-        items.push(rotulo(n, gr.k) + ". Cada una: " + opciones(p, mo.k, gr.k).join(" / "));
+        items.push(rotulo(n, gr.k, mo.k, p) + ". Cada una: " + opciones(p, mo.k, gr.k).join(" / "));
       });
       if (PRINCIPAL[mo.k]) items.push("Vegetales libres: la mitad del plato. " + VEGETALES);
       return { type: mo.t.toUpperCase(), title: mo.h, items: items, tip: (p.tips || {})[mo.k] || "" };
@@ -213,6 +220,6 @@
   }
 
   g.NPPorc = { GRUPOS: GRUPOS, MOMENTOS: MOMENTOS, VEG_KCAL: VEG_KCAL, VEGETALES: VEGETALES, MAX: MAX, PRINCIPAL: PRINCIPAL,
-    grupo: grupo, momento: momento, equivalencias: equivalencias, opciones: opciones, agregables: agregables, MACROS: MACROS, macros: macros, orden: orden, menuDia: menuDia, totalesDe: totalesDe, repartir: repartir, kcalDe: kcalDe, cuantas: cuantas,
+    grupo: grupo, nombre: nombre, momento: momento, equivalencias: equivalencias, opciones: opciones, agregables: agregables, MACROS: MACROS, macros: macros, orden: orden, menuDia: menuDia, totalesDe: totalesDe, repartir: repartir, kcalDe: kcalDe, cuantas: cuantas,
     rotulo: rotulo, nuevo: nuevo, cambiar: cambiar, rearmar: rearmar, estado: estado, diario: diario };
 })(typeof window !== "undefined" ? window : globalThis);

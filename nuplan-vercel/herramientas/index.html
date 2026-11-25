@@ -2973,7 +2973,7 @@ function htmlPorciones(d){
       for(var i=0;i<=Math.max(P.MAX,n);i++) ops+='<option value="'+i+'"'+(i===n?' selected':'')+'>'+i+'</option>';
       filas+='<div class="porc g-'+gk+'"><p class="porc-fila">'+
         '<select class="porc-sel no-imprimir" data-k="'+mo.k+'" data-g="'+gk+'" onchange="porcCambiar(this)" aria-label="Porciones de '+esc(gr.t)+' en '+esc(mo.t.toLowerCase())+'">'+ops+'</select>'+
-        '<b class="porc-n-imp">'+n+'</b> <span class="porc-g">'+(n===1?'porción':'porciones')+' de '+esc(gr.t)+'</span></p>'+
+        '<b class="porc-n-imp">'+n+'</b> <span class="porc-g">'+(n===1?'porción':'porciones')+' de '+esc(P.nombre ? P.nombre(gk, mo.k, p) : gr.t)+'</span></p>'+
         '<p class="porc-eq"><span class="porc-eq-l">Cada una, a elección:</span> '+P.opciones(p, mo.k, gk).map(esc).join(' <span class="o">·</span> ')+'</p>'+
         edLista("porc."+mo.k+"."+gk, P.opciones(p, mo.k, gk), "porc-ops solo-edicion").replace('>+ agregar</button>', '>+ sumar una opción</button>')+'</div>';
     });
@@ -2986,7 +2986,7 @@ function htmlPorciones(d){
   }).join("");
   return h+'</div>';
 }
-var PORC_AGREGAR = { fru:"Fruta", gra:"Grasa buena: palta, frutos secos, aceite", carb:"Carbohidrato", prot:"Proteína", lac:"Lácteo" };
+var PORC_AGREGAR = { fru:"Vitaminas y minerales: frutas", gra:"Grasa saludable: frutos secos, semillas, palta", carb:"Carbohidratos", prot:"Proteínas", lac:"Lácteos" };
 function porcEditando(){ return $("plan-resultado").classList.contains("editando"); }
 /* Con «Editar el plan» abierto: se toma lo que ya se escribió, se aplica el cambio y se sigue editando (se guarda con «Guardar cambios») */
 function porcEnEdicion(aplicar, foco, foco2){

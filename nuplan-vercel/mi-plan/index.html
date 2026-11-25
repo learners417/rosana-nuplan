@@ -1720,7 +1720,7 @@ function plrComidas(ro){
       var eqs = plrOpciones(por, mo.k, gk), el = plrElegidas(ro, mo.k, gk, n, eqs), cuenta = {};
       el.forEach(function(i){ cuenta[i] = (cuenta[i] || 0) + 1 });
       var listo = el.length === n, cl = mo.k + "|" + gk, abierto = !listo || ro.ab === cl;
-      filas += '<div class="plr-g g-' + gk + '"><p class="plr-t"><span class="plr-n">' + n + '</span> ' + (n === 1 ? "porción" : "porciones") + ' de ' + esc(NPPorc.grupo(gk).t) +
+      filas += '<div class="plr-g g-' + gk + '"><p class="plr-t"><span class="plr-n">' + n + '</span> ' + (n === 1 ? "porción" : "porciones") + ' de ' + esc(NPPorc.nombre ? NPPorc.nombre(gk, mo.k, por) : NPPorc.grupo(gk).t) +
         '<span class="plr-c' + (listo ? " ok" : "") + '">' + (listo ? "&#10003; listo" : "elegiste " + el.length + " de " + n) + '</span></p>' +
         '<div class="pl-ops">' + eqs.map(function(t, i){ var c = cuenta[i] || 0; if(!abierto && !c) return "";
           return '<button type="button" data-plr-eq="' + cl + '|' + i + '" class="' + (c ? "on" : "") + '" aria-pressed="' + (c > 0) + '">' + esc(t) + (c > 1 ? ' <b>&times;' + c + '</b>' : '') + '</button>' }).join("") + '</div>' +

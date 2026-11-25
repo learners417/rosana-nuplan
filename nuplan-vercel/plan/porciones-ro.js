@@ -43,6 +43,12 @@
         ? ["1/2 taza de pasta sin TACC cocida", "1/3 de taza de arroz cocido", "1/3 de taza de legumbres cocidas", "1 papa chica o 1/2 batata chica", "1/2 choclo", "1/2 taza de polenta cocida", "1/3 de taza de quinoa cocida", "1 rebanada de pan sin TACC"]
         : ["1/2 taza de pasta cocida", "1/3 de taza de arroz cocido", "1/3 de taza de legumbres cocidas", "1 papa chica o 1/2 batata chica", "1/2 choclo", "1/2 taza de polenta cocida", "1/2 taza de cous cous cocido", "1 rebanada de pan integral"];
     }
+    if (k === "prot" && mom === "desayuno") {
+      /* Pedido de Ro (24/11): en el desayuno, lácteo y proteína van juntos como «proteína». */
+      if (dieta === "g") return ["1 taza de bebida de soja sin azúcar", "1 yogur de soja", "1 rebanada de tofu (60 g)", "2 cucharadas de pasta de garbanzos (hummus)"];
+      return ["1 taza de leche descremada", "1 yogur descremado", "1 rebanada de queso port salut descremado (30 g)", "2 cucharadas tipo postre de queso untable descremado",
+        "1 huevo", "2 claras de huevo", "2 cucharadas soperas de ricota"];
+    }
     if (k === "prot") {
       var seitan = cel ? [] : ["40 g de seitán"];
       if (dieta === "g") return ["1 rebanada de tofu (60 g)", "1/2 taza de soja texturizada ya hidratada", "1/2 taza de legumbres cocidas"].concat(seitan);
@@ -86,7 +92,7 @@
     function ciclo(gk, n, orden) { for (var i = 0; i < n; i++) add(orden[i % orden.length], gk, 1); }
     ciclo("lac", t.lac, ["desayuno", "merienda", "mm", "cena", "almuerzo"]);
     ciclo("fru", t.fru, ["mm", "almuerzo", "merienda", "cena", "desayuno"]);
-    ciclo("gra", t.gra, ["almuerzo", "cena", "mm", "desayuno", "merienda"]);
+    ciclo("gra", t.gra, ["almuerzo", "cena", "mm", "merienda"]); // el desayuno sin grasa fija (Ro, 24/11): se suma con «Agregar»
     var P = t.prot, pd = P >= 8 ? 1 : 0, pr = P - pd;
     add("desayuno", "prot", pd); add("almuerzo", "prot", Math.ceil(pr / 2)); add("cena", "prot", Math.floor(pr / 2));
     var C = t.carb, d, m, a, n = 0;
@@ -97,6 +103,7 @@
       var r = C - d - m; a = Math.ceil(r / 2); n = r - a;
     }
     add("desayuno", "carb", d); add("merienda", "carb", m); add("almuerzo", "carb", a); add("cena", "carb", n);
+    if (c.desayuno.lac) { add("desayuno", "prot", c.desayuno.lac); delete c.desayuno.lac; } // lácteo + proteína = «proteína» en el desayuno
     return c;
   }
 
@@ -108,6 +115,16 @@
       if (PRINCIPAL[mo.k]) s += VEG_KCAL;
     });
     return s;
+  }
+  /* Las opciones de una porción: las que Ro dejó en ESTE plan (si las cambió) o las de la tabla. */
+  function opciones(p, mom, gk) {
+    var o = p && p.opciones && p.opciones[mom + "." + gk];
+    if (Array.isArray(o)) { o = o.map(function (x) { return String(x == null ? "" : x).replace(/\s+/g, " ").trim(); }).filter(Boolean); if (o.length) return o; }
+    return equivalencias(gk, mom, p && (p.dieta || p.tipo), p && (p.celiaco || p.cel));
+  }
+  /* Grupos que se pueden sumar en una comida (en el desayuno, el lácteo ya está dentro de «proteína») */
+  function agregables(mom, x) {
+    return GRUPOS.filter(function (gr) { return !(+(x || {})[gr.k] > 0) && !(mom === "desayuno" && gr.k === "lac"); });
   }
   function cuantas(comidas) { var n = 0; MOMENTOS.forEach(function (mo) { var x = (comidas || {})[mo.k] || {}; GRUPOS.forEach(function (gr) { n += (+x[gr.k] || 0); }); }); return n; }
 
@@ -149,7 +166,7 @@
       if (mo.k === "desayuno" || mo.k === "merienda") items.push("Infusión libre: té, mate o café");
       GRUPOS.forEach(function (gr) {
         var n = +x[gr.k] || 0; if (!n) return;
-        items.push(rotulo(n, gr.k) + ". Cada una: " + equivalencias(gr.k, mo.k, p.dieta, p.celiaco).join(" / "));
+        items.push(rotulo(n, gr.k) + ". Cada una: " + opciones(p, mo.k, gr.k).join(" / "));
       });
       if (PRINCIPAL[mo.k]) items.push("Vegetales libres: la mitad del plato. " + VEGETALES);
       return { type: mo.t.toUpperCase(), title: mo.h, items: items, tip: (p.tips || {})[mo.k] || "" };
@@ -157,6 +174,6 @@
   }
 
   g.NPPorc = { GRUPOS: GRUPOS, MOMENTOS: MOMENTOS, VEG_KCAL: VEG_KCAL, VEGETALES: VEGETALES, MAX: MAX, PRINCIPAL: PRINCIPAL,
-    grupo: grupo, momento: momento, equivalencias: equivalencias, totalesDe: totalesDe, repartir: repartir, kcalDe: kcalDe, cuantas: cuantas,
+    grupo: grupo, momento: momento, equivalencias: equivalencias, opciones: opciones, agregables: agregables, totalesDe: totalesDe, repartir: repartir, kcalDe: kcalDe, cuantas: cuantas,
     rotulo: rotulo, nuevo: nuevo, cambiar: cambiar, rearmar: rearmar, estado: estado, diario: diario };
 })(typeof window !== "undefined" ? window : globalThis);

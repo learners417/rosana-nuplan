@@ -1684,7 +1684,8 @@ function plrSt(){
   if(!Array.isArray(v.ro.semana)) v.ro.semana = JSON.parse(JSON.stringify(PLR.p.plan.semana || []));
   return v.ro;
 }
-function plrPor(){ var p = (PLR.p && PLR.p.plan && PLR.p.plan.porciones) || {}; return { comidas: p.comidas || {}, tips: p.tips || {}, tipo: p.tipo || "n", cel: !!p.celiaco } }
+function plrPor(){ var p = (PLR.p && PLR.p.plan && PLR.p.plan.porciones) || {}; return { comidas: p.comidas || {}, tips: p.tips || {}, tipo: p.tipo || "n", cel: !!p.celiaco, opciones: (p.opciones && typeof p.opciones === "object") ? p.opciones : null } }
+function plrOpciones(por, mom, gk){ return NPPorc.opciones ? NPPorc.opciones(por, mom, gk) : NPPorc.equivalencias(gk, mom, por.tipo, por.cel) }
 function plrNuevo(){ var v = S.ej && S.ej.plan && S.ej.plan.v; return plrHay() && !(v && v.ro && v.ro.id === PLR.p.id && v.ro.visto === PLR.p.id) }
 function plrBotonHoy(){
   if(!plrHay()) return "";
@@ -1716,7 +1717,7 @@ function plrComidas(ro){
     if(mo.k === "desayuno" || mo.k === "merienda") filas += '<div class="plr-g g-inf"><p class="plr-t"><span class="plr-libre">Libre</span> Infusión: té, mate o café</p></div>';
     (principal ? ["prot","carb","gra","fru","lac"] : ["lac","carb","prot","gra","fru"]).forEach(function(gk){
       var n = Math.max(0, Math.min(12, +x[gk] || 0)); if(!n) return;
-      var eqs = NPPorc.equivalencias(gk, mo.k, por.tipo, por.cel), el = plrElegidas(ro, mo.k, gk, n, eqs), cuenta = {};
+      var eqs = plrOpciones(por, mo.k, gk), el = plrElegidas(ro, mo.k, gk, n, eqs), cuenta = {};
       el.forEach(function(i){ cuenta[i] = (cuenta[i] || 0) + 1 });
       var listo = el.length === n, cl = mo.k + "|" + gk, abierto = !listo || ro.ab === cl;
       filas += '<div class="plr-g g-' + gk + '"><p class="plr-t"><span class="plr-n">' + n + '</span> ' + (n === 1 ? "porción" : "porciones") + ' de ' + esc(NPPorc.grupo(gk).t) +
@@ -1761,7 +1762,7 @@ function plrLista(ro){
   NPPorc.MOMENTOS.forEach(function(mo){
     var x = por.comidas[mo.k] || {}, partes = [];
     NPPorc.GRUPOS.forEach(function(g){ var n = +x[g.k] || 0; if(!n) return;
-      var eqs = NPPorc.equivalencias(g.k, mo.k, por.tipo, por.cel), c = {}, orden = [];
+      var eqs = plrOpciones(por, mo.k, g.k), c = {}, orden = [];
       plrElegidas(ro, mo.k, g.k, n, eqs).forEach(function(i){ if(!c[i]){ c[i] = 0; orden.push(i) } c[i]++ });
       orden.forEach(function(i){ partes.push(eqs[i] + (c[i] > 1 ? " ×" + c[i] : "")) });
     });

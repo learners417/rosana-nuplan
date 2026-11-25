@@ -226,7 +226,8 @@
   /* ---------- ficha ---------- */
   .resultados li.sin{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;}
   #ficha-caja .elegido{margin:0;background:transparent;border:none;padding:0;} #fi-aviso{margin:14px 0 0;} #fi-aviso:empty{display:none;}
-  .ficha-medidas{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:26px;}
+  .ficha-medidas{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:26px;}
+  @media(max-width:1000px){.ficha-medidas{grid-template-columns:repeat(2,1fr);}}
   @media(max-width:640px){.ficha-medidas{grid-template-columns:1fr;}}
   .dato .delta{display:block;font-family:var(--mono);font-size:.9rem;font-weight:400;color:var(--muted);margin-top:6px;}
   .dato .delta.baja,.dato .delta.sube{color:var(--texto);}
@@ -477,7 +478,15 @@
   .porc-mas{padding:10px 0 0 18px;}
   .porc-mas select{font-family:var(--body);font-size:1rem;min-height:44px;padding:6px 14px;border:1px dashed var(--accent);border-radius:var(--r-md);background:#fff;color:var(--coral-dark);cursor:pointer;}
   .nota-semana{margin:-4px 0 12px;color:var(--muted);font-size:1rem;}
-  .editando .porc-sel,.editando .porc-mas,.editando .porc-tot{opacity:.45;pointer-events:none;}
+  .editando .porc-eq{display:none;}
+  .porc-ops{list-style:none;margin:8px 0 0;padding:0;display:none;}
+  .editando ul.porc-ops{display:flex;flex-wrap:wrap;gap:8px;}
+  .porc-ops li{display:inline-flex;align-items:center;max-width:100%;min-height:44px;padding:0 0 0 12px;font-size:1rem;border:1px dashed var(--accent);border-radius:999px;background:#fff;}
+  .porc-ops li [data-texto]{min-width:2em;padding:8px 0;outline:none;}
+  .porc-ops li .quitar-item{margin-left:2px;min-width:44px;min-height:44px;justify-content:center;border-radius:999px;}
+  .porc-ops + .agregar-item{margin-top:4px;}
+  .porc-ayuda-ed{display:none;margin:0 0 12px;color:var(--coral-dark);font-weight:600;font-size:1rem;}
+  .editando .porc-ayuda-ed{display:block;}
   @media(max-width:640px){
     .comida.porc-comida{padding:16px 14px;} .porc{padding-left:14px;} .porc-mas{padding-left:14px;}
     .porc-sel{min-width:64px;padding-right:30px;background-position:right 10px center;} .porc-g{font-size:1.02rem;}
@@ -1162,7 +1171,7 @@
             <label class="campo">Fecha<input type="date" id="an-fecha" onchange="anCambioFecha()"></label>
             <label class="campo">Edad<input type="number" min="10" max="99" inputmode="numeric" id="an-edad" placeholder="años"></label>
           </div>
-          <div class="campo"><span class="an-et">Sexo</span><div class="an-pills" id="an-sexo"><button type="button" data-v="Femenino" onclick="anElegirPildora('sexo','Femenino')">Mujer</button><button type="button" data-v="Masculino" onclick="anElegirPildora('sexo','Masculino')">Varón</button></div></div>
+          <div class="campo"><span class="an-et">Sexo</span><div class="an-pills" id="an-sexo"><button type="button" data-v="Femenino" onclick="anElegirPildora('sexo','Femenino')">Mujer</button><button type="button" data-v="Masculino" onclick="anElegirPildora('sexo','Masculino')">Hombre</button></div></div>
           <div class="campo"><span class="an-et">Actividad física</span><div class="an-pills" id="an-act"><button type="button" data-v="Activa" onclick="anElegirPildora('act','Activa')">Activa · 150 min o más por semana</button><button type="button" data-v="Sedentaria" onclick="anElegirPildora('act','Sedentaria')">Sedentaria</button></div></div>
           <p class="nota" id="an-grupo" style="margin:4px 0 0;"></p>
         </div>
@@ -1411,7 +1420,7 @@
     </div>
     <div class="grid3">
       <label class="campo">Fecha de nacimiento<input type="date" id="fd-nacimiento"></label>
-      <label class="campo">Sexo<select id="fd-sexo"><option value="Femenino">Femenino</option><option value="Masculino">Masculino</option></select></label>
+      <label class="campo">Sexo<select id="fd-sexo"><option value="Femenino">Mujer</option><option value="Masculino">Hombre</option></select></label>
       <label class="campo">Estado<select id="fd-estado"></select></label>
       <label class="campo">Talla (cm)<input type="number" id="fd-talla" step="0.1" min="100" max="230"></label>
       <label class="campo">Peso inicial (kg)<input type="number" id="fd-peso" step="0.1" min="25" max="300"></label>
@@ -1447,7 +1456,7 @@
     <div class="grid3">
       <label class="campo">Peso (kg) *<input type="number" id="a-peso" step="0.1" min="25" max="300" inputmode="decimal"></label>
       <label class="campo">Talla (cm) *<input type="number" id="a-talla" step="0.1" min="100" max="230" inputmode="decimal"></label>
-      <label class="campo">Sexo<select id="a-sexo"><option value="Femenino">Femenino</option><option value="Masculino">Masculino</option></select></label>
+      <label class="campo">Sexo<select id="a-sexo"><option value="Femenino">Mujer</option><option value="Masculino">Hombre</option></select></label>
       <label class="campo">Fecha de nacimiento<input type="date" id="a-nacimiento"></label>
       <label class="campo">Teléfono<input type="tel" id="a-telefono" autocomplete="off"></label>
       <label class="campo">Mail<input type="email" id="a-mail" autocomplete="off"></label>
@@ -1486,7 +1495,7 @@
         <label class="campo">Nombre *<input type="text" id="cn-nombre" autocomplete="off"></label>
         <label class="campo">Apellido *<input type="text" id="cn-apellido" autocomplete="off"></label>
       </div>
-      <div class="campo"><span class="an-et">Sexo</span><div class="an-pills" id="cn-sexo"><button type="button" data-v="Femenino" onclick="cnSexo('Femenino')">Mujer</button><button type="button" data-v="Masculino" onclick="cnSexo('Masculino')">Varón</button></div></div>
+      <div class="campo"><span class="an-et">Sexo</span><div class="an-pills" id="cn-sexo"><button type="button" data-v="Femenino" onclick="cnSexo('Femenino')">Mujer</button><button type="button" data-v="Masculino" onclick="cnSexo('Masculino')">Hombre</button></div></div>
       <div class="grid3">
         <label class="campo">Fecha de nacimiento<input type="date" id="cn-nacimiento"></label>
         <label class="campo">WhatsApp<input type="tel" id="cn-telefono" autocomplete="off" placeholder="opcional"></label>
@@ -1611,7 +1620,7 @@
       </div>
       <div class="grid3">
         <label class="campo">Edad<input type="number" id="d-edad" min="1" max="120" inputmode="numeric" oninput="recalcular()"></label>
-        <label class="campo">Sexo<select id="d-sexo" onchange="recalcular()"><option>Femenino</option><option>Masculino</option></select></label>
+        <label class="campo">Sexo<select id="d-sexo" onchange="recalcular()"><option value="Femenino">Mujer</option><option value="Masculino">Hombre</option></select></label>
         <label class="campo">Actividad<select id="d-actividad" onchange="recalcular()"></select></label>
       </div>
       <p class="aviso error" id="d-edad-aviso" hidden></p>
@@ -1847,6 +1856,9 @@ var TIPOS_RECETA = [
   {value:"Preparaciones deportivas",label:"Preparaciones deportivas",desc:"Rendimiento y recuperación"},
   {value:"Comidas para llevar (vianda)",label:"Viandas para llevar",desc:"Prácticas para el trabajo"}
 ];
+/* Textos viejos que ya no van (Ro, 24/11: «que no hablen en femenino»): los planes guardados se muestran con el nuevo. */
+var HABITOS_VIEJOS = { "Comer sentada, sin pantalla, masticando despacio": "Comer sin pantallas, masticando despacio" };
+function habitoNeutro(t){ return HABITOS_VIEJOS[t] || t; }
 /* Lista de referencia. Cuando Rosana mande la suya, se reemplaza acá y en ningún otro lado. */
 var MICRO_HABITOS = [
   "Un vaso de agua al despertar",
@@ -1856,7 +1868,7 @@ var MICRO_HABITOS = [
   "Proteína en la merienda",
   "Fibra todos los días: fruta con cáscara, legumbres o cereal integral",
   "Cenar al menos dos horas antes de dormir",
-  "Comer sentada, sin pantalla, masticando despacio",
+  "Comer sin pantallas, masticando despacio",
   "Planificar las comidas del día a la mañana",
   "Llevar vianda o snack al trabajo",
   "Caminar 20 minutos por día",
@@ -2320,7 +2332,7 @@ async function elegirPaciente(p){
   plan.info = { firstName:p.first_name, lastName:p.last_name, age:edadDe(p.birth_date), sex:p.sex||"Femenino", weight:Number(peso), height:Number(talla), waist:m.girth_waist!=null?Number(m.girth_waist):null };
   $("pe-nombre").textContent=nombreCompleto(p);
   plan.sinEdad=!p.birth_date;
-  $("pe-datos").textContent=(p.birth_date?plan.info.age+" años":"sin fecha de nacimiento: falta su edad")+" · "+plan.info.sex+" · "+plan.info.weight+" kg · "+plan.info.height+" cm";
+  $("pe-datos").textContent=(p.birth_date?plan.info.age+" años":"sin fecha de nacimiento: falta su edad")+" · "+(sexoTexto(plan.info.sex)||plan.info.sex)+" · "+plan.info.weight+" kg · "+plan.info.height+" cm";
   $("paciente-elegido").classList.remove("oculto");
   $("pac-aviso").textContent="";
   if(m.error){ $("pac-aviso").className="aviso error"; $("pac-aviso").textContent="No se pudo leer su última consulta ("+m.error+"). Se usan los datos de la ficha: revisalos en el paso 2."; }
@@ -2776,7 +2788,7 @@ function normalizarPlan(d){
   d.planObjective = textoDe(d.planObjective);
   d.dailyPlan = listaDe(d.dailyPlan).map(function(c){ c = (c&&typeof c==="object")?c:{items:[c]}; return {type:textoDe(c.type), title:textoDe(c.title), items:listaDe(c.items).map(textoDe), tip:textoDe(c.tip)}; });
   if(d.sampleDayMenu!=null) d.sampleDayMenu = listaDe(d.sampleDayMenu).map(function(m){ m=(m&&typeof m==="object")?m:{dish:m}; return {meal:textoDe(m.meal), dish:textoDe(m.dish)}; });
-  if(d.microHabits!=null) d.microHabits = listaDe(d.microHabits).map(function(m){ m=(m&&typeof m==="object")?m:{habit:m}; return {habit:textoDe(m.habit), tip:textoDe(m.tip)}; });
+  if(d.microHabits!=null) d.microHabits = listaDe(d.microHabits).map(function(m){ m=(m&&typeof m==="object")?m:{habit:m}; return {habit:habitoNeutro(textoDe(m.habit)), tip:textoDe(m.tip)}; });
   if(d.foodGroupsDetail!=null){ if(typeof d.foodGroupsDetail!=="object"||Array.isArray(d.foodGroupsDetail)) d.foodGroupsDetail={}; Object.keys(d.foodGroupsDetail).forEach(function(k){ d.foodGroupsDetail[k]=listaDe(d.foodGroupsDetail[k]).map(textoDe); }); }
   if(d.hydrationPlan!=null && (typeof d.hydrationPlan!=="object"||Array.isArray(d.hydrationPlan))) d.hydrationPlan={};
   if(d.healthyPlate!=null && (typeof d.healthyPlate!=="object"||Array.isArray(d.healthyPlate))) d.healthyPlate={};
@@ -2921,7 +2933,8 @@ function porcAplicar(d){
 function htmlPorciones(d){
   var P=NPPorc, p=d.porciones, est=P.estado(p);
   var h='<div class="bloque-res" id="porciones"><h3>Tus comidas, por porciones</h3>'+
-    '<p class="porc-ayuda">Cada porción es una opción de la lista: elegís la que más te guste. Si una porción no te entra en esa comida, pasala a otra del mismo día.</p>';
+    '<p class="porc-ayuda">Cada porción es una opción de la lista: elegís la que más te guste. Si una porción no te entra en esa comida, pasala a otra del mismo día.</p>'+
+    '<p class="porc-ayuda-ed no-imprimir">Podés cambiar las porciones, sacar una opción con × o sumar una propia. Se guarda con «Guardar cambios».</p>';
   h+='<div class="porc-tot no-imprimir'+(est.ok?' ok':'')+'" id="porc-tot">'+
      '<div class="porc-tot-n"><span class="l">En porciones</span><b id="porc-suma">≈ '+milesP(est.suma)+'</b><small>kcal</small></div>'+
      '<div class="porc-tot-n"><label class="l" for="porc-kcal">Objetivo</label><input id="porc-kcal" type="text" inputmode="numeric" autocomplete="off" value="'+p.kcal+'" onkeydown="if(event.key===\'Enter\'){event.preventDefault();porcRearmar();}"><small>kcal</small></div>'+
@@ -2933,7 +2946,7 @@ function htmlPorciones(d){
     var x=p.comidas[mo.k]||{}, principal=!!P.PRINCIPAL[mo.k], filas='', hay=false;
     if(principal) filas+='<div class="porc g-veg"><p class="porc-fila"><span class="porc-libre">Libre</span> <span class="porc-g">Vegetales, la mitad del plato</span></p><p class="porc-eq">'+esc(P.VEGETALES)+'</p></div>';
     if(mo.k==="desayuno"||mo.k==="merienda") filas+='<div class="porc g-inf"><p class="porc-fila"><span class="porc-libre">Libre</span> <span class="porc-g">Infusión: té, mate o café</span></p></div>';
-    var orden = principal ? ["prot","carb","gra","fru","lac"] : ["lac","carb","prot","gra","fru"];
+    var orden = principal ? ["prot","carb","gra","fru","lac"] : mo.k==="desayuno" ? ["prot","lac","carb","fru","gra"] : ["lac","carb","prot","gra","fru"];
     orden.forEach(function(gk){
       var n=+x[gk]||0; if(!n) return; hay=true;
       var gr=P.grupo(gk), ops='';
@@ -2941,36 +2954,46 @@ function htmlPorciones(d){
       filas+='<div class="porc g-'+gk+'"><p class="porc-fila">'+
         '<select class="porc-sel no-imprimir" data-k="'+mo.k+'" data-g="'+gk+'" onchange="porcCambiar(this)" aria-label="Porciones de '+esc(gr.t)+' en '+esc(mo.t.toLowerCase())+'">'+ops+'</select>'+
         '<b class="porc-n-imp">'+n+'</b> <span class="porc-g">'+(n===1?'porción':'porciones')+' de '+esc(gr.t)+'</span></p>'+
-        '<p class="porc-eq"><span class="porc-eq-l">Cada una, a elección:</span> '+P.equivalencias(gk, mo.k, p.dieta, p.celiaco).map(esc).join(' <span class="o">·</span> ')+'</p></div>';
+        '<p class="porc-eq"><span class="porc-eq-l">Cada una, a elección:</span> '+P.opciones(p, mo.k, gk).map(esc).join(' <span class="o">·</span> ')+'</p>'+
+        edLista("porc."+mo.k+"."+gk, P.opciones(p, mo.k, gk), "porc-ops solo-edicion").replace('>+ agregar</button>', '>+ sumar una opción</button>')+'</div>';
     });
-    var faltan=P.GRUPOS.filter(function(gr){ return !(+x[gr.k]>0); });
-    if(faltan.length) filas+='<div class="porc-mas no-imprimir"><select data-k="'+mo.k+'" onchange="porcAgregar(this)" aria-label="Agregar un grupo en '+esc(mo.t.toLowerCase())+'"><option value="">+ agregar un grupo</option>'+
-      faltan.map(function(gr){ return '<option value="'+gr.k+'">'+esc(gr.t.charAt(0).toUpperCase()+gr.t.slice(1))+'</option>'; }).join("")+'</select></div>';
+    var faltan=P.agregables ? P.agregables(mo.k, x) : P.GRUPOS.filter(function(gr){ return !(+x[gr.k]>0); });
+    if(faltan.length) filas+='<div class="porc-mas no-imprimir"><select data-k="'+mo.k+'" onchange="porcAgregar(this)" aria-label="Agregar en '+esc(mo.t.toLowerCase())+'"><option value="">+ Agregar</option>'+
+      faltan.map(function(gr){ return '<option value="'+gr.k+'">'+esc(PORC_AGREGAR[gr.k]||gr.t)+'</option>'; }).join("")+'</select></div>';
     var vacia = !hay && !principal && mo.k!=="desayuno" && mo.k!=="merienda";
     return '<div class="comida porc-comida'+(vacia?' vacia no-imprimir':'')+'" data-porc-k="'+mo.k+'"><div class="porc-cab"><span class="tipo">'+esc(mo.t)+'</span><span class="hora">'+esc(mo.h)+'</span></div>'+
       filas+edTexto("tip", (p.tips||{})[mo.k]||"", "p", "tip", "Consejo para esta comida (opcional)")+'</div>';
   }).join("");
   return h+'</div>';
 }
-function porcEditando(){ if($("plan-resultado").classList.contains("editando")){ avisar("Primero guardá o cancelá los cambios de texto.", 5000); return true; } return false; }
+var PORC_AGREGAR = { fru:"Fruta", gra:"Grasa buena: palta, frutos secos, aceite", carb:"Carbohidrato", prot:"Proteína", lac:"Lácteo" };
+function porcEditando(){ return $("plan-resultado").classList.contains("editando"); }
+/* Con «Editar el plan» abierto: se toma lo que ya se escribió, se aplica el cambio y se sigue editando (se guarda con «Guardar cambios») */
+function porcEnEdicion(aplicar, foco, foco2){
+  var d=leerPlanEditado(plan.resultado);
+  aplicar(d); porcAplicar(d); plan.resultado=d;
+  var y=window.scrollY; pintarPlan(d); editarPlan(true); window.scrollTo(0,y);
+  var f=(foco && document.querySelector(foco)) || (foco2 && document.querySelector(foco2)); if(f) f.focus({preventScroll:true});
+}
 function porcCambiar(sel){
   var d=plan.resultado; if(!conPorciones(d)) return;
   var k=sel.getAttribute("data-k"), g=sel.getAttribute("data-g");
-  if(porcEditando()){ sel.value=String((d.porciones.comidas[k]||{})[g]||0); return; }
-  d.porciones=NPPorc.cambiar(d.porciones, k, g, parseInt(sel.value,10));
+  var n=parseInt(sel.value,10);
+  if(porcEditando()){ porcEnEdicion(function(x){ x.porciones=NPPorc.cambiar(x.porciones, k, g, n); }, '.porc-sel[data-k="'+k+'"][data-g="'+g+'"]', '.porc-comida[data-porc-k="'+k+'"] .porc-mas select'); return; }
+  d.porciones=NPPorc.cambiar(d.porciones, k, g, n);
   porcListo(d, '.porc-sel[data-k="'+k+'"][data-g="'+g+'"]', '.porc-comida[data-porc-k="'+k+'"] .porc-mas select');
 }
 function porcAgregar(sel){
   var d=plan.resultado, g=sel.value, k=sel.getAttribute("data-k"); if(!g||!conPorciones(d)) return;
-  if(porcEditando()){ sel.value=""; return; }
+  if(porcEditando()){ porcEnEdicion(function(x){ x.porciones=NPPorc.cambiar(x.porciones, k, g, 1); }, '.porc-sel[data-k="'+k+'"][data-g="'+g+'"]'); return; }
   d.porciones=NPPorc.cambiar(d.porciones, k, g, 1);
   porcListo(d, '.porc-sel[data-k="'+k+'"][data-g="'+g+'"]');
 }
 function porcRearmar(){
   var d=plan.resultado; if(!conPorciones(d)) return;
-  if(porcEditando()) return;
   var v=parseInt(String(($("porc-kcal")||{}).value||"").replace(/\D/g,""),10);
   if(!(v>=800 && v<=6000)){ avisar("Poné un objetivo entre 800 y 6000 kcal.", 5000); if($("porc-kcal")) $("porc-kcal").focus(); return; }
+  if(porcEditando()){ porcEnEdicion(function(x){ x.porciones=NPPorc.rearmar(x.porciones, v); }, "#porc-kcal"); return; }
   d.porciones=NPPorc.rearmar(d.porciones, v);
   porcListo(d, "#porc-kcal");
 }
@@ -3004,7 +3027,7 @@ function planParaApp(d){
   var recos=(d.recommendationsAndRecipes||[]).filter(function(r){ return r && r.general; }).slice(0,10).map(function(r){ return { t:String(r.title||"").slice(0,160), c:String(r.content||"").slice(0,1500) }; });
   var hp=d.hydrationPlan||{};
   return { v:1, fecha:hoyLocalISO(),
-    porciones:{ comidas:p.comidas, tips:p.tips||{}, tipo:p.dieta||"n", celiaco:!!p.celiaco, cenaSinCarbo:p.cenaSinCarbo!==false },
+    porciones:Object.assign({ comidas:p.comidas, tips:p.tips||{}, tipo:p.dieta||"n", celiaco:!!p.celiaco, cenaSinCarbo:p.cenaSinCarbo!==false }, p.opciones ? { opciones:p.opciones } : {}),
     semana:sem, recomendaciones:recos,
     agua: hp.targetLiters ? { litros:hp.targetLiters, vasos:hp.equivalentGlasses||null } : null };
 }
@@ -3286,20 +3309,21 @@ function pintarPlan(d){
    ===================================================================== */
 function editablesDe(raiz){ return raiz.querySelectorAll('[data-ruta],[data-texto]'); }
 function activarEdicion(el){ el.setAttribute("contenteditable","true"); el.setAttribute("spellcheck","false"); }
-function editarPlan(){
+function editarPlan(seguir){
   if(plan.guardandoEdicion){ avisar("Esperá: se están guardando los cambios anteriores.", 5000); return; }
-  if(ocupado()) return;
+  if(seguir!==true && ocupado()) return;
+  if(seguir!==true || !plan.antesDeEditar) plan.antesDeEditar = plan.resultado ? JSON.stringify(plan.resultado) : null;
   var raiz=$("plan-resultado"); raiz.classList.add("editando");
   editablesDe(raiz).forEach(activarEdicion);
   $("acciones-ver").classList.add("oculto"); $("acciones-editar").classList.remove("oculto");
   $("plan-guardado").textContent="";
-  try{ plan.baseEdicion=JSON.stringify(leerPlanEditado(plan.resultado)); }catch(e){ plan.baseEdicion=null; }
+  if(seguir!==true){ try{ plan.baseEdicion=JSON.stringify(leerPlanEditado(plan.resultado)); }catch(e){ plan.baseEdicion=null; } }
 }
-function cancelarEdicion(){ plan.baseEdicion=null; if(plan.resultado) pintarPlan(plan.resultado); else { $("plan-resultado").innerHTML=""; $("plan-resultado").classList.remove("editando"); } }
+function cancelarEdicion(){ plan.baseEdicion=null; if(plan.antesDeEditar && plan.resultado){ try{ plan.resultado=JSON.parse(plan.antesDeEditar); }catch(e){} } plan.antesDeEditar=null; if(plan.resultado) pintarPlan(plan.resultado); else { $("plan-resultado").innerHTML=""; $("plan-resultado").classList.remove("editando"); } }
 async function guardarEdicion(){
   if(plan.guardandoEdicion){ avisar("Esperá: se están guardando los cambios.", 5000); return; }
   if(!plan.paciente||!plan.resultado){ avisar("Se perdió la persona del plan. Abrilo de nuevo desde Planes guardados.", 8000); return; }
-  plan.guardandoEdicion=true;
+  plan.guardandoEdicion=true; plan.antesDeEditar=null;
   var nuevo=leerPlanEditado(plan.resultado);
   plan.resultado=nuevo; pintarPlan(nuevo);
   var barra=$("plan-resultado").querySelector(".acciones-fijas"); if(barra) barra.style.pointerEvents="none";
@@ -3334,6 +3358,14 @@ function leerPlanEditado(base){
   if(conPorciones(d)){
     d.porciones.tips=d.porciones.tips||{};
     raiz.querySelectorAll('[data-porc-k]').forEach(function(c){ d.porciones.tips[c.getAttribute("data-porc-k")]=ruta(c,"tip"); });
+    var opc={};
+    raiz.querySelectorAll('ul[data-lista^="porc."]').forEach(function(ul){
+      var r=ul.getAttribute("data-lista").split("."), mk=r[1], gk=r[2];
+      var lista=Array.prototype.map.call(ul.querySelectorAll(':scope > li > [data-texto]'), t).filter(Boolean);
+      var tabla=NPPorc.equivalencias(gk, mk, d.porciones.dieta, d.porciones.celiaco);
+      if(lista.length && JSON.stringify(lista)!==JSON.stringify(tabla)) opc[mk+"."+gk]=lista;
+    });
+    if(Object.keys(opc).length) d.porciones.opciones=opc; else delete d.porciones.opciones;
     d.dailyPlan=NPPorc.diario(d.porciones);
   }
   if(d.sampleDayMenu && !d.weeklyMenu) d.sampleDayMenu=tarjetas('[data-menu]', function(m){ return {meal:ruta(m,"meal"), dish:ruta(m,"dish")}; }).filter(function(m){ return m.meal||m.dish; });
@@ -3838,6 +3870,7 @@ async function filtrarPacientesIni(q){
 function recortar(t, n){ t=String(t||""); return t.length>n ? t.slice(0,n-1).replace(/\s+\S*$/,"")+"…" : t; }
 function imcDe(peso, talla){ return (peso>0&&talla>0) ? peso/Math.pow(talla/100,2) : null; }
 function categoriaImc(i){ return i==null?"" : i<18.5?"Bajo peso" : i<25?"Normal" : i<30?"Sobrepeso" : "Obesidad"; }
+function sexoTexto(x){ return x==="Masculino" ? "Hombre" : x==="Femenino" ? "Mujer" : (x||null); }
 async function abrirFicha(p){
   if(!p) return;
   ficha.paciente=p; ficha.sesiones=[]; ficha.docs=[]; ficha.labs=[]; ficha.labsError="";
@@ -3861,7 +3894,7 @@ async function abrirFicha(p){
 function pintarCabeceraFicha(){
   var p=ficha.paciente;
   $("fi-nombre").textContent=nombreCompleto(p);
-  $("fi-datos").textContent=[p.birth_date?edadDe(p.birth_date)+" años":null, p.sex||null, p.status||null, p.area&&p.area!=="Sin especificar"?p.area:null, p.phone||null, p.email||null].filter(Boolean).join(" · ");
+  $("fi-datos").textContent=[p.birth_date?edadDe(p.birth_date)+" años":null, sexoTexto(p.sex), p.status||null, p.area&&p.area!=="Sin especificar"?p.area:null, p.phone||null, p.email||null].filter(Boolean).join(" · ");
 }
 function pintarFicha(){
   var p=ficha.paciente, ses=ficha.sesiones, h="";
@@ -3881,7 +3914,8 @@ function pintarFicha(){
   h+='<div class="ficha-medidas no-imprimir">'+
     '<div class="dato"><span class="l">Peso actual</span><span class="v">'+(peso!=null?numeroAR(peso)+' <small>kg</small>':"—")+'</span>'+delta(peso,pesoIni,"kg",conPeso.length?"el "+fechaCorta(conPeso[0].session_date):"el inicio",conPeso.length)+'</div>'+
     '<div class="dato"><span class="l">Cintura</span><span class="v">'+(cintura!=null?numeroAR(cintura)+' <small>cm</small>':"—")+'</span>'+delta(cintura,cinturaIni,"cm","la primera medición",conCintura.length)+'</div>'+
-    '<div class="dato"><span class="l">IMC</span><span class="v">'+(imc!=null?numeroAR(imc.toFixed(1))+' <small>'+categoriaImc(imc)+'</small>':"—")+'</span>'+(talla?'<span class="delta">talla '+talla+' cm</span>':"")+'</div></div>';
+    '<div class="dato"><span class="l">Talla</span><span class="v">'+(talla?numeroAR(talla)+' <small>cm</small>':"—")+'</span></div>'+
+    '<div class="dato"><span class="l">IMC</span><span class="v">'+(imc!=null?numeroAR(imc.toFixed(1))+' <small>'+categoriaImc(imc)+'</small>':"—")+'</span></div></div>';
   var nPlanes=ficha.docs.filter(function(d){return d.type==="meal_plan";}).length, nRec=ficha.docs.filter(function(d){return d.type==="recipes";}).length;
   h+='<p class="ficha-planes no-imprimir">'+(ficha.docs.length
     ? [nPlanes?nPlanes+" plan"+(nPlanes===1?"":"es"):null, nRec?nRec+" recetario"+(nRec===1?"":"s"):null].filter(Boolean).join(" y ")+" guardado"+(ficha.docs.length===1?"":"s")+" · el último del "+fechaCorta(ficha.docs[0].created_at)+'. <button type="button" class="enlace" onclick="fichaGuardados()">Verlos</button>'
@@ -3893,10 +3927,10 @@ function pintarFicha(){
           grafico("Cintura (cm)", conCintura.map(function(x){return {f:x.session_date, v:Number(x.girth_waist)};}), "#c53a1e")+'</div>';
   cuerpo+=fichaMedidasHTML(ses, talla)+fichaLabHTML();
   if(ses.length){
-    cuerpo+='<h3 class="sec-ficha">Consultas<small>De la más nueva a la más vieja</small></h3><div class="tabla-scroll"><table class="tabla"><thead><tr><th>Fecha</th><th>Peso</th><th>Cintura</th><th>IMC</th><th>Adherencia</th><th>Energía</th><th>Sueño</th><th class="notas">Motivo / notas</th><th class="no-imprimir"></th></tr></thead><tbody>'+
+    cuerpo+='<h3 class="sec-ficha">Consultas<small>De la más nueva a la más vieja</small></h3><div class="tabla-scroll"><table class="tabla"><thead><tr><th>Fecha</th><th>Peso</th><th>Talla</th><th>Cintura</th><th>IMC</th><th>Adherencia</th><th>Energía</th><th>Sueño</th><th class="notas">Motivo / notas</th><th class="no-imprimir"></th></tr></thead><tbody>'+
       ses.slice().reverse().map(function(x){
         var i=imcDe(Number(x.weight), Number(x.height>0?x.height:talla)), antro=/antropometr/i.test(x.session_type||"");
-        return '<tr'+(antro?' class="fila-antro"':'')+'><td class="mono">'+fechaCorta(x.session_date)+'<small class="tipo-ses">'+(antro?"Antropometría":"Consulta")+'</small></td><td class="mono">'+(x.weight>0?numeroAR(x.weight)+" kg":"—")+'</td><td class="mono">'+(x.girth_waist>0?numeroAR(x.girth_waist)+" cm":"—")+'</td><td class="mono">'+(i!=null?numeroAR(i.toFixed(1)):"—")+'</td>'+
+        return '<tr'+(antro?' class="fila-antro"':'')+'><td class="mono">'+fechaCorta(x.session_date)+'<small class="tipo-ses">'+(antro?"Antropometría":"Consulta")+'</small></td><td class="mono">'+(x.weight>0?numeroAR(x.weight)+" kg":"—")+'</td><td class="mono">'+(x.height>0?numeroAR(x.height)+" cm":"—")+'</td><td class="mono">'+(x.girth_waist>0?numeroAR(x.girth_waist)+" cm":"—")+'</td><td class="mono">'+(i!=null?numeroAR(i.toFixed(1)):"—")+'</td>'+
           ((antro && x.adherence==null && x.energy_level==null && x.sleep_quality==null) ? '<td colspan="3" class="sin-esc">Solo medidas</td>' :
           '<td class="mono">'+(x.adherence!=null?x.adherence+"/5":"—")+'</td><td class="mono">'+(x.energy_level!=null?x.energy_level+"/5":"—")+'</td><td class="mono">'+(x.sleep_quality!=null?x.sleep_quality+"/5":"—")+'</td>')+
           '<td class="notas">'+esc(recortar([x.consultation_reason,x.consultation_notes].filter(Boolean).join(" · "), 220))+'</td>'+
@@ -4140,7 +4174,7 @@ async function cargarEvolucionGrupo(){
     });
     if(!n) return "";
     var prom=difTxt(0, suma/n, def.d);
-    return '<tr><td><span class="nom">'+def.n+'</span><span class="ref">'+(def.u?def.u+" · ":"")+'ref. '+(def.k==="hdl"?"≥ 50 mujeres, ≥ 40 varones":labRef(def))+'</span></td><td class="n">'+n+'</td><td class="n">'+fi+'</td><td class="n">'+ff+'</td><td class="n">'+mej+'</td><td class="n">'+prom.s+'</td></tr>';
+    return '<tr><td><span class="nom">'+def.n+'</span><span class="ref">'+(def.u?def.u+" · ":"")+'ref. '+(def.k==="hdl"?"≥ 50 mujeres, ≥ 40 hombres":labRef(def))+'</span></td><td class="n">'+n+'</td><td class="n">'+fi+'</td><td class="n">'+ff+'</td><td class="n">'+mej+'</td><td class="n">'+prom.s+'</td></tr>';
   }).join("");
   // medidas: peso, IMC y cintura
   var MG=[
@@ -4172,7 +4206,7 @@ async function cargarEvolucionGrupo(){
     '</div>'+
     (filasLab ? '<h3 class="sec-ficha">Laboratorio<small>Personas con dos análisis o más</small></h3><div class="tabla-scroll"><table class="tabla evo-t evo-grupo"><thead><tr><th>Análisis</th><th>Personas</th><th>Fuera de ref. al inicio</th><th>Fuera de ref. al final</th><th>Mejoraron</th><th>Cambio promedio</th></tr></thead><tbody>'+filasLab+'</tbody></table></div>' : '<p class="nota">Todavía nadie tiene dos análisis cargados.</p>')+
     (filasMed ? '<h3 class="sec-ficha">Medidas<small>Personas con dos mediciones o más</small></h3><div class="tabla-scroll"><table class="tabla evo-t evo-grupo"><thead><tr><th>Medida</th><th>Personas</th><th>Promedio al inicio</th><th>Promedio al final</th><th>Cambio promedio</th></tr></thead><tbody>'+filasMed+'</tbody></table></div>'+
-      (riesgo.n ? '<p class="nota">Cintura por encima del valor de riesgo (80 cm mujeres, 94 cm varones): '+riesgo.i+' de '+riesgo.n+' al inicio, '+riesgo.f+' de '+riesgo.n+' en la última medición.</p>' : "") : "")+
+      (riesgo.n ? '<p class="nota">Cintura por encima del valor de riesgo (80 cm mujeres, 94 cm hombres): '+riesgo.i+' de '+riesgo.n+' al inicio, '+riesgo.f+' de '+riesgo.n+' en la última medición.</p>' : "") : "")+
     '</div>';
   $("eg-resultado").innerHTML=hoja("Evolución del grupo · "+emp, h)+'<div class="acciones-res"><button class="btn" onclick="window.print()">Imprimir o guardar PDF</button></div>';
   rotularEvo($("eg-resultado"));
@@ -4209,7 +4243,7 @@ function anFmt(v, d){ return v==null||!isFinite(v) ? "—" : numeroAR(Number(v).
 function anGrupoEdad(e){ return e==null ? "31 a 50 años" : e<=18 ? "16 a 18 años" : e<=30 ? "19 a 30 años" : e<=50 ? "31 a 50 años" : "Mayor de 50 años"; }
 function anGrupo(){ return an.actividad+" - "+anGrupoEdad(an.edad); }
 /* «mujeres sedentarias de 31 a 50 años» */
-function anGrupoTexto(grupo, sexo){ var g=String(grupo||"").split(" - "), act=/^Activa/.test(g[0]||""), v=sexo==="Masculino"; return (v?"varones ":"mujeres ")+(act?(v?"activos":"activas"):(v?"sedentarios":"sedentarias"))+(g[1]?" "+(/^Mayor/.test(g[1])?"mayores de 50 años":"de "+g[1]):""); }
+function anGrupoTexto(grupo, sexo){ var g=String(grupo||"").split(" - "), act=/^Activa/.test(g[0]||""), v=sexo==="Masculino"; return (v?"hombres ":"mujeres ")+(act?(v?"activos":"activas"):(v?"sedentarios":"sedentarias"))+(g[1]?" "+(/^Mayor/.test(g[1])?"mayores de 50 años":"de "+g[1]):""); }
 /* la edad que tenía el día de la medición */
 function anEdadEn(nac, fecha){ if(!nac) return null; var a=String(nac).slice(0,10).split("-").map(Number), f=fecha?String(fecha).slice(0,10).split("-").map(Number):null; if(!f||f.length<3){ var h=new Date(); f=[h.getFullYear(),h.getMonth()+1,h.getDate()]; } var e=f[0]-a[0]; if(f[1]<a[1]||(f[1]===a[1]&&f[2]<a[2])) e--; return e; }
 function anRef(sexo, grupo){ var t=AN_REF[sexo]||AN_REF.Femenino; return t[grupo]||t[an.actividad+" - 31 a 50 años"]||t["Sedentaria - 31 a 50 años"]; }
@@ -4279,7 +4313,7 @@ async function anElegir(p, fila){
   an.actividad=/^Activa/.test(gr)?"Activa":"Sedentaria";
   $("an-buscar").classList.add("oculto"); $("lista-pacientes-an").innerHTML="";
   $("an-nombre").textContent=nombreCompleto(p);
-  $("an-datos").textContent=[an.edad!=null?an.edad+" años":"sin fecha de nacimiento", an.sexo==="Masculino"?"varón":"mujer", p.area&&p.area!=="Sin especificar"?p.area:null].filter(Boolean).join(" · ");
+  $("an-datos").textContent=[an.edad!=null?an.edad+" años":"sin fecha de nacimiento", an.sexo==="Masculino"?"hombre":"mujer", p.area&&p.area!=="Sin especificar"?p.area:null].filter(Boolean).join(" · ");
   $("an-elegido").classList.remove("oculto"); $("an-form").classList.remove("oculto"); $("an-listo").classList.add("oculto");
   $("an-titulo").textContent=fila?"Corregir la antropometría del "+fechaCorta(fila.session_date):"Nueva antropometría";
   $("btn-an-guardar").textContent=fila?"Guardar cambios":"Guardar y ver el informe";
@@ -4702,14 +4736,14 @@ function eiPintar(d){
     eiApilada("Índice de masa corporal", [["Bajo peso",d.imc.bajo,"c0"],["Normal",d.imc.normal,"c1"],["Sobrepeso",d.imc.sobre,"c2"],["Obesidad",d.imc.obes,"c3"]], d.imc.n)+
     eiApilada("Cintura", [["Sin riesgo",d.cin.ok,"c1"],["Riesgo aumentado",d.cin.aum,"c2"],["Riesgo muy aumentado",d.cin.muy,"c3"]], d.cin.n)+
     (!d.imc.n&&!d.cin.n?'<p class="nota">Sin peso, talla ni cintura cargados.</p>':'')+
-    '<p class="nota">Cintura: sin riesgo debajo de 80 cm en mujeres y 94 cm en varones; muy aumentado desde 88 y 102 cm.</p>';
+    '<p class="nota">Cintura: sin riesgo debajo de 80 cm en mujeres y 94 cm en hombres; muy aumentado desde 88 y 102 cm.</p>';
   var est=["Objetivo Alcanzado","En Progreso","En Riesgo","Requiere Derivación"].map(function(k){ return [k, d.estado[k]||0]; });
   c+=eiApilada("Estado de las personas", [["Objetivo alcanzado",est[0][1],"c1"],["En progreso",est[1][1],"c0"],["En riesgo",est[2][1],"c2"],["Requiere derivación",est[3][1],"c3"]], pobN);
   var fr=EI_RIESGO.map(function(r){ return [r[1], d.riesgo.f[r[0]]||0]; }).filter(function(x){ return x[1]; }).sort(function(a,b){ return b[1]-a[1]; });
   c+='<h3 class="sec-ficha">Factores de riesgo</h3>'+(fr.length
     ? '<div class="tabla-scroll"><table class="tabla evo-t ei-t"><thead><tr><th>Factor</th><th>Personas</th><th>% de quienes tienen datos</th></tr></thead><tbody>'+fr.map(function(x){ return '<tr><td>'+x[0]+'</td><td class="mono">'+x[1]+'</td><td class="mono"><span class="ei-mini"><i style="width:'+eiPct(x[1],d.riesgo.conDato)+'%"></i></span>'+eiPct(x[1],d.riesgo.conDato)+' %</td></tr>'; }).join("")+'</tbody></table></div>'
     : '<p>Nadie tiene factores de riesgo en las últimas mediciones y análisis.</p>')+
-    '<p class="nota">Con el último peso, talla y cintura, y el último análisis de cada persona. Cintura: más de 80 cm en mujeres y 94 cm en varones. HDL bajo: menos de 50 en mujeres y 40 en varones.</p>';
+    '<p class="nota">Con el último peso, talla y cintura, y el último análisis de cada persona. Cintura: más de 80 cm en mujeres y 94 cm en hombres. HDL bajo: menos de 50 en mujeres y 40 en varones.</p>';
   if(!feria){
     var cb=d.cambios.filter(function(x){ return x[3].n; });
     c+='<h3 class="sec-ficha">Cómo cambiaron</h3>'+(cb.length

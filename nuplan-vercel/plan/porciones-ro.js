@@ -126,6 +126,45 @@
   function agregables(mom, x) {
     return GRUPOS.filter(function (gr) { return !(+(x || {})[gr.k] > 0) && !(mom === "desayuno" && gr.k === "lac"); });
   }
+  /* Macronutrientes de UNA porción (g de proteínas, carbohidratos y grasas). Valores de referencia de las listas de
+     intercambio de uso común; quedan a validación de Ro. En el desayuno, la «proteína» junta lácteos y huevo: va su mezcla. */
+  var MACROS = {
+    lac: { p: 7, c: 10, g: 1.5 }, carb: { p: 2.5, c: 15, g: 1 }, prot: { p: 10, c: 0, g: 4 }, protDes: { p: 7, c: 6, g: 3 },
+    fru: { p: 0.5, c: 15, g: 0 }, gra: { p: 1, c: 1, g: 4.5 }, veg: { p: 2.5, c: 8, g: 0.5 }
+  };
+  function macros(p) {
+    var t = { p: 0, c: 0, g: 0 };
+    MOMENTOS.forEach(function (mo) {
+      var x = ((p && p.comidas) || {})[mo.k] || {};
+      GRUPOS.forEach(function (gr) {
+        var n = +x[gr.k] || 0, m = MACROS[(gr.k === "prot" && mo.k === "desayuno") ? "protDes" : gr.k];
+        if (n && m) { t.p += n * m.p; t.c += n * m.c; t.g += n * m.g; }
+      });
+      if (PRINCIPAL[mo.k]) { t.p += MACROS.veg.p; t.c += MACROS.veg.c; t.g += MACROS.veg.g; }
+    });
+    var kcal = t.p * 4 + t.c * 4 + t.g * 9;
+    function pct(v, f) { return kcal ? Math.round(v * f * 100 / kcal) : 0; }
+    return { p: Math.round(t.p), c: Math.round(t.c), g: Math.round(t.g), kcal: Math.round(kcal), pct: { p: pct(t.p, 4), c: pct(t.c, 4), g: pct(t.g, 9) } };
+  }
+  /* El orden en que se muestran los grupos de cada comida */
+  function orden(mom) {
+    if (PRINCIPAL[mom]) return ["prot", "carb", "gra", "fru", "lac"];
+    return mom === "desayuno" ? ["prot", "lac", "carb", "fru", "gra"] : ["lac", "carb", "prot", "gra", "fru"];
+  }
+  /* El menú de un día para desayuno, media mañana y merienda: una opción por porción, rotando por día y por comida */
+  function menuDia(p, dia, mom) {
+    var x = ((p && p.comidas) || {})[mom] || {}, items = [], mi = ["desayuno", "mm", "almuerzo", "merienda", "cena"].indexOf(mom);
+    orden(mom).forEach(function (gk, j) {
+      var n = +x[gk] || 0; if (!n) return;
+      var ops = opciones(p, mom, gk); if (!ops.length) return;
+      var tabla = equivalencias(gk, mom, p && (p.dieta || p.tipo), p && (p.celiaco || p.cel));
+      ops = ops.filter(function (o) { return tabla.indexOf(o) < 0; }).concat(ops.filter(function (o) { return tabla.indexOf(o) >= 0; })); // las que sumó Ro, primero
+      var base = dia * n + j * 2 + mi * 3;
+      for (var t = 0; t < n; t++) items.push(ops[(base + t) % ops.length]);
+    });
+    if (!items.length) return "";
+    return (mom === "desayuno" || mom === "merienda" ? "Infusión · " : "") + items.join(" + ");
+  }
   function cuantas(comidas) { var n = 0; MOMENTOS.forEach(function (mo) { var x = (comidas || {})[mo.k] || {}; GRUPOS.forEach(function (gr) { n += (+x[gr.k] || 0); }); }); return n; }
 
   /* «2 porciones de carbohidrato» */
@@ -174,6 +213,6 @@
   }
 
   g.NPPorc = { GRUPOS: GRUPOS, MOMENTOS: MOMENTOS, VEG_KCAL: VEG_KCAL, VEGETALES: VEGETALES, MAX: MAX, PRINCIPAL: PRINCIPAL,
-    grupo: grupo, momento: momento, equivalencias: equivalencias, opciones: opciones, agregables: agregables, totalesDe: totalesDe, repartir: repartir, kcalDe: kcalDe, cuantas: cuantas,
+    grupo: grupo, momento: momento, equivalencias: equivalencias, opciones: opciones, agregables: agregables, MACROS: MACROS, macros: macros, orden: orden, menuDia: menuDia, totalesDe: totalesDe, repartir: repartir, kcalDe: kcalDe, cuantas: cuantas,
     rotulo: rotulo, nuevo: nuevo, cambiar: cambiar, rearmar: rearmar, estado: estado, diario: diario };
 })(typeof window !== "undefined" ? window : globalThis);

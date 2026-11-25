@@ -455,6 +455,12 @@
   .porc-est{margin:0;flex:1 1 230px;font-weight:600;color:#8a5a10;font-size:1rem;}
   .porc-tot.ok .porc-est{color:#2f7048;}
   .porc-tot .nota{flex:1 1 100%;margin:0;}
+  .porc-mac{flex:1 1 100%;display:flex;flex-wrap:wrap;gap:8px 10px;margin:2px 0 0;padding:12px 0 0;border-top:1px solid var(--borde);}
+  .porc-mac .mac{display:flex;align-items:baseline;gap:6px;flex-wrap:wrap;padding:8px 12px;border-radius:var(--r-lg);background:var(--fondo,#fff6f3);}
+  .porc-mac .mac .l{font-size:1rem;font-weight:600;color:var(--ink);}
+  .porc-mac .mac b{font-family:var(--mono);font-size:1.1rem;color:var(--coral-dark);}
+  .porc-mac .mac small{font-family:var(--mono);font-size:1rem;color:var(--muted);}
+  .porc-mac .mac-nota{flex:1 1 100%;margin:0;color:var(--muted);font-size:1rem;}
   .comida.porc-comida{padding:20px 22px;}
   .porc-cab{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:6px;}
   .porc-cab .tipo{margin:0;}
@@ -555,6 +561,7 @@
   button.plato-btn:hover{background:var(--tinte);border-color:var(--accent);}
   .plato-btn .pl{font-weight:600;line-height:1.35;}
   .plato-btn small{color:var(--muted);font-size:.95rem;line-height:1.4;}
+  .dia-menu .fijo{display:block;padding:4px 6px 6px;line-height:1.45;font-size:1rem;color:var(--texto);}
   .editando .plato-btn{pointer-events:none;opacity:.6;}
   .grupos.ideas{grid-template-columns:1fr 1fr;}
   @media(max-width:760px){.grupos.ideas{grid-template-columns:1fr;}}
@@ -580,6 +587,9 @@
     .plato-btn{padding:1px 0;min-height:0;border:none;}
     .dia-menu .mom{margin:3px 0 0;}
     .hoja-cambio,.ayuda-semana{display:none !important;}
+    .semana.completa .dia-menu{padding:5px 7px;}
+    .semana.completa .dia-menu .mom{font-size:10pt;margin:2px 0 0;}
+    .semana.completa .fijo,.semana.completa .plato-btn .pl{font-size:10pt;line-height:1.3;padding:0 0 1px;font-weight:400;}
   }
 
   @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important;scroll-behavior:auto!important;}}
@@ -2930,6 +2940,15 @@ function porcAplicar(d){
   if(d.origen==="porciones" && window.NPMenu) d.shoppingList=porcCompras(d);
   return d;
 }
+function htmlMacros(p){
+  if(!NPPorc.macros) return "";
+  var m=NPPorc.macros(p), kg=+(plan.info && plan.info.weight)||0;
+  function una(l, g, pc, extra){ return '<span class="mac"><span class="l">'+l+'</span><b>'+milesP(g)+' g</b><small>'+pc+' %'+(extra||"")+'</small></span>'; }
+  return '<div class="porc-mac" id="porc-mac">'+
+    una("Proteínas", m.p, m.pct.p, kg>0 ? ' · '+String((Math.round(m.p/kg*10)/10)).replace(".",",")+' g/kg' : "")+
+    una("Carbohidratos", m.c, m.pct.c)+una("Grasas", m.g, m.pct.g)+
+    '<p class="mac-nota">Macronutrientes aproximados de las porciones de este plan.</p></div>';
+}
 function htmlPorciones(d){
   var P=NPPorc, p=d.porciones, est=P.estado(p);
   var h='<div class="bloque-res" id="porciones"><h3>Tus comidas, por porciones</h3>'+
@@ -2940,6 +2959,7 @@ function htmlPorciones(d){
      '<div class="porc-tot-n"><label class="l" for="porc-kcal">Objetivo</label><input id="porc-kcal" type="text" inputmode="numeric" autocomplete="off" value="'+p.kcal+'" onkeydown="if(event.key===\'Enter\'){event.preventDefault();porcRearmar();}"><small>kcal</small></div>'+
      '<p class="porc-est" id="porc-est">'+(est.ok ? 'Alineado al objetivo.' : (est.dif>0 ? 'Sobran unas '+milesP(est.dif)+' kcal: sacá '+est.porciones+(est.porciones===1?' porción.':' porciones.') : 'Faltan unas '+milesP(-est.dif)+' kcal: sumá '+est.porciones+(est.porciones===1?' porción.':' porciones.')))+'</p>'+
      '<button type="button" class="btn chico suave" onclick="porcRearmar()">Repartir de nuevo según el objetivo</button>'+
+     htmlMacros(p)+
      (p.sinValor?'<p class="nota">Este plan no tenía valor calórico calculado: se repartió sobre 1.500 kcal. Poné el tuyo y tocá Repartir.</p>':'')+
      '</div>';
   h+=P.MOMENTOS.map(function(mo){
@@ -3092,9 +3112,20 @@ function modeloDelPlan(d){ var m=(d&&d.modeloRo)||{}; return { tipo: m.tipo||NPM
 function htmlSemana(d){
   var cambia = !!window.NPMenu;
   var porc=conPorciones(d);
-  return '<div class="bloque-res" id="semana"><h3>Menú de la semana</h3>'+(porc?'<p class="nota-semana">Ideas para tus almuerzos y cenas. Las cantidades son las de tus porciones.</p>':'')+
-    (cambia?'<p class="ayuda-semana no-imprimir">Tocá una comida para cambiarla por otra del mismo grupo. Se guarda sola y la lista de compras se rearma.</p>':'')+
-    '<div class="semana">'+d.weeklyMenu.map(function(dia,i){
+  var completo = porc && NPPorc.menuDia;
+  return '<div class="bloque-res" id="semana"><h3>Menú de la semana</h3>'+(completo?'<p class="nota-semana">Así puede quedar tu semana con tus porciones. En almuerzo y cena, las cantidades son las de tus porciones.</p>':porc?'<p class="nota-semana">Ideas para tus almuerzos y cenas. Las cantidades son las de tus porciones.</p>':'')+
+    (cambia?'<p class="ayuda-semana no-imprimir">'+(completo?'Tocá un almuerzo o una cena para cambiarlo por otro del mismo grupo. Desayuno, media mañana y merienda salen de las opciones de cada porción.':'Tocá una comida para cambiarla por otra del mismo grupo.')+' Se guarda sola y la lista de compras se rearma.</p>':'')+
+    '<div class="semana'+(completo?' completa':'')+'">'+d.weeklyMenu.map(function(dia,i){
+      if(completo) return '<div class="dia-menu"><b class="dia-n">'+esc(dia.dia)+'</b><ul>'+NPPorc.MOMENTOS.map(function(mo){
+        if(NPPorc.PRINCIPAL[mo.k]){
+          var c=(dia.comidas||[]).filter(function(x){ return x.k===mo.k; })[0]; if(!c) return "";
+          var nom=NPMenu.nombreMomento(c.k);
+          return '<li><span class="mom">'+esc(nom)+'</span>'+(cambia?'<button type="button" class="plato-btn" onclick="cambiarComida('+i+',\''+c.k+'\')" aria-label="Cambiar '+esc(nom)+' del '+esc(dia.dia)+': '+esc(c.t)+'">':'<span class="plato-btn">')+
+            '<span class="pl">'+esc(c.t)+'</span>'+(cambia?'</button>':'</span>')+'</li>';
+        }
+        var t=NPPorc.menuDia(d.porciones, i, mo.k); if(!t) return "";
+        return '<li><span class="mom">'+esc(NPMenu.nombreMomento(mo.k))+'</span><span class="fijo">'+esc(t)+'</span></li>';
+      }).join("")+'</ul></div>';
       return '<div class="dia-menu"><b class="dia-n">'+esc(dia.dia)+'</b><ul>'+(dia.comidas||[]).filter(function(c){ return !porc || NPPorc.PRINCIPAL[c.k]; }).map(function(c){
         var nom=NPMenu?NPMenu.nombreMomento(c.k):c.k;
         return '<li><span class="mom">'+esc(nom)+'</span>'+(cambia?'<button type="button" class="plato-btn" onclick="cambiarComida('+i+',\''+c.k+'\')" aria-label="Cambiar '+esc(nom)+' del '+esc(dia.dia)+': '+esc(c.t)+'">':'<span class="plato-btn">')+
@@ -3248,7 +3279,7 @@ function pintarPlan(d){
       return '<div class="comida" data-menu>'+edQuitarTarjeta()+edTexto("meal", m.meal, "span", "tipo", "Comida")+edTexto("dish", m.dish, "p", "plato-txt", "Plato")+'</div>';}).join("")+'</div>';
   }
   if(d.menuIdeas&&((d.menuIdeas.carbsIdeas||[]).length||(d.menuIdeas.proteinIdeas||[]).length)){
-    h+='<div class="bloque-res"><h3>Ideas de menú</h3><div class="grupos ideas">'+
+    h+='<div class="bloque-res'+(conPorciones(d) && NPPorc.menuDia ? ' no-imprimir' : '')+'"><h3>Ideas de menú</h3><div class="grupos ideas">'+
       '<div class="grupo"><b>Con carbohidrato</b><ul>'+(d.menuIdeas.carbsIdeas||[]).map(function(x){ return '<li>'+esc(x)+'</li>'; }).join("")+'</ul></div>'+
       '<div class="grupo"><b>Con proteína</b><ul>'+(d.menuIdeas.proteinIdeas||[]).map(function(x){ return '<li>'+esc(x)+'</li>'; }).join("")+'</ul></div></div></div>';
   }

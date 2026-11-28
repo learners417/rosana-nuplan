@@ -16,6 +16,8 @@
    ═══════════════════════════════════════════════════════════════ */
 (function (d, w) {
   if (w.__nuplanCargador) return;
+  /* Dentro del editor de GHL no se monta nada: ahí se trabaja la página, no se mira. */
+  if (/leadconnectorhq\.com$|gohighlevel\.com$|msgsndr\.com$/.test(location.hostname)) return;
   w.__nuplanCargador = 1;
 
   var REPO = 'learners417/rosana-nuplan';
@@ -23,7 +25,9 @@
   /* La ruta de GHL → el archivo que arma build_sitio.py. Una ruta que no está acá se deja como viene:
      los encabezados de las páginas de pago son un pedazo, no una página entera, y no pasan por acá. */
   var MAPA = {
+    '': 'nuplan-vsl.html',            /* la raíz del dominio sirve el vsl */
     'vsl': 'nuplan-vsl.html',
+    'vsl-page': 'nuplan-vsl.html',    /* el nombre interno de la página en GHL */
     'preparacion': 'nuplan-preparacion.html',
     'masterclass': 'nuplan-clase.html',
     'inicio': 'nuplan-inicio.html',

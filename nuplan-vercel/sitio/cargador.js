@@ -29,7 +29,9 @@
     'vsl': 'nuplan-vsl.html',
     'vsl-page': 'nuplan-vsl.html',    /* el nombre interno de la página en GHL */
     'preparacion': 'nuplan-preparacion.html',
+    'preparacion-page': 'nuplan-preparacion.html',
     'masterclass': 'nuplan-clase.html',
+    'masterclass-page': 'nuplan-clase.html',
     'inicio': 'nuplan-inicio.html',
     'empresas': 'nuplan-empresas.html',
     'legales': 'nuplan-legales.html',
